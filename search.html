@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en-ZW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" type="image/webp" href="Assets/logos/TrackHype Logo Design Badge.webp">
+  <title>Search — TrackHype</title>
+  <link rel="stylesheet" href="trackhype.css">
+  <style>
+    .tabs{display:flex;gap:8px}
+    .tab{border:1px solid var(--th-border);background:var(--th-bg);border-radius:999px;padding:8px 16px;font-size:12px;font-weight:800;color:var(--th-muted)}
+    .tab.is-active{background:var(--th-primary);border-color:var(--th-primary);color:#fff}
+    .srch-row{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--th-border);border-radius:var(--th-radius-sm);background:var(--th-bg);margin-bottom:10px}
+    .srch-thumb{flex:none;width:46px;height:46px;border-radius:8px;object-fit:cover;background:var(--th-grey-2);display:grid;place-items:center;font-weight:900;color:var(--th-primary-dark)}
+  </style>
+</head>
+<body data-active-nav="search.html">
+
+  <header class="th-header" data-app-header>
+    <div class="th-header-inner">
+      <a class="th-brand" href="index.html">
+        <img class="th-logo-badge" src="Assets/logos/TrackHype Logo Design Badge.webp" alt="TrackHype">
+        <img class="th-logo-text" src="Assets/logos/track-hype-text-logo.webp" alt="TrackHype">
+      </a>
+      <div class="th-header-context">Search</div>
+      <button class="th-icon-btn" type="button" aria-label="Menu" onclick="location.href='menu.html'">☰</button>
+    </div>
+  </header>
+
+  <main class="th-app">
+    <div class="th-shell">
+
+      <section>
+        <h1 class="th-page-title">Search</h1>
+        <p class="th-page-subtitle">Find anything across TrackHype — songs, artists, charts, genres and lyrics.</p>
+      </section>
+
+      <section>
+        <div class="th-card pad" style="padding:8px">
+          <input class="th-input" id="q" placeholder="Search songs, artists, charts or lyrics…" style="background:var(--th-bg)" oninput="runSearch()">
+        </div>
+      </section>
+
+      <section>
+        <div class="tabs">
+          <button class="tab is-active" type="button" data-type="all" onclick="setType('all',this)">All</button>
+          <button class="tab" type="button" data-type="songs" onclick="setType('songs',this)">Songs</button>
+          <button class="tab" type="button" data-type="artists" onclick="setType('artists',this)">Artists</button>
+          <button class="tab" type="button" data-type="charts" onclick="setType('charts',this)">Charts</button>
+          <button class="tab" type="button" data-type="genres" onclick="setType('genres',this)">Genres</button>
+        </div>
+      </section>
+
+      <section id="results"></section>
+
+    </div>
+  </main>
+
+  <nav class="th-bottom" data-bottom>
+    <div class="th-bottom-inner" data-nav-host></div>
+  </nav>
+
+  <aside class="th-player" data-player></aside>
+
+  <div class="th-modal-backdrop" data-modal>
+    <div class="th-sheet" role="dialog" aria-modal="true">
+      <div class="th-sheet-handle"></div>
+      <h3 data-modal-title></h3>
+      <div data-modal-body></div>
+      <div class="th-sheet-actions" data-modal-actions></div>
+    </div>
+  </div>
+
+  <script src="trackhype.js"></script>
+  <script>
+    let currentType = "all";
+
+    function setType(t, el){
+      currentType = t;
+      document.querySelectorAll(".tab").forEach(x=>x.classList.remove("is-active"));
+      if(el){ el.classList.add("is-active"); }
+      runSearch();
+    }
+
+function runSearch(){
+      const q = (document.getElementById("q").value || "").trim();
+      const items = TrackHype.searchInCatalog(q, currentType);
+      const head = items.slice(0, currentType === "all" ? 40 : 50);
+      document.getElementById("results").innerHTML = head.length ? head.map(x => {
+        const isSong = x.kind === "Song";
+        const isArtist = x.kind === "Artist";
+        const isChart = x.kind === "Chart";
+        const isGenre = x.kind === "Genre";
+        const title = isArtist ? x.name : x.title;
+        const sub = isArtist ? (x.genre + " · " + x.city) : isChart ? "Official TrackHype chart" : isGenre ? "Browse the " + x.title.toLowerCase() + " scene" : (x.artist + " · " + x.genre);
+        const letter = (isArtist ? x.name : x.title || "?").charAt(0).toUpperCase();
+        const thumb = isSong ? `<img class="srch-thumb" loading="lazy" src="${TrackHype.getArtwork(x.id)}" onerror="this.style.visibility='hidden'">` : `<div class="srch-thumb">${TrackHype.esc(letter)}</div>`;
+        const target = isSong ? ("song.html?id=" + encodeURIComponent(x.id)) : isArtist ? "artist.html?artist=" + encodeURIComponent(x.name) : "charts.html?chart=" + encodeURIComponent(title);
+        return `
+          <div class="srch-row">
+            ${thumb}
+            <div style="flex:1;min-width:0">
+              <div style="font-weight:800;font-size:14px">${TrackHype.esc(title)}</div>
+              <div style="font-size:12px;color:var(--th-muted)">${TrackHype.esc(sub)} · ${x.kind}</div>
+            </div>
+            <button class="th-btn secondary" type="button" onclick="location.href='${target}'">View</button>
+          </div>`;
+      }).join("") : '<div class="th-empty"><strong>No results</strong>Try an artist, song, chart, genre or lyric.</div>';
+    }
+
+    window.openResult = (type, value) => {
+      if(type === "Artist"){ location.href = "artist.html?artist=" + encodeURIComponent(value); return; }
+      if(type === "Chart" || type === "Genre"){ location.href = "charts.html?chart=" + encodeURIComponent(value); return; }
+      location.href = "song.html?id=" + encodeURIComponent(value);
+    };
+
+    runSearch();
+  </script>
+</body>
+</html>

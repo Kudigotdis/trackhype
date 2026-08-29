@@ -1,0 +1,1539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <title>TrackHype — Zimbabwe Music Charts</title>
+    <style>
+        :root {
+            --brand: #01db8b;
+            --brand-dark: #02925e;
+            --bg: #ffffff;
+            --surface: rgba(240, 240, 240, .6);
+            --border: rgba(220, 220, 220, .8);
+            --hover: rgba(200, 200, 200, .3);
+            --text: #111111;
+            --muted: #555555;
+            --player-h: 64px;
+            --nav-h: 60px;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            height: 100vh;
+        }
+        button {
+            font: inherit;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+        img {
+            display: block;
+            max-width: 100%;
+        }
+
+        /* ===== Splash ===== */
+        #splash {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            transition: opacity .5s ease;
+        }
+        #splash.fade {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .splash-logo {
+            width: 180px;
+            height: 180px;
+            border-radius: 24px;
+            object-fit: contain;
+        }
+        .splash-fallback {
+            width: 160px;
+            height: 160px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: -2px;
+        }
+        .splash-brand {
+            margin-top: 20px;
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: var(--text);
+        }
+        .splash-tag {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 6px;
+        }
+
+        /* ===== App Shell ===== */
+        #app {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        .app-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform .3s;
+        }
+        .app-header.hide {
+            transform: translateY(-100%);
+        }
+        .brand {
+            font-weight: 900;
+            font-size: 18px;
+            letter-spacing: 1px;
+            color: var(--text);
+        }
+        .brand span {
+            color: var(--brand-dark);
+        }
+        .header-spacer {
+            flex: 1;
+        }
+        .head-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: var(--surface);
+            display: grid;
+            place-items: center;
+            font-size: 18px;
+            color: var(--text);
+        }
+        .head-btn:hover {
+            background: var(--hover);
+        }
+
+        /* ===== Main ===== */
+        .main {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: calc(var(--player-h) + var(--nav-h) + 20px);
+        }
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+        .view {
+            display: none;
+        }
+        .view.active {
+            display: block;
+            animation: fadeIn .25s;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        /* ===== Cards & Rows ===== */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        .row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            border-radius: 12px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            margin-bottom: 6px;
+            cursor: pointer;
+            transition: transform .15s;
+        }
+        .row:hover {
+            background: var(--hover);
+        }
+        .row:active {
+            transform: scale(.99);
+        }
+        .row .img-wrap {
+            flex: none;
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #eee;
+            cursor: pointer;
+        }
+        .row .img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .row .meta {
+            flex: 1;
+            min-width: 0;
+        }
+        .row .title {
+            font-weight: 800;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .row .sub {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+        .row .right {
+            text-align: right;
+        }
+        .pill {
+            display: inline-block;
+            background: var(--brand);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 4px 8px;
+            border-radius: 20px;
+        }
+        .icon-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: grid;
+            place-items: center;
+            background: var(--surface);
+            font-size: 14px;
+            color: var(--text);
+        }
+        .icon-btn:hover {
+            background: var(--hover);
+        }
+        .section-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 20px 0 10px;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: 900;
+        }
+        .section-link {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--brand-dark);
+            text-decoration: none;
+        }
+
+        /* ===== Bottom Player ===== */
+        .bottom-system {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 200;
+            background: var(--bg);
+            border-top: 1px solid var(--border);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, .05);
+        }
+        .bottom-player {
+            height: var(--player-h);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 12px;
+            background: var(--bg);
+        }
+        .player-thumb {
+            width: 42px;
+            height: 42px;
+            border-radius: 8px;
+            background: #eee;
+            object-fit: cover;
+            cursor: pointer;
+        }
+        .player-meta {
+            flex: 1;
+            min-width: 0;
+        }
+        .player-title {
+            font-size: 12px;
+            font-weight: 800;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .player-artist {
+            font-size: 10px;
+            color: var(--muted);
+        }
+        .player-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--brand);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-size: 14px;
+            flex: none;
+        }
+        .player-btn:hover {
+            background: var(--brand-dark);
+        }
+        .player-btn.small {
+            width: 28px;
+            height: 28px;
+            background: var(--surface);
+            color: var(--text);
+            font-size: 12px;
+        }
+        .player-progress {
+            flex: 1;
+            height: 4px;
+            background: var(--border);
+            border-radius: 4px;
+            position: relative;
+            cursor: pointer;
+        }
+        .player-progress-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background: var(--brand);
+            border-radius: 4px;
+        }
+        .player-dot {
+            position: absolute;
+            top: 50%;
+            width: 10px;
+            height: 10px;
+            background: var(--brand-dark);
+            border-radius: 50%;
+            transform: translateY(-50%);
+        }
+        .nav-bar {
+            height: var(--nav-h);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            background: var(--bg);
+            border-top: 1px solid var(--border);
+        }
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 8px 0;
+            color: var(--muted);
+            border-radius: 10px;
+        }
+        .nav-item.active {
+            color: var(--brand-dark);
+        }
+        .nav-item .nav-icon {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        /* ===== Playlist Overlay ===== */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 300;
+            background: rgba(0, 0, 0, .4);
+            display: none;
+            align-items: flex-end;
+        }
+        .overlay.open {
+            display: flex;
+        }
+        .sheet {
+            background: var(--bg);
+            width: 100%;
+            max-width: 720px;
+            margin: 0 auto;
+            border-radius: 20px 20px 0 0;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 16px;
+        }
+        .sheet-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .sheet-head strong {
+            font-size: 16px;
+        }
+        .close-btn {
+            background: var(--surface);
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+        .playlist-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .playlist-item img {
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        .playlist-meta {
+            flex: 1;
+        }
+        .playlist-artist {
+            font-size: 12px;
+            font-weight: 800;
+        }
+        .playlist-title {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        /* ===== Chart Selector Modal ===== */
+        .chart-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 350;
+            background: rgba(0, 0, 0, .5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .chart-modal.open {
+            display: flex;
+        }
+        .chart-modal-content {
+            background: var(--bg);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 400px;
+            padding: 16px;
+        }
+        .chart-modal-title {
+            font-weight: 900;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        .chart-option {
+            width: 100%;
+            padding: 14px;
+            text-align: left;
+            border-radius: 10px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+        .chart-option:hover {
+            background: var(--hover);
+        }
+        .chart-option.active {
+            border-color: var(--brand);
+            background: rgba(1, 219, 139, .1);
+        }
+
+        /* ===== Voting Mode ===== */
+        .vote-banner {
+            background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+            color: #fff;
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            display: none;
+        }
+        .vote-banner.show {
+            display: block;
+        }
+        .chart-row.drag-over {
+            border: 2px dashed var(--brand);
+        }
+        .chart-row.dragging {
+            opacity: .5;
+        }
+        .vote-grip {
+            font-size: 18px;
+            color: var(--muted);
+            cursor: grab;
+            padding: 4px;
+        }
+        .chart-row.vote-mode {
+            border: 1px solid var(--brand);
+            cursor: grab;
+        }
+
+        /* ===== Filters ===== */
+        .filter-bar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+        .filter-chip {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .filter-chip.active {
+            background: var(--brand);
+            color: #fff;
+            border-color: var(--brand);
+        }
+        .az-bar {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+        .az-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            background: var(--surface);
+            font-size: 11px;
+            font-weight: 800;
+            display: grid;
+            place-items: center;
+        }
+        .az-btn.active {
+            background: var(--text);
+            color: #fff;
+        }
+
+        /* ===== Hero ===== */
+        .hero {
+            background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+            border-radius: 16px;
+            padding: 24px;
+            color: #fff;
+            margin-bottom: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero h2 {
+            font-size: 26px;
+            font-weight: 900;
+            line-height: 1.1;
+        }
+        .hero p {
+            font-size: 13px;
+            margin-top: 6px;
+            opacity: .9;
+        }
+        .hero-btn {
+            background: #fff;
+            color: var(--brand-dark);
+            border-radius: 10px;
+            padding: 10px 16px;
+            font-weight: 800;
+            font-size: 13px;
+            margin-top: 14px;
+            display: inline-block;
+        }
+
+        /* ===== Tabs ===== */
+        .tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 12px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+        }
+        .tab.active {
+            background: var(--text);
+            color: #fff;
+        }
+
+        /* ===== Grid ===== */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .grid-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            cursor: pointer;
+        }
+        .grid-card .thumb {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            background: #eee;
+            margin-bottom: 8px;
+            display: grid;
+            place-items: center;
+            font-size: 24px;
+            font-weight: 900;
+            color: #fff;
+        }
+        .grid-card .title {
+            font-size: 13px;
+            font-weight: 800;
+        }
+        .grid-card .sub {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        /* ===== Search ===== */
+        .searchbox {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            font-size: 15px;
+            outline: none;
+        }
+        .searchbox:focus {
+            border-color: var(--brand);
+        }
+
+        /* ===== Misc ===== */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--muted);
+        }
+        .empty-state .icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+        .primary-btn {
+            background: var(--brand);
+            color: #fff;
+            border-radius: 10px;
+            padding: 12px 20px;
+            font-weight: 800;
+            font-size: 14px;
+            width: 100%;
+            text-align: center;
+            display: block;
+        }
+        .primary-btn:hover {
+            background: var(--brand-dark);
+        }
+        .secondary-btn {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 10px;
+            padding: 12px 20px;
+            font-weight: 700;
+            font-size: 13px;
+            width: 100%;
+            text-align: center;
+            display: block;
+        }
+        .secondary-btn:hover {
+            background: var(--hover);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Splash Screen -->
+    <div id="splash" onclick="dismissSplash()">
+        <img src="TrackHype Logo Design Badge.webp" class="splash-logo" onerror="this.style.display='none';document.getElementById('splashFallback').style.display='flex';" alt="TrackHype">
+        <div id="splashFallback" class="splash-fallback" style="display:none;">TH</div>
+        <div class="splash-brand">TRACK<span style="color:var(--brand-dark);">HYPE</span></div>
+        <div class="splash-tag">Zimbabwe's Music Pulse</div>
+    </div>
+
+    <!-- App Shell -->
+    <div id="app">
+        <header class="app-header" id="appHeader">
+            <div class="brand">TRACK<span>HYPE</span></div>
+            <div class="header-spacer"></div>
+            <button class="head-btn" onclick="switchView('search')">⌕</button>
+            <button class="head-btn" onclick="switchView('menu')">☰</button>
+        </header>
+
+        <main class="main">
+            <!-- Hyped View -->
+            <div id="view-hyped" class="view active">
+                <div class="container">
+                    <div class="hero">
+                        <h2>What's Being<br>Hyped?</h2>
+                        <p>Zimbabwe's daily music pulse. Discover, rank, and hype your favourites.</p>
+                        <button class="hero-btn" onclick="switchView('charts')">Explore Charts →</button>
+                    </div>
+
+                    <div class="section-head">
+                        <div class="section-title">Recent Charts</div>
+                        <a class="section-link" onclick="switchView('charts')">View All</a>
+                    </div>
+                    <div class="grid-2" id="recentChartsGrid"></div>
+
+                    <div class="section-head">
+                        <div class="section-title">All #1s</div>
+                        <a class="section-link" onclick="switchView('charts')">View All</a>
+                    </div>
+                    <div id="numberOnesRow" style="display:flex;gap:10px;overflow-x:auto;padding:4px 0;"></div>
+
+                    <div class="section-head">
+                        <div class="section-title">National Top 40</div>
+                        <a class="section-link" onclick="switchView('charts')">View All</a>
+                    </div>
+                    <div id="nationalTopList"></div>
+                </div>
+            </div>
+
+            <!-- Charts View -->
+            <div id="view-charts" class="view">
+                <div class="container">
+                    <div class="section-head">
+                        <div class="section-title" id="chartTitle">National Top 40</div>
+                        <button class="secondary-btn" style="width:auto;padding:8px 12px;font-size:12px;" onclick="openChartModal()">Charts</button>
+                    </div>
+                    <div class="card" style="padding:12px;">
+                        <div style="display:flex;align-items:center;gap:10px;">
+                            <img id="chartCover" src="Assets/Charts/top_40_chart/cover.jpg" onerror="this.style.background='#ddd';this.src='';" style="width:64px;height:64px;border-radius:10px;object-fit:cover;">
+                            <div>
+                                <div style="font-weight:900;font-size:16px;" id="chartGenreLabel">All Genres</div>
+                                <div style="font-size:12px;color:var(--muted);" id="chartDateLabel">Current period</div>
+                            </div>
+                            <div class="spacer" style="flex:1"></div>
+                            <button class="primary-btn" style="width:auto;padding:10px 16px;font-size:12px;" id="voteBtn" onclick="toggleVote()">VOTE</button>
+                        </div>
+                    </div>
+                    <div class="vote-banner" id="voteBanner">
+                        🔄 Drag songs to reorder. #1 = 20 pts, #20 = 1 pt.
+                    </div>
+                    <div id="chartList"></div>
+                </div>
+            </div>
+
+            <!-- Artists View -->
+            <div id="view-artists" class="view">
+                <div class="container">
+                    <div class="section-head"><div class="section-title">Artists</div></div>
+                    <div class="filter-bar" id="artistFilterBar"></div>
+                    <div class="az-bar" id="artistAzBar"></div>
+                    <div id="artistList"></div>
+                </div>
+            </div>
+
+            <!-- History View -->
+            <div id="view-history" class="view">
+                <div class="container">
+                    <div class="section-head"><div class="section-title">Chart History</div></div>
+                    <div class="card">
+                        <div style="font-size:12px;font-weight:800;margin-bottom:8px;">Select a date</div>
+                        <input type="date" id="historyDate" value="2026-08-24" style="width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);">
+                    </div>
+                    <div class="tabs">
+                        <button class="tab active" onclick="setHistoryTab('chart',this)">Chart</button>
+                        <button class="tab" onclick="setHistoryTab('highlights',this)">Highlights</button>
+                        <button class="tab" onclick="setHistoryTab('artists',this)">Artists</button>
+                    </div>
+                    <div id="historyContent"></div>
+                </div>
+            </div>
+
+            <!-- Search View -->
+            <div id="view-search" class="view">
+                <div class="container">
+                    <div class="section-head"><div class="section-title">Search</div></div>
+                    <div class="card">
+                        <input class="searchbox" id="searchInput" placeholder="Search songs, artists, charts…" oninput="runSearch()">
+                    </div>
+                    <div class="tabs">
+                        <button class="tab active" onclick="setSearchType('all',this)">All</button>
+                        <button class="tab" onclick="setSearchType('songs',this)">Songs</button>
+                        <button class="tab" onclick="setSearchType('artists',this)">Artists</button>
+                        <button class="tab" onclick="setSearchType('charts',this)">Charts</button>
+                    </div>
+                    <div id="searchResults"></div>
+                </div>
+            </div>
+
+            <!-- Menu View -->
+            <div id="view-menu" class="view">
+                <div class="container">
+                    <div class="section-head"><div class="section-title">Menu</div></div>
+                    <div class="card">
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--brand-dark));display:grid;place-items:center;color:#fff;font-weight:900;font-size:20px;">TH</div>
+                            <div>
+                                <div style="font-weight:800;">TrackHype User</div>
+                                <div style="font-size:12px;color:var(--muted);">Zimbabwe</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section-head"><div class="section-title">My TrackHype</div></div>
+                    <div class="card">
+                        <div class="row" onclick="switchView('search')"><div class="meta"><div class="title">Liked Songs</div><div class="sub">Your favourites</div></div><div>›</div></div>
+                        <div class="row" onclick="switchView('artists')"><div class="meta"><div class="title">Favourite Artists</div><div class="sub">Artists you follow</div></div><div>›</div></div>
+                    </div>
+                    <div class="section-head"><div class="section-title">Artist</div></div>
+                    <div class="card">
+                        <div class="title" style="font-weight:800;">Submit Music</div>
+                        <div style="font-size:12px;color:var(--muted);margin-top:4px;">$10 USD per song. Get your music charting.</div>
+                        <button class="primary-btn" style="margin-top:10px;" onclick="alert('Submission flow would open here.')">SUBMIT</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom System -->
+        <div class="bottom-system">
+            <div class="bottom-player">
+                <img class="player-thumb" id="playerThumb" src="Assets/Charts/top_40_chart/1.jpg" onerror="this.src='';this.style.background='#ddd';">
+                <div class="player-meta">
+                    <div class="player-title" id="playerTitle">No song loaded</div>
+                    <div class="player-artist" id="playerArtist">TrackHype</div>
+                </div>
+                <button class="player-btn small" onclick="openPlaylist()">♫</button>
+                <button class="player-btn" id="playBtn" onclick="togglePlay()">▶</button>
+                <div class="player-progress" onclick="seekPlayer(event)">
+                    <div class="player-progress-fill" id="progressFill"></div>
+                    <div class="player-dot" id="progressDot" style="left:0%;"></div>
+                </div>
+            </div>
+            <nav class="nav-bar">
+                <button class="nav-item active" data-view="hyped" onclick="switchView('hyped')"><span class="nav-icon">🔥</span>Hyped</button>
+                <button class="nav-item" data-view="charts" onclick="switchView('charts')"><span class="nav-icon">📊</span>Charts</button>
+                <button class="nav-item" data-view="artists" onclick="switchView('artists')"><span class="nav-icon">🎤</span>Artists</button>
+                <button class="nav-item" data-view="history" onclick="switchView('history')"><span class="nav-icon">🕰</span>History</button>
+                <button class="nav-item" data-view="search" onclick="switchView('search')"><span class="nav-icon">⌕</span>Search</button>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Playlist Overlay -->
+    <div class="overlay" id="playlistOverlay" onclick="if(event.target===this)closePlaylist()">
+        <div class="sheet">
+            <div class="sheet-head"><strong>Playlist</strong><button class="close-btn" onclick="closePlaylist()">Close</button></div>
+            <div id="playlistContent"></div>
+        </div>
+    </div>
+
+    <!-- Chart Selector Modal -->
+    <div class="chart-modal" id="chartModal" onclick="if(event.target===this)closeChartModal()">
+        <div class="chart-modal-content">
+            <div class="chart-modal-title">Select Chart</div>
+            <div id="chartOptions"></div>
+        </div>
+    </div>
+
+    <script>
+        // ===== DATA =====
+        const chartData = {
+            nationalTop40: {
+                title: "National Top 40",
+                genre: "All Genres",
+                songs: [
+                    { title: "uValo", artist: "JAZZWRLD & Thukuthela", img: "Assets/Charts/top_40_chart/1.jpg" },
+                    { title: "Push 2 Start", artist: "Tyla", img: "Assets/Charts/top_40_chart/2.jpg" },
+                    { title: "Aluta Continua", artist: "Frost ft. Jordan MoOzy", img: "Assets/Charts/top_40_chart/3.jpg" },
+                    { title: "Bengicela", artist: "MaWhoo", img: "Assets/Charts/top_40_chart/4.jpg" },
+                    { title: "Say You Love Me", artist: "Shekhinah", img: "Assets/Charts/top_40_chart/5.jpg" },
+                    { title: "Uzizwa Kanjan", artist: "JAZZWRLD", img: "Assets/Charts/top_40_chart/6.jpg" },
+                    { title: "What You Need", artist: "Tems", img: "Assets/Charts/top_40_chart/7.jpg" },
+                    { title: "Goo Mo", artist: "A.T.I.", img: "Assets/Charts/top_40_chart/8.jpg" },
+                    { title: "Baba Yilwa", artist: "DJ Zinhle", img: "Assets/Charts/top_40_chart/9.jpg" },
+                    { title: "Lwetse 2.0", artist: "Uncle Waffles", img: "Assets/Charts/top_40_chart/10.jpg" },
+                    { title: "Doncic", artist: "Frost", img: "Assets/Charts/top_40_chart/11.jpg" },
+                    { title: "Burning Blue", artist: "Mariah the Scientist", img: "Assets/Charts/top_40_chart/12.jpg" },
+                    { title: "Mopepe", artist: "Tango Supreme", img: "Assets/Charts/top_40_chart/13.jpg" },
+                    { title: "Thandaza", artist: "Sam Deep", img: "Assets/Charts/top_40_chart/14.jpg" },
+                    { title: "Ntshegeng", artist: "Melo", img: "Assets/Charts/top_40_chart/15.jpg" },
+                    { title: "Mzala", artist: "Shakes & Les", img: "Assets/Charts/top_40_chart/16.jpg" },
+                    { title: "Grace", artist: "Bri Babineaux", img: "Assets/Charts/top_40_chart/17.jpg" },
+                    { title: "ZEP", artist: "Uncool MC", img: "Assets/Charts/top_40_chart/18.jpg" },
+                    { title: "Amanxeba", artist: "Sami Kay", img: "Assets/Charts/top_40_chart/19.jpg" },
+                    { title: "Someone Loves Me Pt. 2", artist: "PARTYNEXTDOOR", img: "Assets/Charts/top_40_chart/20.jpg" },
+                    { title: "Lengoma", artist: "MSA", img: "Assets/Charts/top_40_chart/21.jpg" },
+                    { title: "It Depends", artist: "Chris Brown", img: "Assets/Charts/top_40_chart/22.jpg" },
+                    { title: "Before Lefatshe", artist: "KX", img: "Assets/Charts/top_40_chart/23.jpg" },
+                    { title: "uMoya", artist: "Thukuthela", img: "Assets/Charts/top_40_chart/24.jpg" },
+                    { title: "Siyabonga", artist: "Kabza De Small", img: "Assets/Charts/top_40_chart/25.jpg" },
+                    { title: "Lutho", artist: "DJ Jaivane", img: "Assets/Charts/top_40_chart/26.jpg" },
+                    { title: "Folded", artist: "Kehlani", img: "Assets/Charts/top_40_chart/27.jpg" },
+                    { title: "Guqa (My Prayer)", artist: "Zee Nxumalo", img: "Assets/Charts/top_40_chart/28.jpg" },
+                    { title: "Amazwe", artist: "Mthunzi", img: "Assets/Charts/top_40_chart/29.jpg" },
+                    { title: "Catching Feelings", artist: "Leon Thomas", img: "Assets/Charts/top_40_chart/30.jpg" },
+                    { title: "Gijima", artist: "De Mthuda", img: "Assets/Charts/top_40_chart/31.jpg" },
+                    { title: "Something Real", artist: "Jaymin", img: "Assets/Charts/top_40_chart/32.jpg" },
+                    { title: "Vele Uyena", artist: "Skyla Tylaa", img: "Assets/Charts/top_40_chart/33.jpg" },
+                    { title: "Pula", artist: "Veezo View", img: "Assets/Charts/top_40_chart/34.jpg" },
+                    { title: "Icon", artist: "Brent Faiyaz", img: "Assets/Charts/top_40_chart/35.jpg" },
+                    { title: "Yamaha", artist: "Dijon", img: "Assets/Charts/top_40_chart/36.jpg" },
+                    { title: "BW State of Mind", artist: "Ban-T", img: "Assets/Charts/top_40_chart/37.jpg" },
+                    { title: "Motswako Mega Mix", artist: "HHP", img: "Assets/Charts/top_40_chart/38.jpg" },
+                    { title: "Botshelo Ke Eng", artist: "Trechyson Molly", img: "Assets/Charts/top_40_chart/39.jpg" },
+                    { title: "Shame", artist: "Queen Naija", img: "Assets/Charts/top_40_chart/40.jpg" }
+                ]
+            },
+            zimHipHopTop20: {
+                title: "Zim Hip Hop Top 20",
+                genre: "Zim Hip Hop",
+                songs: [
+                    { title: "Aluta Continua", artist: "Frost ft. Jordan MoOzy", img: "Assets/Charts/top_40_chart/3.jpg" },
+                    { title: "Doncic", artist: "Frost", img: "Assets/Charts/top_40_chart/11.jpg" },
+                    { title: "Goo Mo", artist: "A.T.I.", img: "Assets/Charts/top_40_chart/8.jpg" },
+                    { title: "Ntshegeng", artist: "Melo", img: "Assets/Charts/top_40_chart/15.jpg" },
+                    { title: "Before Lefatshe", artist: "KX", img: "Assets/Charts/top_40_chart/23.jpg" },
+                    { title: "Pula", artist: "Veezo View", img: "Assets/Charts/top_40_chart/34.jpg" },
+                    { title: "BW State of Mind", artist: "Ban-T", img: "Assets/Charts/top_40_chart/37.jpg" },
+                    { title: "Motswako Mega Mix", artist: "HHP", img: "Assets/Charts/top_40_chart/38.jpg" },
+                    { title: "Mosele", artist: "Dramaboi", img: "Assets/Charts/top_40_chart/9.jpg" },
+                    { title: "Ke Tsile", artist: "Scar", img: "Assets/Charts/top_40_chart/10.jpg" },
+                    { title: "Diamond City", artist: "Ozi F Teddy", img: "Assets/Charts/top_40_chart/12.jpg" },
+                    { title: "Phanda", artist: "B-Note", img: "Assets/Charts/top_40_chart/14.jpg" },
+                    { title: "Mainane", artist: "Zeus", img: "Assets/Charts/top_40_chart/16.jpg" },
+                    { title: "Lentswe", artist: "Chrome", img: "Assets/Charts/top_40_chart/18.jpg" },
+                    { title: "Madi", artist: "Apollo D", img: "Assets/Charts/top_40_chart/20.jpg" },
+                    { title: "Street Lights", artist: "Kimyon", img: "Assets/Charts/top_40_chart/22.jpg" },
+                    { title: "Village Vibe", artist: "Kali", img: "Assets/Charts/top_40_chart/24.jpg" },
+                    { title: "Notwane Flow", artist: "Phakzino", img: "Assets/Charts/top_40_chart/26.jpg" },
+                    { title: "Setswana Sauce", artist: "Juju Boy", img: "Assets/Charts/top_40_chart/28.jpg" },
+                    { title: "The Capital", artist: "Nomadic", img: "Assets/Charts/top_40_chart/30.jpg" }
+                ]
+            },
+            zimdancehallTop20: {
+                title: "Zimdancehall Top 20",
+                genre: "Zimdancehall",
+                songs: [
+                    { title: "Mukwasha", artist: "Freeman HKD Boss", img: "Assets/Charts/top_40_chart/1.jpg" },
+                    { title: "Kana Wanipera", artist: "Enzo Ishall", img: "Assets/Charts/top_40_chart/2.jpg" },
+                    { title: "Ndini Ndinaye", artist: "Jah Master", img: "Assets/Charts/top_40_chart/3.jpg" },
+                    { title: "Too Much", artist: "Blacperl", img: "Assets/Charts/top_40_chart/4.jpg" },
+                    { title: "Bhiza", artist: "Freeman HKD Boss", img: "Assets/Charts/top_40_chart/5.jpg" },
+                    { title: "Muchaipa", artist: "Enzo Ishall", img: "Assets/Charts/top_40_chart/6.jpg" },
+                    { title: "Rudo", artist: "Jah Master", img: "Assets/Charts/top_40_chart/7.jpg" },
+                    { title: "Mureza", artist: "Blacperl", img: "Assets/Charts/top_40_chart/8.jpg" },
+                    { title: "Wadii", artist: "Freeman HKD Boss", img: "Assets/Charts/top_40_chart/9.jpg" },
+                    { title: "Vimbayi", artist: "Enzo Ishall", img: "Assets/Charts/top_40_chart/10.jpg" },
+                    { title: "Mwari", artist: "Jah Master", img: "Assets/Charts/top_40_chart/11.jpg" },
+                    { title: "Rima", artist: "Blacperl", img: "Assets/Charts/top_40_chart/12.jpg" },
+                    { title: "Nyoka", artist: "Freeman HKD Boss", img: "Assets/Charts/top_40_chart/13.jpg" },
+                    { title: "Shaina", artist: "Enzo Ishall", img: "Assets/Charts/top_40_chart/14.jpg" },
+                    { title: "Tichaona", artist: "Jah Master", img: "Assets/Charts/top_40_chart/15.jpg" },
+                    { title: "Gara", artist: "Blacperl", img: "Assets/Charts/top_40_chart/16.jpg" },
+                    { title: "Hupenyu", artist: "Freeman HKD Boss", img: "Assets/Charts/top_40_chart/17.jpg" },
+                    { title: "Zviedza", artist: "Enzo Ishall", img: "Assets/Charts/top_40_chart/18.jpg" },
+                    { title: "Ndaenda", artist: "Jah Master", img: "Assets/Charts/top_40_chart/19.jpg" },
+                    { title: "Chero", artist: "Blacperl", img: "Assets/Charts/top_40_chart/20.jpg" }
+                ]
+            },
+            gospelTop20: {
+                title: "Gospel Top 20",
+                genre: "Gospel",
+                songs: [
+                    { title: "Mwari Wenyasha", artist: "Mambo Dhuterere", img: "Assets/Charts/top_40_chart/1.jpg" },
+                    { title: "Kugara Nemi", artist: "Janet Manyowa", img: "Assets/Charts/top_40_chart/2.jpg" },
+                    { title: "Makanaka", artist: "Minister Mahendere", img: "Assets/Charts/top_40_chart/3.jpg" },
+                    { title: "Pfungwa", artist: "Tino Chinyani", img: "Assets/Charts/top_40_chart/4.jpg" },
+                    { title: "Anesu", artist: "Mambo Dhuterere", img: "Assets/Charts/top_40_chart/5.jpg" },
+                    { title: "Rudo", artist: "Janet Manyowa", img: "Assets/Charts/top_40_chart/6.jpg" },
+                    { title: "Simba", artist: "Minister Mahendere", img: "Assets/Charts/top_40_chart/7.jpg" },
+                    { title: "Kupembedza", artist: "Tino Chinyani", img: "Assets/Charts/top_40_chart/8.jpg" },
+                    { title: "Tendai", artist: "Mambo Dhuterere", img: "Assets/Charts/top_40_chart/9.jpg" },
+                    { title: "Ndiwe", artist: "Janet Manyowa", img: "Assets/Charts/top_40_chart/10.jpg" },
+                    { title: "Hossana", artist: "Minister Mahendere", img: "Assets/Charts/top_40_chart/11.jpg" },
+                    { title: "Mweya", artist: "Tino Chinyani", img: "Assets/Charts/top_40_chart/12.jpg" },
+                    { title: "Nhamo", artist: "Mambo Dhuterere", img: "Assets/Charts/top_40_chart/13.jpg" },
+                    { title: "Tarisai", artist: "Janet Manyowa", img: "Assets/Charts/top_40_chart/14.jpg" },
+                    { title: "Vimbai", artist: "Minister Mahendere", img: "Assets/Charts/top_40_chart/15.jpg" },
+                    { title: "Tenda", artist: "Tino Chinyani", img: "Assets/Charts/top_40_chart/16.jpg" },
+                    { title: "Chiedza", artist: "Mambo Dhuterere", img: "Assets/Charts/top_40_chart/17.jpg" },
+                    { title: "Mutamba", artist: "Janet Manyowa", img: "Assets/Charts/top_40_chart/18.jpg" },
+                    { title: "Kupedza", artist: "Minister Mahendere", img: "Assets/Charts/top_40_chart/19.jpg" },
+                    { title: "Zvipo", artist: "Tino Chinyani", img: "Assets/Charts/top_40_chart/20.jpg" }
+                ]
+            },
+            sunguraTop20: {
+                title: "Sungura Top 20",
+                genre: "Sungura",
+                songs: [
+                    { title: "Mazvita", artist: "Alick Macheso", img: "Assets/Charts/top_40_chart/1.jpg" },
+                    { title: "Mukuru", artist: "Jah Prayzah", img: "Assets/Charts/top_40_chart/2.jpg" },
+                    { title: "Wakanaka", artist: "Fungisai", img: "Assets/Charts/top_40_chart/3.jpg" },
+                    { title: "Tsika", artist: "Peter Moyo", img: "Assets/Charts/top_40_chart/4.jpg" },
+                    { title: "Pamwe", artist: "Alick Macheso", img: "Assets/Charts/top_40_chart/5.jpg" },
+                    { title: "Rudo", artist: "Jah Prayzah", img: "Assets/Charts/top_40_chart/6.jpg" },
+                    { title: "Moto", artist: "Fungisai", img: "Assets/Charts/top_40_chart/7.jpg" },
+                    { title: "Nhamo", artist: "Peter Moyo", img: "Assets/Charts/top_40_chart/8.jpg" },
+                    { title: "Simba", artist: "Alick Macheso", img: "Assets/Charts/top_40_chart/9.jpg" },
+                    { title: "Moyo", artist: "Jah Prayzah", img: "Assets/Charts/top_40_chart/10.jpg" },
+                    { title: "Chikara", artist: "Fungisai", img: "Assets/Charts/top_40_chart/11.jpg" },
+                    { title: "Hurungudo", artist: "Peter Moyo", img: "Assets/Charts/top_40_chart/12.jpg" },
+                    { title: "Zvipfundo", artist: "Alick Macheso", img: "Assets/Charts/top_40_chart/13.jpg" },
+                    { title: "Vhudzi", artist: "Jah Prayzah", img: "Assets/Charts/top_40_chart/14.jpg" },
+                    { title: "Mudzimu", artist: "Fungisai", img: "Assets/Charts/top_40_chart/15.jpg" },
+                    { title: "Muponeswa", artist: "Peter Moyo", img: "Assets/Charts/top_40_chart/16.jpg" },
+                    { title: "Mhepo", artist: "Alick Macheso", img: "Assets/Charts/top_40_chart/17.jpg" },
+                    { title: "Rufaro", artist: "Jah Prayzah", img: "Assets/Charts/top_40_chart/18.jpg" },
+                    { title: "Zvinoda", artist: "Fungisai", img: "Assets/Charts/top_40_chart/19.jpg" },
+                    { title: "Tichaona", artist: "Peter Moyo", img: "Assets/Charts/top_40_chart/20.jpg" }
+                ]
+            },
+            houseTop20: {
+                title: "Zimbabwean House Top 20",
+                genre: "House",
+                songs: [
+                    { title: "uValo", artist: "JAZZWRLD", img: "Assets/Charts/top_40_chart/1.jpg" },
+                    { title: "Bengicela", artist: "MaWhoo", img: "Assets/Charts/top_40_chart/2.jpg" },
+                    { title: "Uzizwa Kanjan", artist: "JAZZWRLD", img: "Assets/Charts/top_40_chart/3.jpg" },
+                    { title: "Baba Yilwa", artist: "DJ Zinhle", img: "Assets/Charts/top_40_chart/4.jpg" },
+                    { title: "Lwetse 2.0", artist: "Uncle Waffles", img: "Assets/Charts/top_40_chart/5.jpg" },
+                    { title: "Mopepe", artist: "Tango Supreme", img: "Assets/Charts/top_40_chart/6.jpg" },
+                    { title: "Thandaza", artist: "Sam Deep", img: "Assets/Charts/top_40_chart/7.jpg" },
+                    { title: "Mzala", artist: "Shakes & Les", img: "Assets/Charts/top_40_chart/8.jpg" },
+                    { title: "Amanxeba", artist: "Sami Kay", img: "Assets/Charts/top_40_chart/9.jpg" },
+                    { title: "Lengoma", artist: "MSA", img: "Assets/Charts/top_40_chart/10.jpg" },
+                    { title: "uMoya", artist: "Thukuthela", img: "Assets/Charts/top_40_chart/11.jpg" },
+                    { title: "Siyabonga", artist: "Kabza De Small", img: "Assets/Charts/top_40_chart/12.jpg" },
+                    { title: "Lutho", artist: "DJ Jaivane", img: "Assets/Charts/top_40_chart/13.jpg" },
+                    { title: "Guqa", artist: "Zee Nxumalo", img: "Assets/Charts/top_40_chart/14.jpg" },
+                    { title: "Amazwe", artist: "Mthunzi", img: "Assets/Charts/top_40_chart/15.jpg" },
+                    { title: "Gijima", artist: "De Mthuda", img: "Assets/Charts/top_40_chart/16.jpg" },
+                    { title: "Vele Uyena", artist: "Skyla Tylaa", img: "Assets/Charts/top_40_chart/17.jpg" },
+                    { title: "Botshelo Ke Eng", artist: "Trechyson Molly", img: "Assets/Charts/top_40_chart/18.jpg" },
+                    { title: "Mabebuza", artist: "Maline Aura", img: "Assets/Charts/top_40_chart/19.jpg" },
+                    { title: "ZEP", artist: "DJ Smallz", img: "Assets/Charts/top_40_chart/20.jpg" }
+                ]
+            },
+            rnbTop20: {
+                title: "R&B Top 20",
+                genre: "R&B",
+                songs: [
+                    { title: "Say You Love Me", artist: "Shekhinah", img: "Assets/Charts/top_40_chart/1.jpg" },
+                    { title: "Push 2 Start", artist: "Tyla", img: "Assets/Charts/top_40_chart/2.jpg" },
+                    { title: "What You Need", artist: "Tems", img: "Assets/Charts/top_40_chart/3.jpg" },
+                    { title: "Burning Blue", artist: "Mariah the Scientist", img: "Assets/Charts/top_40_chart/4.jpg" },
+                    { title: "Someone Loves Me Pt. 2", artist: "PARTYNEXTDOOR", img: "Assets/Charts/top_40_chart/5.jpg" },
+                    { title: "Grace", artist: "Bri Babineaux", img: "Assets/Charts/top_40_chart/6.jpg" },
+                    { title: "It Depends", artist: "Chris Brown", img: "Assets/Charts/top_40_chart/7.jpg" },
+                    { title: "Catching Feelings", artist: "Annie Tracy", img: "Assets/Charts/top_40_chart/8.jpg" },
+                    { title: "Folded", artist: "Kehlani", img: "Assets/Charts/top_40_chart/9.jpg" },
+                    { title: "Something Real", artist: "Jaymin", img: "Assets/Charts/top_40_chart/10.jpg" },
+                    { title: "Icon", artist: "Brent Faiyaz", img: "Assets/Charts/top_40_chart/11.jpg" },
+                    { title: "Yamaha", artist: "Dijon", img: "Assets/Charts/top_40_chart/12.jpg" },
+                    { title: "Crash Out", artist: "Josh Levi", img: "Assets/Charts/top_40_chart/13.jpg" },
+                    { title: "Shame", artist: "Honey Bxby", img: "Assets/Charts/top_40_chart/14.jpg" },
+                    { title: "Miss U 2", artist: "Ty Dolla $ign", img: "Assets/Charts/top_40_chart/15.jpg" },
+                    { title: "Robbed You", artist: "Summer Walker", img: "Assets/Charts/top_40_chart/16.jpg" },
+                    { title: "I Tried", artist: "Lithe", img: "Assets/Charts/top_40_chart/17.jpg" },
+                    { title: "Yes It Is", artist: "Leon Thomas", img: "Assets/Charts/top_40_chart/18.jpg" },
+                    { title: "Cam Girl", artist: "Ludmilla", img: "Assets/Charts/top_40_chart/19.jpg" },
+                    { title: "Under My Skin", artist: "Ken Will", img: "Assets/Charts/top_40_chart/20.jpg" }
+                ]
+            }
+        };
+
+        const artistsData = [
+            { name: "Holy Ten", genre: "Zim Hip Hop", status: "Charting", year: 2019, img: "Assets/Artists/1.jpg" },
+            { name: "Freeman HKD Boss", genre: "Zimdancehall", status: "Charting", year: 2012, img: "Assets/Artists/2.jpg" },
+            { name: "Alick Macheso", genre: "Sungura", status: "Active", year: 1998, img: "Assets/Artists/3.jpg" },
+            { name: "Jah Prayzah", genre: "Afro-Pop", status: "Charting", year: 2005, img: "Assets/Artists/4.jpg" },
+            { name: "Feli Nandi", genre: "Afro-Pop", status: "Charting", year: 2018, img: "Assets/Artists/5.jpg" },
+            { name: "Mambo Dhuterere", genre: "Gospel", status: "Charting", year: 2018, img: "Assets/Artists/6.jpg" },
+            { name: "Winky D", genre: "Zimdancehall", status: "Active", year: 2006, img: "Assets/Artists/7.jpg" },
+            { name: "Tyla", genre: "R&B", status: "Charting", year: 2023, img: "Assets/Artists/8.jpg" },
+            { name: "Shekhinah", genre: "R&B", status: "Charting", year: 2017, img: "Assets/Artists/9.jpg" },
+            { name: "Frost", genre: "Zim Hip Hop", status: "Charting", year: 2020, img: "Assets/Artists/10.jpg" },
+            { name: "Saintfloew", genre: "Zim Hip Hop", status: "Charting", year: 2018, img: "Assets/Artists/11.jpg" },
+            { name: "Takura", genre: "R&B", status: "Charting", year: 2012, img: "Assets/Artists/12.jpg" }
+        ];
+
+        // ===== STATE =====
+        const state = {
+            currentView: 'hyped',
+            currentChart: 'nationalTop40',
+            isVotingMode: false,
+            currentSong: null,
+            isPlaying: false,
+            progress: 0,
+            duration: 180,
+            progressInterval: null,
+            currentSearchType: 'all',
+            currentArtistLetter: 'ALL',
+            currentArtistGenre: 'All',
+            dragIndex: null,
+            historyTab: 'chart'
+        };
+
+        // ===== SPLASH =====
+        function dismissSplash() {
+            const s = document.getElementById('splash');
+            s.classList.add('fade');
+            setTimeout(() => s.style.display = 'none', 500);
+        }
+        setTimeout(dismissSplash, 2000);
+
+        // ===== VIEW SWITCHING =====
+        function switchView(view) {
+            state.currentView = view;
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById('view-' + view).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.view === view));
+            document.querySelector('.main').scrollTop = 0;
+            if (view === 'charts') renderChart();
+            if (view === 'hyped') renderHyped();
+            if (view === 'artists') renderArtists();
+            if (view === 'history') renderHistory();
+            if (view === 'search') runSearch();
+        }
+
+        // ===== CHART RENDERING =====
+        function getChartData() {
+            return chartData[state.currentChart];
+        }
+
+        function renderChart() {
+            const data = getChartData();
+            if (!data) return;
+            document.getElementById('chartTitle').textContent = data.title;
+            document.getElementById('chartGenreLabel').textContent = data.genre;
+            document.getElementById('chartDateLabel').textContent = 'Current period';
+            document.getElementById('chartCover').src = 'Assets/Charts/' + state.currentChart + '/cover.jpg';
+
+            const list = document.getElementById('chartList');
+            list.innerHTML = data.songs.map((song, i) => {
+                const rank = i + 1;
+                const pts = data.songs.length - i;
+                const dragAttr = state.isVotingMode ? `draggable="true" ondragstart="dragStart(event,${i})" ondragover="dragOver(event)" ondrop="dropSong(event,${i})" ondragend="dragEnd()"` : '';
+                const voteClass = state.isVotingMode ? 'vote-mode' : '';
+                return `<div class="row chart-row ${voteClass}" ${dragAttr}>
+                    <div class="rank" style="width:32px;font-weight:900;font-size:14px;color:${rank<=3?'#02925e':'#555'};text-align:center;">${rank}</div>
+                    ${state.isVotingMode?'<div class="vote-grip">☷</div>':''}
+                    <div class="img-wrap" onclick="cycleImage(this,'Assets/Charts/'+'${state.currentChart}'+'/'+((${i}+1)%20+1)+'.jpg')">
+                        <img src="${song.img}" onerror="this.style.background='#ddd';this.src='';" alt="">
+                    </div>
+                    <div class="meta" onclick="playSong(${i})">
+                        <div class="title">${song.title}</div>
+                        <div class="sub">${song.artist}</div>
+                    </div>
+                    ${!state.isVotingMode?`<div class="pill">${pts} pts</div>`:''}
+                </div>`;
+            }).join('');
+        }
+
+        // ===== VOTING =====
+        function toggleVote() {
+            const voteBtn = document.getElementById('voteBtn');
+            if (state.isVotingMode) {
+                // Submit vote
+                const data = getChartData();
+                const vote = {
+                    timestamp: Date.now(),
+                    chart: state.currentChart,
+                    order: data.songs.map(s => s.title),
+                    points: data.songs.map((s, i) => ({ song: s.title, pts: data.songs.length - i }))
+                };
+                localStorage.setItem('trackhype_vote_' + state.currentChart, JSON.stringify(vote));
+                state.isVotingMode = false;
+                voteBtn.textContent = 'VOTED';
+                voteBtn.style.opacity = '.6';
+                document.getElementById('voteBanner').classList.remove('show');
+                renderChart();
+            } else {
+                // Check 24hr cooldown
+                const saved = localStorage.getItem('trackhype_vote_' + state.currentChart);
+                if (saved) {
+                    const v = JSON.parse(saved);
+                    const elapsed = Date.now() - v.timestamp;
+                    if (elapsed < 86400000) {
+                        const hrs = Math.floor((86400000 - elapsed) / 3600000);
+                        const mins = Math.floor(((86400000 - elapsed) % 3600000) / 60000);
+                        alert(`You already voted on this chart. Try again in ${hrs}h ${mins}m.`);
+                        voteBtn.textContent = 'VOTED';
+                        voteBtn.style.opacity = '.6';
+                        return;
+                    }
+                }
+                state.isVotingMode = true;
+                voteBtn.textContent = 'SUBMIT';
+                voteBtn.style.opacity = '1';
+                document.getElementById('voteBanner').classList.add('show');
+                renderChart();
+            }
+        }
+
+        function dragStart(e, i) {
+            state.dragIndex = i;
+            e.dataTransfer.effectAllowed = 'move';
+            e.currentTarget.classList.add('dragging');
+        }
+
+        function dragOver(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('drag-over');
+        }
+
+        function dropSong(e, target) {
+            e.preventDefault();
+            document.querySelectorAll('.chart-row').forEach(x => x.classList.remove('drag-over', 'dragging'));
+            if (state.dragIndex === null || state.dragIndex === target) return;
+            const data = getChartData();
+            const [moved] = data.songs.splice(state.dragIndex, 1);
+            data.songs.splice(target, 0, moved);
+            state.dragIndex = null;
+            renderChart();
+        }
+
+        function dragEnd() {
+            document.querySelectorAll('.chart-row').forEach(x => x.classList.remove('dragging'));
+            state.dragIndex = null;
+        }
+
+        // ===== IMAGE CYCLING =====
+        function cycleImage(el, nextSrc) {
+            const img = el.querySelector('img');
+            const current = img.src;
+            // Simple rotation: try a few paths
+            const newSrc = nextSrc.replace(/\/\d+\.(jpg|png|webp)/, '/' + (Math.floor(Math.random() * 20) + 1) + '.jpg');
+            img.src = newSrc;
+            if (img.onerror) img.onerror = () => { img.style.background = '#ddd';
+                img.src = ''; };
+        }
+
+        // ===== HYPED RENDER =====
+        function renderHyped() {
+            const recentGrid = document.getElementById('recentChartsGrid');
+            const chartKeys = Object.keys(chartData);
+            recentGrid.innerHTML = chartKeys.slice(0, 4).map(key => {
+                const d = chartData[key];
+                return `<div class="grid-card" onclick="switchChart('${key}')">
+                    <div class="thumb" style="background:linear-gradient(135deg,#01db8b,#02925e)">🎵</div>
+                    <div class="title">${d.title}</div>
+                    <div class="sub">${d.songs.length} songs</div>
+                </div>`;
+            }).join('');
+
+            const numOnes = document.getElementById('numberOnesRow');
+            numOnes.innerHTML = chartKeys.slice(0, 6).map(key => {
+                const d = chartData[key];
+                return `<div class="grid-card" style="min-width:120px;flex:none;" onclick="switchChart('${key}')">
+                    <div class="thumb" style="background:linear-gradient(135deg,#01db8b,#02925e)">#1</div>
+                    <div class="title">${d.songs[0].title}</div>
+                    <div class="sub">${d.songs[0].artist}</div>
+                </div>`;
+            }).join('');
+
+            const natList = document.getElementById('nationalTopList');
+            natList.innerHTML = chartData.nationalTop40.songs.slice(0, 5).map((s, i) => `
+                <div class="row">
+                    <div style="width:30px;font-weight:900;text-align:center;">${i + 1}</div>
+                    <div class="img-wrap" onclick="cycleImage(this,'Assets/Charts/top_40_chart/${i + 1}.jpg')"><img src="${s.img}" onerror="this.style.background='#ddd';this.src='';"></div>
+                    <div class="meta"><div class="title">${s.title}</div><div class="sub">${s.artist}</div></div>
+                    <button class="icon-btn" onclick="playSong(${i})">▶</button>
+                </div>`).join('');
+        }
+
+        // ===== CHART SELECTOR =====
+        function openChartModal() {
+            const modal = document.getElementById('chartModal');
+            const opts = document.getElementById('chartOptions');
+            opts.innerHTML = Object.keys(chartData).map(key => {
+                const d = chartData[key];
+                return `<button class="chart-option ${key===state.currentChart?'active':''}" onclick="switchChart('${key}');closeChartModal();">${d.title}</button>`;
+            }).join('');
+            modal.classList.add('open');
+        }
+
+        function closeChartModal() {
+            document.getElementById('chartModal').classList.remove('open');
+        }
+
+        function switchChart(key) {
+            state.currentChart = key;
+            state.isVotingMode = false;
+            document.getElementById('voteBtn').textContent = 'VOTE';
+            document.getElementById('voteBtn').style.opacity = '1';
+            document.getElementById('voteBanner').classList.remove('show');
+            renderChart();
+        }
+
+        // ===== ARTISTS =====
+        function renderArtists() {
+            const filterBar = document.getElementById('artistFilterBar');
+            const genres = ['All', ...new Set(artistsData.map(a => a.genre))];
+            filterBar.innerHTML = genres.map(g =>
+                `<button class="filter-chip ${g===state.currentArtistGenre?'active':''}" onclick="setArtistGenre('${g}')">${g}</button>`
+            ).join('');
+
+            const azBar = document.getElementById('artistAzBar');
+            azBar.innerHTML = ['ALL', ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')].map(l =>
+                `<button class="az-btn ${l===state.currentArtistLetter?'active':''}" onclick="setArtistLetter('${l}')">${l}</button>`
+            ).join('');
+
+            const list = document.getElementById('artistList');
+            let data = artistsData.filter(a => state.currentArtistGenre === 'All' || a.genre === state.currentArtistGenre);
+            if (state.currentArtistLetter !== 'ALL') {
+                data = data.filter(a => a.name.toUpperCase().startsWith(state.currentArtistLetter));
+            }
+            list.innerHTML = data.map(a => `
+                <div class="row">
+                    <div class="img-wrap" onclick="cycleImage(this,'Assets/Artists/1.jpg')"><img src="${a.img}" onerror="this.style.background='#ddd';this.src='';"></div>
+                    <div class="meta">
+                        <div class="title">${a.name}</div>
+                        <div class="sub">${a.genre} · ${a.status}</div>
+                    </div>
+                    <button class="icon-btn" onclick="alert('Follow ${a.name}')">♡</button>
+                </div>`).join('') || '<div class="empty-state"><div class="icon">🎤</div>No artists found.</div>';
+        }
+
+        function setArtistGenre(g) {
+            state.currentArtistGenre = g;
+            renderArtists();
+        }
+
+        function setArtistLetter(l) {
+            state.currentArtistLetter = l;
+            renderArtists();
+        }
+
+        // ===== HISTORY =====
+        function renderHistory() {
+            const content = document.getElementById('historyContent');
+            if (state.historyTab === 'chart') {
+                const d = chartData[state.currentChart];
+                const date = document.getElementById('historyDate').value || '2026-08-24';
+                content.innerHTML = `
+                    <div class="card">
+                        <div style="font-weight:800;font-size:14px;">${d.title} — ${date}</div>
+                        <div style="font-size:12px;color:var(--muted);margin-top:4px;">Historical chart data</div>
+                    </div>
+                    <div id="historyChartList">${d.songs.slice(0, 10).map((s, i) => `
+                        <div class="row">
+                            <div style="width:30px;font-weight:900;">${i + 1}</div>
+                            <div class="meta"><div class="title">${s.title}</div><div class="sub">${s.artist}</div></div>
+                        </div>`).join('')}</div>`;
+            } else if (state.historyTab === 'highlights') {
+                content.innerHTML = `
+                    <div class="grid-2">
+                        <div class="card"><div class="title">#1 Song</div><div class="sub" style="margin-top:4px;">${chartData[state.currentChart].songs[0].title}</div></div>
+                        <div class="card"><div class="title">Biggest Climber</div><div class="sub" style="margin-top:4px;">▲ 12 places</div></div>
+                    </div>`;
+            } else {
+                content.innerHTML = `<div class="list">${artistsData.slice(0, 5).map(a => `
+                    <div class="row"><img src="${a.img}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;" onerror="this.style.background='#ddd';this.src='';"><div class="meta"><div class="title">${a.name}</div><div class="sub">${a.genre}</div></div></div>`).join('')}</div>`;
+            }
+        }
+
+        function setHistoryTab(tab, el) {
+            state.historyTab = tab;
+            document.querySelectorAll('#view-history .tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            renderHistory();
+        }
+
+        // ===== SEARCH =====
+        function runSearch() {
+            const q = document.getElementById('searchInput').value.toLowerCase().trim();
+            const results = document.getElementById('searchResults');
+            let items = [];
+
+            if (state.currentSearchType === 'all' || state.currentSearchType === 'songs') {
+                Object.values(chartData).flatMap(d => d.songs).forEach(s => {
+                    if (!q || s.title.toLowerCase().includes(q) || s.artist.toLowerCase().includes(q)) {
+                        items.push({ type: 'song', title: s.title, sub: s.artist, chart: d.title });
+                    }
+                });
+            }
+            if (state.currentSearchType === 'all' || state.currentSearchType === 'artists') {
+                artistsData.forEach(a => {
+                    if (!q || a.name.toLowerCase().includes(q) || a.genre.toLowerCase().includes(q)) {
+                        items.push({ type: 'artist', title: a.name, sub: a.genre });
+                    }
+                });
+            }
+            if (state.currentSearchType === 'all' || state.currentSearchType === 'charts') {
+                Object.keys(chartData).forEach(key => {
+                    const d = chartData[key];
+                    if (!q || d.title.toLowerCase().includes(q)) {
+                        items.push({ type: 'chart', title: d.title, sub: d.genre, chartKey: key });
+                    }
+                });
+            }
+
+            results.innerHTML = items.length ? items.slice(0, 30).map(item => {
+                if (item.type === 'song') {
+                    return `<div class="row"><div class="meta"><div class="title">${item.title}</div><div class="sub">${item.sub}</div></div><button class="icon-btn">▶</button></div>`;
+                }
+                if (item.type === 'artist') {
+                    return `<div class="row"><div class="meta"><div class="title">${item.title}</div><div class="sub">${item.sub}</div></div><button class="icon-btn">→</button></div>`;
+                }
+                return `<div class="row" onclick="switchChart('${item.chartKey}');switchView('charts');"><div class="meta"><div class="title">${item.title}</div><div class="sub">${item.sub}</div></div><button class="icon-btn">→</button></div>`;
+            }).join('') : '<div class="empty-state"><div class="icon">⌕</div>No results found.</div>';
+        }
+
+        function setSearchType(type, el) {
+            state.currentSearchType = type;
+            document.querySelectorAll('#view-search .tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            runSearch();
+        }
+
+        // ===== PLAYER =====
+        function playSong(index) {
+            const d = getChartData();
+            const song = d.songs[index];
+            state.currentSong = song;
+            document.getElementById('playerTitle').textContent = song.title;
+            document.getElementById('playerArtist').textContent = song.artist;
+            document.getElementById('playerThumb').src = song.img;
+            if (!state.isPlaying) togglePlay();
+            // Auto-play
+            state.isPlaying = true;
+            document.getElementById('playBtn').textContent = '❚❚';
+            startProgress();
+        }
+
+        function togglePlay() {
+            state.isPlaying = !state.isPlaying;
+            const btn = document.getElementById('playBtn');
+            btn.textContent = state.isPlaying ? '❚❚' : '▶';
+            if (state.isPlaying) {
+                startProgress();
+            } else {
+                clearInterval(state.progressInterval);
+            }
+        }
+
+        function startProgress() {
+            clearInterval(state.progressInterval);
+            state.progress = 0;
+            state.progressInterval = setInterval(() => {
+                state.progress++;
+                if (state.progress >= state.duration) {
+                    state.progress = 0;
+                }
+                updateProgress();
+            }, 1000);
+        }
+
+        function updateProgress() {
+            const pct = (state.progress / state.duration) * 100;
+            document.getElementById('progressFill').style.width = pct + '%';
+            document.getElementById('progressDot').style.left = pct + '%';
+        }
+
+        function seekPlayer(e) {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+            state.progress = Math.floor(pct * state.duration);
+            updateProgress();
+        }
+
+        // ===== PLAYLIST =====
+        function openPlaylist() {
+            const overlay = document.getElementById('playlistOverlay');
+            const content = document.getElementById('playlistContent');
+            const d = getChartData();
+            content.innerHTML = d.songs.map((s, i) => `
+                <div class="playlist-item">
+                    <img src="${s.img}" onerror="this.style.background='#ddd';this.src='';">
+                    <div class="playlist-meta">
+                        <div class="playlist-artist">${s.artist}</div>
+                        <div class="playlist-title">${s.title}</div>
+                    </div>
+                    <button class="icon-btn" onclick="alert('Favourite')">♡</button>
+                    <button class="icon-btn" onclick="playSong(${i});closePlaylist();">▶</button>
+                </div>`).join('');
+            overlay.classList.add('open');
+        }
+
+        function closePlaylist() {
+            document.getElementById('playlistOverlay').classList.remove('open');
+        }
+
+        // ===== INIT =====
+        document.getElementById('historyDate').addEventListener('change', renderHistory);
+
+        // Initialize
+        renderHyped();
+        renderChart();
+        renderArtists();
+        renderHistory();
+        runSearch();
+
+        // Set initial player state
+        document.getElementById('playBtn').textContent = '▶';
+    </script>
+</body>
+</html>

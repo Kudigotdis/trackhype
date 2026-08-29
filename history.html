@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en-ZW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" type="image/webp" href="Assets/logos/TrackHype Logo Design Badge.webp">
+  <title>History — TrackHype</title>
+  <link rel="stylesheet" href="trackhype.css">
+  <style>
+    .tabs{display:flex;gap:8px}
+    .tab{border:1px solid var(--th-border);background:var(--th-bg);border-radius:999px;padding:8px 16px;font-size:12px;font-weight:800;color:var(--th-muted)}
+    .tab.is-active{background:var(--th-primary);border-color:var(--th-primary);color:#fff}
+    .history-row{display:flex;align-items:center;gap:11px;padding:11px 12px;border-bottom:1px solid var(--th-border-soft)}
+    .history-row:last-child{border-bottom:0}
+    .history-rank{flex:none;width:34px;height:34px;display:grid;place-items:center;background:var(--th-primary);color:#fff;border-radius:9px;font-weight:900}
+    .history-thumb{flex:none;width:34px;height:34px;border-radius:7px;object-fit:cover;background:var(--th-grey-2)}
+  </style>
+</head>
+<body data-active-nav="history.html">
+
+  <header class="th-header" data-app-header>
+    <div class="th-header-inner">
+      <a class="th-brand" href="index.html">
+        <img class="th-logo-badge" src="Assets/logos/TrackHype Logo Design Badge.webp" alt="TrackHype">
+        <img class="th-logo-text" src="Assets/logos/track-hype-text-logo.webp" alt="TrackHype">
+      </a>
+      <div class="th-header-context">History</div>
+      <button class="th-icon-btn" type="button" aria-label="Menu" onclick="location.href='menu.html'">☰</button>
+    </div>
+  </header>
+
+  <main class="th-app">
+    <div class="th-shell">
+
+      <section>
+        <h1 class="th-page-title">Chart History</h1>
+        <p class="th-page-subtitle">Explore previous TrackHype rankings by date and chart. See what was #1, new entries, biggest climbers and chart staples.</p>
+      </section>
+
+      <section>
+        <div class="th-card pad">
+          <div style="font-weight:900;margin-bottom:10px">Choose a period</div>
+          <input class="th-input" id="date" type="date" value="2026-08-24">
+          <div style="height:12px"></div>
+          <select class="th-select" id="chart">
+            <option>National Top 100</option>
+            <option>Zim Hip Hop Top 20</option>
+            <option>Zimdancehall Top 20</option>
+            <option>Sungura Top 20</option>
+            <option>Gospel Top 20</option>
+            <option>Amapiano Top 20</option>
+            <option>Zimbabwean House Top 20</option>
+            <option>R&B Top 20</option>
+          </select>
+          <div style="height:12px"></div>
+          <button class="th-btn primary block" type="button" onclick="loadHistory()">VIEW CHART</button>
+        </div>
+      </section>
+
+      <section>
+        <div class="tabs">
+          <button class="tab is-active" type="button" data-tab="chart" onclick="setTab('chart',this)">Chart</button>
+          <button class="tab" type="button" data-tab="highlights" onclick="setTab('highlights',this)">Highlights</button>
+          <button class="tab" type="button" data-tab="artists" onclick="setTab('artists',this)">Artists</button>
+        </div>
+      </section>
+
+      <section id="historyResults"></section>
+
+    </div>
+  </main>
+
+  <nav class="th-bottom" data-bottom>
+    <div class="th-bottom-inner" data-nav-host></div>
+  </nav>
+
+  <aside class="th-player" data-player></aside>
+
+  <div class="th-modal-backdrop" data-modal>
+    <div class="th-sheet" role="dialog" aria-modal="true">
+      <div class="th-sheet-handle"></div>
+      <h3 data-modal-title></h3>
+      <div data-modal-body></div>
+      <div class="th-sheet-actions" data-modal-actions></div>
+    </div>
+  </div>
+
+  <script src="trackhype.js"></script>
+  <script>
+    const NAMES = ["Tino Mungoma","Kudzi Nyakudya","Mambo Dhuterere","Feli Nandi","Takura","Soul Jah Love","Holy Ten","Alick Macheso","ExQ","Winky D"];
+    let activeTab = "chart";
+
+    function setTab(tab, el){
+      document.querySelectorAll(".tab").forEach(x=>x.classList.remove("is-active"));
+      if(el){ el.classList.add("is-active"); }
+      activeTab = tab;
+      if(tab === "chart") loadHistory();
+      if(tab === "highlights") renderHighlights();
+      if(tab === "artists") renderArtists();
+    }
+
+    function loadHistory(){
+      const chartName = document.getElementById("chart").value;
+      const date = document.getElementById("date").value;
+      const header = `<div class="th-section-head"><h2>${TrackHype.esc(chartName)}</h2><p>${TrackHype.esc(date)}</p></div>`;
+      const rows = Array.from({length:20},(_,i) => {
+        const r = i + 1;
+        return `
+          <div class="history-row">
+            <div class="history-rank">${r}</div>
+            <img class="history-thumb" src="Assets/charts/top_40_chart/${(i % 10)+1}.jpg" onerror="this.style.visibility='hidden'">
+            <div style="flex:1;min-width:0">
+              <div style="font-weight:800;font-size:13px">Historical Song ${r}</div>
+              <div style="font-size:12px;color:var(--th-muted)">${NAMES[i % NAMES.length]} · ${TrackHype.esc(chartName)}</div>
+            </div>
+            <span class="th-chip" style="background:var(--th-grey-1)">${21 - r} pts</span>
+          </div>`;
+      }).join("");
+      document.getElementById("historyResults").innerHTML = '<section class="th-section">' + header + '<div class="th-card">' + rows + '</div></section>';
+    }
+
+    function renderHighlights(){
+      document.getElementById("historyResults").innerHTML = `
+        <section class="th-section">
+          <div class="th-grid-2">
+            <div class="th-card pad"><div style="font-size:12px;font-weight:900;color:var(--th-primary-dark);text-transform:uppercase">#1 Song</div><div style="font-weight:900;margin-top:8px">Historical Song 1</div><div style="font-size:13px;color:var(--th-muted)">${NAMES[0]}</div></div>
+            <div class="th-card pad"><div style="font-size:12px;font-weight:900;color:var(--th-primary-dark);text-transform:uppercase">Biggest Climber</div><div style="font-weight:900;margin-top:8px">Historical Song 7</div><div style="font-size:13px;color:var(--th-muted)">↑ 12 places</div></div>
+            <div class="th-card pad"><div style="font-size:12px;font-weight:900;color:var(--th-primary-dark);text-transform:uppercase">New Entry</div><div style="font-weight:900;margin-top:8px">Historical Song 15</div><div style="font-size:13px;color:var(--th-muted)">Debut at #15</div></div>
+            <div class="th-card pad"><div style="font-size:12px;font-weight:900;color:var(--th-primary-dark);text-transform:uppercase">Longest Charting</div><div style="font-weight:900;margin-top:8px">Historical Song 3</div><div style="font-size:13px;color:var(--th-muted)">18 weeks</div></div>
+          </div>
+        </section>`;
+    }
+
+    function renderArtists(){
+      document.getElementById("historyResults").innerHTML = `
+        <section class="th-section">
+          <div class="th-section-head"><h2>Artists shaping the chart</h2></div>
+          <div class="th-card">${NAMES.slice(0,8).map((n,i) => `
+            <div class="history-row">
+              <div class="history-rank" style="background:var(--th-grey-3);color:var(--th-muted)">${i+1}</div>
+              <div style="flex:1;min-width:0"><div style="font-weight:800">${TrackHype.esc(n)}</div><div style="font-size:12px;color:var(--th-muted)">${i+1} chart appearance${i===0?"s":""}</div></div>
+              <button class="th-btn secondary" type="button" onclick="location.href='artist.html?artist='+encodeURIComponent('${TrackHype.esc(n).replace(/'/g,"\\'")}')">View</button>
+            </div>`).join("")}</div>
+        </section>`;
+    }
+
+    setTab("chart", document.querySelector('[data-tab="chart"]'));
+  </script>
+</body>
+</html>

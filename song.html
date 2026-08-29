@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en-ZW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" type="image/webp" href="Assets/logos/TrackHype Logo Design Badge.webp">
+  <title>Song — TrackHype</title>
+  <link rel="stylesheet" href="trackhype.css">
+  <style>
+    .sg-top{display:flex;gap:14px;align-items:center}
+    .sg-art{flex:none;width:100px;height:100px;border-radius:var(--th-radius-sm);object-fit:cover;background:var(--th-grey-2);border:1px solid var(--th-border-soft)}
+    .sg-title{font-size:22px;font-weight:900;line-height:1.15}
+    .sg-artist{font-size:13px;color:var(--th-muted);margin-top:4px}
+    .sg-youtube{width:100%;aspect-ratio:16/9;border:0;border-radius:8px;display:block;background:#000}
+    .sg-yt-note{font-size:12px;color:var(--th-faint);margin-top:8px;line-height:1.5}
+    .sg-listen{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .sg-link{display:flex;flex-direction:column;align-items:center;gap:6px;border:1px solid var(--th-border);background:var(--th-grey-1);border-radius:var(--th-radius-sm);padding:12px 8px;font-size:12px;font-weight:800;color:var(--th-text)}
+    .sg-link img{width:26px;height:26px;object-fit:contain}
+    .sg-artist-row{display:flex;align-items:center;gap:11px;padding:11px 12px;border-bottom:1px solid var(--th-border-soft)}
+    .sg-artist-row:last-child{border-bottom:0}
+    .sg-artist-avatar{flex:none;width:42px;height:42px;border-radius:50%;object-fit:cover;background:var(--th-grey-2)}
+    .sg-fav{width:34px;height:34px}
+  </style>
+</head>
+<body data-active-nav="search.html">
+
+  <header class="th-header" data-app-header>
+    <div class="th-header-inner">
+      <button class="th-icon-btn" type="button" aria-label="Back" onclick="history.back()">‹</button>
+      <a class="th-brand" href="index.html">
+        <img class="th-logo-badge" src="Assets/logos/TrackHype Logo Design Badge.webp" alt="TrackHype">
+        <img class="th-logo-text" src="Assets/logos/track-hype-text-logo.webp" alt="TrackHype">
+      </a>
+      <div class="th-header-context">Song</div>
+      <button class="th-icon-btn" type="button" aria-label="Share" onclick="shareSong()">↗</button>
+      <button class="th-icon-btn" type="button" aria-label="Menu" onclick="location.href='menu.html'">☰</button>
+    </div>
+  </header>
+
+  <main class="th-app">
+    <div class="th-shell">
+
+      <section>
+        <div class="th-card pad sg-top">
+          <img class="sg-art" id="songArt" src="Assets/charts/top_40_chart/1.jpg" onerror="this.style.visibility='hidden'">
+          <div style="flex:1;min-width:0">
+            <div class="sg-title" id="songTitle">TrackHype Song</div>
+            <div class="sg-artist" id="songMeta">Zimbabwe Artist · Zim Hip Hop</div>
+            <div style="display:flex;gap:8px;margin-top:12px;align-items:center">
+              <a class="th-mini-btn sg-fav" id="favBtn" style="text-decoration:none" title="Favourite" onclick="toggleFav()">
+                <img id="favIcon" src="Assets/icons/heart_inactive_icon.png" alt="">
+              </a>
+              <button class="th-btn primary" style="flex:1" type="button" onclick="playSong()">▶ Play</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="th-section">
+        <div class="th-section-head"><h2>YouTube</h2></div>
+<div class="th-card pad" style="background:#000">
+          <div id="youtubeBox" style="aspect-ratio:16/9;background:#000;border-radius:8px;overflow:hidden">
+            <video id="youtubeVideo" style="width:100%;height:100%;object-fit:contain" src="Assets/video/Victony - SLICK (Official Visualizer) - Victony (360p, h264, youtube).mp4" controls playsinline preload="metadata"></video>
+          </div>
+          <div class="sg-yt-note" style="color:rgba(255,255,255,.65)">Demo player uses a local sample video. TrackHype uses official YouTube embeds in production and does not download or host YouTube audio.</div>
+        </div>
+      </section>
+
+<section class="th-section">
+        <div class="th-section-head"><h2>Listen</h2></div>
+        <div class="sg-listen" style="grid-template-columns:repeat(2,1fr)">
+          <a class="sg-link" href="#" target="_blank" rel="noopener"><img src="Assets/icons/Spotify_icon.svg.webp" alt="">Spotify</a>
+          <a class="sg-link" href="#" target="_blank" rel="noopener"><img src="Assets/icons/itunes_icon.png" alt="">Apple Music</a>
+          <a class="sg-link" href="#" target="_blank" rel="noopener"><img src="Assets/icons/YouTube_On.png" alt="">YouTube</a>
+          <a class="sg-link" href="#" target="_blank" rel="noopener"><img src="Assets/icons/amazon_music_icon.png" alt="" onerror="this.style.visibility='hidden'">Amazon Music</a>
+        </div>
+      </section>
+
+      <section class="th-section">
+        <div class="th-section-head"><h2>Current Chart Positions</h2></div>
+        <div class="th-card" id="chartPositions"></div>
+      </section>
+
+      <section class="th-section">
+        <div class="th-section-head"><h2>Chart History</h2></div>
+        <div class="th-card" id="chartHistory"></div>
+      </section>
+
+      <section class="th-section">
+        <div class="th-section-head"><h2>Artists</h2></div>
+        <div class="th-card" id="artistList"></div>
+      </section>
+
+<section class="th-section">
+        <div class="th-section-head"><h2>Lyrics</h2></div>
+        <div class="th-card pad">
+          <p id="lyrics" style="line-height:1.8;white-space:pre-line;font-size:13px;color:var(--th-text)">Loading lyrics…</p>
+          <p style="margin-top:14px;font-size:12px;color:var(--th-muted)">Lyrics supplied by the artist or rights holder.</p>
+        </div>
+      </section>
+
+      <section class="th-section">
+        <div class="th-section-head"><h2>Share</h2></div>
+        <div class="sg-listen" style="grid-template-columns:1fr 1fr">
+          <button class="sg-link" type="button" onclick="shareSong()"><img src="Assets/icons/share_icon.png" alt="">Share</button>
+          <button class="sg-link" type="button" onclick="shareWhatsApp()"><img src="Assets/icons/whatsApp_icon_on.png" alt="">WhatsApp</button>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <nav class="th-bottom" data-bottom>
+    <div class="th-bottom-inner" data-nav-host></div>
+  </nav>
+
+  <aside class="th-player" data-player></aside>
+
+  <div class="th-modal-backdrop" data-modal>
+    <div class="th-sheet" role="dialog" aria-modal="true">
+      <div class="th-sheet-handle"></div>
+      <h3 data-modal-title></h3>
+      <div data-modal-body></div>
+      <div class="th-sheet-actions" data-modal-actions></div>
+    </div>
+  </div>
+
+  <script src="trackhype.js"></script>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const id = params.get("id") || "1";
+    const chart = params.get("chart") || "top40";
+    const currentId = String(id);
+
+    const SONG_DATA = {
+      title: "Zimbabwe Sample Song " + id,
+      artist: "Zimbabwe Artist " + id,
+      genre: "Zim Hip Hop",
+      city: "Harare",
+      artwork: "Assets/charts/top_40_chart/" + (Number(id) % 40 || 1) + ".jpg"
+    };
+
+    document.getElementById("songArt").src = SONG_DATA.artwork;
+    document.getElementById("songTitle").textContent = SONG_DATA.title;
+    document.getElementById("songMeta").textContent = SONG_DATA.artist + " · " + SONG_DATA.genre + " · Zimbabwe";
+
+    document.getElementById("artistList").innerHTML = `
+      <div class="sg-artist-row">
+        <img class="sg-artist-avatar" src="Assets/charts/top_40_chart/${Number(id) % 40 || 1}.jpg" onerror="this.style.visibility='hidden'">
+        <div style="flex:1;min-width:0"><div style="font-weight:800">${TrackHype.esc(SONG_DATA.artist)}</div><div style="font-size:12px;color:var(--th-muted)">Primary Artist</div></div>
+        <button class="th-btn secondary" type="button" onclick="location.href='artist.html?artist='+encodeURIComponent('${TrackHype.esc(SONG_DATA.artist).replace(/'/g,"\\'")}')">View</button>
+      </div>`;
+
+function updateFavIcon(){
+      const active = TrackHype.getState().favouriteSongs.includes(currentId);
+      document.getElementById("favIcon").src = active ? "Assets/icons/heart_active_icon.png" : "Assets/icons/heart_inactive_icon.png";
+    }
+
+    const CHART_POSITIONS = [
+      { chart: "National Top 100", rank: 7 },
+      { chart: "Zim Hip Hop Top 20", rank: 3 }
+    ];
+
+    document.getElementById("lyrics").textContent = TrackHype.SONG_LYRICS || "Lyrics supplied by the artist or rights holder will appear here.";
+
+    const CHART_HISTORY = [
+      { period: "Week 34 · Aug 2026", rank: 7, points: 14 },
+      { period: "Week 33 · Aug 2026", rank: 12, points: 9 },
+      { period: "Week 32 · Aug 2026", rank: 15, points: 6 },
+      { period: "Week 31 · Aug 2026", rank: 19, points: 2 }
+    ];
+
+    document.getElementById("chartPositions").innerHTML = CHART_POSITIONS.length
+      ? CHART_POSITIONS.map(p => `
+        <div class="th-table-row" style="grid-template-columns:1.4fr 1fr auto">
+          <div><strong>${TrackHype.esc(p.chart)}</strong><span style="display:block;font-size:12px;color:var(--th-muted)">Current chart period</span></div>
+          <span>#${p.rank}</span>
+          <span class="th-status success">Charting</span>
+        </div>`).join("")
+      : '<div class="th-empty"><strong>Not currently charting.</strong>This song is not on any official chart yet.</div>';
+
+    document.getElementById("chartHistory").innerHTML = CHART_HISTORY.length
+      ? CHART_HISTORY.map(h => `
+        <div class="th-table-row" style="grid-template-columns:1.4fr 1fr auto">
+          <div><strong>${TrackHype.esc(h.period)}</strong><span style="display:block;font-size:12px;color:var(--th-muted)">National Top 100</span></div>
+          <span>#${h.rank}</span>
+          <span class="th-status">${h.points} pts</span>
+        </div>`).join("")
+      : '<div class="th-empty"><strong>No chart history yet.</strong>Past placements will appear here.</div>';
+
+    window.toggleFav = () => {
+      TrackHype.updateState(s => {
+        s.favouriteSongs = s.favouriteSongs || [];
+        const i = s.favouriteSongs.indexOf(currentId);
+        if(i >= 0){ s.favouriteSongs.splice(i,1); } else { s.favouriteSongs.push(currentId); }
+      });
+      updateFavIcon();
+      TrackHype.toast("Updated favourites");
+    };
+
+    window.playSong = () => {
+      TrackHype.updateState(s => {
+        s.currentTrack = { id: currentId, title: SONG_DATA.title, artist: SONG_DATA.artist, artwork: SONG_DATA.artwork };
+        s.isPlaying = true;
+        s.progress = 0;
+      });
+      TrackHype.toast("Playing " + SONG_DATA.title);
+    };
+
+    window.shareSong = () => {
+      const text = SONG_DATA.title + " on TrackHype — " + SONG_DATA.artist;
+      TrackHype.openSheet({
+        title: "Share Song",
+        html: `<p style="margin-bottom:10px">${text}</p>
+          <div class="sg-listen" style="grid-template-columns:1fr 1fr 1fr">
+            <a class="sg-link" href="https://wa.me/?text=${encodeURIComponent(text)}" target="_blank" rel="noopener"><img src="Assets/icons/whatsApp_icon_on.png" alt="">WhatsApp</a>
+            <a class="sg-link" href="#" target="_blank" rel="noopener"><img src="Assets/icons/facebook_icon_on.png" alt="">Facebook</a>
+            <a class="sg-link" href="#" target="_blank" rel="noopener"><img src="Assets/icons/Twitter_On.png" alt="">Twitter</a>
+          </div>`,
+        actions:[{id:"dismiss",label:"Close",primary:true}]
+      });
+    };
+
+    window.shareWhatsApp = () => {
+      const text = SONG_DATA.title + " on TrackHype — " + SONG_DATA.artist;
+      window.open("https://wa.me/?text=" + encodeURIComponent(text), "_blank", "noopener");
+    };
+
+    updateFavIcon();
+  </script>
+</body>
+</html>

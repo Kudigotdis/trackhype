@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en-ZW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" type="image/webp" href="Assets/logos/TrackHype Logo Design Badge.webp">
+  <title>Submit Music — TrackHype</title>
+  <link rel="stylesheet" href="trackhype.css">
+  <style>
+    .sm-screen{display:none}
+    .sm-screen.is-active{display:block}
+    .track-box{border:1px solid var(--th-border);border-radius:var(--th-radius);padding:16px;margin-bottom:16px;background:var(--th-grey-1)}
+    .track-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .track-number{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;color:var(--th-primary-dark)}
+    .remove-track{background:none;border:0;color:var(--th-danger);font-weight:800;font-size:12px;cursor:pointer}
+    .genres-container{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+    .genre-pill{border:1px solid var(--th-border);background:var(--th-bg);border-radius:999px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;user-select:none;color:var(--th-text)}
+    .genre-pill.is-active{background:var(--th-primary);border-color:var(--th-primary);color:#fff}
+    .genre-status{font-size:12px;color:var(--th-muted);margin-top:8px;font-weight:800}
+    .price-display{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+    .price-display strong{font-size:20px;font-weight:900;color:var(--th-primary-dark)}
+    .price-note{font-size:11px;color:var(--th-muted)}
+    .payment-chip{border:1px solid var(--th-border);background:var(--th-grey-1);border-radius:999px;padding:7px 12px;font-size:12px;font-weight:800;color:var(--th-text)}
+  </style>
+</head>
+<body data-active-nav="menu.html">
+
+  <header class="th-header" data-app-header>
+    <div class="th-header-inner">
+      <button class="th-icon-btn" type="button" aria-label="Back" onclick="history.back()">‹</button>
+      <a class="th-brand" href="index.html">
+        <img class="th-logo-badge" src="Assets/logos/TrackHype Logo Design Badge.webp" alt="TrackHype">
+        <img class="th-logo-text" src="Assets/logos/track-hype-text-logo.webp" alt="TrackHype">
+      </a>
+      <div class="th-header-context">Submit Music</div>
+      <button class="th-icon-btn" type="button" aria-label="Menu" onclick="location.href='menu.html'">☰</button>
+    </div>
+  </header>
+
+  <main class="th-app">
+    <div class="th-shell">
+
+      <section>
+        <h1 class="th-page-title">Submit Music</h1>
+        <p class="th-page-subtitle">TrackHype Artist Submission — Zimbabwe. <strong>$10.00 USD per song.</strong> Payment creates a submission record; it does not guarantee official chart placement.</p>
+      </section>
+
+      <!-- FORM -->
+      <div id="form-screen" class="sm-screen is-active">
+
+        <section class="th-section">
+          <div class="th-section-head"><h2>Artist Details</h2></div>
+<div class="th-card pad">
+            <div class="th-form-group"><label>Artist / Group Name *</label><input class="th-input" id="global-artist" type="text" placeholder="Enter your stage name"></div>
+            <div class="th-form-group"><label>Legal / Registered Name</label><input class="th-input" id="global-legal" type="text" placeholder="Optional legal / registered name"></div>
+            <div class="th-form-group"><label>Contact Email *</label><input class="th-input" id="global-email" type="email" placeholder="artist@example.com"></div>
+            <div class="th-form-group"><label>Contact Number *</label><input class="th-input" id="global-phone" type="tel" placeholder="+263..."></div>
+            <div class="th-form-group"><label>Mobile Network</label>
+              <select class="th-select" id="global-network"><option value="">Select network</option><option>Econet</option><option>NetOne</option><option>Telecel</option><option>Other</option></select>
+            </div>
+            <div class="th-form-group"><label>City</label>
+              <select class="th-select" id="global-city"><option value="">Select city</option><option>Harare</option><option>Bulawayo</option><option>Mutare</option><option>Gweru</option><option>Kwekwe</option><option>Masvingo</option><option>Kadoma</option><option>Chitungwiza</option><option>Other</option></select>
+            </div>
+            <div class="th-form-group"><label>Artist Type</label>
+              <select class="th-select" id="artist-type"><option>Solo Artist</option><option>Group</option><option>Band</option><option>DJ</option><option>Producer</option></select>
+            </div>
+          </div>
+        </section>
+
+        <section class="th-section">
+          <div class="th-section-head"><h2>Artist Profile</h2></div>
+<div class="th-card pad">
+            <div class="th-form-group"><label>Artist Bio</label><textarea class="th-textarea" id="artist-bio" placeholder="Tell TrackHype about the artist..."></textarea></div>
+            <div class="th-form-group"><label>Artist Portrait</label><input class="th-input" id="artist-portrait" type="file" accept="image/*" onchange="previewImage(this,'portrait-preview')"><img id="portrait-preview" class="cover-preview" alt="" style="max-width:140px;border-radius:8px;display:none;margin-top:8px"></div>
+            <div class="th-form-group"><label>Instagram / TikTok / Facebook</label><input class="th-input" id="artist-social" type="text" placeholder="Social profile links"></div>
+          </div>
+        </section>
+
+        <section class="th-section">
+          <div class="th-section-head"><h2>Tracks</h2></div>
+          <div id="tracks-container"></div>
+          <button class="th-btn secondary" style="width:100%" type="button" onclick="addTrack()">+ ADD ANOTHER TRACK</button>
+        </section>
+
+        <section class="th-section">
+          <div class="th-section-head"><h2>Notes</h2></div>
+          <div class="th-card pad">
+            <textarea class="th-textarea" id="global-notes" placeholder="Any release notes for TrackHype?"></textarea>
+          </div>
+        </section>
+
+        <section>
+          <div class="th-card pad" style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+            <div>
+              <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:var(--th-muted)">Total Due</div>
+              <div id="total-price-display" style="font-size:22px;font-weight:900;color:var(--th-primary-dark)">$10.00 USD</div>
+              <div style="font-size:11px;color:var(--th-muted)">$10.00 USD per song</div>
+            </div>
+            <button class="th-btn primary" type="button" onclick="goToPreview()">PREVIEW</button>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- PREVIEW -->
+      <div id="preview-screen" class="sm-screen">
+        <section class="th-section">
+          <div class="th-section-head"><h2>Submission Summary</h2></div>
+<div class="th-card pad">
+            <div style="font-weight:900;text-transform:uppercase;font-size:12px;color:var(--th-muted)">Artist Info</div>
+            <div id="prev-portrait-container" style="display:none;margin-top:8px"><img id="prev-portrait" alt="" style="width:110px;height:110px;object-fit:cover;border-radius:50%;border:3px solid var(--th-primary)"></div>
+            <div style="font-weight:900;font-size:17px;margin-top:6px" id="prev-artist">Artist Name</div>
+            <div style="font-size:13px;color:var(--th-muted)" id="prev-contact"></div>
+            <div style="font-size:12px;color:var(--th-muted)" id="prev-network"></div>
+          </div>
+          <div class="th-card pad">
+            <div class="th-form-group"><label>Tracks Included ( <span id="prev-track-count">1</span> )</label><div id="prev-tracks-container"></div></div>
+          </div>
+          <div class="th-card pad" id="prev-notes-container" style="display:none">
+            <div class="th-form-group"><label>Additional Notes</label><div style="font-size:13px" id="prev-notes"></div></div>
+          </div>
+          <div class="th-card pad">
+            <div style="font-weight:900;text-transform:uppercase;font-size:12px;color:var(--th-muted)">Payment</div>
+            <div style="font-size:28px;font-weight:900;color:var(--th-primary-dark);margin-top:4px" id="prev-total-cost">$10.00 USD</div>
+            <div style="font-size:12px;color:var(--th-muted)">Artists pay $10.00 USD for each song submitted.</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
+              <span class="payment-chip">EcoCash</span><span class="payment-chip">OneMoney</span><span class="payment-chip">TeleCash</span><span class="payment-chip">Card / Online</span>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px">
+            <button class="th-btn secondary" style="flex:1" type="button" onclick="goBackToForm()">EDIT</button>
+            <button class="th-btn primary" style="flex:1" type="button" onclick="confirmAndPay()">CONFIRM &amp; PAY</button>
+          </div>
+        </section>
+      </div>
+
+    </div>
+  </main>
+
+  <nav class="th-bottom" data-bottom>
+    <div class="th-bottom-inner" data-nav-host></div>
+  </nav>
+
+  <aside class="th-player" data-player></aside>
+
+  <div class="th-modal-backdrop" data-modal>
+    <div class="th-sheet" role="dialog" aria-modal="true">
+      <div class="th-sheet-handle"></div>
+      <h3 data-modal-title></h3>
+      <div data-modal-body></div>
+      <div class="th-sheet-actions" data-modal-actions></div>
+    </div>
+  </div>
+
+  <script src="trackhype.js"></script>
+  <script>
+    const GENRES = ['Sungura','Chimurenga','Tuku Music','Afro-Jazz','Zimbabwean Jazz','Imbube','Zimbabwean Rumba','Afro-Fusion','Afro-Pop','Zimdancehall','Urban Grooves','Zim Hip Hop','Amapiano','Zimbabwean House','Zim EDM','R&B','Soul','Gospel','Reggae','Dancehall','House','Mbira','Jiti','Mbende / Jerusarema','Amabhiza'];
+    const CHARTS = ['National Top 100','Zim Hip Hop Top 20','Zimdancehall Top 20','Zimbabwe Gospel Top 20','Sungura Top 20','Zimbabwean House Top 20','R&B Top 20'];
+const PRICE_PER_TRACK = 10;
+    let trackCount = 0;
+
+    function previewCover(input, id){
+      const img = document.getElementById(id);
+      const file = input.files && input.files[0];
+      if(!img){ return; }
+      if(file){
+        const reader = new FileReader();
+        reader.onload = e => { img.src = e.target.result; img.style.display = "block"; };
+        reader.readAsDataURL(file);
+      }else{
+        img.style.display = "none";
+      }
+    }
+
+    function previewImage(input, id){ previewCover(input, id); }
+
+    function addTrack(){
+      trackCount++;
+      const id = 'track-' + Date.now() + '-' + trackCount;
+      const box = document.createElement('div');
+      box.className = 'track-box';
+      box.id = id;
+box.innerHTML = `
+        <div class="track-header"><div class="track-number">TRACK ${trackCount}</div>${trackCount > 1 ? `<button class="remove-track" type="button" onclick="removeTrack('${id}')">Remove</button>` : ''}</div>
+        <div class="th-form-group"><label>Track Title *</label><input class="th-input track-title" placeholder="Enter song name"></div>
+        <div class="th-form-group"><label>Primary Artist</label><input class="th-input track-artist" placeholder="Enter the primary artist (defaults to artist name)"></div>
+        <div class="th-form-group"><label>Primary Genre *</label>
+          <div class="genres-container track-genres">${GENRES.map(g=>`<div class="genre-pill" onclick="toggleGenre(this)">${g}</div>`).join('')}</div>
+          <div class="genre-status">Select at least 1 genre</div>
+        </div>
+        <div class="th-form-group"><label>Subgenre</label><input class="th-input track-subgenre" placeholder="Optional subgenre / fusion style"></div>
+        <div class="th-form-group"><label>Language</label>
+          <select class="th-select track-language"><option>Shona</option><option>Ndebele</option><option>English</option><option>Shona / English</option><option>English / Shona</option><option>Other</option></select>
+        </div>
+        <div class="th-form-group"><label>Target Chart</label><select class="th-select track-chart">${CHARTS.map(c=>`<option>${c}</option>`).join('')}</select></div>
+        <div class="th-form-group"><label>Featured Artists</label><input class="th-input track-featured" placeholder="Optional"></div>
+        <div class="th-form-group"><label>Release Date</label><input class="th-input track-release" type="date"></div>
+        <div class="th-form-group"><label>Explicit Content?</label><select class="th-select track-explicit"><option>No</option><option>Yes</option></select></div>
+        <div class="th-form-group"><label>Cover Art</label><input class="th-input track-cover" type="file" accept="image/*" onchange="previewCover(this,'cover-preview-${Date.now()}')"><img id="cover-preview-${Date.now()}" class="cover-preview" alt="" style="max-width:140px;border-radius:8px;display:none;margin-top:8px"></div>
+        <div class="th-form-group"><label>Songwriter(s)</label><input class="th-input track-writers" placeholder="Composers / songwriters"></div>
+        <div class="th-form-group"><label>Producer(s)</label><input class="th-input track-producers" placeholder="Production credit"></div>
+        <div class="th-form-group"><label>Label / Independent</label><input class="th-input track-label" placeholder="Independent or label name"></div>
+        <div class="th-form-group"><label>YouTube Link</label><input class="th-input track-yt" placeholder="https://youtube.com/..."><small style="display:block;margin-top:5px;font-size:12px;color:var(--th-muted)">Used for the TrackHype YouTube player and song discovery. Not a requirement for voting.</small></div>
+        <div class="th-form-group"><label>Lyrics</label><textarea class="th-textarea track-lyrics" placeholder="Paste lyrics if you own/control the rights"></textarea></div>
+      `;
+      document.getElementById('tracks-container').appendChild(box);
+      updateTotal();
+    }
+
+    function removeTrack(id){
+      const el = document.getElementById(id);
+      if(el){ el.remove(); }
+      trackCount = Math.max(1, trackCount - 1);
+      document.querySelectorAll('.track-box').forEach((t,i)=> t.querySelector('.track-number').textContent = 'TRACK ' + (i+1));
+      updateTotal();
+    }
+
+    function updateTotal(){
+      const n = document.querySelectorAll('.track-box').length;
+      document.getElementById('total-price-display').textContent = '$' + (n * PRICE_PER_TRACK).toFixed(2) + ' USD';
+    }
+
+    function toggleGenre(el){
+      el.classList.toggle('is-active');
+      const box = el.closest('.track-box');
+      const n = box.querySelectorAll('.genre-pill.is-active').length;
+      box.querySelector('.genre-status').textContent = n ? n + ' genre' + (n>1?'s':'') + ' selected' : 'Select at least 1 genre';
+    }
+
+function goToPreview(){
+      const artist = document.getElementById('global-artist').value.trim();
+      const legal = document.getElementById('global-legal').value.trim();
+      const email = document.getElementById('global-email').value.trim();
+      const phone = document.getElementById('global-phone').value.trim();
+      const city = document.getElementById('global-city').value;
+      const portrait = document.getElementById('portrait-preview');
+      const tracks = [...document.querySelectorAll('.track-box')];
+      if(!artist || !email || !phone){ TrackHype.toast('Please provide Artist Name, Email and Contact Number.'); return; }
+      if(!tracks.length){ TrackHype.toast('Add at least one track.'); return; }
+      for(const t of tracks){
+        if(!t.querySelector('.track-title').value.trim()){ TrackHype.toast('Every track needs a title.'); return; }
+        if(!t.querySelector('.track-genres .is-active')){ TrackHype.toast('Select at least one genre for every track.'); return; }
+      }
+      document.getElementById('prev-artist').textContent = artist;
+      document.getElementById('prev-contact').textContent = email + ' | ' + phone + (city ? ' | ' + city : '');
+      document.getElementById('prev-network').textContent = [document.getElementById('global-network').value ? 'Network: ' + document.getElementById('global-network').value : '', legal ? 'Legal: ' + legal : ''].filter(Boolean).join(' · ');
+      if(portrait && portrait.style.display !== 'none'){
+        document.getElementById('prev-portrait-container').style.display = '';
+        document.getElementById('prev-portrait').src = portrait.src;
+      }else{
+        document.getElementById('prev-portrait-container').style.display = 'none';
+      }
+      document.getElementById('prev-track-count').textContent = tracks.length;
+      document.getElementById('prev-total-cost').textContent = '$' + (tracks.length * PRICE_PER_TRACK).toFixed(2) + ' USD';
+      const notes = document.getElementById('global-notes').value.trim();
+      const notesContainer = document.getElementById('prev-notes-container');
+      if(notes){ notesContainer.style.display = ''; document.getElementById('prev-notes').textContent = notes; }
+      else { notesContainer.style.display = 'none'; }
+      document.getElementById('prev-tracks-container').innerHTML = tracks.map((t,i)=>{
+        const title = t.querySelector('.track-title').value.trim();
+        const chart = t.querySelector('.track-chart').value;
+        const genres = [...t.querySelectorAll('.genre-pill.is-active')].map(x=>x.textContent);
+        const subgenre = t.querySelector('.track-subgenre') ? t.querySelector('.track-subgenre').value.trim() : '';
+        const language = t.querySelector('.track-language') ? t.querySelector('.track-language').value : '';
+        const artist2 = t.querySelector('.track-artist') ? t.querySelector('.track-artist').value.trim() : '';
+        const writers = t.querySelector('.track-writers') ? t.querySelector('.track-writers').value.trim() : '';
+        const producers = t.querySelector('.track-producers') ? t.querySelector('.track-producers').value.trim() : '';
+        const label = t.querySelector('.track-label') ? t.querySelector('.track-label').value.trim() : '';
+        const yt = t.querySelector('.track-yt') ? t.querySelector('.track-yt').value.trim() : '';
+        const cover = t.querySelector('.track-cover');
+        const coverSet = cover && cover.files && cover.files.length;
+        const primary = artist2 || artist;
+        return `
+          <div style="border:1px solid var(--th-border);border-radius:8px;padding:10px;margin-top:8px;background:var(--th-bg)">
+            <div style="font-weight:900">${i+1}. ${TrackHype.esc(title)}</div>
+            <div style="font-size:13px;margin:4px 0"><strong>Primary artist:</strong> ${TrackHype.esc(primary)}</div>
+            <div style="font-size:13px;margin:4px 0"><strong>Chart:</strong> ${TrackHype.esc(chart)}</div>
+            <div style="font-size:13px;margin:4px 0"><strong>Language:</strong> ${TrackHype.esc(language)}${subgenre ? ' · <strong>Subgenre:</strong> ' + TrackHype.esc(subgenre) : ''}</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin:6px 0">${genres.map(g=>`<span class="payment-chip">${TrackHype.esc(g)}</span>`).join('')}</div>
+            <div style="font-size:12px;color:var(--th-muted);margin-top:5px">
+              ${t.querySelector('.track-explicit').value==='Yes' ? 'Explicit' : 'Non-explicit'}
+              ${coverSet ? ' · Cover art provided' : ''}
+              ${yt ? ' · YouTube link provided' : ' · No YouTube link'}
+            </div>
+            ${writers ? `<div style="font-size:12px;color:var(--th-muted);margin-top:4px"><strong>Songwriters:</strong> ${TrackHype.esc(writers)}</div>` : ''}
+            ${producers ? `<div style="font-size:12px;color:var(--th-muted);margin-top:4px"><strong>Producers:</strong> ${TrackHype.esc(producers)}</div>` : ''}
+            ${label ? `<div style="font-size:12px;color:var(--th-muted);margin-top:4px"><strong>Label:</strong> ${TrackHype.esc(label)}</div>` : ''}
+          </div>`;
+      }).join('');
+      showScreen('preview-screen');
+    }
+
+    function goBackToForm(){ showScreen('form-screen'); }
+
+    function showScreen(id){
+      document.querySelectorAll('.sm-screen').forEach(x=>x.classList.remove('is-active'));
+      document.getElementById(id).classList.add('is-active');
+      window.scrollTo({top:0});
+    }
+
+    function confirmAndPay(){
+      const tracks = [...document.querySelectorAll('.track-box')];
+      const artist = document.getElementById('global-artist').value.trim();
+      const submission = {
+        id: 'TH-' + Date.now().toString(36).toUpperCase(),
+        artist,
+        email: document.getElementById('global-email').value.trim(),
+        phone: document.getElementById('global-phone').value.trim(),
+        network: document.getElementById('global-network').value,
+        amountUSD: tracks.length * PRICE_PER_TRACK,
+        tracks: tracks.map(t=>({
+          title: t.querySelector('.track-title').value.trim(),
+          chart: t.querySelector('.track-chart').value,
+          genres: [...t.querySelectorAll('.genre-pill.is-active')].map(x=>x.textContent),
+          youtube: t.querySelector('.track-yt').value.trim()
+        }))
+      };
+      try{
+        const pending = JSON.parse(sessionStorage.getItem('trackhype_pending_submission') || 'null');
+        const pendingPayments = (pending && pending.payments) ? pending.payments : [];
+        sessionStorage.setItem('trackhype_pending_submission', JSON.stringify({ ...submission, payments: pendingPayments.concat([submission]) }));
+      }catch(e){ sessionStorage.setItem('trackhype_pending_submission', JSON.stringify(submission)); }
+      TrackHype.openSheet({
+        title: 'Submission Received',
+        html: `
+          <p><strong>${TrackHype.esc(submission.id)}</strong></p>
+          <div class="th-table-list" style="margin-top:10px">
+            <div class="th-table-row"><strong>Amount due</strong><span><strong>$ ${submission.amountUSD.toFixed(2)} USD</strong></span><span></span></div>
+            <div class="th-table-row"><strong>Status</strong><span class="th-status">Payment Required</span><span></span></div>
+          </div>
+          <p style="margin-top:12px">Payment creates a payment/submission record. It does not guarantee official chart placement.</p>`,
+        actions:[{id:'dismiss',label:'Close',primary:true}]
+      });
+    }
+
+    addTrack();
+  </script>
+</body>
+</html>

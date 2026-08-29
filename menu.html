@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en-ZW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" type="image/webp" href="Assets/logos/TrackHype Logo Design Badge.webp">
+  <title>Menu — TrackHype</title>
+  <link rel="stylesheet" href="trackhype.css">
+  <style>
+    .menu-row{display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid var(--th-border-soft);width:100%;background:none;border-left:0;border-right:0;border-top:0;text-align:left}
+    .menu-row:last-child{border-bottom:0}
+    .menu-row .th-icon-btn{margin-left:auto}
+    .menu-chev{color:var(--th-faint);font-size:15px;font-weight:900;margin-left:auto}
+  </style>
+</head>
+<body data-active-nav="menu.html">
+
+  <header class="th-header" data-app-header>
+    <div class="th-header-inner">
+      <a class="th-brand" href="index.html">
+        <img class="th-logo-badge" src="Assets/logos/TrackHype Logo Design Badge.webp" alt="TrackHype">
+        <img class="th-logo-text" src="Assets/logos/track-hype-text-logo.webp" alt="TrackHype">
+      </a>
+      <div class="th-header-context">Menu</div>
+    </div>
+  </header>
+
+  <main class="th-app">
+    <div class="th-shell">
+
+      <section>
+        <div class="th-card" style="display:flex;align-items:center;gap:14px;padding:16px">
+          <div class="th-avatar" style="width:68px;height:68px;border-radius:50%;background:var(--th-primary-dark);color:#fff;display:grid;place-items:center;font-weight:900;font-size:20px">KC</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:20px;font-weight:900">TrackHype User</div>
+            <div style="font-size:13px;color:var(--th-muted)">Personalised for your selected genres · Zimbabwe</div>
+          </div>
+          <button class="th-icon-btn" type="button" aria-label="Edit profile" onclick="location.href='onboarding.html'">✎</button>
+        </div>
+      </section>
+
+      <section class="th-section">
+        <div class="th-section-head"><h2>Profile</h2></div>
+        <div class="th-card">
+          <button class="menu-row" type="button" onclick="location.href='onboarding.html'"><span style="font-weight:800">Edit Profile</span><small style="display:block;font-size:11px;color:var(--th-muted)">Name, date of birth, mobile details</small><span class="menu-chev">›</span></button>
+          <button class="menu-row" type="button" onclick="location.href='onboarding.html'"><span style="font-weight:800">Music Preferences</span><small style="display:block;font-size:11px;color:var(--th-muted)">Manage your favourite genres</small><span class="menu-chev">›</span></button>
+        </div>
+      </section>
+
+      <section class="th-section">
+        <div class="th-section-head"><h2>My TrackHype</h2></div>
+        <div class="th-card">
+<button class="menu-row" type="button" onclick="location.href='playlist.html'"><span style="font-weight:800">Liked Songs</span><small style="display:block;font-size:11px;color:var(--th-muted)">Songs you've favourited</small><span class="menu-chev">›</span></button>
+          <button class="menu-row" type="button" onclick="location.href='playlist.html'"><span style="font-weight:800">Playlists</span><small style="display:block;font-size:11px;color:var(--th-muted)">Your listening list</small><span class="menu-chev">›</span></button>
+          <button class="menu-row" type="button" onclick="location.href='artists.html?filter=following'"><span style="font-weight:800">Favourite Artists</span><small style="display:block;font-size:11px;color:var(--th-muted)">Artists you follow</small><span class="menu-chev">›</span></button>
+          <button class="menu-row" type="button" onclick="location.href='charts.html'"><span style="font-weight:800">Favourite Charts</span><small style="display:block;font-size:11px;color:var(--th-muted)">Charts you've saved</small><span class="menu-chev">›</span></button>
+          <button class="menu-row" type="button" onclick="location.href='history.html'"><span style="font-weight:800">Voting History</span><small style="display:block;font-size:11px;color:var(--th-muted)">Your recent chart votes</small><span class="menu-chev">›</span></button>
+        </div>
+      </section>
+
+      <section class="th-section">
+        <div class="th-section-head"><h2>Artist</h2></div>
+        <div class="th-card pad">
+          <div style="font-weight:900">Are you an artist?</div>
+          <p style="margin:6px 0 12px;font-size:13px;color:var(--th-muted)">Submit music to TrackHype for <strong>$10.00 USD</strong> per song.</p>
+          <button class="th-btn primary block" type="button" onclick="location.href='submit-music.html'">SUBMIT MUSIC</button>
+        </div>
+      </section>
+
+<section class="th-section">
+        <div class="th-section-head"><h2>App</h2></div>
+        <div class="th-card">
+          <button class="menu-row" type="button" onclick="location.href='artist-dashboard.html'"><span style="font-weight:800">Artist Dashboard</span><small style="display:block;font-size:11px;color:var(--th-muted)">Your submissions, payments and charts</small><span class="menu-chev">›</span></button>
+          <button class="menu-row" type="button" onclick="TrackHype.toast('Notifications settings prototype')"><span style="font-weight:800">Notifications</span><small style="display:block;font-size:11px;color:var(--th-muted)">Chart results, artist updates and new releases</small><span class="menu-chev">›</span></button>
+          <button class="menu-row" type="button" onclick="TrackHype.toast('Data settings prototype')"><span style="font-weight:800">Settings</span><small style="display:block;font-size:11px;color:var(--th-muted)">Data usage, preferences and account</small><span class="menu-chev">›</span></button>
+          <button class="menu-row" type="button" onclick="TrackHype.toast('TrackHype policies')"><span style="font-weight:800">Privacy</span><small style="display:block;font-size:11px;color:var(--th-muted)">How TrackHype handles your data</small><span class="menu-chev">›</span></button>
+          <button class="menu-row" type="button" onclick="TrackHype.toast('TrackHype terms')"><span style="font-weight:800">Terms</span><small style="display:block;font-size:11px;color:var(--th-muted)">Terms of use for TrackHype</small><span class="menu-chev">›</span></button>
+          <button class="menu-row" type="button" onclick="TrackHype.toast('Help & support')"><span style="font-weight:800">Help</span><small style="display:block;font-size:11px;color:var(--th-muted)">Support, guides and FAQs</small><span class="menu-chev">›</span></button>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <nav class="th-bottom" data-bottom>
+    <div class="th-bottom-inner" data-nav-host></div>
+  </nav>
+
+  <aside class="th-player" data-player></aside>
+
+  <div class="th-modal-backdrop" data-modal>
+    <div class="th-sheet" role="dialog" aria-modal="true">
+      <div class="th-sheet-handle"></div>
+      <h3 data-modal-title></h3>
+      <div data-modal-body></div>
+      <div class="th-sheet-actions" data-modal-actions></div>
+    </div>
+  </div>
+
+  <script src="trackhype.js"></script>
+</body>
+</html>

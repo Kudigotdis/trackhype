@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en-ZW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" type="image/webp" href="Assets/logos/TrackHype Logo Design Badge.webp">
+  <title>Charts — TrackHype</title>
+  <link rel="stylesheet" href="trackhype.css">
+  <style>
+    .ch-tabs{display:flex;gap:8px;flex-wrap:wrap}
+    .ch-head{display:flex;align-items:center;gap:14px}
+    .ch-cover{width:76px;height:76px;border-radius:var(--th-radius-sm);object-fit:cover;background:var(--th-grey-2);border:1px solid var(--th-border-soft);flex:none}
+    .ch-title{font-size:20px;font-weight:900}
+    .ch-meta{font-size:12px;color:var(--th-muted);margin-top:3px}
+    .ch-row{display:flex;align-items:center;gap:11px;padding:11px 12px;border-bottom:1px solid var(--th-border-soft)}
+    .ch-row:last-child{border-bottom:0}
+    .ch-rank{flex:none;width:40px;height:40px;display:grid;place-items:center;background:var(--th-primary);color:#fff;border-radius:9px;font-weight:900;font-size:16px}
+    .ch-rank.placeholder{background:var(--th-grey-3);color:var(--th-muted)}
+    .ch-thumb{flex:none;width:40px;height:40px;border-radius:8px;object-fit:cover;background:var(--th-grey-2);border:1px solid var(--th-border-soft);cursor:pointer}
+    .ch-info{flex:1;min-width:0;cursor:pointer}
+    .ch-song{font-weight:900;font-size:14px;color:var(--th-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .ch-artist{font-size:12px;color:var(--th-muted);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .ch-points{flex:none;font-size:12px;font-weight:900;color:var(--th-primary-dark);margin-left:auto}
+    .ch-vote{flex:none;border:1px solid var(--th-border);background:var(--th-bg);border-radius:8px;padding:8px 12px;font-size:12px;font-weight:800;color:var(--th-primary-dark)}
+    .ch-vote:active{background:var(--th-grey-1)}
+    .ch-vote.voted{opacity:.5;cursor:default}
+    .ch-panel{display:none;border-top:1px solid var(--th-border-soft);padding:12px}
+    .ch-panel.open{display:block}
+    .ch-youtube{width:100%;aspect-ratio:16/9;border:0;border-radius:8px;display:block;background:#000}
+    .ch-detail-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+    .ch-detail-actions .th-btn{padding:9px 6px;font-size:12px}
+    .ch-note{font-size:12px;color:var(--th-muted);line-height:1.5;margin-top:10px;padding:10px;border:1px dashed var(--th-grey-3);border-radius:8px;background:var(--th-grey-1)}
+  </style>
+</head>
+<body data-active-nav="index.html">
+
+  <header class="th-header" data-app-header>
+    <div class="th-header-inner">
+      <a class="th-brand" href="index.html">
+        <img class="th-logo-badge" src="Assets/logos/TrackHype Logo Design Badge.webp" alt="TrackHype">
+        <img class="th-logo-text" src="Assets/logos/track-hype-text-logo.webp" alt="TrackHype">
+      </a>
+      <div class="th-header-context" id="headChart">Charts</div>
+      <button class="th-icon-btn" type="button" aria-label="Menu" onclick="location.href='menu.html'">☰</button>
+    </div>
+  </header>
+
+  <main class="th-app">
+    <div class="th-shell">
+
+      <section>
+        <h1 class="th-page-title">Charts</h1>
+        <p class="th-page-subtitle">Zimbabwe's official charts. Tap a song for details and official YouTube. Tap <strong>Vote</strong> to rank it — enter a target position to reorder. Your single vote is recorded and aggregated, never directly mutating the published chart.</p>
+      </section>
+
+      <section class="th-section">
+        <div class="th-chip-row ch-tabs" id="chartTabs"></div>
+      </section>
+
+      <section>
+        <div class="th-card pad ch-head">
+          <img id="chartCover" class="ch-cover" src="Assets/charts/top_40_chart/cover.jpg" onerror="this.style.visibility='hidden'">
+          <div style="flex:1;min-width:0">
+            <div class="ch-title" id="chartTitle">National Top 100</div>
+            <div class="ch-meta" id="chartMeta">All Genres — Zimbabwe</div>
+            <div class="ch-meta">20 → 1 points · one vote per chart per 24h</div>
+          </div>
+          <img id="chartFav" src="Assets/icons/heart_inactive_icon.png" alt="Favourite" style="width:26px;height:26px;object-fit:contain;cursor:pointer;flex:none">
+        </div>
+      </section>
+
+      <section>
+        <div class="th-card" id="chartList"></div>
+        <div class="ch-note">
+          <strong>How voting works:</strong> tap <strong>Vote</strong> on a song, then enter the target position you want it to reach. The song moves there and the incumbent shifts down one. #1 = 20 pts, #20 = 1 pt. Your choices go into your vote record — the published chart updates only after aggregation.
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <nav class="th-bottom" data-bottom>
+    <div class="th-bottom-inner" data-nav-host></div>
+  </nav>
+
+  <aside class="th-player" data-player></aside>
+
+  <div class="th-modal-backdrop" data-modal>
+    <div class="th-sheet" role="dialog" aria-modal="true">
+      <div class="th-sheet-handle"></div>
+      <h3 data-modal-title></h3>
+      <div data-modal-body></div>
+      <div class="th-sheet-actions" data-modal-actions></div>
+    </div>
+  </div>
+
+  <script src="trackhype.js"></script>
+  <script>
+    const CHARTS = [
+      {key:"top40",     title:"National Top 100",    genre:"All Genres — Zimbabwe", folder:"top_40_chart",
+        label:"National Top 100", genreFilter:"",      mapped:true},
+      {key:"hiphop",    title:"Zim Hip Hop Top 20",  genre:"Zim Hip Hop",          folder:"top_25_local_hip_hop",
+        label:"Zim Hip Hop",       genreFilter:"Zim Hip Hop", mapped:true},
+      {key:"house",     title:"Zimbabwean House Top 20", genre:"House",            folder:"top_20_house",
+        label:"House",             genreFilter:"House", mapped:true},
+      {key:"rnb",       title:"R&B Top 20",          genre:"R&B",                  folder:"top_20_rnb_chart",
+        label:"R&B",               genreFilter:"R&B", mapped:true},
+      {key:"dancehall", title:"Zimdancehall Top 20", genre:"Zimdancehall",         folder:"",
+        label:"Zimdancehall", genreFilter:"Zimdancehall", mapped:false},
+      {key:"gospel",    title:"Gospel Top 20",       genre:"Gospel",               folder:"",
+        label:"Gospel",           genreFilter:"Gospel", mapped:false},
+      {key:"sungura",   title:"Sungura Top 20",      genre:"Sungura",              folder:"",
+        label:"Sungura",          genreFilter:"Sungura", mapped:false}
+    ];
+
+let current = CHARTS[0];
+    let order = [];
+    let openPanelIndex = -1;
+    let openPanelKind = "";
+
+    const genreArtists = {
+      "Zim Hip Hop": ["Holy Ten","Saintfloew","T Gonzi","Tashinga Panda","Voltz JT"],
+      "House": ["DJ Tamuka","Judgement Yard","Tashinga","Blaq Halo"],
+      "R&B": ["Ammara","Hillzy","Vusa Mkhaya","Kudzai Terence"],
+      "Zimdancehall": ["Freeman HKD Boss","Enzo Ishall","Jah Master","Blacperl"],
+      "Gospel": ["Mambo Dhuterere","Janet Manyowa","Minister Mahendere","Tino Chinyani"],
+      "Sungura": ["Alick Macheso","Jah Prayzah","Fungisai","Peter Moyo"],
+      "": ["Zimbabwe Artist"]
+    };
+
+    const ART = {
+      "top_40_chart": {1:"jpg",2:"jpg",3:"jpg",4:"jpg",5:"jpg",6:"jpg",7:"jpg",8:"jpg",9:"jpg",10:"jpg",11:"jpg",12:"jpg",13:"jpg",14:"jpg",15:"jpg",16:"jpg",17:"jpg",18:"jpg",19:"jpg",20:"jpg",21:"jpg",22:"jpg",23:"jpg",24:"webp",25:"jpg",26:"jpg",27:"jpg",28:"jpg",29:"jpg",30:"jpg",31:"jpg",32:"jpg",33:"jpg",34:"jpg",35:"png",36:"png",37:"jpg",38:"jpg",39:"jpg",40:"webp"},
+      "top_25_local_hip_hop": {1:"jpg",2:"jpg",3:"jpg",4:"png",5:"jpg",6:"jpg",7:"jpg",8:"jpg",9:"jpg",10:"jpg",11:"webp",12:"jpg",13:"jpg",14:"webp",15:"jpg",16:"jpeg",17:"jpg",18:"jpg",19:"jpg",20:"jpg",21:"jpg",22:"jpeg",23:"jpg",24:"jpg",25:"jpg"},
+      "top_20_house": {1:"jpg",2:"jpg",3:"jpg",4:"jpg",5:"jpg",6:"jpg",7:"jpg",8:"jpg",9:"jpg",10:"jpg",11:"jpg",12:"jpg",13:"jpg",14:"jpg",15:"jpg",16:"jpg",17:"jpg",18:"jpg",19:"jpg",20:"jpg"},
+      "top_20_rnb_chart": {1:"jpg",2:"jpg",3:"jpg",4:"jpg",5:"jpg",6:"jpg",7:"jpg",8:"jpg",9:"jpg",10:"jpg",11:"jpg",12:"jpg",13:"jpg",14:"jpg",15:"png",16:"png",17:"png",18:"jpg",19:"png",20:"jpeg"}
+    };
+function artUrl(i){
+      const map = ART[current.folder];
+      if(!map || !i){ return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect width='80' height='80' rx='14' fill='%23eef3f1'/%3E%3Ccircle cx='40' cy='40' r='18' fill='%2301db8b'/%3E%3Cpath d='M34 52V30l14-3v22' fill='none' stroke='%2302925e' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E"; }
+      const count = Math.max(1, Object.keys(map).length);
+      const seq = i > count ? ((i - 1) % count) + 1 : i;
+      return "Assets/charts/" + current.folder + "/" + seq + "." + (map[seq] || "jpg");
+    }
+
+    function buildSongs(){
+      const artists = genreArtists[current.genreFilter] || genreArtists[""];
+      const n = current.key === "top40" ? 100 : 20;
+      return Array.from({length:n}, (_,i)=>{
+        const rank = i + 1;
+        return {
+          id: rank,
+          title: "Zimbabwe " + current.genreFilter + " Track " + rank,
+          artist: artists[i % artists.length],
+          artwork: artUrl(rank)
+        };
+      });
+    }
+
+    function renderTabs(){
+      document.getElementById("chartTabs").innerHTML = CHARTS.map(c => {
+        const active = c.key === current.key;
+        return `<button class="th-chip ${active?"is-active":""}" type="button" data-chart="${c.key}">${c.label}</button>`;
+      }).join("");
+      document.getElementById("chartTabs").onclick = (e) => {
+        const b = e.target.closest("[data-chart]");
+        if(!b) return;
+        switchChart(b.dataset.chart);
+      };
+    }
+
+function switchChart(key){
+      current = CHARTS.find(c => c.key === key) || CHARTS[0];
+      openPanelIndex = -1;
+      openPanelKind = "";
+      history.replaceState({}, "", "charts.html?chart=" + key);
+      renderTabs();
+      renderHeader();
+      buildOrder();
+      renderChart();
+    }
+
+function renderHeader(){
+      document.getElementById("headChart").textContent = current.title;
+      document.getElementById("chartCover").src = current.folder
+        ? "Assets/charts/" + current.folder + "/cover.jpg"
+        : "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect width='80' height='80' rx='14' fill='%23eef3f1'/%3E%3Ccircle cx='40' cy='40' r='18' fill='%2301db8b'/%3E%3Cpath d='M34 52V30l14-3v22' fill='none' stroke='%2302925e' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E";
+      document.getElementById("chartTitle").textContent = current.title;
+      document.getElementById("chartMeta").textContent = current.genre + " — Zimbabwe";
+      updateFavIcon();
+    }
+
+    function updateFavIcon(){
+      const favs = (TrackHype.getState().favouriteCharts || []);
+      document.getElementById("chartFav").src = favs.includes(current.key)
+        ? "Assets/icons/heart_active_icon.png"
+        : "Assets/icons/heart_inactive_icon.png";
+    }
+
+    function buildOrder(){
+      order = buildSongs().map(s => ({ ...s, points: s.rank <= 20 ? (21 - s.rank) : 1 }));
+    }
+
+    function votedToday(){
+      return TrackHype.hasVotedToday(current.title).length > 0;
+    }
+
+    function renderChart(){
+      const list = document.getElementById("chartList");
+      list.innerHTML = order.map((song,index) => {
+        const rank = index + 1;
+        const points = song.points;
+return `
+          <article class="ch-row" data-idx="${index}">
+            <div class="ch-rank ${song.artwork ? "" : "placeholder"}">${rank}</div>
+            <img class="ch-thumb" src="${song.artwork || ""}" onerror="this.style.visibility='hidden'" onclick="openVideo(${index})" alt="">
+            <div class="ch-info" onclick="openInfo(${index})">
+              <div class="ch-song">${TrackHype.esc(song.title)}</div>
+              <div class="ch-artist">${TrackHype.esc(song.artist)}</div>
+            </div>
+            <div class="ch-points">${points} pts</div>
+            <button class="ch-vote ${votedToday() ? "voted" : ""}" type="button" onclick="openVote(${index})">${votedToday() ? "VOTED" : "VOTE"}</button>
+          </article>
+          <div class="ch-panel" id="panel-${index}"></div>`;
+      }).join("");
+    }
+
+    function openVote(index){
+      if(votedToday()){
+        TrackHype.toast("You already voted on this chart today.");
+        return;
+      }
+      const song = order[index];
+      openPanelIndex = -1;
+      openPanelKind = "";
+      TrackHype.confirmVoteSheet(current.title, song, order.length);
+    }
+
+    function openVideo(index){
+      openPanel(index, "video");
+    }
+
+    function openInfo(index){
+      openPanel(index, "info");
+    }
+
+    function openPanel(index, kind){
+      const panel = document.getElementById("panel-" + index);
+      const wasOpen = panel.classList.contains("open");
+      document.querySelectorAll(".ch-panel").forEach(p => p.classList.remove("open"));
+      openPanelIndex = wasOpen && openPanelKind === kind ? -1 : index;
+      openPanelKind = kind;
+      if(openPanelIndex >= 0){
+        panel.classList.add("open");
+        panel.innerHTML = kind === "video" ? videoPanel(order[index]) : infoPanel(order[index]);
+        if(kind === "video"){
+          const v = panel.querySelector("video");
+          if(v && "play" in v){
+            v.play().catch(()=>{});
+          }
+        }
+      }
+    }
+
+    function videoPanel(song){
+      return `
+        <div style="font-weight:900;font-size:15px;margin-bottom:4px">${TrackHype.esc(song.title)}</div>
+        <div style="font-size:13px;color:var(--th-muted);margin-bottom:8px">${TrackHype.esc(song.artist)}</div>
+        <video class="ch-youtube" style="aspect-ratio:16/9" controls playsinline preload="metadata" src="Assets/video/Victony - SLICK (Official Visualizer) - Victony (360p, h264, youtube).mp4"></video>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:6px">Demo player uses a local sample video. TrackHype uses official YouTube embeds in production and does not download or host YouTube audio.</div>`;
+    }
+
+    function favKey(song){
+      return "chart-entry:" + current.key + ":" + song.id;
+    }
+
+    function isFav(song){
+      return (TrackHype.getState().favouriteSongs || []).includes(favKey(song));
+    }
+
+    function infoPanel(song){
+      const id = TrackHype.esc(song.id);
+      const faved = isFav(song);
+      return `
+        <div style="font-weight:900;font-size:15px">${TrackHype.esc(song.title)}</div>
+        <div style="font-size:13px;color:var(--th-muted);margin-bottom:10px">${TrackHype.esc(song.artist)} · ${TrackHype.esc(current.genre)}</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <img class="ch-thumb" src="${song.artwork || ""}" onerror="this.style.visibility='hidden'" alt="">
+          <div><div style="font-weight:800">${TrackHype.esc(song.artist)}</div><div style="font-size:12px;color:var(--th-muted)">Primary Artist</div></div>
+        </div>
+        <div class="ch-detail-actions">
+          <button class="th-btn secondary" type="button">Apple Music</button>
+          <button class="th-btn secondary" type="button">Spotify</button>
+          <button class="th-btn secondary" type="button">YouTube</button>
+          <button class="th-btn secondary" type="button">Amazon Music</button>
+          <button class="th-btn secondary" type="button" onclick="toggleChartFav(${TrackHype.esc(song.id)})">${faved ? "♥ Favourited" : "♡ Favourite"}</button>
+          <button class="th-btn secondary" type="button" onclick="location.href='song.html?id=${id}&chart=${TrackHype.esc(current.key)}'">Lyrics</button>
+        </div>`;
+    }
+
+    window.toggleChartFav = (id) => {
+      const song = order.find(s => String(s.id) === String(id));
+      if(!song){ return; }
+      const key = favKey(song);
+      TrackHype.updateState(s => {
+        s.favouriteSongs = s.favouriteSongs || [];
+        const i = s.favouriteSongs.indexOf(key);
+        if(i >= 0){ s.favouriteSongs.splice(i,1); } else { s.favouriteSongs.push(key); }
+      });
+      const panel = document.getElementById("panel-" + order.indexOf(song));
+      if(panel && panel.classList.contains("open")){ panel.innerHTML = infoPanel(song); }
+      TrackHype.toast("Updated favourites");
+    };
+
+    document.addEventListener("trackhype:chart-update", (e) => {
+      const detail = e.detail || {};
+      if(!detail.chart || TrackHype.chartId(detail.chart) !== TrackHype.chartId(current.title)){
+        return;
+      }
+if(detail.songId && detail.targetPos){
+        order = TrackHype.moveSong(order, detail.songId, detail.targetPos);
+        openPanelIndex = -1;
+        openPanelKind = "";
+      }
+      renderChart();
+    });
+
+    document.getElementById("chartFav").onclick = () => {
+      TrackHype.updateState(s => {
+        s.favouriteCharts = s.favouriteCharts || [];
+        const i = s.favouriteCharts.indexOf(current.key);
+        if(i >= 0){ s.favouriteCharts.splice(i,1); } else { s.favouriteCharts.push(current.key); }
+      });
+      updateFavIcon();
+    };
+
+    const urlChart = new URLSearchParams(location.search).get("chart");
+    if(urlChart){
+      current = CHARTS.find(c => c.key === urlChart) || CHARTS[0];
+    }
+
+    renderTabs();
+    renderHeader();
+    buildOrder();
+    renderChart();
+  </script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en-ZW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" type="image/webp" href="Assets/logos/TrackHype Logo Design Badge.webp">
+  <title>Welcome — TrackHype</title>
+  <link rel="stylesheet" href="trackhype.css">
+  <style>
+    .ob-step{display:none}
+    .ob-step.is-active{display:block}
+    .ob-hero{text-align:center;padding:8px 0 4px}
+    .ob-hero img{width:88px;height:88px;object-fit:contain;margin:0 auto}
+    .ob-hero h1{font-size:24px;font-weight:900;margin-top:14px}
+    .ob-hero p{margin-top:6px;font-size:13px;color:var(--th-muted);line-height:1.55}
+    .ob-card{border:1px solid var(--th-border);border-radius:var(--th-radius);padding:18px;background:var(--th-bg)}
+    .ob-label{display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--th-muted);margin:14px 0 6px}
+    .ob-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+    .ob-choice{border:1px solid var(--th-border);background:var(--th-grey-1);border-radius:var(--th-radius-sm);padding:11px 12px;font-weight:800;font-size:13px;text-align:left}
+    .ob-choice.is-active{background:var(--th-primary);border-color:var(--th-primary);color:#fff}
+    .ob-actions{display:flex;gap:10px;margin-top:16px}
+    .ob-actions .th-btn{flex:1}
+    .ob-skip{background:none;border:0;color:var(--th-muted);text-decoration:underline;margin-top:12px;width:100%;text-align:center;font-weight:700;font-size:13px}
+    .ob-status{margin-top:10px;font-size:12px;font-weight:800;color:var(--th-muted)}
+    .ob-status.ready{color:var(--th-success)}
+  </style>
+</head>
+<body data-active-nav="">
+
+  <main class="th-app">
+    <div class="th-shell" style="max-width:560px">
+
+      <div class="ob-hero">
+        <img src="Assets/logos/TrackHype Logo Design Badge.webp" alt="TrackHype">
+        <h1>Welcome to TrackHype</h1>
+        <p>Discover Zimbabwean music, follow artists and help shape the charts. Zimbabwe · +263 · USD.</p>
+      </div>
+
+      <!-- STEP 1 — Listener details -->
+      <section class="ob-step is-active" id="step-1">
+        <div class="ob-card">
+          <h2 style="font-size:18px;font-weight:900">Your details</h2>
+          <p class="ob-sub" style="font-size:13px;color:var(--th-muted);margin-top:5px">Create your listener profile so TrackHype can personalise charts, artists and recommendations.</p>
+
+          <div style="height:12px"></div>
+          <label class="ob-label">First name *</label>
+          <input class="th-input" id="first" placeholder="e.g. Tafara">
+
+          <label class="ob-label">Surname *</label>
+          <input class="th-input" id="surname" placeholder="e.g. Moyo">
+
+          <label class="ob-label">Date of birth *</label>
+          <input class="th-input" id="dob" type="date">
+
+<label class="ob-label">Mobile number *</label>
+          <input class="th-input" id="phone" type="tel" placeholder="+263 77 000 0000">
+
+          <label class="ob-label">Email *</label>
+          <input class="th-input" id="email" type="email" placeholder="you@example.com">
+
+          <label class="ob-label">Mobile network</label>
+          <select class="th-select" id="network">
+            <option>Econet</option>
+            <option>NetOne</option>
+            <option>Telecel</option>
+            <option>Other</option>
+          </select>
+
+          <label class="ob-label">Mobile money service</label>
+          <select class="th-select" id="money">
+            <option>None</option>
+            <option>EcoCash</option>
+            <option>OneMoney</option>
+            <option>TeleCash</option>
+          </select>
+
+          <div class="ob-actions">
+            <button class="th-btn primary" type="button" onclick="go(2)">CONTINUE</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 2 — Genres -->
+      <section class="ob-step" id="step-2">
+        <div class="ob-card">
+          <h2 style="font-size:18px;font-weight:900">What do you listen to?</h2>
+          <p class="ob-sub" style="font-size:13px;color:var(--th-muted);margin-top:5px">Choose at least 8 genres. These shape your Hyped feed, charts, artists and recommendations.</p>
+          <div class="ob-status" id="gstatus">0 selected — choose at least 8</div>
+          <div style="height:10px"></div>
+          <div class="ob-grid-2" id="genres"></div>
+          <div class="ob-actions">
+            <button class="th-btn secondary" type="button" onclick="back(1)">BACK</button>
+            <button class="th-btn primary" type="button" id="genreNext" onclick="go(3)" disabled>CONTINUE</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 3 — Artists -->
+      <section class="ob-step" id="step-3">
+        <div class="ob-card">
+          <h2 style="font-size:18px;font-weight:900">Who do you want to follow?</h2>
+          <p class="ob-sub" style="font-size:13px;color:var(--th-muted);margin-top:5px">Optional — you can change this later from Artists.</p>
+          <input class="th-input" id="artistSearch" type="search" placeholder="Search artists" oninput="renderArtists()" style="margin-top:12px">
+          <div style="height:12px"></div>
+          <div class="ob-grid-2" id="artists"></div>
+          <div class="ob-actions">
+            <button class="th-btn secondary" type="button" onclick="back(2)">BACK</button>
+            <button class="th-btn primary" type="button" onclick="finish()">ENTER TRACKHYPE</button>
+          </div>
+          <button class="ob-skip" type="button" onclick="finish()">Skip for now</button>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <nav class="th-bottom" data-bottom>
+    <div class="th-bottom-inner" data-nav-host></div>
+  </nav>
+
+  <aside class="th-player" data-player></aside>
+
+  <div class="th-modal-backdrop" data-modal>
+    <div class="th-sheet" role="dialog" aria-modal="true">
+      <div class="th-sheet-handle"></div>
+      <h3 data-modal-title></h3>
+      <div data-modal-body></div>
+      <div class="th-sheet-actions" data-modal-actions></div>
+    </div>
+  </div>
+
+  <script src="trackhype.js"></script>
+  <script>
+    const GENRES = [
+      "Zim Hip Hop","Zimdancehall","Sungura","Chimurenga","Tuku Music","Afro-Jazz",
+      "Zimbabwean Jazz","Imbube","Zimbabwean Rumba","Afro-Fusion","Afro-Pop","Urban Grooves",
+      "Amapiano","Zimbabwean House","Zim EDM","R&B","Soul","Gospel","Reggae","Dancehall",
+      "House","Mbira","Jiti","Mhande","Mbende / Jerusarema","Sungura Trap","Gospel Hip Hop",
+      "Trap Gospel","Afro-Gospel Rap","Zimbabwean House","Gqom","Kwaito"
+    ];
+    const ARTISTS = [
+      "Alick Macheso","Holy Ten","Feli Nandi","Jah Prayzah","T Gonzi","Freeman HKD Boss",
+      "Tocky Vibes","Mambo Dhuterere","Saintfloew","Jah Master","Andy Muridzo","Janet Manyowa",
+      "Nutty O","Alexio Kawara","Enzo Ishall","Mokoomba","Takura","Gemma Griffiths",
+      "Minister Mahendere","Judgement Yard"
+    ];
+    const selected = new Set();
+    const followed = new Set();
+
+    document.getElementById("genres").innerHTML = GENRES.map(g =>
+      `<button class="ob-choice" type="button" onclick="pickGenre(this)">${g.replace(/&/g,"&amp;")}</button>`
+    ).join("");
+
+    function pickGenre(el){
+      const g = el.textContent;
+      el.classList.toggle("is-active");
+      if(selected.has(g)){selected.delete(g)}else{selected.add(g)}
+      const n = selected.size;
+      const s = document.getElementById("gstatus");
+      const b = document.getElementById("genreNext");
+      s.textContent = n + " selected — " + (n >= 8 ? "ready" : "choose at least 8");
+      s.classList.toggle("ready", n >= 8);
+      b.disabled = n < 8;
+    }
+
+    function renderArtists(){
+      const q = (document.getElementById("artistSearch").value || "").toLowerCase().trim();
+      document.getElementById("artists").innerHTML = ARTISTS
+        .filter(a => !q || a.toLowerCase().includes(q))
+        .map(a => `<button class="ob-choice ${followed.has(a)?"is-active":""}" type="button" onclick="toggleArtist(this,'${a.replace(/'/g,"\\'")}')">${a}</button>`)
+        .join("");
+    }
+
+    function toggleArtist(el, name){
+      el.classList.toggle("is-active");
+      if(followed.has(name)){followed.delete(name)}else{followed.add(name)}
+    }
+
+function go(n){
+      if(n === 2){
+        const first = document.getElementById("first").value.trim();
+        const surname = document.getElementById("surname").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const email = document.getElementById("email").value.trim();
+        if(!first || !surname || !phone || !email){
+          alert("Please complete your name, email and mobile number.");
+          return;
+        }
+        if(!/^\S+@\S+\.\S+$/.test(email)){
+          alert("Please enter a valid email address.");
+          return;
+        }
+      }
+      show(n);
+    }
+    function back(n){show(n)}
+    function show(n){
+      document.querySelectorAll(".ob-step").forEach(x=>x.classList.remove("is-active"));
+      document.getElementById("step-" + n).classList.add("is-active");
+      window.scrollTo({top:0});
+    }
+
+    function finish(){
+      try{
+        localStorage.setItem("trackhype_onboarding_complete","true");
+        localStorage.setItem("trackhype_genres", JSON.stringify([...selected]));
+        localStorage.setItem("trackhype_following_artists", JSON.stringify([...followed]));
+      }catch(error){}
+      window.location.href = "index.html";
+    }
+
+    renderArtists();
+  </script>
+</body>
+</html>

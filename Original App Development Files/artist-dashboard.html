@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en-ZW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <title>Artist Dashboard — TrackHype</title>
+  <link rel="stylesheet" href="trackhype.css">
+</head>
+<body data-active-nav="menu">
+  <header class="th-header" data-app-header>
+    <div class="th-header-inner">
+      <a class="th-brand" href="index.html">TrackHype</a>
+      <div class="th-header-context">Artist Dashboard</div>
+      <button class="th-icon-btn" type="button" aria-label="Menu" onclick="location.href='menu.html'">☰</button>
+    </div>
+  </header>
+
+  <main class="th-app">
+    <div class="th-shell">
+      <section class="th-card th-dashboard-hero">
+        <img class="th-avatar" id="artistPortrait" src="" alt="Artist portrait">
+        <div>
+          <h2 id="artistName"></h2>
+          <p id="artistMeta"></p>
+          <div style="display:flex;gap:7px;margin-top:8px">
+            <span class="th-status success">Artist Account</span>
+            <span class="th-status">Zimbabwe</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="th-section">
+        <div class="th-stat-grid">
+          <article class="th-card th-stat">
+            <div class="th-stat-label">My Music</div>
+            <div class="th-stat-value" id="statMusic">0</div>
+          </article>
+          <article class="th-card th-stat">
+            <div class="th-stat-label">New Music</div>
+            <div class="th-stat-value" id="statNewMusic">0</div>
+          </article>
+          <article class="th-card th-stat">
+            <div class="th-stat-label">Chart Eligible</div>
+            <div class="th-stat-value" id="statEligible">0</div>
+          </article>
+          <article class="th-card th-stat">
+            <div class="th-stat-label">Total Plays</div>
+            <div class="th-stat-value" id="statPlays">0</div>
+          </article>
+        </div>
+      </section>
+
+      <section class="th-section">
+        <div class="th-section-head">
+          <h2>Music pipeline</h2>
+          <p>Current submissions</p>
+        </div>
+        <div class="th-card pad">
+          <div class="th-pipeline" id="pipeline"></div>
+        </div>
+      </section>
+
+      <section class="th-section">
+        <div class="th-section-head">
+          <h2>My Music</h2>
+          <button class="th-btn secondary" type="button" id="submitMusicBtn">Submit Music</button>
+        </div>
+        <div class="th-chip-row" id="statusFilters" style="margin-bottom:10px">
+          <button class="th-chip is-active" data-status="all" type="button">All</button>
+          <button class="th-chip" data-status="Submitted" type="button">Submitted</button>
+          <button class="th-chip" data-status="Under Review" type="button">Under Review</button>
+          <button class="th-chip" data-status="Approved" type="button">Approved</button>
+          <button class="th-chip" data-status="Published in New Music" type="button">New Music</button>
+          <button class="th-chip" data-status="Chart Eligible" type="button">Chart Eligible</button>
+          <button class="th-chip" data-status="Charting" type="button">Charting</button>
+          <button class="th-chip" data-status="Rejected" type="button">Rejected</button>
+        </div>
+        <div class="th-table-list" id="submissionList"></div>
+      </section>
+
+      <section class="th-section">
+        <div class="th-section-head">
+          <h2>Submission History</h2>
+          <p>TrackHype IDs</p>
+        </div>
+        <div class="th-card pad">
+          <div class="th-table-list" id="historyList"></div>
+        </div>
+      </section>
+
+      <section class="th-section">
+        <div class="th-section-head">
+          <h2>Payments</h2>
+          <p>$10.00 per song</p>
+        </div>
+        <div class="th-table-list" id="paymentsList"></div>
+      </section>
+
+      <section class="th-section">
+        <div class="th-section-head">
+          <h2>Chart History</h2>
+          <p>Official charts only</p>
+        </div>
+        <div class="th-card pad">
+          <div class="th-empty" style="padding:12px 4px">
+            <strong>No published chart positions yet.</strong>
+            Chart history appears here after a song enters an official chart.
+          </div>
+        </div>
+      </section>
+
+      <section class="th-section">
+        <div class="th-section-head">
+          <h2>Edit Artist Profile</h2>
+          <p>Saved locally in this prototype</p>
+        </div>
+        <form class="th-card pad" id="artistForm">
+          <div class="th-form-grid">
+            <div class="th-form-group">
+              <label for="profileName">Artist / Group Name</label>
+              <input class="th-input" id="profileName" required>
+            </div>
+            <div class="th-form-group">
+              <label for="profileGenre">Primary Genre</label>
+              <select class="th-select" id="profileGenre">
+                <option>Zim Hip Hop</option>
+                <option>Zimdancehall</option>
+                <option>Amapiano</option>
+                <option>Sungura</option>
+                <option>Afro-Fusion</option>
+                <option>Gospel Hip Hop</option>
+                <option>Mbira Music</option>
+              </select>
+            </div>
+            <div class="th-form-group">
+              <label for="profileCity">City</label>
+              <input class="th-input" id="profileCity" placeholder="e.g. Harare">
+            </div>
+            <div class="th-form-group">
+              <label for="profileBio">Biography</label>
+              <textarea class="th-textarea" id="profileBio"></textarea>
+            </div>
+            <button class="th-btn primary block" type="submit">Save Artist Profile</button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <nav class="th-bottom" data-bottom>
+    <div class="th-bottom-inner" data-nav-host></div>
+  </nav>
+
+  <aside class="th-player" data-player></aside>
+
+  <div class="th-modal-backdrop" data-modal>
+    <div class="th-sheet" role="dialog" aria-modal="true">
+      <div class="th-sheet-handle"></div>
+      <h3 data-modal-title></h3>
+      <div data-modal-body></div>
+      <div class="th-sheet-actions" data-modal-actions></div>
+    </div>
+  </div>
+
+  <script src="trackhype.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded",()=>{
+      const PIPELINE = [
+        "Payment Received",
+        "Submission Received",
+        "Under Review",
+        "Approved",
+        "Published in New Music",
+        "Chart Eligible",
+        "Charting",
+        "Rejected"
+      ];
+      let activeStatus = "all";
+
+      const state = () => TrackHype.getState();
+
+      function render(){
+        const s = state();
+        const submissions = s.submissions || [];
+        document.getElementById("artistPortrait").src = s.artist.portrait || TrackHype.getArtwork(0);
+        document.getElementById("artistName").textContent = s.artist.name || "Your Artist Profile";
+        document.getElementById("artistMeta").textContent = `${s.artist.handle || "@artist"} · ${s.artist.genre || "Genre not set"} · ${s.artist.city || "Zimbabwe"}`;
+
+        const newMusicCount = submissions.filter(x=>x.status==="Published in New Music").length;
+        const eligibleCount = submissions.filter(x=>/Chart Eligible|Charting/i.test(x.status)).length;
+        const plays = submissions.reduce((sum,x)=>sum+(Number(x.plays)||0),0);
+
+        document.getElementById("statMusic").textContent = submissions.length;
+        document.getElementById("statNewMusic").textContent = newMusicCount;
+        document.getElementById("statEligible").textContent = eligibleCount;
+        document.getElementById("statPlays").textContent = plays.toLocaleString();
+
+        document.getElementById("pipeline").innerHTML = PIPELINE.map((status,index)=>{
+          const count = submissions.filter(x=>x.status===status).length;
+          return `
+            <div class="th-pipeline-item">
+              <span class="th-pipeline-num">${index+1}</span>
+              <div>
+                <strong>${TrackHype.esc(status)}</strong>
+                <small>${count} ${count===1 ? "submission":"submissions"}</small>
+              </div>
+              <span class="th-status ${TrackHype.statusClass(status)}">${count}</span>
+            </div>`;
+        }).join("");
+
+        const visible = activeStatus==="all"
+          ? submissions
+          : submissions.filter(x=>x.status===activeStatus);
+
+        document.getElementById("submissionList").innerHTML = visible.length
+          ? visible.map(x=>`
+            <article class="th-table-row" data-submission-id="${TrackHype.esc(x.id)}" style="grid-template-columns:1.5fr .9fr auto">
+              <div>
+                <strong>${TrackHype.esc(x.title)}</strong>
+                <span style="display:block">${TrackHype.esc(x.genre)} · ${TrackHype.esc(x.city)}</span>
+              </div>
+              <div>
+                <span class="th-status ${TrackHype.statusClass(x.status)}">${TrackHype.esc(x.status)}</span>
+                <span style="display:block;margin-top:4px">${x.plays.toLocaleString()} plays</span>
+              </div>
+              <button class="th-mini-btn" type="button" data-submission="${TrackHype.esc(x.id)}" aria-label="View submission">›</button>
+            </article>
+          `).join("")
+          : `<div class="th-empty"><strong>No submissions in this status.</strong>Change the filter to view another stage.</div>`;
+
+        document.getElementById("historyList").innerHTML = submissions.map(x=>`
+          <div class="th-table-row" style="grid-template-columns:1.25fr .8fr .8fr">
+            <div><strong>${TrackHype.esc(x.id)}</strong><span style="display:block">${TrackHype.esc(x.title)}</span></div>
+            <span>${TrackHype.fmtDate(x.dateAdded)}</span>
+            <span class="th-status ${TrackHype.statusClass(x.status)}">${TrackHype.esc(x.status)}</span>
+          </div>
+        `).join("");
+
+        document.getElementById("paymentsList").innerHTML = (s.payments||[]).map(p=>`
+          <div class="th-table-row" style="grid-template-columns:1.1fr .7fr .8fr">
+            <div><strong>${TrackHype.esc(p.id)}</strong><span style="display:block">${TrackHype.esc(p.submissionId)}</span></div>
+            <span>${TrackHype.fmtDate(p.date)}</span>
+            <span><strong>${TrackHype.fmtMoney(p.amount)}</strong><small style="display:block;color:var(--th-success)">${TrackHype.esc(p.status)}</small></span>
+          </div>
+        `).join("");
+
+        document.getElementById("profileName").value = s.artist.name || "";
+        document.getElementById("profileGenre").value = s.artist.genre || "Zim Hip Hop";
+        document.getElementById("profileCity").value = s.artist.city || "";
+        document.getElementById("profileBio").value = s.artist.bio || "";
+      }
+
+      document.getElementById("statusFilters").addEventListener("click",(event)=>{
+        const button = event.target.closest("[data-status]");
+        if(!button) return;
+        activeStatus = button.dataset.status;
+        document.querySelectorAll("#statusFilters [data-status]").forEach(el=>el.classList.toggle("is-active",el===button));
+        render();
+      });
+
+      document.getElementById("submissionList").addEventListener("click",(event)=>{
+        const btn = event.target.closest("[data-submission]");
+        if(!btn) return;
+        const item = state().submissions.find(x=>x.id===btn.dataset.submission);
+        if(!item) return;
+        TrackHype.openSheet({
+          title:item.title,
+          html:`
+            <div class="th-table-list">
+              <div class="th-table-row"><strong>Submission ID</strong><span>${TrackHype.esc(item.id)}</span><span></span></div>
+              <div class="th-table-row"><strong>Status</strong><span>${TrackHype.esc(item.status)}</span><span></span></div>
+              <div class="th-table-row"><strong>Genre</strong><span>${TrackHype.esc(item.genre)}</span><span></span></div>
+              <div class="th-table-row"><strong>City</strong><span>${TrackHype.esc(item.city)}</span><span></span></div>
+              <div class="th-table-row"><strong>Language</strong><span>${TrackHype.esc(item.language)}</span><span></span></div>
+              <div class="th-table-row"><strong>Added</strong><span>${TrackHype.fmtDate(item.dateAdded)}</span><span></span></div>
+              <div class="th-table-row"><strong>Plays</strong><span>${item.plays.toLocaleString()}</span><span></span></div>
+              <div class="th-table-row"><strong>Favourites</strong><span>${item.favourites.toLocaleString()}</span><span></span></div>
+            </div>
+          `,
+          actions:[{id:"dismiss",label:"Close",primary:true}]
+        });
+      });
+
+      document.getElementById("submitMusicBtn").addEventListener("click",()=>{
+        TrackHype.openSheet({
+          title:"Submit Music",
+          html:`
+            <p>Artist submissions are prepared for a production payment flow at <strong>$10.00 USD per song</strong>.</p>
+            <div class="th-card pad">
+              <strong>Important</strong>
+              <p style="margin:6px 0 0;color:var(--th-muted);font-size:13px">
+                Payment creates a payment/submission record. It does not guarantee official chart placement.
+              </p>
+            </div>
+          `,
+          actions:[
+            {id:"go-submit",label:"Continue to Submit Music",primary:true},
+            {id:"dismiss",label:"Close"}
+          ]
+        });
+        const actionHost = document.querySelector("[data-modal-actions]");
+        actionHost.onclick = (event)=>{
+          if(event.target.dataset.modalAction==="go-submit") location.href="submit-music.html";
+          if(event.target.dataset.modalAction==="dismiss") TrackHype.closeSheet();
+        };
+      });
+
+      document.getElementById("artistForm").addEventListener("submit",(event)=>{
+        event.preventDefault();
+        const name = document.getElementById("profileName").value.trim() || "Your Artist Profile";
+        const genre = document.getElementById("profileGenre").value;
+        const city = document.getElementById("profileCity").value.trim() || "Zimbabwe";
+        const bio = document.getElementById("profileBio").value.trim();
+        TrackHype.updateState(s=>{
+          s.artist.name = name;
+          s.artist.handle = "@"+name.toLowerCase().replace(/[^a-z0-9]+/g,"").slice(0,22);
+          s.artist.genre = genre;
+          s.artist.city = city;
+          s.artist.bio = bio;
+          s.submissions = (s.submissions||[]).map(x=>({...x,artist:name}));
+        });
+        TrackHype.toast("Artist profile saved");
+        render();
+      });
+
+      window.addEventListener("trackhype:statechange",render);
+      render();
+    });
+  </script>
+</body>
+</html>

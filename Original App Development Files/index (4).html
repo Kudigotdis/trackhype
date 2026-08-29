@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TrackHype — Hyped</title>
+<link rel="stylesheet" href="trackhype.css">
+<style>
+  .page-title{font-size:28px;font-weight:900;color:#000;margin:4px 0 4px}.page-sub{font-size:13px;line-height:1.5;color:#666;margin-bottom:16px}
+  .hero{margin-bottom:14px}.hero-kicker{font-size:11px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:#aaa;margin-bottom:7px}.hero-title{font-size:30px;font-weight:900;line-height:1.05}.hero-copy{margin-top:8px;font-size:13px;line-height:1.5;color:#bbb}.hero-actions{display:flex;gap:8px;margin-top:15px;flex-wrap:wrap}.hero-btn{cursor:pointer}.hero-btn.secondary{border-color:#fff;background:#000;color:#fff}
+  .featured{background:#fff;border:1px solid #ddd;border-radius:12px;padding:12px;margin-bottom:16px;display:flex;gap:12px;align-items:center}.featured-art{width:86px;height:86px;border-radius:10px;background:#000;color:#fff;display:grid;place-items:center;font-size:22px;font-weight:900;flex:none}.featured-meta{min-width:0}.eyebrow{font-size:10px;font-weight:900;color:#d81a1a;text-transform:uppercase;letter-spacing:.7px}.featured-title{font-size:18px;font-weight:900;margin-top:3px}.featured-sub{font-size:12px;color:#777;margin-top:4px}.mini-action{margin-left:auto;border:0;background:#000;color:#fff;border-radius:8px;padding:9px 11px;font-size:11px;font-weight:900;white-space:nowrap}
+  .thumb-card{cursor:pointer}.thumb-card:active{transform:scale(.99)} .empty-ad{height:86px}.section + .section{margin-top:2px}.genre-block{margin-bottom:2px}.genre-header{align-items:center}.genre-meta{font-size:10px;color:#777;margin-top:2px}.view-pair{display:flex;gap:8px}.view-pair a{font-size:11px}
+  .badge{display:inline-block;font-size:10px;font-weight:900;background:#eee;padding:5px 7px;border-radius:12px}.rank-label{font-size:10px;font-weight:900;color:#d81a1a;text-transform:uppercase}
+</style>
+</head>
+<body>
+<header class="app-header" id="appHeader">
+  <div class="header-row">
+    <div class="brand">TRACKHYPE</div><div class="spacer"></div>
+    <button class="head-btn" aria-label="Search" onclick="nav('search.html')">⌕</button>
+    <button class="head-btn" aria-label="Menu" onclick="nav('menu.html')">☰</button>
+  </div>
+</header>
+
+<main class="container">
+  <div class="page-title">Hyped</div>
+  <div class="page-sub">Zimbabwe's music discovery space — see what's charting, what's new and which artists are moving right now.</div>
+
+  <section class="featured">
+    <div class="featured-art">TH</div>
+    <div class="featured-meta"><div class="eyebrow">Today on TrackHype</div><div class="featured-title">Discover what's moving</div><div class="featured-sub">Explore today's charts, artists and Zimbabwe's newest sounds.</div></div>
+    <button class="mini-action" onclick="nav('charts.html')">Charts</button>
+  </section>
+
+  <section class="hero">
+    <div class="hero-kicker">Zimbabwe • Daily music pulse</div>
+    <div class="hero-title">What's being hyped?</div>
+    <div class="hero-copy">Use your personalised genres to discover charts, artists and songs you may have missed.</div>
+    <div class="hero-actions">
+      <button class="hero-btn" onclick="nav('charts.html')">Explore Charts</button>
+      <button class="hero-btn secondary" onclick="nav('artists.html')">Find Artists</button>
+    </div>
+  </section>
+
+  <div class="ad">Paid Advert</div>
+
+  <section class="section">
+    <div class="section-head"><div><div class="section-title">Radio Shows</div><div class="genre-meta">Zimbabwe stations</div></div><a class="section-link" href="search.html?q=radio">View All</a></div>
+    <div class="h-scroll" id="radioShows"></div>
+  </section>
+
+  <div class="ad"></div>
+
+  <section class="section">
+    <div class="section-head"><div><div class="section-title">Recent Charts</div><div class="genre-meta">Fresh chart updates</div></div><a class="section-link" href="history.html">View All</a></div>
+    <div class="grid-2" id="recentCharts"></div>
+  </section>
+
+  <div class="ad"></div>
+
+  <section class="section">
+    <div class="section-head"><div><div class="section-title">All Number 1</div><div class="genre-meta">Current #1 songs across selected genres</div></div><a class="section-link" href="charts.html">View All</a></div>
+    <div class="h-scroll" id="numberOnes"></div>
+  </section>
+
+  <div class="ad"></div>
+
+  <section class="section">
+    <div class="section-head"><div><div class="section-title">National Top 100</div><div class="genre-meta">Zimbabwe's biggest songs</div></div><a class="section-link" href="charts.html">View All</a></div>
+    <div class="grid-2" id="nationalTop"></div>
+  </section>
+
+  <div class="ad"></div>
+  <div id="genreSections"></div>
+</main>
+
+<div class="bottom-system">
+  <div class="bottom-player" id="bottomPlayer">
+    <div class="featured-art" id="playerThumb" style="width:42px;height:42px;border-radius:6px;font-size:12px">TH</div>
+    <button class="player-btn player-main" id="playBtn" onclick="togglePlay()">▶</button>
+    <button class="player-btn" id="playlistBtn" aria-label="Playlist">♫</button>
+    <div class="progress"></div>
+    <button class="player-btn" id="bottomToggle" aria-label="Switch player/navigation">□</button>
+  </div>
+  <nav class="nav" id="bottomNav">
+    <button data-nav="index.html">Hyped</button><button data-nav="history.html">History</button><button data-nav="artists.html">Artists</button><button data-nav="search.html">Search</button><button data-nav="menu.html">Menu</button>
+  </nav>
+</div>
+
+<div class="sheet-overlay" id="playlistOverlay" onclick="if(event.target.id==='playlistOverlay')closePlaylist()"><div class="sheet"><div class="sheet-head"><strong>Playlist</strong><button class="close" onclick="closePlaylist()">Close</button></div><div id="playlistList"></div></div></div>
+<script src="trackhype.js"></script>
+<script>
+const topGenres = ['Zim Hip Hop','Zimdancehall','Amapiano','Sungura','Gospel','Afro-Pop','R&B','House','Chimurenga','Afro-Jazz'];
+const genreArtists = {
+  'Zim Hip Hop':['Holy Ten','Saintfloew','T Gonzi','Tashinga Panda'],
+  'Zimdancehall':['Freeman HKD Boss','Enzo Ishall','Jah Master','Blacperl'],
+  'Amapiano':['TitoM','Poptain','Gemma Griffiths','Master H'],
+  'Sungura':['Alick Macheso','Jah Prayzah','Fungisai','Peter Moyo'],
+  'Gospel':['Mambo Dhuterere','Janet Manyowa','Minister Mahendere','Tino Chinyani'],
+  'Afro-Pop':['Feli Nandi','Takura','Andy Muridzo','Nutty O'],
+  'R&B':['Ammara','Hillzy','Vusa Mkhaya','Kudzai Terence'],
+  'House':['DJ Tamuka','Judgement Yard','Tashinga','Blaq Halo'],
+  'Chimurenga':['Thomas Mapfumo','Chiwoniso','Simbotah','Mudhara Vachauya'],
+  'Afro-Jazz':['Tendai Muparutsa','Alexio Kawara','Gary B','Mokoomba']
+};
+function esc(s){return window.TrackHypeShell?.esc?s: String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+function tile(title,sub,href){return `<article class="thumb-card" onclick="location.href='${href}'"><div class="thumb" style="display:grid;place-items:center;background:#000;color:#fff;font-size:22px;font-weight:900">TH</div><div class="thumb-meta"><div class="rank-label">${sub}</div><div class="thumb-title">${title}</div><div class="thumb-sub">TrackHype</div></div></article>`}
+const radio=['Star FM','ZiFM Stereo','Power FM','Classic 263','Nyaminyami FM','Hevoi FM'];
+document.getElementById('radioShows').innerHTML=radio.map(x=>tile(x,'Radio Show','search.html?q='+encodeURIComponent(x))).join('');
+document.getElementById('recentCharts').innerHTML=topGenres.map((g,i)=>tile(g,'Current Chart','charts.html?chart='+encodeURIComponent(g))).join('');
+document.getElementById('numberOnes').innerHTML=topGenres.slice(0,6).map(g=>tile('#1 '+g,g,'charts.html?chart='+encodeURIComponent(g))).join('');
+document.getElementById('nationalTop').innerHTML=Array.from({length:10},(_,i)=>tile('#'+(i+1),'National Top 100','charts.html')).join('');
+document.getElementById('genreSections').innerHTML=topGenres.map(g=>`<section class="section genre-block"><div class="section-head genre-header"><div><div class="section-title">${g}</div><div class="genre-meta">Top 20 songs</div></div><div class="view-pair"><a class="section-link" href="charts.html?chart=${encodeURIComponent(g)}">Chart</a><a class="section-link" href="artists.html?genre=${encodeURIComponent(g)}">Artists</a></div></div><div class="h-scroll">${(genreArtists[g]||[]).map((a,i)=>tile(a,'Top 20','artist.html?artist='+encodeURIComponent(a))).join('')}</div></section>${g!==topGenres[topGenres.length-1]?'<div class="ad"></div>':''}`).join('');
+initShell('index.html');
+</script>
+</body>
+</html>
