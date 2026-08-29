@@ -12,8 +12,7 @@
     .sg-art{flex:none;width:100px;height:100px;border-radius:var(--th-radius-sm);object-fit:cover;background:var(--th-grey-2);border:1px solid var(--th-border-soft)}
     .sg-title{font-size:22px;font-weight:900;line-height:1.15}
     .sg-artist{font-size:13px;color:var(--th-muted);margin-top:4px}
-    .sg-youtube{width:100%;aspect-ratio:16/9;border:0;border-radius:8px;display:block;background:#000}
-    .sg-yt-note{font-size:12px;color:var(--th-faint);margin-top:8px;line-height:1.5}
+.sg-youtube{width:100%;aspect-ratio:16/9;border:0;border-radius:8px;display:block;background:#000}
     .sg-listen{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
     .sg-link{display:flex;flex-direction:column;align-items:center;gap:6px;border:1px solid var(--th-border);background:var(--th-grey-1);border-radius:var(--th-radius-sm);padding:12px 8px;font-size:12px;font-weight:800;color:var(--th-text)}
     .sg-link img{width:26px;height:26px;object-fit:contain}
@@ -59,21 +58,21 @@
 
       <section class="th-section">
         <div class="th-section-head"><h2>YouTube</h2></div>
-<div class="th-card pad" style="background:#000">
-          <div id="youtubeBox" style="aspect-ratio:16/9;background:#000;border-radius:8px;overflow:hidden">
-            <video id="youtubeVideo" style="width:100%;height:100%;object-fit:contain" src="Assets/video/Victony - SLICK (Official Visualizer) - Victony (360p, h264, youtube).mp4" controls playsinline preload="metadata"></video>
+<div class="th-card pad">
+          <div id="youtubeBox">
+            <video id="youtubeVideo" style="display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px" src="Assets/video/Victony - SLICK (Official Visualizer) - Victony (360p, h264, youtube).mp4" controls playsinline preload="metadata"></video>
           </div>
-          <div class="sg-yt-note" style="color:rgba(255,255,255,.65)">Demo player uses a local sample video. TrackHype uses official YouTube embeds in production and does not download or host YouTube audio.</div>
         </div>
       </section>
 
 <section class="th-section">
         <div class="th-section-head"><h2>Listen</h2></div>
-        <div class="sg-listen" style="grid-template-columns:repeat(2,1fr)">
-          <a class="sg-link" href="#" target="_blank" rel="noopener"><img src="Assets/icons/Spotify_icon.svg.webp" alt="">Spotify</a>
-          <a class="sg-link" href="#" target="_blank" rel="noopener"><img src="Assets/icons/itunes_icon.png" alt="">Apple Music</a>
-          <a class="sg-link" href="#" target="_blank" rel="noopener"><img src="Assets/icons/YouTube_On.png" alt="">YouTube</a>
-          <a class="sg-link" href="#" target="_blank" rel="noopener"><img src="Assets/icons/amazon_music_icon.png" alt="" onerror="this.style.visibility='hidden'">Amazon Music</a>
+        <div class="sg-listen" style="display:flex;align-items:center;gap:20px">
+          <a href="#" target="_blank" rel="noopener" aria-label="Listen on Spotify"><img style="width:26px;height:26px;object-fit:contain" src="Assets/icons/Spotify_icon.svg.webp" alt="Spotify"></a>
+          <a href="#" target="_blank" rel="noopener" aria-label="Listen on TikTok"><img style="width:26px;height:26px;object-fit:contain" src="Assets/icons/TikTok_On.png" alt="TikTok"></a>
+          <a href="#" target="_blank" rel="noopener" aria-label="Listen on YouTube"><img style="width:26px;height:26px;object-fit:contain" src="Assets/icons/YouTube_On.png" alt="YouTube"></a>
+          <a href="#" target="_blank" rel="noopener" aria-label="Listen on Amazon Music"><img style="width:26px;height:26px;object-fit:contain" src="Assets/icons/amazon_music_icon.webp" alt="Amazon Music"></a>
+          <a href="#" target="_blank" rel="noopener" aria-label="Listen on iTunes"><img style="width:26px;height:26px;object-fit:contain" src="Assets/icons/itunes_icon.png" alt="iTunes"></a>
         </div>
       </section>
 
@@ -133,9 +132,10 @@
     const chart = params.get("chart") || "top40";
     const currentId = String(id);
 
-    const SONG_DATA = {
+const SONG_DATA = {
       title: "Zimbabwe Sample Song " + id,
       artist: "Zimbabwe Artist " + id,
+      featured: "Featured Artist " + id,
       genre: "Zim Hip Hop",
       city: "Harare",
       artwork: "Assets/charts/top_40_chart/" + (Number(id) % 40 || 1) + ".jpg"
@@ -150,6 +150,11 @@
         <img class="sg-artist-avatar" src="Assets/charts/top_40_chart/${Number(id) % 40 || 1}.jpg" onerror="this.style.visibility='hidden'">
         <div style="flex:1;min-width:0"><div style="font-weight:800">${TrackHype.esc(SONG_DATA.artist)}</div><div style="font-size:12px;color:var(--th-muted)">Primary Artist</div></div>
         <button class="th-btn secondary" type="button" onclick="location.href='artist.html?artist='+encodeURIComponent('${TrackHype.esc(SONG_DATA.artist).replace(/'/g,"\\'")}')">View</button>
+      </div>
+      <div class="sg-artist-row">
+        <img class="sg-artist-avatar" src="Assets/charts/top_40_chart/${(Number(id) + 1) % 40 || 1}.jpg" onerror="this.style.visibility='hidden'">
+        <div style="flex:1;min-width:0"><div style="font-weight:800">${TrackHype.esc(SONG_DATA.featured)}</div><div style="font-size:12px;color:var(--th-muted)">Featured Artist</div></div>
+        <button class="th-btn secondary" type="button" onclick="location.href='artist.html?artist='+encodeURIComponent('${TrackHype.esc(SONG_DATA.featured).replace(/'/g,"\\'")}')">View</button>
       </div>`;
 
 function updateFavIcon(){

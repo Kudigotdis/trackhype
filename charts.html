@@ -41,7 +41,8 @@
         <img class="th-logo-badge" src="Assets/logos/TrackHype Logo Design Badge.webp" alt="TrackHype">
         <img class="th-logo-text" src="Assets/logos/track-hype-text-logo.webp" alt="TrackHype">
       </a>
-      <div class="th-header-context" id="headChart">Charts</div>
+<div class="th-header-context" id="headChart">Charts</div>
+      <button class="th-icon-btn" type="button" aria-label="Search" onclick="location.href='search.html'">⌕</button>
       <button class="th-icon-btn" type="button" aria-label="Menu" onclick="location.href='menu.html'">☰</button>
     </div>
   </header>
@@ -65,6 +66,7 @@
             <div class="ch-title" id="chartTitle">National Top 100</div>
             <div class="ch-meta" id="chartMeta">All Genres — Zimbabwe</div>
             <div class="ch-meta">20 → 1 points · one vote per chart per 24h</div>
+            <div class="ch-meta" id="chartCountdown" style="display:none;color:var(--th-primary-dark);font-weight:800"></div>
           </div>
           <img id="chartFav" src="Assets/icons/heart_inactive_icon.png" alt="Favourite" style="width:26px;height:26px;object-fit:contain;cursor:pointer;flex:none">
         </div>
@@ -201,8 +203,21 @@ function renderHeader(){
       order = buildSongs().map(s => ({ ...s, points: s.rank <= 20 ? (21 - s.rank) : 1 }));
     }
 
-    function votedToday(){
+function votedToday(){
       return TrackHype.hasVotedToday(current.title).length > 0;
+    }
+
+    function nextVoteAvailable(){
+      const recs = TrackHype.hasVotedToday(current.title);
+      if(!recs.length){ return ""; }
+      const last = recs[recs.length - 1];
+      const t = Number((last.id || "").replace("vote-", ""));
+      if(!t){ return ""; }
+      const left = Math.max(0, (t + 24 * 60 * 60 * 1000) - Date.now());
+      const h = Math.floor(left / 3600000);
+      const m = Math.floor((left % 3600000) / 60000);
+      if(h <= 0 && m <= 0 && left > 0){ return "less than a minute"; }
+      return h + "h " + m + "m";
     }
 
     function renderChart(){
@@ -223,6 +238,12 @@ return `
           </article>
           <div class="ch-panel" id="panel-${index}"></div>`;
       }).join("");
+      const cnt = document.getElementById("chartCountdown");
+      if(cnt){
+        const left = nextVoteAvailable();
+        cnt.style.display = left ? "" : "none";
+        if(left){ cnt.textContent = "Next vote available in " + left; }
+      }
     }
 
     function openVote(index){
@@ -266,8 +287,7 @@ return `
       return `
         <div style="font-weight:900;font-size:15px;margin-bottom:4px">${TrackHype.esc(song.title)}</div>
         <div style="font-size:13px;color:var(--th-muted);margin-bottom:8px">${TrackHype.esc(song.artist)}</div>
-        <video class="ch-youtube" style="aspect-ratio:16/9" controls playsinline preload="metadata" src="Assets/video/Victony - SLICK (Official Visualizer) - Victony (360p, h264, youtube).mp4"></video>
-        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:6px">Demo player uses a local sample video. TrackHype uses official YouTube embeds in production and does not download or host YouTube audio.</div>`;
+        <video class="ch-youtube" style="aspect-ratio:16/9" controls playsinline preload="metadata" src="Assets/video/Victony - SLICK (Official Visualizer) - Victony (360p, h264, youtube).mp4"></video>`;
     }
 
     function favKey(song){
@@ -295,7 +315,8 @@ return `
           <button class="th-btn secondary" type="button">Amazon Music</button>
           <button class="th-btn secondary" type="button" onclick="toggleChartFav(${TrackHype.esc(song.id)})">${faved ? "♥ Favourited" : "♡ Favourite"}</button>
           <button class="th-btn secondary" type="button" onclick="location.href='song.html?id=${id}&chart=${TrackHype.esc(current.key)}'">Lyrics</button>
-        </div>`;
+        </div>
+        <a style="display:block;margin-top:10px;font-size:13px;font-weight:800;color:var(--th-primary-dark);text-decoration:none" href="song.html?id=${id}&chart=${TrackHype.esc(current.key)}">VIEW SONG + LYRICS →</a>`;
     }
 
     window.toggleChartFav = (id) => {

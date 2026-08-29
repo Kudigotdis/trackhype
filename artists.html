@@ -191,7 +191,13 @@ if(sort === "successful") data = [...data].sort((a,b)=>(b.chart - a.chart) || a.
       }).join("") || '<div class="th-empty"><strong>No artists match these filters.</strong>Try another genre, year or status.</div>';
     }
 
-    renderAZ();
+renderAZ();
+    const qp = new URLSearchParams(location.search);
+    const qGenre = qp.get("genre");
+    const qFilter = qp.get("filter");
+    const genreSel = document.getElementById("genre");
+    if(qGenre && [...genreSel.options].some(o => o.value === qGenre)){ genreSel.value = qGenre; }
+    if(qFilter === "following"){ document.getElementById("status").value = "Following"; }
     ["genre","status","year","sort"].forEach(id => document.getElementById(id).addEventListener("change", render));
     render();
   </script>
