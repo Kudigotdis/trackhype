@@ -643,7 +643,7 @@
     player.innerHTML = `
 
       <div
-        class="th-player-progress"
+        class="promo-player-progress"
         data-seek
         data-action="seek"
         role="slider"
@@ -653,19 +653,19 @@
         aria-valuenow="${Math.round(progress)}"
       >
         <span
-          class="th-player-progress-fill"
+          class="promo-player-progress-fill"
           style="width:${progress}%"
         ></span>
         <i
-          class="th-player-dot"
+          class="promo-player-dot"
           style="left:${progress}%"
         ></i>
       </div>
 
-      <div class="th-player-inner">
+      <div class="promo-player-inner">
 
         <img
-          class="th-player-art"
+          class="promo-player-art"
           src="${esc(
             track.artwork ||
             getArtwork(0)
@@ -673,7 +673,7 @@
           alt=""
         >
 
-        <div class="th-player-main">
+        <div class="promo-player-main">
 
           <span class="th-artist-name">
             ${esc(track.artist)}
@@ -686,10 +686,10 @@
         </div>
 
         <a
-          class="th-mini-btn th-player-playlist"
+          class="th-mini-btn promo-player-playlist"
           href="playlist.html"
-          aria-label="Open playlist"
-          title="Playlist"
+          aria-label="Open Promo-Playlist"
+          title="Promo-Playlist"
         >
           ♫
         </a>
