@@ -38,6 +38,9 @@
     .splash-fallback{width:160px;height:160px;border-radius:24px;background:linear-gradient(135deg,var(--th-primary),var(--th-primary-dark));display:none;align-items:center;justify-content:center;font-size:50px;font-weight:900;color:#fff;letter-spacing:-2px}
     .splash-brand{margin-top:20px;font-size:32px;font-weight:900;letter-spacing:2px;color:var(--th-text)}
     .splash-tag{font-size:13px;color:var(--th-muted);margin-top:6px}
+
+    .th-advert{border:0;background:none;min-height:0;padding:0}
+    .th-advert img{display:block;width:100%;height:auto}
   </style>
 </head>
 <body data-active-nav="index.html">
@@ -62,14 +65,7 @@
   </header>
 
   <main class="th-app">
-    <div class="th-shell">
-
-      <section>
-        <h1 class="th-page-title">Hyped</h1>
-        <p class="th-page-subtitle">
-          Zimbabwe's music discovery space — see what's charting, what's new and which artists are moving right now.
-        </p>
-      </section>
+<div class="th-shell">
 
       <section class="hy-featured">
         <img class="hy-featured-art" src="Assets/charts/top_40_chart/1.jpg" alt="">
@@ -79,19 +75,9 @@
           <div class="hy-featured-sub">Explore today's charts, artists and Zimbabwe's newest sounds.</div>
         </div>
         <button class="th-btn" style="background:#fff;color:var(--th-primary-dark);border:0;flex:none" type="button" onclick="location.href='charts.html'">Charts</button>
-      </section>
+</section>
 
-      <section class="th-card pad">
-        <div class="hy-kicker">Zimbabwe · Daily music pulse</div>
-        <div class="hy-hero-title">What's being hyped?</div>
-        <div class="hy-hero-copy">Use your personalised genres to discover charts, artists and songs you may have missed.</div>
-        <div class="hy-actions">
-          <button class="th-btn primary" type="button" onclick="location.href='charts.html'">Explore Charts</button>
-          <button class="th-btn" type="button" onclick="location.href='artists.html'">Find Artists</button>
-        </div>
-      </section>
-
-      <div class="th-advert"><strong>Paid Advert</strong> Zimbabwe partner placement</div>
+      <div class="th-advert"><img src="Assets/Demo Media/DemoMedia - Paid Promo.webp" alt="DemoMedia - Paid Promo"></div>
 
       <section class="th-section">
         <div class="th-section-head">
@@ -104,7 +90,7 @@
         <div class="hy-strip" id="radioShows"></div>
       </section>
 
-      <div class="th-advert"></div>
+      <div class="th-advert"><img src="Assets/Demo Media/DemoMedia - Paid Promo.webp" alt="DemoMedia - Paid Promo"></div>
 
       <section class="th-section">
         <div class="th-section-head">
@@ -117,7 +103,7 @@
         <div class="th-grid-2" id="recentCharts"></div>
       </section>
 
-      <div class="th-advert"></div>
+      <div class="th-advert"><img src="Assets/Demo Media/DemoMedia - Paid Promo.webp" alt="DemoMedia - Paid Promo"></div>
 
       <section class="th-section">
         <div class="th-section-head">
@@ -130,7 +116,7 @@
         <div class="hy-strip" id="numberOnes"></div>
       </section>
 
-      <div class="th-advert"></div>
+      <div class="th-advert"><img src="Assets/Demo Media/DemoMedia - Paid Promo.webp" alt="DemoMedia - Paid Promo"></div>
 
       <section class="th-section">
         <div class="th-section-head">
@@ -143,7 +129,7 @@
         <div class="th-grid-2" id="nationalTop"></div>
       </section>
 
-      <div class="th-advert"></div>
+      <div class="th-advert"><img src="Assets/Demo Media/DemoMedia - Paid Promo.webp" alt="DemoMedia - Paid Promo"></div>
       <div id="genreSections"></div>
 
     </div>
@@ -250,7 +236,7 @@ document.getElementById("recentCharts").innerHTML = topGenres.slice(0,10).map((g
         <div class="hy-strip">${(genreArtists[g]||[]).map((a,j) =>
           tile({label:g + " Top 20", title:a, sub:g, href:"artist.html?artist=" + encodeURIComponent(a), img:chartArt(g)})
         ).join("")}</div>
-      </section>${i < topGenres.length - 1 ? '<div class="th-advert"></div>' : ""}`
+      </section>${i < topGenres.length - 1 ? '<div class="th-advert"><img src="Assets/Demo Media/DemoMedia - Paid Promo.webp" alt="DemoMedia - Paid Promo"></div>' : ""}`
     ).join("");
   </script>
 </body>
