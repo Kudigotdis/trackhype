@@ -1,0 +1,2502 @@
+You're asking the right question, and the document you shared actually reveals the **best solution**: the **3-tier architecture built on Option 1 (user-submitted).**
+
+Here's why:
+
+---
+
+## The Core Insight
+
+You can't do Option 2 (curated catalog) because **your app IS user-submitted.** Artists submit their songs to your charts.
+
+But you CAN fix the "listener overwhelm" problem from Option 1 by using the **3-tier pipeline** from the document—which creates a quality filter + discovery sequence without needing a pre-curated catalog.
+
+---
+
+## The Best Hybrid: 3-Tier User-Submitted Model
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ TIER 1: MAIN CHART (Top 20 This Week)                                      │
+│ • Yesterday's Contenders that got most votes                               │
+│ • + New submissions that broke through from Tier 2                          │
+│ • User action: "Vote for your top 10" (10–1 points)                        │
+│ • Display: Clean. Only 20 songs.                                            │
+└────────────────────────────────────▲──────────────────────────────────────┘
+                                     │ Promoted weekly
+┌────────────────────────────────────┴──────────────────────────────────────┐
+│ TIER 2: CONTENDERS (50% of Last Week's New Submissions)                   │
+│ • "Did you vote for these last week? They're climbing."                    │
+│ • Songs that got upvotes in Tier 3 last week                              │
+│ • User action: Can add to ballot as "sneeper picks"                        │
+│ • Display: 10–15 songs. Optional discovery.                                │
+└────────────────────────────────────▲──────────────────────────────────────┘
+                                     │ Promoted weekly
+┌────────────────────────────────────┴──────────────────────────────────────┐
+│ TIER 3: NEW RELEASES (All Submissions From THIS WEEK)                     │
+│ • 🆕 "12 new songs dropped—vote for your top 5 to advance them"          │
+│ • Every artist who submits goes here first                                │
+│ • User action: "Tap to vote for" (upvote/downvote)                        │
+│ • Display: Scrollable list. Fresh content.                                 │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Why This Works (The Magic)
+
+| Problem | Solution |
+|---------|----------|
+| **Overwhelm (Option 1)** | Tier 3 is separate. Listeners don't *have to* look, but they can. |
+| **Unfair to new artists** | Tier 3 gets immediate exposure. Top 50% auto-promote to Tier 2. |
+| **Listener confusion** | 3 tabs = 3 clear purposes. Familiar songs in Tier 1, discoveries in 2–3. |
+| **Chart stagnation** | Weekly reset + promotion pipeline keeps energy high. |
+| **Artist re-submission fatigue** | Artists only need to submit to Tier 3. No "re-submit to stay alive." |
+
+---
+
+## The Weekly Rhythm
+
+```
+MONDAY 00:00 UTC (Fresh Week Starts)
+├─ Tier 1: Old winners (clean up, lock for voting)
+├─ Tier 2: Top 50% of last week's Tier 3 auto-promotes
+└─ Tier 3: Resets to empty. Artists can submit new tracks.
+
+MONDAY–SATURDAY
+├─ Listeners vote their Top 10 in Tier 1
+├─ Listeners can optionally upvote songs in Tier 3
+└─ Artists submit new songs to Tier 3
+
+SUNDAY 23:00 UTC (Week Ends)
+├─ Tally votes → Top 20 becomes next week's Tier 1
+├─ Count upvotes in Tier 3 → Top 50% become next week's Tier 2
+└─ Archive everything
+
+SUNDAY 00:00 UTC (Reset)
+└─ Repeat
+```
+
+---
+
+## Scoring (Simple + Fair)
+
+```javascript
+// Tier 1 (Main ballot):
+function computeMainChartScore(submission) {
+  const basePoints = submission.ballotRank ? (11 - submission.ballotRank) : 0;  // 10–1
+  const newBoost = submission.ageInDays <= 28 ? 2 : 0;                         // +2 if < 4 weeks
+  return basePoints + newBoost;
+}
+
+// Tier 3 (Discovery upvotes):
+function countContenderVotes(submission) {
+  const upvotes = submission.discoveryUpvotes || 0;
+  return upvotes;  // Simple: just count who voted to advance
+}
+
+// Promotion rule:
+// Top 50% of Tier 3 by upvote count → Tier 2 next week
+// Top 20 of Tier 1 by basePoints + newBoost → stays in Tier 1 next week
+```
+
+---
+
+## Updated Storage Schema
+
+```javascript
+// Submission (all songs start here)
+{
+  id: "sub-1693478400000",
+  chartKey: "hiphop-trending",
+  weekKey: "2026-W35",           // Week submitted
+  tier: 3,                        // 1, 2, or 3
+  songId: "song-by-artist-A",
+  artistId: "artist-A",
+  title: "My Track",
+  artistName: "Artist A",
+  streamUrl: "...",
+  submittedAt: 1693478400000,
+  status: "active",
+  
+  // Tier 3 upvotes (for discovery ballot)
+  discoveryUpvotes: 23,
+  discoveryUpvoters: ["user1", "user2", ...],  // To prevent double-voting
+  
+  // Tier 1 ballot votes (if promoted)
+  ballotVotes: { 1: 5, 2: 8, 3: 2, ... },     // rank → count
+  totalBallotPoints: 127
+}
+
+// User's ballot
+{
+  id: "ballot-1693564800000",
+  chartKey: "hiphop-trending",
+  weekKey: "2026-W35",
+  picks: [
+    { submissionId: "sub-001", rank: 1, points: 10 },
+    { submissionId: "sub-002", rank: 2, points: 9 },
+    // ... top 10
+  ],
+  
+  // NEW: Discovery votes (Tier 3)
+  discoveryUpvotes: ["sub-045", "sub-067", "sub-089", "sub-112", "sub-134"]  // Top 5
+}
+
+// Archive snapshot (for historical view)
+{
+  weekKey: "2026-W35",
+  chartKey: "hiphop-trending",
+  publishedAt: Date.now(),
+  tier1_rankings: [
+    { rank: 1, submissionId: "sub-001", artist: "Artist A", points: 127 }
+  ],
+  tier2_contenders: [
+    { submissionId: "sub-045", upvotes: 67 }  // Promoted from last week's Tier 3
+  ],
+  tier3_graduates: [
+    // Top 50% of this week's Tier 3, will be next week's Tier 2
+  ]
+}
+```
+
+---
+
+## UI: The 3 Tabs
+
+```html
+<div class="chart-tabs">
+  <button class="tab-active" onclick="showTier(1)">
+    🔥 Main Chart
+  </button>
+  <button class="tab" onclick="showTier(2)">
+    ⚡ Contenders
+  </button>
+  <button class="tab" onclick="showTier(3)">
+    ✨ New Drops (12)
+  </button>
+</div>
+
+<!-- TIER 1: Main Chart -->
+<div id="tier-1" class="tier-view">
+  <h2>This Week's Top 20</h2>
+  <div class="chart-description">
+    Vote for your top 10 to rank this week's best songs
+  </div>
+  
+  <button onclick="startBallot()">📋 Create My Top 10</button>
+  
+  <div id="chart-list">
+    <!-- 20 songs with current points -->
+  </div>
+</div>
+
+<!-- TIER 2: Contenders -->
+<div id="tier-2" class="tier-view" style="display:none;">
+  <h2>⚡ Rising Contenders</h2>
+  <div class="chart-description">
+    These songs got love last week. Can they reach the main chart?
+  </div>
+  
+  <div id="contenders-list">
+    <!-- 10–15 songs with upvote badges -->
+  </div>
+</div>
+
+<!-- TIER 3: New Releases -->
+<div id="tier-3" class="tier-view" style="display:none;">
+  <h2>✨ New Drops This Week</h2>
+  <div class="chart-description">
+    Vote for your top 5 to help them climb to the main chart
+  </div>
+  
+  <button onclick="startDiscoveryVote()">🎯 Vote to Advance</button>
+  
+  <div id="new-releases-list">
+    <!-- All submissions from this week with upvote/downvote toggle -->
+  </div>
+</div>
+```
+
+---
+
+## Why This Is the Answer
+
+✅ **Uses Option 1** (user-submitted = fresh competition)  
+✅ **Solves listener overwhelm** (3 tiers = clear UX, not 500 songs)  
+✅ **Fairs to new artists** (automatic Tier 3 entry, can promote to Tier 1 in 2 weeks)  
+✅ **Prevents lock-in** (songs don't carry over, only top 50% promote)  
+✅ **Offline-friendly** (all logic is local, no complex backend)  
+✅ **Engaging** (two reasons to come back: vote Main Chart + discover Tier 3)  
+
+---
+
+# TrackHype 3-Tier Weekly Ballot System – Complete Implementation Plan
+
+## Overview
+
+The **3-Tier Architecture** replaces the single-chart model with a discovery pipeline:
+
+- **Tier 1 (Main Chart):** Top 20 from last week's votes + climbing contenders
+- **Tier 2 (Contenders):** Top 50% of last week's new submissions (by upvotes)
+- **Tier 3 (New Releases):** All fresh submissions this week
+
+Users engage at all levels:
+- Vote top 10 in Tier 1 (Borda 10–1 + new release boost)
+- Optionally upvote/downvote in Tier 3 (discovery ballot)
+- See progression from Tier 3 → Tier 2 → Tier 1 over weeks
+
+---
+
+## Part 1: State & Storage Schema
+
+### Storage Keys
+
+```javascript
+// ALL submissions for a chart in a given week, organized by tier
+"trackhype:tier1_<chartKey>_<weekKey>"      // Top 20 (locked from last week)
+"trackhype:tier2_<chartKey>_<weekKey>"      // 10–15 contenders (promoted last week)
+"trackhype:tier3_<chartKey>_<weekKey>"      // All new submissions (this week)
+
+// User ballots
+"trackhype:ballots_<chartKey>_<weekKey>"    // Tier 1 votes (main chart)
+"trackhype:discovery_votes_<chartKey>_<weekKey>"  // Tier 3 upvotes
+
+// Archives
+"trackhype:snapshots_<chartKey>_<weekKey>"  // Historical snapshot (read-only)
+
+// User draft state
+"trackhype:draft_tier1_<chartKey>"           // In-progress Tier 1 ballot
+"trackhype:draft_tier3_upvotes_<chartKey>"   // Tier 3 discovery votes (in-progress)
+```
+
+### Data Structure: Submission
+
+```javascript
+// Every song is a submission object, placed in one of 3 tiers
+{
+  id: "sub-1693478400000",
+  chartKey: "hiphop-trending",
+  weekKey: "2026-W35",              // Week it was submitted or promoted to
+  tier: 3,                          // 1, 2, or 3 (current tier this week)
+  
+  // Song metadata
+  songId: "song-by-artist-A",
+  artistId: "artist-A",
+  title: "My Track",
+  artistName: "Artist A",
+  streamUrl: "...",                 // For preview
+  releaseDate: "2026-08-20",        // To compute new-release boost
+  
+  // Lifecycle
+  originalSubmitWeek: "2026-W35",    // Week first submitted (for tracking)
+  submittedAt: 1693478400000,
+  ageInDays: 7,                     // Days since release (recomputed weekly)
+  status: "active",                 // "active" or "archived"
+  
+  // Tier 1 ballot data (only populated if tier=1)
+  ballotVotes: {
+    1: 5,   // 5 people ranked this #1
+    2: 8,   // 8 people ranked this #2
+    3: 2,
+    // ...
+    10: 1
+  },
+  totalBallotVoters: 45,
+  totalBallotPoints: 127,           // Sum of all votes (with boost applied)
+  
+  // Tier 3 upvote data (only populated if tier=3)
+  discoveryUpvotes: 23,
+  discoveryUpvoters: [
+    "user123", "user456", ...       // Track who upvoted (prevent double-vote)
+  ],
+  discoveryDownvotes: 3,
+  upvoteRatio: "88%",               // 23 / (23+3)
+  
+  // Movement & history
+  lastWeekRank: null,               // Where it ranked last week (if applicable)
+  movement: null,                   // "+2" or "-3" or "NEW"
+  peakRank: null                    // Best rank ever achieved
+}
+```
+
+### Data Structure: User Ballot (Tier 1)
+
+```javascript
+{
+  id: "ballot-1693564800000",
+  chartKey: "hiphop-trending",
+  weekKey: "2026-W35",
+  timestamp: Date.now(),
+  
+  // The 10 picks
+  picks: [
+    {
+      rank: 1,
+      submissionId: "sub-001",
+      title: "Fire Beat",
+      artistName: "Artist A",
+      points: 10,                   // Base (10 for rank 1)
+      newBoost: 2,                  // +2 if age <= 28 days
+      finalPoints: 12               // 10 + 2
+    },
+    {
+      rank: 2,
+      submissionId: "sub-045",
+      title: "New Sound",
+      artistName: "Artist B",
+      points: 9,
+      newBoost: 0,
+      finalPoints: 9
+    },
+    // ... ranks 3–10
+  ],
+  
+  submittedAt: Date.now()
+}
+```
+
+### Data Structure: Discovery Ballot (Tier 3)
+
+```javascript
+{
+  id: "discovery-1693478400000",
+  chartKey: "hiphop-trending",
+  weekKey: "2026-W35",
+  timestamp: Date.now(),
+  
+  // User selects top 5 to upvote from Tier 3
+  upvotes: [
+    "sub-112",  // submissionId
+    "sub-134",
+    "sub-089",
+    "sub-045",
+    "sub-067"
+  ],
+  
+  // Optional: user can downvote (signal: "not ready")
+  downvotes: [
+    "sub-200"
+  ],
+  
+  submittedAt: Date.now()
+}
+```
+
+### Data Structure: Archive Snapshot
+
+```javascript
+{
+  id: "snapshot-2026-W35",
+  chartKey: "hiphop-trending",
+  weekKey: "2026-W35",
+  publishedAt: Date.now(),
+  
+  // Tier 1 final rankings
+  tier1_rankings: [
+    {
+      rank: 1,
+      submissionId: "sub-001",
+      title: "Fire Beat",
+      artistName: "Artist A",
+      totalPoints: 127,
+      ballotCount: 45,
+      movement: "+3",
+      isNew: false
+    },
+    // ... top 20
+  ],
+  
+  // Tier 2 (for reference—these were promoted last week)
+  tier2_contenders: [
+    {
+      submissionId: "sub-045",
+      title: "Rising Track",
+      artistName: "Artist C",
+      upvotes: 67,
+      movement: "Promoted from Tier 3 (W34)"
+    }
+    // ... 10–15 contenders
+  ],
+  
+  // Tier 3 stats
+  tier3_submitted: 42,              // Total songs submitted this week
+  tier3_promoted: 21,               // Top 50% (21 of 42) promoted to Tier 2 next week
+  tier3_top_upvoters: [
+    {
+      submissionId: "sub-089",
+      upvotes: 89,
+      willBecomeTier2Next: true
+    }
+    // ... top 50%
+  ]
+}
+```
+
+---
+
+## Part 2: Core Helper Functions
+
+Add these to **trackhype.js**:
+
+### Date & Week Utilities (Unchanged from Previous Plan)
+
+```javascript
+function currentWeekKey() {
+  const now = new Date();
+  const d = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+  return `${d.getUTCFullYear()}-W${String(weekNo).padStart(2, '0')}`;
+}
+
+function getNextSundayReset() {
+  const now = new Date();
+  const nextSunday = new Date(now);
+  const day = now.getUTCDay();
+  const daysUntilSunday = (day === 0) ? 7 : 7 - day;
+  nextSunday.setUTCDate(now.getUTCDate() + daysUntilSunday);
+  nextSunday.setUTCHours(0, 0, 0, 0);
+  return nextSunday.getTime();
+}
+
+function weekKeyToDateRange(weekKey) {
+  const [year, week] = weekKey.split('-W').map(Number);
+  const jan4 = new Date(year, 0, 4);
+  const weekStart = new Date(jan4);
+  weekStart.setDate(jan4.getDate() - jan4.getDay() + 1);
+  weekStart.setDate(weekStart.getDate() + (week - 1) * 7);
+  const weekEnd = new Date(weekStart);
+  weekEnd.setDate(weekStart.getDate() + 6);
+  
+  const monthStart = weekStart.toLocaleString('en-US', { month: 'short' });
+  const dateStart = weekStart.getDate();
+  const monthEnd = weekEnd.toLocaleString('en-US', { month: 'short' });
+  const dateEnd = weekEnd.getDate();
+  
+  return monthStart === monthEnd 
+    ? `${monthStart} ${dateStart}–${dateEnd}`
+    : `${monthStart} ${dateStart} – ${monthEnd} ${dateEnd}`;
+}
+
+function getPreviousWeekKey(weekKey) {
+  const [year, week] = weekKey.split('-W').map(Number);
+  if (week === 1) {
+    return `${year - 1}-W52`;
+  }
+  return `${year}-W${String(week - 1).padStart(2, '0')}`;
+}
+```
+
+### Tier Management
+
+```javascript
+/**
+ * Get all submissions in a specific tier for this week
+ */
+function getSubmissionsForTier(chartKey, weekKey, tier) {
+  const key = `trackhype:tier${tier}_${chartKey}_${weekKey}`;
+  const stored = localStorage.getItem(key);
+  return stored ? JSON.parse(stored) : [];
+}
+
+/**
+ * Save submissions to a tier
+ */
+function saveSubmissionsToTier(chartKey, weekKey, tier, submissions) {
+  const key = `trackhype:tier${tier}_${chartKey}_${weekKey}`;
+  localStorage.setItem(key, JSON.stringify(submissions));
+}
+
+/**
+ * Artist submits a new song to Tier 3 (current week only)
+ */
+function submitSongToChart(chartKey, songMetadata) {
+  const weekKey = currentWeekKey();
+  
+  const submission = {
+    id: `sub-${Date.now()}`,
+    chartKey,
+    weekKey,
+    tier: 3,                    // All new submissions go to Tier 3
+    songId: songMetadata.songId,
+    artistId: songMetadata.artistId,
+    title: songMetadata.title,
+    artistName: songMetadata.artistName,
+    streamUrl: songMetadata.streamUrl,
+    releaseDate: songMetadata.releaseDate,  // ISO date
+    originalSubmitWeek: weekKey,
+    submittedAt: Date.now(),
+    ageInDays: computeAgeInDays(songMetadata.releaseDate),
+    status: "active",
+    
+    // Initialize empty vote/upvote data
+    ballotVotes: {},
+    totalBallotVoters: 0,
+    totalBallotPoints: 0,
+    discoveryUpvotes: 0,
+    discoveryUpvoters: [],
+    discoveryDownvotes: 0,
+    
+    lastWeekRank: null,
+    movement: null,
+    peakRank: null
+  };
+  
+  const tier3 = getSubmissionsForTier(chartKey, weekKey, 3);
+  tier3.push(submission);
+  saveSubmissionsToTier(chartKey, weekKey, 3, tier3);
+  
+  document.dispatchEvent(new CustomEvent('trackhype:song-submitted', { 
+    detail: { submission } 
+  }));
+  
+  return submission;
+}
+
+/**
+ * Compute age in days since release
+ */
+function computeAgeInDays(releaseDate) {
+  const release = new Date(releaseDate);
+  const now = new Date();
+  const diffMs = now - release;
+  return Math.floor(diffMs / (1000 * 60 * 60 * 24));
+}
+
+/**
+ * Check if song qualifies for new-release boost (+2 points)
+ * Returns true if released within last 28 days
+ */
+function qualifiesForNewBoost(submission) {
+  return submission.ageInDays <= 28;
+}
+```
+
+### Tier 1: Main Chart Voting
+
+```javascript
+/**
+ * Check if user has already voted on main chart this week
+ */
+function hasSubmittedMainBallot(chartKey) {
+  const ballots = getMainBallots(chartKey);
+  const thisWeek = currentWeekKey();
+  return ballots.some(b => b.weekKey === thisWeek);
+}
+
+/**
+ * Get all main chart ballots for a week
+ */
+function getMainBallots(chartKey) {
+  const key = `trackhype:ballots_${chartKey}_${currentWeekKey()}`;
+  const stored = localStorage.getItem(key);
+  return stored ? JSON.parse(stored) : [];
+}
+
+/**
+ * Get user's draft Tier 1 ballot
+ */
+function getDraftMainBallot(chartKey) {
+  const key = `trackhype:draft_tier1_${chartKey}`;
+  const stored = localStorage.getItem(key);
+  return stored ? JSON.parse(stored) : { picks: [] };
+}
+
+/**
+ * Save draft Tier 1 ballot
+ */
+function saveDraftMainBallot(chartKey, picks) {
+  const key = `trackhype:draft_tier1_${chartKey}`;
+  const draft = {
+    chartKey,
+    picks,
+    lastModified: Date.now()
+  };
+  localStorage.setItem(key, JSON.stringify(draft));
+}
+
+/**
+ * Submit final Tier 1 ballot
+ * Picks are from Tier 1 OR Tier 2 (contenders)
+ */
+function submitMainBallot(chartKey, picks) {
+  if (hasSubmittedMainBallot(chartKey)) {
+    throw new Error("You have already voted on the main chart this week.");
+  }
+  
+  if (picks.length !== 10) {
+    throw new Error(`Ballot must have exactly 10 picks. You have ${picks.length}.`);
+  }
+  
+  // Validate ranks 1–10 used exactly once
+  const ranks = picks.map(p => p.rank).sort((a, b) => a - b);
+  if (!ranks.every((r, i) => r === i + 1)) {
+    throw new Error("Picks must use ranks 1–10 exactly once.");
+  }
+  
+  const weekKey = currentWeekKey();
+  
+  const ballot = {
+    id: `ballot-${Date.now()}`,
+    chartKey,
+    weekKey,
+    timestamp: Date.now(),
+    picks: picks.map(p => {
+      const basePoints = 11 - p.rank;  // 10 for rank 1, 1 for rank 10
+      const newBoost = qualifiesForNewBoost(p) ? 2 : 0;
+      return {
+        rank: p.rank,
+        submissionId: p.submissionId,
+        title: p.title,
+        artistName: p.artistName,
+        points: basePoints,
+        newBoost,
+        finalPoints: basePoints + newBoost
+      };
+    }),
+    submittedAt: Date.now()
+  };
+  
+  // Append to ballot history
+  const ballotKey = `trackhype:ballots_${chartKey}_${weekKey}`;
+  const ballots = getMainBallots(chartKey);
+  ballots.push(ballot);
+  localStorage.setItem(ballotKey, JSON.stringify(ballots));
+  
+  // Clear draft
+  localStorage.removeItem(`trackhype:draft_tier1_${chartKey}`);
+  
+  document.dispatchEvent(new CustomEvent('trackhype:main-ballot-submitted', { 
+    detail: { chartKey, weekKey, ballot } 
+  }));
+  
+  return ballot;
+}
+```
+
+### Tier 3: Discovery Voting
+
+```javascript
+/**
+ * Check if user has already voted on discovery pool this week
+ */
+function hasSubmittedDiscoveryVote(chartKey) {
+  const votes = getDiscoveryVotes(chartKey);
+  const thisWeek = currentWeekKey();
+  return votes.some(v => v.weekKey === thisWeek);
+}
+
+/**
+ * Get all discovery votes for a week
+ */
+function getDiscoveryVotes(chartKey) {
+  const key = `trackhype:discovery_votes_${chartKey}_${currentWeekKey()}`;
+  const stored = localStorage.getItem(key);
+  return stored ? JSON.parse(stored) : [];
+}
+
+/**
+ * Get user's draft discovery upvotes
+ */
+function getDraftDiscoveryVotes(chartKey) {
+  const key = `trackhype:draft_tier3_upvotes_${chartKey}`;
+  const stored = localStorage.getItem(key);
+  return stored ? JSON.parse(stored) : { upvotes: [], downvotes: [] };
+}
+
+/**
+ * Save draft discovery votes
+ */
+function saveDraftDiscoveryVotes(chartKey, upvotes, downvotes) {
+  const key = `trackhype:draft_tier3_upvotes_${chartKey}`;
+  const draft = {
+    upvotes,
+    downvotes,
+    lastModified: Date.now()
+  };
+  localStorage.setItem(key, JSON.stringify(draft));
+}
+
+/**
+ * Submit discovery votes (for Tier 3)
+ * User picks up to 5 songs to upvote and advance
+ */
+function submitDiscoveryVote(chartKey, upvotes, downvotes) {
+  if (hasSubmittedDiscoveryVote(chartKey)) {
+    throw new Error("You have already voted on the discovery pool this week.");
+  }
+  
+  if (upvotes.length > 5) {
+    throw new Error("You can upvote up to 5 songs. You selected " + upvotes.length);
+  }
+  
+  const weekKey = currentWeekKey();
+  
+  const discoveryVote = {
+    id: `discovery-${Date.now()}`,
+    chartKey,
+    weekKey,
+    timestamp: Date.now(),
+    upvotes,
+    downvotes,
+    submittedAt: Date.now()
+  };
+  
+  // Append to discovery votes
+  const discoveryKey = `trackhype:discovery_votes_${chartKey}_${weekKey}`;
+  const votes = getDiscoveryVotes(chartKey);
+  votes.push(discoveryVote);
+  localStorage.setItem(discoveryKey, JSON.stringify(votes));
+  
+  // Update submission upvote counts
+  const tier3 = getSubmissionsForTier(chartKey, weekKey, 3);
+  
+  upvotes.forEach(submissionId => {
+    const sub = tier3.find(s => s.id === submissionId);
+    if (sub) {
+      if (!sub.discoveryUpvoters.includes("user-" + Date.now())) {
+        sub.discoveryUpvotes += 1;
+        sub.discoveryUpvoters.push("user-" + Date.now());
+      }
+    }
+  });
+  
+  downvotes.forEach(submissionId => {
+    const sub = tier3.find(s => s.id === submissionId);
+    if (sub) {
+      sub.discoveryDownvotes += 1;
+    }
+  });
+  
+  // Recompute upvote ratio
+  tier3.forEach(sub => {
+    const total = sub.discoveryUpvotes + sub.discoveryDownvotes;
+    sub.upvoteRatio = total > 0 
+      ? ((sub.discoveryUpvotes / total) * 100).toFixed(0) + '%'
+      : '—';
+  });
+  
+  saveSubmissionsToTier(chartKey, weekKey, 3, tier3);
+  
+  // Clear draft
+  localStorage.removeItem(`trackhype:draft_tier3_upvotes_${chartKey}`);
+  
+  document.dispatchEvent(new CustomEvent('trackhype:discovery-vote-submitted', { 
+    detail: { chartKey, weekKey, discoveryVote } 
+  }));
+  
+  return discoveryVote;
+}
+```
+
+### Aggregation & Ranking
+
+```javascript
+/**
+ * Aggregate all main-chart ballots for Tier 1 and compute final rankings
+ * Called at week boundary or on-demand for display
+ */
+function aggregateMainBallots(chartKey, weekKey) {
+  const ballots = getMainBallots(chartKey);
+  const tier1 = getSubmissionsForTier(chartKey, weekKey, 1);
+  const tier2 = getSubmissionsForTier(chartKey, weekKey, 2);
+  
+  // Initialize score tracking for Tier 1 + Tier 2 songs only
+  const songScores = {};
+  
+  tier1.forEach(sub => {
+    songScores[sub.id] = {
+      title: sub.title,
+      artistName: sub.artistName,
+      totalPoints: 0,
+      voteCount: 0,
+      isNew: qualifiesForNewBoost(sub)
+    };
+  });
+  
+  tier2.forEach(sub => {
+    songScores[sub.id] = {
+      title: sub.title,
+      artistName: sub.artistName,
+      totalPoints: 0,
+      voteCount: 0,
+      isNew: qualifiesForNewBoost(sub)
+    };
+  });
+  
+  // Tally votes
+  ballots.forEach(ballot => {
+    ballot.picks.forEach(pick => {
+      if (songScores[pick.submissionId]) {
+        songScores[pick.submissionId].totalPoints += pick.finalPoints;
+        songScores[pick.submissionId].voteCount += 1;
+      }
+    });
+  });
+  
+  // Sort and assign ranks
+  const rankings = Object.entries(songScores)
+    .map(([submissionId, data]) => ({
+      submissionId,
+      title: data.title,
+      artistName: data.artistName,
+      totalPoints: data.totalPoints,
+      voteCount: data.voteCount,
+      pickRate: ballots.length > 0 
+        ? ((data.voteCount / ballots.length) * 100).toFixed(1) + '%'
+        : '0%'
+    }))
+    .sort((a, b) => b.totalPoints - a.totalPoints)
+    .slice(0, 20)
+    .map((item, idx) => ({ ...item, rank: idx + 1 }));
+  
+  return rankings;
+}
+
+/**
+ * Compute movement badges (vs. last week)
+ */
+function computeMovement(currentRank, lastWeekRank) {
+  if (lastWeekRank === null || lastWeekRank === undefined) {
+    return { label: "NEW", emoji: "🆕" };
+  }
+  
+  const diff = lastWeekRank - currentRank;
+  
+  if (diff > 0) {
+    return { label: `+${diff}`, emoji: "🟢" };
+  } else if (diff < 0) {
+    return { label: `${diff}`, emoji: "🔴" };
+  } else {
+    return { label: "=", emoji: "🟡" };
+  }
+}
+```
+
+### Weekly Reset & Promotion
+
+```javascript
+/**
+ * Run at Sunday 00:00 UTC: Reset and promote tiers
+ * - Archive current Tier 1 + 2 + 3 as snapshot
+ * - Promote Tier 2 → becomes next week's Tier 2 (carry over)
+ * - Promote top 50% of Tier 3 → becomes next week's Tier 2
+ * - Top 20 from Tier 1 votes → becomes next week's Tier 1
+ * - Clear Tier 3 for new submissions
+ */
+function executeWeeklyReset(chartKey) {
+  const thisWeekKey = currentWeekKey();
+  const ballots = getMainBallots(chartKey);
+  const discoveryVotes = getDiscoveryVotes(chartKey);
+  
+  // Step 1: Aggregate and get final rankings
+  const tier1Rankings = aggregateMainBallots(chartKey, thisWeekKey);
+  
+  // Step 2: Get current Tier 3 and sort by upvotes
+  const tier3All = getSubmissionsForTier(chartKey, thisWeekKey, 3);
+  const tier3Sorted = tier3All
+    .sort((a, b) => b.discoveryUpvotes - a.discoveryUpvotes)
+    .map((item, idx) => ({ ...item, tier3Rank: idx + 1 }));
+  
+  const promotionCutoff = Math.ceil(tier3Sorted.length * 0.5);  // Top 50%
+  const tier3Promoted = tier3Sorted.slice(0, promotionCutoff);
+  
+  // Step 3: Create archive snapshot
+  const previousWeekKey = getPreviousWeekKey(thisWeekKey);
+  const previousTier1 = getSubmissionsForTier(chartKey, previousWeekKey, 1) || [];
+  
+  // Map last week's ranks for movement tracking
+  const lastWeekRankMap = {};
+  previousTier1.forEach(sub => {
+    lastWeekRankMap[sub.id] = sub.rank || null;
+  });
+  
+  const snapshot = {
+    id: `snapshot-${chartKey}-${thisWeekKey}`,
+    chartKey,
+    weekKey: thisWeekKey,
+    publishedAt: Date.now(),
+    
+    tier1_rankings: tier1Rankings.map(item => {
+      const lastRank = lastWeekRankMap[item.submissionId] || null;
+      const movement = computeMovement(item.rank, lastRank);
+      
+      return {
+        rank: item.rank,
+        submissionId: item.submissionId,
+        title: item.title,
+        artistName: item.artistName,
+        totalPoints: item.totalPoints,
+        ballotCount: item.voteCount,
+        movement: movement.label,
+        emoji: movement.emoji
+      };
+    }),
+    
+    tier3_submitted: tier3All.length,
+    tier3_promoted: tier3Promoted.length,
+    tier3_top_upvoters: tier3Sorted.slice(0, 10).map(item => ({
+      submissionId: item.id,
+      title: item.title,
+      artistName: item.artistName,
+      upvotes: item.discoveryUpvotes,
+      upvoteRatio: item.upvoteRatio
+    }))
+  };
+  
+  // Save snapshot
+  const snapshotKey = `trackhype:snapshots_${chartKey}`;
+  const snapshots = getChartSnapshots(chartKey);
+  snapshots.push(snapshot);
+  localStorage.setItem(snapshotKey, JSON.stringify(snapshots));
+  
+  // Step 4: Prepare NEXT week's tiers
+  const nextWeekKey = getNextWeekKey(thisWeekKey);
+  
+  // Next week's Tier 1 = this week's top 20
+  const nextTier1 = tier1Rankings.map(item => {
+    const sub = tier1All.find(s => s.id === item.submissionId) || 
+               tier2All.find(s => s.id === item.submissionId);
+    return {
+      ...sub,
+      tier: 1,
+      weekKey: nextWeekKey,
+      rank: item.rank,
+      lastWeekRank: item.rank,
+      movement: null
+    };
+  });
+  
+  // Next week's Tier 2 = top 50% from this week's Tier 3
+  const nextTier2 = tier3Promoted.map((item, idx) => ({
+    ...item,
+    tier: 2,
+    weekKey: nextWeekKey,
+    discoveryUpvotes: item.discoveryUpvotes,
+    movement: "Promoted from Tier 3"
+  }));
+  
+  // Save next week's tiers
+  saveSubmissionsToTier(chartKey, nextWeekKey, 1, nextTier1);
+  saveSubmissionsToTier(chartKey, nextWeekKey, 2, nextTier2);
+  // Tier 3 starts empty; artists submit fresh songs
+  saveSubmissionsToTier(chartKey, nextWeekKey, 3, []);
+  
+  // Step 5: Clear current week's ballot/vote data
+  localStorage.removeItem(`trackhype:ballots_${chartKey}_${thisWeekKey}`);
+  localStorage.removeItem(`trackhype:discovery_votes_${chartKey}_${thisWeekKey}`);
+  localStorage.removeItem(`trackhype:draft_tier1_${chartKey}`);
+  localStorage.removeItem(`trackhype:draft_tier3_upvotes_${chartKey}`);
+  
+  document.dispatchEvent(new CustomEvent('trackhype:weekly-reset', { 
+    detail: { chartKey, weekKey: thisWeekKey, snapshot } 
+  }));
+  
+  return snapshot;
+}
+
+/**
+ * Get next week's ISO key (for week math)
+ */
+function getNextWeekKey(weekKey) {
+  const [year, week] = weekKey.split('-W').map(Number);
+  if (week === 52) {
+    return `${year + 1}-W01`;
+  }
+  return `${year}-W${String(week + 1).padStart(2, '0')}`;
+}
+```
+
+### Archive & Historical View
+
+```javascript
+/**
+ * Load all snapshots for a chart
+ */
+function getChartSnapshots(chartKey) {
+  const key = `trackhype:snapshots_${chartKey}`;
+  const stored = localStorage.getItem(key);
+  return stored ? JSON.parse(stored) : [];
+}
+
+/**
+ * Get snapshot for a specific week
+ */
+function getSnapshotForWeek(chartKey, weekKey) {
+  const snapshots = getChartSnapshots(chartKey);
+  return snapshots.find(s => s.weekKey === weekKey);
+}
+
+/**
+ * Get available weeks for archive dropdown
+ */
+function getAvailableWeeks(chartKey) {
+  const snapshots = getChartSnapshots(chartKey);
+  return snapshots
+    .map(s => ({
+      weekKey: s.weekKey,
+      label: `Week ${s.weekKey.split('W')[1]} (${weekKeyToDateRange(s.weekKey)})`
+    }))
+    .reverse()
+    .slice(0, 13);  // Last 13 weeks (3 months)
+}
+```
+
+---
+
+## Part 3: UI Components
+
+### `charts.html` – Structure
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TrackHype Charts</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="chart-container" class="chart-container">
+    
+    <!-- Header -->
+    <div class="chart-header">
+      <h1 id="chart-title">Hip Hop Trending</h1>
+      <div class="chart-header-actions">
+        <select id="week-selector" onchange="handleWeekChange(this.value)" class="week-select">
+          <option value="current">This Week</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Countdown (only current week) -->
+    <div id="countdown-banner" class="countdown-banner">
+      <span id="countdown-text">Next reset in: loading...</span>
+    </div>
+
+    <!-- 3-Tier Tab Navigation -->
+    <div class="tier-tabs">
+      <button class="tab-btn active" onclick="switchTier(1)">
+        🔥 Main Chart <span class="tier-count">(20)</span>
+      </button>
+      <button class="tab-btn" onclick="switchTier(2)">
+        ⚡ Contenders <span class="tier-count" id="tier2-count">(0)</span>
+      </button>
+      <button class="tab-btn" onclick="switchTier(3)">
+        ✨ New Drops <span class="tier-count" id="tier3-count">(0)</span>
+      </button>
+    </div>
+
+    <!-- TIER 1: Main Chart -->
+    <div id="tier-1-view" class="tier-view active">
+      <div class="tier-description">
+        <h2>Vote for Your Top 10</h2>
+        <p>Rank your favorite songs this week. #1 pick gets 10 points, #10 gets 1 point. New songs get a +2 boost.</p>
+      </div>
+
+      <div class="ballot-status">
+        <span id="ballot-status-text">Create your ballot →</span>
+      </div>
+
+      <button id="start-ballot-btn" class="btn-primary btn-large" onclick="startMainBallot()">
+        📋 Create My Top 10
+      </button>
+
+      <div id="already-voted-tier1" class="already-voted" style="display:none;">
+        ✓ You've voted this week. Results update Sunday.
+      </div>
+
+      <div class="chart-legend">
+        <span>Rank</span>
+        <span>Song</span>
+        <span>Points</span>
+        <span>Movement</span>
+      </div>
+
+      <div id="tier1-chart" class="chart-view">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- TIER 2: Contenders -->
+    <div id="tier-2-view" class="tier-view" style="display:none;">
+      <div class="tier-description">
+        <h2>⚡ Rising Contenders</h2>
+        <p>These songs got love last week. They're competing for the main chart. You can include them in your Top 10 ballot above.</p>
+      </div>
+
+      <div id="tier2-list" class="tier-list">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- TIER 3: New Releases -->
+    <div id="tier-3-view" class="tier-view" style="display:none;">
+      <div class="tier-description">
+        <h2>✨ New Drops This Week</h2>
+        <p>Vote for your top 5 to help them climb to the main chart next week. Top 50% by upvotes will become Contenders.</p>
+      </div>
+
+      <div class="discovery-status">
+        <span id="discovery-status-text">Vote to advance →</span>
+      </div>
+
+      <button id="start-discovery-btn" class="btn-primary btn-large" onclick="startDiscoveryVote()">
+        🎯 Vote to Advance
+      </button>
+
+      <div id="already-voted-tier3" class="already-voted" style="display:none;">
+        ✓ You've voted on new drops this week.
+      </div>
+
+      <div id="tier3-list" class="tier-list">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MODAL: Main Chart Ballot -->
+  <div id="main-ballot-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>My Top 10 Ballot</h2>
+        <button class="close-btn" onclick="closeMainBallotModal()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="ballot-progress">
+          <span id="main-picks-count">0</span>/10 picks made
+          <div class="progress-bar">
+            <div id="main-progress-fill" class="progress-fill"></div>
+          </div>
+        </div>
+
+        <div class="ballot-section">
+          <h3>Available Songs (Tier 1 + Tier 2)</h3>
+          <input type="search" id="ballot-search" class="ballot-search" placeholder="Search songs..." onkeyup="filterBallotSongs()">
+          <div id="available-songs" class="songs-list">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <div class="ballot-section">
+          <h3>Your Ranking (Drag to Reorder)</h3>
+          <div id="current-picks" class="picks-ranking">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeMainBallotModal()">Cancel</button>
+        <button id="submit-main-ballot-btn" class="btn-primary" disabled onclick="submitMainBallot()">
+          Submit Top 10
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Discovery Vote -->
+  <div id="discovery-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Vote to Advance (Top 5)</h2>
+        <button class="close-btn" onclick="closeDiscoveryModal()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="discovery-progress">
+          <span id="discovery-picks-count">0</span>/5 upvotes selected
+          <div class="progress-bar">
+            <div id="discovery-progress-fill" class="progress-fill"></div>
+          </div>
+        </div>
+
+        <div class="ballot-section">
+          <h3>New Songs (This Week)</h3>
+          <p class="section-hint">Tap upvote on your top 5. You can also downvote if a song isn't ready.</p>
+          <div id="discovery-songs" class="songs-list">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <div class="discovery-selection">
+          <h3>Your Selections</h3>
+          <div id="discovery-upvotes-display" class="selection-display">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeDiscoveryModal()">Cancel</button>
+        <button id="submit-discovery-btn" class="btn-primary" disabled onclick="submitDiscoveryVote()">
+          Submit Votes
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="trackhype.js"></script>
+  <script src="charts.js"></script>
+</body>
+</html>
+```
+
+### `charts.html` – CSS
+
+```css
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #fafafa;
+  color: #333;
+  padding-bottom: 2rem;
+}
+
+.chart-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #007bff;
+}
+
+.chart-header h1 {
+  font-size: 1.5rem;
+  color: #007bff;
+}
+
+.week-select {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background: white;
+  cursor: pointer;
+}
+
+.countdown-banner {
+  background: #fff3cd;
+  border-left: 4px solid #ffc107;
+  padding: 0.75rem;
+  margin-bottom: 1.5rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: #856404;
+}
+
+/* 3-Tier Tabs */
+.tier-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.tab-btn {
+  padding: 0.75rem;
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 6px 6px 0 0;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+  position: relative;
+  bottom: -1px;
+}
+
+.tab-btn:hover {
+  background: #e8e8e8;
+}
+
+.tab-btn.active {
+  background: white;
+  border: 1px solid #ddd;
+  border-bottom: 1px solid white;
+  font-weight: bold;
+}
+
+.tier-count {
+  font-size: 0.8rem;
+  color: #999;
+  font-weight: normal;
+}
+
+/* Tier Views */
+.tier-view {
+  display: none;
+}
+
+.tier-view.active {
+  display: block;
+}
+
+.tier-description {
+  margin-bottom: 1.5rem;
+}
+
+.tier-description h2 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.tier-description p {
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.4;
+}
+
+/* Status & CTA */
+.ballot-status,
+.discovery-status {
+  padding: 1rem;
+  background: #e7f3ff;
+  border-left: 4px solid #007bff;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #004085;
+  font-weight: 500;
+}
+
+.already-voted {
+  padding: 1rem;
+  background: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #155724;
+  border-radius: 6px;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+/* Buttons */
+.btn-primary,
+.btn-secondary {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-large {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background: #007bff;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #0056b3;
+}
+
+.btn-primary:disabled {
+  background: #ccc;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: #f0f0f0;
+  color: #333;
+  border: 1px solid #ddd;
+  flex: 1;
+}
+
+.btn-secondary:hover {
+  background: #e0e0e0;
+}
+
+/* Chart View */
+.chart-legend {
+  display: grid;
+  grid-template-columns: 60px 1fr 80px 100px;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: #f0f0f0;
+  font-weight: bold;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.chart-view {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.chart-row {
+  display: grid;
+  grid-template-columns: 60px 1fr 80px 100px;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  align-items: center;
+}
+
+.rank-badge {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #007bff;
+  text-align: center;
+}
+
+.song-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.song-title {
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.song-artist {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.points-badge {
+  font-weight: bold;
+  color: #666;
+  text-align: center;
+}
+
+.movement {
+  text-align: right;
+}
+
+.movement-up {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.movement-down {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+.movement-new {
+  color: #ffc107;
+  font-weight: bold;
+}
+
+.movement-same {
+  color: #999;
+}
+
+/* Tier Lists */
+.tier-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.tier-item {
+  padding: 1rem;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tier-item-info {
+  flex: 1;
+}
+
+.tier-item-title {
+  font-weight: 500;
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+}
+
+.tier-item-artist {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.tier-item-stats {
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 0.25rem;
+}
+
+.tier-item-action {
+  margin-left: 1rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tier-item-action:hover {
+  transform: scale(1.2);
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-end;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { background: rgba(0, 0, 0, 0); }
+  to { background: rgba(0, 0, 0, 0.5); }
+}
+
+.modal-content {
+  background: white;
+  width: 100%;
+  max-height: 90vh;
+  border-radius: 12px 12px 0 0;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-header h2 {
+  font-size: 1.1rem;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #999;
+}
+
+.modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+.ballot-progress,
+.discovery-progress {
+  margin-bottom: 1.5rem;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: #eee;
+  border-radius: 3px;
+  margin-top: 0.5rem;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #007bff;
+  transition: width 0.3s ease;
+}
+
+.ballot-section,
+.discovery-selection {
+  margin-bottom: 2rem;
+}
+
+.ballot-section h3,
+.discovery-selection h3 {
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
+  color: #333;
+}
+
+.section-hint {
+  font-size: 0.8rem;
+  color: #999;
+  margin-bottom: 0.75rem;
+}
+
+.ballot-search {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.songs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.song-card {
+  padding: 0.75rem;
+  background: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.song-card:hover {
+  background: #f0f7ff;
+  border-color: #007bff;
+}
+
+.song-card.picked {
+  opacity: 0.5;
+  background: #f0f0f0;
+  pointer-events: none;
+}
+
+.song-card-title {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.song-card-action {
+  font-size: 1.2rem;
+}
+
+.picks-ranking {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+
+.rank-slot {
+  padding: 0.75rem;
+  background: #f9f9f9;
+  border: 2px dashed #ddd;
+  border-radius: 6px;
+  text-align: center;
+  min-height: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.rank-slot:hover {
+  border-color: #007bff;
+  background: #f0f7ff;
+}
+
+.rank-slot.filled {
+  border-style: solid;
+  border-color: #007bff;
+  background: #e7f3ff;
+}
+
+.rank-number {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.rank-slot.filled .rank-number {
+  color: #007bff;
+}
+
+.rank-song {
+  font-size: 0.75rem;
+  color: #999;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 0.25rem;
+}
+
+.rank-slot.filled .rank-song {
+  color: #333;
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+/* Discovery Selection Display */
+.selection-display {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.selected-item {
+  padding: 0.5rem 0.75rem;
+  background: #d4edda;
+  border: 1px solid #c3e6cb;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.selected-item-remove {
+  background: none;
+  border: none;
+  color: #dc3545;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-top: 1px solid #eee;
+  background: #f9f9f9;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .chart-legend,
+  .chart-row {
+    grid-template-columns: 50px 1fr 60px;
+    gap: 0.5rem;
+  }
+  
+  .picks-ranking {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .tier-tabs {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.25rem;
+  }
+  
+  .tab-btn {
+    font-size: 0.75rem;
+    padding: 0.5rem;
+  }
+  
+  .tier-count {
+    display: none;
+  }
+}
+```
+
+### `charts.js` – JavaScript Functions
+
+```javascript
+// ============================================================================
+// STATE MANAGEMENT
+// ============================================================================
+
+let uiState = {
+  chartKey: null,
+  currentWeek: null,
+  viewingWeek: null,  // "current" or specific weekKey
+  currentTier: 1,
+  mainBallotPicks: [],
+  discoveryUpvotes: [],
+  discoveryDownvotes: []
+};
+
+// ============================================================================
+// INITIALIZATION
+// ============================================================================
+
+function initCharts() {
+  uiState.chartKey = getActiveChartKey();  // Function from your app
+  uiState.currentWeek = currentWeekKey();
+  uiState.viewingWeek = "current";
+  
+  // Populate week selector
+  const selector = document.getElementById('week-selector');
+  const weeks = getAvailableWeeks(uiState.chartKey);
+  
+  weeks.forEach(week => {
+    const option = document.createElement('option');
+    option.value = week.weekKey;
+    option.textContent = week.label;
+    selector.appendChild(option);
+  });
+  
+  // Initial render
+  refreshAllTierViews();
+  updateCountdown();
+  
+  // Listen for events
+  document.addEventListener('trackhype:main-ballot-submitted', refreshAllTierViews);
+  document.addEventListener('trackhype:discovery-vote-submitted', refreshAllTierViews);
+  document.addEventListener('trackhype:weekly-reset', refreshAllTierViews);
+}
+
+// ============================================================================
+// TAB SWITCHING
+// ============================================================================
+
+function switchTier(tier) {
+  uiState.currentTier = tier;
+  
+  // Hide all tiers
+  for (let t = 1; t <= 3; t++) {
+    const view = document.getElementById(`tier-${t}-view`);
+    view.classList.remove('active');
+  }
+  
+  // Show selected tier
+  document.getElementById(`tier-${tier}-view`).classList.add('active');
+  
+  // Update tab buttons
+  document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+    btn.classList.remove('active');
+    if (idx === tier - 1) btn.classList.add('active');
+  });
+  
+  // Refresh that tier's view
+  if (tier === 1) refreshTier1View();
+  else if (tier === 2) refreshTier2View();
+  else if (tier === 3) refreshTier3View();
+}
+
+// ============================================================================
+// TIER 1: MAIN CHART
+// ============================================================================
+
+function refreshTier1View() {
+  const isArchived = uiState.viewingWeek !== "current";
+  const weekKey = uiState.viewingWeek === "current" ? uiState.currentWeek : uiState.viewingWeek;
+  
+  let rankings;
+  
+  if (!isArchived) {
+    rankings = aggregateMainBallots(uiState.chartKey, weekKey);
+  } else {
+    const snapshot = getSnapshotForWeek(uiState.chartKey, weekKey);
+    rankings = snapshot ? snapshot.tier1_rankings : [];
+  }
+  
+  if (!rankings || rankings.length === 0) {
+    document.getElementById('tier1-chart').innerHTML = 
+      '<p style="text-align:center;color:#999;padding:2rem;">No votes yet this week.</p>';
+    return;
+  }
+  
+  const chartHtml = rankings.map(item => `
+    <div class="chart-row ${isArchived ? 'archived' : ''}">
+      <div class="rank-badge">#${item.rank}</div>
+      <div class="song-info">
+        <div class="song-title">${item.title || item.songTitle}</div>
+        <div class="song-artist">${item.artistName || item.artist}</div>
+      </div>
+      <div class="points-badge">${item.totalPoints || 0} pts</div>
+      <div class="movement">
+        ${renderMovementBadge(item)}
+      </div>
+    </div>
+  `).join('');
+  
+  document.getElementById('tier1-chart').innerHTML = chartHtml;
+  
+  // Update status
+  updateTier1Status();
+}
+
+function renderMovementBadge(item) {
+  if (!item.movement && !item.emoji) return '—';
+  return `<span class="movement-${item.movement === '+3' || item.movement?.startsWith('+') ? 'up' : item.movement === '=' ? 'same' : 'down'}">
+    ${item.emoji || ''} ${item.movement || '—'}
+  </span>`;
+}
+
+function updateTier1Status() {
+  const hasVoted = hasSubmittedMainBallot(uiState.chartKey);
+  const btnContainer = document.getElementById('start-ballot-btn');
+  const votedContainer = document.getElementById('already-voted-tier1');
+  const statusContainer = document.getElementById('ballot-status-text');
+  
+  if (hasVoted) {
+    btnContainer.style.display = 'none';
+    votedContainer.style.display = 'block';
+    statusContainer.textContent = '✓ Ballot submitted';
+  } else {
+    btnContainer.style.display = 'block';
+    votedContainer.style.display = 'none';
+    statusContainer.textContent = 'Create your ballot →';
+  }
+}
+
+function startMainBallot() {
+  if (hasSubmittedMainBallot(uiState.chartKey)) {
+    alert("You've already voted this week!");
+    return;
+  }
+  
+  // Load draft or start fresh
+  const draft = getDraftMainBallot(uiState.chartKey);
+  uiState.mainBallotPicks = draft.picks || [];
+  
+  openMainBallotModal();
+}
+
+function openMainBallotModal() {
+  document.getElementById('main-ballot-modal').style.display = 'flex';
+  renderAvailableSongsForBallot();
+  renderRankSlotsForBallot();
+}
+
+function closeMainBallotModal() {
+  document.getElementById('main-ballot-modal').style.display = 'none';
+}
+
+function renderAvailableSongsForBallot() {
+  const tier1 = getSubmissionsForTier(uiState.chartKey, uiState.currentWeek, 1);
+  const tier2 = getSubmissionsForTier(uiState.chartKey, uiState.currentWeek, 2);
+  const allAvailable = [...tier1, ...tier2];
+  
+  const pickedIds = new Set(uiState.mainBallotPicks.map(p => p.submissionId));
+  
+  const container = document.getElementById('available-songs');
+  container.innerHTML = allAvailable
+    .filter(song => !pickedIds.has(song.id))
+    .map(song => `
+      <div class="song-card" onclick="addSongToBallot('${song.id}', '${song.title}', '${song.artistName}')">
+        <div>
+          <div class="song-card-title">${song.title}</div>
+          <div style="font-size:0.8rem;color:#999;">${song.artistName}</div>
+        </div>
+        <div class="song-card-action">→</div>
+      </div>
+    `)
+    .join('');
+}
+
+function renderRankSlotsForBallot() {
+  const container = document.getElementById('current-picks');
+  let html = '';
+  
+  for (let rank = 1; rank <= 10; rank++) {
+    const pick = uiState.mainBallotPicks.find(p => p.rank === rank);
+    html += `
+      <div class="rank-slot ${pick ? 'filled' : ''}" onclick="editRankInBallot(${rank})">
+        <div class="rank-number">#${rank}</div>
+        ${pick ? `<div class="rank-song">${pick.title}</div>` : '<div class="rank-song">Tap to add</div>'}
+      </div>
+    `;
+  }
+  
+  document.getElementById('current-picks').innerHTML = html;
+  updateBallotProgress();
+}
+
+function addSongToBallot(submissionId, title, artistName) {
+  // Find next available rank
+  for (let rank = 1; rank <= 10; rank++) {
+    if (!uiState.mainBallotPicks.find(p => p.rank === rank)) {
+      uiState.mainBallotPicks.push({
+        submissionId,
+        rank,
+        title,
+        artistName
+      });
+      break;
+    }
+  }
+  
+  saveDraftMainBallot(uiState.chartKey, uiState.mainBallotPicks);
+  renderAvailableSongsForBallot();
+  renderRankSlotsForBallot();
+}
+
+function editRankInBallot(rank) {
+  const pick = uiState.mainBallotPicks.find(p => p.rank === rank);
+  
+  if (!pick) return;
+  
+  // Allow user to move to different rank or remove
+  const newRank = prompt(
+    `Move "${pick.title}" to a different rank (1-10), or press Cancel to remove:`,
+    rank
+  );
+  
+  if (newRank === null) {
+    // Remove
+    uiState.mainBallotPicks = uiState.mainBallotPicks.filter(p => p.submissionId !== pick.submissionId);
+  } else {
+    const newRankNum = parseInt(newRank, 10);
+    if (newRankNum >= 1 && newRankNum <= 10 && newRankNum !== rank) {
+      // Swap ranks if needed
+      const other = uiState.mainBallotPicks.find(p => p.rank === newRankNum);
+      if (other) {
+        other.rank = rank;
+      }
+      pick.rank = newRankNum;
+    }
+  }
+  
+  saveDraftMainBallot(uiState.chartKey, uiState.mainBallotPicks);
+  renderAvailableSongsForBallot();
+  renderRankSlotsForBallot();
+}
+
+function updateBallotProgress() {
+  const count = uiState.mainBallotPicks.length;
+  document.getElementById('main-picks-count').textContent = count;
+  document.getElementById('main-progress-fill').style.width = `${(count / 10) * 100}%`;
+  document.getElementById('submit-main-ballot-btn').disabled = count !== 10;
+}
+
+function submitMainBallot() {
+  try {
+    submitWeeklyBallot(uiState.chartKey, uiState.mainBallotPicks);
+    closeMainBallotModal();
+    alert('✓ Your ballot has been submitted!');
+    refreshAllTierViews();
+  } catch (error) {
+    alert(`Error: ${error.message}`);
+  }
+}
+
+// ============================================================================
+// TIER 2: CONTENDERS
+// ============================================================================
+
+function refreshTier2View() {
+  const weekKey = uiState.viewingWeek === "current" ? uiState.currentWeek : uiState.viewingWeek;
+  const tier2 = getSubmissionsForTier(uiState.chartKey, weekKey, 2);
+  
+  document.getElementById('tier2-count').textContent = `(${tier2.length})`;
+  
+  if (!tier2 || tier2.length === 0) {
+    document.getElementById('tier2-list').innerHTML = 
+      '<p style="text-align:center;color:#999;padding:2rem;">No contenders this week yet.</p>';
+    return;
+  }
+  
+  const listHtml = tier2.map(song => `
+    <div class="tier-item">
+      <div class="tier-item-info">
+        <div class="tier-item-title">${song.title}</div>
+        <div class="tier-item-artist">${song.artistName}</div>
+        <div class="tier-item-stats">
+          ${song.discoveryUpvotes || 0} upvotes last week
+          ${song.movement ? ` • ${song.movement}` : ''}
+        </div>
+      </div>
+      <div class="tier-item-action">⭐</div>
+    </div>
+  `).join('');
+  
+  document.getElementById('tier2-list').innerHTML = listHtml;
+}
+
+// ============================================================================
+// TIER 3: NEW RELEASES
+// ============================================================================
+
+function refreshTier3View() {
+  const weekKey = uiState.viewingWeek === "current" ? uiState.currentWeek : uiState.viewingWeek;
+  const tier3 = getSubmissionsForTier(uiState.chartKey, weekKey, 3);
+  
+  document.getElementById('tier3-count').textContent = `(${tier3.length})`;
+  
+  if (uiState.viewingWeek !== "current") {
+    // Archived view
+    document.getElementById('tier3-list').innerHTML = 
+      '<p style="text-align:center;color:#999;padding:2rem;">This is an archived week. New submissions only appear in current week.</p>';
+    document.getElementById('start-discovery-btn').style.display = 'none';
+    return;
+  }
+  
+  // Current week view
+  document.getElementById('start-discovery-btn').style.display = 'block';
+  
+  if (!tier3 || tier3.length === 0) {
+    document.getElementById('tier3-list').innerHTML = 
+      '<p style="text-align:center;color:#999;padding:2rem;">No new songs submitted yet this week.</p>';
+    return;
+  }
+  
+  const listHtml = tier3.map(song => `
+    <div class="tier-item">
+      <div class="tier-item-info">
+        <div class="tier-item-title">${song.title}</div>
+        <div class="tier-item-artist">${song.artistName}</div>
+        <div class="tier-item-stats">
+          ${song.discoveryUpvotes || 0} upvotes
+          ${song.upvoteRatio ? ` • ${song.upvoteRatio} positive` : ''}
+        </div>
+      </div>
+      <div class="tier-item-action">
+        <span onclick="toggleDiscoveryUpvote('${song.id}', true)" title="Upvote">
+          ${uiState.discoveryUpvotes.includes(song.id) ? '👍' : '👍'}
+        </span>
+      </div>
+    </div>
+  `).join('');
+  
+  document.getElementById('tier3-list').innerHTML = listHtml;
+  updateTier3Status();
+}
+
+function updateTier3Status() {
+  const hasVoted = hasSubmittedDiscoveryVote(uiState.chartKey);
+  const btnContainer = document.getElementById('start-discovery-btn');
+  const votedContainer = document.getElementById('already-voted-tier3');
+  
+  if (hasVoted) {
+    btnContainer.style.display = 'none';
+    votedContainer.style.display = 'block';
+  } else {
+    btnContainer.style.display = 'block';
+    votedContainer.style.display = 'none';
+  }
+}
+
+function startDiscoveryVote() {
+  if (hasSubmittedDiscoveryVote(uiState.chartKey)) {
+    alert("You've already voted on new drops this week!");
+    return;
+  }
+  
+  // Load draft
+  const draft = getDraftDiscoveryVotes(uiState.chartKey);
+  uiState.discoveryUpvotes = draft.upvotes || [];
+  uiState.discoveryDownvotes = draft.downvotes || [];
+  
+  openDiscoveryModal();
+}
+
+function openDiscoveryModal() {
+  document.getElementById('discovery-modal').style.display = 'flex';
+  renderSongsForDiscovery();
+  renderDiscoverySelection();
+}
+
+function closeDiscoveryModal() {
+  document.getElementById('discovery-modal').style.display = 'none';
+}
+
+function renderSongsForDiscovery() {
+  const tier3 = getSubmissionsForTier(uiState.chartKey, uiState.currentWeek, 3);
+  
+  const container = document.getElementById('discovery-songs');
+  container.innerHTML = tier3.map(song => `
+    <div class="song-card" id="discovery-song-${song.id}">
+      <div>
+        <div class="song-card-title">${song.title}</div>
+        <div style="font-size:0.8rem;color:#999;">${song.artistName}</div>
+        <div style="font-size:0.75rem;color:#ccc;margin-top:0.25rem;">
+          ${song.discoveryUpvotes || 0} upvotes
+        </div>
+      </div>
+      <div style="display:flex;gap:0.5rem;">
+        <span onclick="toggleDiscoveryUpvote('${song.id}', true)" class="song-card-action" title="Upvote">
+          ${uiState.discoveryUpvotes.includes(song.id) ? '👍' : '👍'}
+        </span>
+        <span onclick="toggleDiscoveryDownvote('${song.id}')" class="song-card-action" title="Downvote">
+          ${uiState.discoveryDownvotes.includes(song.id) ? '👎' : '👎'}
+        </span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleDiscoveryUpvote(submissionId, isUpvote) {
+  const isAlreadyUpvoted = uiState.discoveryUpvotes.includes(submissionId);
+  
+  if (isAlreadyUpvoted) {
+    uiState.discoveryUpvotes = uiState.discoveryUpvotes.filter(id => id !== submissionId);
+  } else {
+    if (uiState.discoveryUpvotes.length >= 5) {
+      alert('You can upvote up to 5 songs. Remove one to add another.');
+      return;
+    }
+    uiState.discoveryUpvotes.push(submissionId);
+    // Remove from downvotes if present
+    uiState.discoveryDownvotes = uiState.discoveryDownvotes.filter(id => id !== submissionId);
+  }
+  
+  saveDraftDiscoveryVotes(uiState.chartKey, uiState.discoveryUpvotes, uiState.discoveryDownvotes);
+  renderSongsForDiscovery();
+  renderDiscoverySelection();
+}
+
+function toggleDiscoveryDownvote(submissionId) {
+  const isAlreadyDownvoted = uiState.discoveryDownvotes.includes(submissionId);
+  
+  if (isAlreadyDownvoted) {
+    uiState.discoveryDownvotes = uiState.discoveryDownvotes.filter(id => id !== submissionId);
+  } else {
+    uiState.discoveryDownvotes.push(submissionId);
+    // Remove from upvotes if present
+    uiState.discoveryUpvotes = uiState.discoveryUpvotes.filter(id => id !== submissionId);
+  }
+  
+  saveDraftDiscoveryVotes(uiState.chartKey, uiState.discoveryUpvotes, uiState.discoveryDownvotes);
+  renderSongsForDiscovery();
+  renderDiscoverySelection();
+}
+
+function renderDiscoverySelection() {
+  const tier3 = getSubmissionsForTier(uiState.chartKey, uiState.currentWeek, 3);
+  const container = document.getElementById('discovery-upvotes-display');
+  
+  if (uiState.discoveryUpvotes.length === 0) {
+    container.innerHTML = '<p style="color:#999;font-size:0.9rem;">Select up to 5 songs to advance</p>';
+  } else {
+    const html = uiState.discoveryUpvotes.map(id => {
+      const song = tier3.find(s => s.id === id);
+      return `
+        <div class="selected-item">
+          <div>
+            <strong>${song.title}</strong> by ${song.artistName}
+          </div>
+          <button class="selected-item-remove" onclick="toggleDiscoveryUpvote('${id}', true)">✕</button>
+        </div>
+      `;
+    }).join('');
+    
+    container.innerHTML = html;
+  }
+  
+  document.getElementById('discovery-picks-count').textContent = uiState.discoveryUpvotes.length;
+  document.getElementById('discovery-progress-fill').style.width = `${(uiState.discoveryUpvotes.length / 5) * 100}%`;
+  document.getElementById('submit-discovery-btn').disabled = uiState.discoveryUpvotes.length === 0;
+}
+
+function submitDiscoveryVote() {
+  try {
+    submitDiscoveryVote(uiState.chartKey, uiState.discoveryUpvotes, uiState.discoveryDownvotes);
+    closeDiscoveryModal();
+    alert('✓ Your discovery votes have been submitted!');
+    refreshAllTierViews();
+  } catch (error) {
+    alert(`Error: ${error.message}`);
+  }
+}
+
+// ============================================================================
+// WEEK NAVIGATION
+// ============================================================================
+
+function handleWeekChange(value) {
+  uiState.viewingWeek = value;
+  
+  const isCurrent = value === "current";
+  document.getElementById('countdown-banner').style.display = isCurrent ? 'block' : 'none';
+  document.getElementById('start-ballot-btn').style.display = isCurrent ? 'block' : 'none';
+  document.getElementById('start-discovery-btn').style.display = isCurrent ? 'block' : 'none';
+  
+  refreshAllTierViews();
+}
+
+// ============================================================================
+// COUNTDOWN TIMER
+// ============================================================================
+
+function updateCountdown() {
+  const resetTime = getNextSundayReset();
+  
+  const timer = setInterval(() => {
+    const now = Date.now();
+    const diff = resetTime - now;
+    
+    if (diff <= 0) {
+      clearInterval(timer);
+      document.getElementById('countdown-text').textContent = 
+        "Chart reset! New votes available now.";
+      return;
+    }
+    
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    
+    document.getElementById('countdown-text').textContent = 
+      `Next reset in: ${days}d ${hours}h ${minutes}m`;
+  }, 1000);
+}
+
+// ============================================================================
+// HELPERS
+// ============================================================================
+
+function refreshAllTierViews() {
+  refreshTier1View();
+  refreshTier2View();
+  refreshTier3View();
+}
+
+function getActiveChartKey() {
+  // Implement based on your app
+  return "hiphop-trending";  // Example
+}
+
+function filterBallotSongs() {
+  const search = document.getElementById('ballot-search').value.toLowerCase();
+  document.querySelectorAll('#available-songs .song-card').forEach(card => {
+    const text = card.textContent.toLowerCase();
+    card.style.display = text.includes(search) ? 'flex' : 'none';
+  });
+}
+
+// ============================================================================
+// INIT ON PAGE LOAD
+// ============================================================================
+
+document.addEventListener('DOMContentLoaded', initCharts);
+```
+
+---
+
+## Part 4: Weekly Reset Automation
+
+### Manual Trigger (For Testing)
+
+```javascript
+// Run in browser console to test reset
+executeWeeklyReset("hiphop-trending");
+```
+
+### Automated (When You Add Backend)
+
+Add a cron job that runs **every Sunday at 00:00 UTC**:
+
+```python
+# Python example with APScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
+
+def reset_all_charts():
+    charts = ["hiphop-trending", "afrobeats-emerging", "electronic-underground"]
+    for chart_key in charts:
+        # Fetch all this week's ballots & votes from database
+        # Run aggregation
+        # Create snapshot
+        # Promote tiers
+        # Clear Tier 3
+        # Broadcast to all clients
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(reset_all_charts, 'cron', day_of_week='6', hour=0, minute=0, timezone='UTC')
+scheduler.start()
+```
+
+---
+
+## Part 5: Testing Checklist
+
+- [ ] Submit song to Tier 3 → appears in "New Drops"
+- [ ] Upvote 5 songs in Tier 3 → count shows 5/5
+- [ ] Submit Tier 3 votes → songs lock, can't vote again
+- [ ] Vote top 10 in Tier 1 (from both tiers) → ballot shows ranks 1–10
+- [ ] Submit Tier 1 ballot → chart updates with points
+- [ ] New song (< 28 days old) gets +2 boost in scoring
+- [ ] Switch between tabs → each tier shows correct songs
+- [ ] View archived week → snapshot shows old rankings + movement badges
+- [ ] Countdown timer counts down to Sunday midnight UTC
+- [ ] Manual reset: `executeWeeklyReset()` → top 20 become Tier 1, top 50% of Tier 3 become Tier 2
+- [ ] After reset, old Tier 3 disappears, new submissions go to new Tier 3
+
+---
+
+## Part 6: Migration & Deployment
+
+### Step 1: Backup Existing Data
+```javascript
+const backup = {
+  oldVotes: localStorage.getItem('trackhype:votes'),
+  oldCharts: localStorage.getItem('trackhype:charts'),
+  timestamp: new Date().toISOString()
+};
+console.log(JSON.stringify(backup));  // Save this
+```
+
+### Step 2: Clear Old Keys
+```javascript
+localStorage.removeItem('trackhype:votes');
+localStorage.removeItem('trackhype:todayKey');
+localStorage.removeItem('trackhype:lastVote');
+// etc.
+```
+
+### Step 3: Deploy New Code
+Push updated trackhype.js, charts.html, charts.js to production.
+
+### Step 4: First Use
+Users see:
+```
+🔥 Main Chart  |  ⚡ Contenders  |  ✨ New Drops (0)
+
+"No songs submitted yet for this week.
+Artists: Submit your track to compete!"
+```
+
+---
+
+## Implementation Order
+
+1. **Add all trackhype.js functions** (date helpers → tier management → aggregation → reset)
+2. **Create charts.html** with 3-tier tab structure
+3. **Add CSS** to stylesheet
+4. **Build charts.js UI** functions (init → tab switching → tier views)
+5. **Wire up main ballot modal** (tier 1 voting)
+6. **Wire up discovery modal** (tier 3 upvoting)
+7. **Test end-to-end** (submit → vote → snapshot → archive)
+8. **Add artist submission flow** (separate from this file, but ties into submitSongToChart)
+9. **Test weekly reset manually**
+10. **Deploy**
+
+---
+
+## How to Use This Plan in VS Code
+
+1. Copy all trackhype.js functions into your existing file
+2. Replace your charts.html with the structure above
+3. Add CSS to your stylesheet
+4. Create new charts.js file with all UI functions
+5. Reference in HTML: `<script src="charts.js"></script>`
+6. Test in browser console: `initCharts()`
+
+Done.

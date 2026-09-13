@@ -1,0 +1,1966 @@
+{
+  "schema_version": "1.0.0",
+  "title": "Zimbabwe Music Genre & Artist Directory",
+  "purpose": "Searchable taxonomy for a music chart application.",
+  "navigation": {
+    "primary": [
+      "family",
+      "genre",
+      "artist"
+    ],
+    "search_fields": [
+      "genre name",
+      "family",
+      "artist name",
+      "keywords"
+    ]
+  },
+  "families": [
+    {
+      "id": "traditional_sacred",
+      "name": "Traditional & Sacred"
+    },
+    {
+      "id": "zimbabwean_mainstream",
+      "name": "Zimbabwean Mainstream"
+    },
+    {
+      "id": "urban",
+      "name": "Urban Genres"
+    },
+    {
+      "id": "hip_hop_subgenres",
+      "name": "Hip-Hop Subgenres"
+    },
+    {
+      "id": "popular_categories",
+      "name": "Other Popular Categories"
+    }
+  ],
+  "genres": [
+    {
+      "id": "mbira",
+      "name": "Mbira",
+      "family_id": "traditional_sacred",
+      "family": "Traditional & Sacred",
+      "description": "Traditional Zimbabwean mbira music centred on interlocking melodic patterns, spirituality and ancestral traditions.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Stella Chiweshe"
+        },
+        {
+          "name": "Ephat Mujuru"
+        },
+        {
+          "name": "Chiwoniso Maraire"
+        },
+        {
+          "name": "Garikayi Tirikoti"
+        },
+        {
+          "name": "Tendayi Gahamadze"
+        }
+      ],
+      "search_terms": [
+        "mbira",
+        "traditional & sacred",
+        "stella chiweshe",
+        "ephat mujuru",
+        "chiwoniso maraire",
+        "garikayi tirikoti",
+        "tendayi gahamadze"
+      ]
+    },
+    {
+      "id": "jiti",
+      "name": "Jiti",
+      "family_id": "traditional_sacred",
+      "family": "Traditional & Sacred",
+      "description": "Fast-paced Zimbabwean guitar-driven dance music.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Paul Mpofu"
+        },
+        {
+          "name": "Baba Harare"
+        },
+        {
+          "name": "The Bhundu Boys"
+        },
+        {
+          "name": "Biggie Tembo"
+        },
+        {
+          "name": "Paul Matavire"
+        }
+      ],
+      "search_terms": [
+        "jiti",
+        "traditional & sacred",
+        "paul mpofu",
+        "baba harare",
+        "the bhundu boys",
+        "biggie tembo",
+        "paul matavire"
+      ]
+    },
+    {
+      "id": "mhande",
+      "name": "Mhande",
+      "family_id": "traditional_sacred",
+      "family": "Traditional & Sacred",
+      "description": "Karanga ceremonial music and dance built around drums, rattles, singing and ritual movement.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Murewa Teachers College Performing Ensemble"
+        },
+        {
+          "name": "Ziyaningi Traditional Dance Group"
+        },
+        {
+          "name": "Chinyakare Ensemble"
+        },
+        {
+          "name": "Dewa Traditional Group"
+        },
+        {
+          "name": "Boterekwa Dance Troupe"
+        }
+      ],
+      "search_terms": [
+        "mhande",
+        "traditional & sacred",
+        "murewa teachers college performing ensemble",
+        "ziyaningi traditional dance group",
+        "chinyakare ensemble",
+        "dewa traditional group",
+        "boterekwa dance troupe"
+      ]
+    },
+    {
+      "id": "mbende_jerusarema",
+      "name": "Mbende / Jerusarema",
+      "family_id": "traditional_sacred",
+      "family": "Traditional & Sacred",
+      "description": "Energetic Zimbabwean traditional dance and drumming tradition.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Douglas Vambe"
+        },
+        {
+          "name": "Murewa Jerusarema Club"
+        },
+        {
+          "name": "Jerusarema Crew"
+        },
+        {
+          "name": "Ngoma Dzepasi"
+        },
+        {
+          "name": "Shingai Cultural Arts"
+        }
+      ],
+      "search_terms": [
+        "mbende / jerusarema",
+        "traditional & sacred",
+        "douglas vambe",
+        "murewa jerusarema club",
+        "jerusarema crew",
+        "ngoma dzepasi",
+        "shingai cultural arts"
+      ]
+    },
+    {
+      "id": "muchongoyo",
+      "name": "Muchongoyo",
+      "family_id": "traditional_sacred",
+      "family": "Traditional & Sacred",
+      "description": "Ndau-associated vigorous music and dance tradition with warrior-like energy.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Chipinga Muchongoyo Group"
+        },
+        {
+          "name": "Muchongoyo Cultural Ensemble"
+        },
+        {
+          "name": "Gaza Heritage Dance Troupe"
+        },
+        {
+          "name": "Mutare Cultural Arts Ensemble"
+        },
+        {
+          "name": "Chipinge High School Cultural Troupe"
+        }
+      ],
+      "search_terms": [
+        "muchongoyo",
+        "traditional & sacred",
+        "chipinga muchongoyo group",
+        "muchongoyo cultural ensemble",
+        "gaza heritage dance troupe",
+        "mutare cultural arts ensemble",
+        "chipinge high school cultural troupe"
+      ]
+    },
+    {
+      "id": "mbakumba",
+      "name": "Mbakumba",
+      "family_id": "traditional_sacred",
+      "family": "Traditional & Sacred",
+      "description": "Traditional Karanga community and agricultural celebration music and dance.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Great Zimbabwe University Dance Ensemble"
+        },
+        {
+          "name": "Masvingo Cultural Arts Group"
+        },
+        {
+          "name": "Chinyakare Cultural Troupe"
+        },
+        {
+          "name": "Zvapano Arts Ensemble"
+        },
+        {
+          "name": "Hwahwa Traditional Arts"
+        }
+      ],
+      "search_terms": [
+        "mbakumba",
+        "traditional & sacred",
+        "great zimbabwe university dance ensemble",
+        "masvingo cultural arts group",
+        "chinyakare cultural troupe",
+        "zvapano arts ensemble",
+        "hwahwa traditional arts"
+      ]
+    },
+    {
+      "id": "shangare",
+      "name": "Shangare",
+      "family_id": "traditional_sacred",
+      "family": "Traditional & Sacred",
+      "description": "Traditional Shona cultural and ceremonial music and dance form.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Dhanzi Rerudzi Group"
+        },
+        {
+          "name": "Kambuzuma Cultural Troupe"
+        },
+        {
+          "name": "Goromonzi Arts Troupe"
+        },
+        {
+          "name": "Vhunza Arts Ensemble"
+        },
+        {
+          "name": "Murewa Culture Centre Ensemble"
+        }
+      ],
+      "search_terms": [
+        "shangare",
+        "traditional & sacred",
+        "dhanzi rerudzi group",
+        "kambuzuma cultural troupe",
+        "goromonzi arts troupe",
+        "vhunza arts ensemble",
+        "murewa culture centre ensemble"
+      ]
+    },
+    {
+      "id": "amabhiza",
+      "name": "Amabhiza",
+      "family_id": "traditional_sacred",
+      "family": "Traditional & Sacred",
+      "description": "Kalanga traditional music and dance featuring communal singing, drumming and energetic movement.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "How Mine Chikitsha / Amabhiza Dance Group"
+        },
+        {
+          "name": "Mokoomba"
+        },
+        {
+          "name": "Bolamba Culture Birds"
+        },
+        {
+          "name": "Thakazin Traditional Dance Group"
+        },
+        {
+          "name": "Plumtree Cultural Ensemble"
+        }
+      ],
+      "search_terms": [
+        "amabhiza",
+        "traditional & sacred",
+        "how mine chikitsha / amabhiza dance group",
+        "mokoomba",
+        "bolamba culture birds",
+        "thakazin traditional dance group",
+        "plumtree cultural ensemble"
+      ]
+    },
+    {
+      "id": "afro_soul",
+      "name": "Afro-Soul",
+      "family_id": "traditional_sacred",
+      "family": "Traditional & Sacred",
+      "description": "African melodic and rhythmic influences combined with soulful, emotional vocals.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Berita"
+        },
+        {
+          "name": "Tariro neGitare"
+        },
+        {
+          "name": "Garry Mapanzure"
+        },
+        {
+          "name": "Feli Nandi"
+        },
+        {
+          "name": "Bryan K"
+        }
+      ],
+      "search_terms": [
+        "afro-soul",
+        "traditional & sacred",
+        "berita",
+        "tariro negitare",
+        "garry mapanzure",
+        "feli nandi",
+        "bryan k"
+      ]
+    },
+    {
+      "id": "maskandi",
+      "name": "Maskandi",
+      "family_id": "traditional_sacred",
+      "family": "Traditional & Sacred",
+      "description": "Southern African guitar-led storytelling music rooted in Zulu and regional traditions.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Ndux Malax"
+        },
+        {
+          "name": "Zinjaziyamluma"
+        },
+        {
+          "name": "Abednigo Sikhosana"
+        },
+        {
+          "name": "Insimbi ZeZwane"
+        },
+        {
+          "name": "Forest Finish"
+        }
+      ],
+      "search_terms": [
+        "maskandi",
+        "traditional & sacred",
+        "ndux malax",
+        "zinjaziyamluma",
+        "abednigo sikhosana",
+        "insimbi zezwane",
+        "forest finish"
+      ]
+    },
+    {
+      "id": "sungura",
+      "name": "Sungura",
+      "family_id": "zimbabwean_mainstream",
+      "family": "Zimbabwean Mainstream",
+      "description": "Fast Zimbabwean guitar, bass and drum dance music with storytelling vocals.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Alick Macheso"
+        },
+        {
+          "name": "Leonard Dembo"
+        },
+        {
+          "name": "Tongai Moyo"
+        },
+        {
+          "name": "Nicholas Zakaria"
+        },
+        {
+          "name": "System Tazvida"
+        }
+      ],
+      "search_terms": [
+        "sungura",
+        "zimbabwean mainstream",
+        "alick macheso",
+        "leonard dembo",
+        "tongai moyo",
+        "nicholas zakaria",
+        "system tazvida"
+      ]
+    },
+    {
+      "id": "chimurenga",
+      "name": "Chimurenga",
+      "family_id": "zimbabwean_mainstream",
+      "family": "Zimbabwean Mainstream",
+      "description": "Mbira-derived melodic and rhythmic ideas translated into electric instruments, often socially and politically conscious.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Thomas Mapfumo"
+        },
+        {
+          "name": "Pio Farai Macheka"
+        },
+        {
+          "name": "Robson Banda"
+        },
+        {
+          "name": "Kurai Makore"
+        },
+        {
+          "name": "Bryn Taurai Mteki"
+        }
+      ],
+      "search_terms": [
+        "chimurenga",
+        "zimbabwean mainstream",
+        "thomas mapfumo",
+        "pio farai macheka",
+        "robson banda",
+        "kurai makore",
+        "bryn taurai mteki"
+      ]
+    },
+    {
+      "id": "tuku_music",
+      "name": "Tuku Music",
+      "family_id": "zimbabwean_mainstream",
+      "family": "Zimbabwean Mainstream",
+      "description": "Acoustic-driven Zimbabwean style associated with Oliver Mtukudzi, blending traditional rhythm, jazz and social commentary.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Oliver Mtukudzi"
+        },
+        {
+          "name": "Sam Mtukudzi"
+        },
+        {
+          "name": "Mbeu"
+        },
+        {
+          "name": "Fiona Kasu"
+        },
+        {
+          "name": "Munya Mataruse"
+        }
+      ],
+      "search_terms": [
+        "tuku music",
+        "zimbabwean mainstream",
+        "oliver mtukudzi",
+        "sam mtukudzi",
+        "mbeu",
+        "fiona kasu",
+        "munya mataruse"
+      ]
+    },
+    {
+      "id": "afro_jazz",
+      "name": "Afro-Jazz",
+      "family_id": "zimbabwean_mainstream",
+      "family": "Zimbabwean Mainstream",
+      "description": "Jazz harmony and improvisation combined with African rhythms and melodies.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Louis Mhlanga"
+        },
+        {
+          "name": "Bob Nyabinde"
+        },
+        {
+          "name": "Prudence Katomeni-Mbofana"
+        },
+        {
+          "name": "Victor Kunonga"
+        },
+        {
+          "name": "Dudu Manhenga"
+        }
+      ],
+      "search_terms": [
+        "afro-jazz",
+        "zimbabwean mainstream",
+        "louis mhlanga",
+        "bob nyabinde",
+        "prudence katomeni-mbofana",
+        "victor kunonga",
+        "dudu manhenga"
+      ]
+    },
+    {
+      "id": "zimbabwean_jazz",
+      "name": "Zimbabwean Jazz",
+      "family_id": "zimbabwean_mainstream",
+      "family": "Zimbabwean Mainstream",
+      "description": "Zimbabwean jazz traditions influenced by township music, swing, big bands and indigenous rhythms.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Dorothy Masuka"
+        },
+        {
+          "name": "August Musarurwa"
+        },
+        {
+          "name": "Simangaliso Tutani"
+        },
+        {
+          "name": "Greenford Jangano"
+        },
+        {
+          "name": "The Cool Crooners"
+        }
+      ],
+      "search_terms": [
+        "zimbabwean jazz",
+        "zimbabwean mainstream",
+        "dorothy masuka",
+        "august musarurwa",
+        "simangaliso tutani",
+        "greenford jangano",
+        "the cool crooners"
+      ]
+    },
+    {
+      "id": "imbube",
+      "name": "Imbube",
+      "family_id": "zimbabwean_mainstream",
+      "family": "Zimbabwean Mainstream",
+      "description": "Southern African a cappella tradition built on layered harmony and vocal interplay.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Black Umfolosi"
+        },
+        {
+          "name": "Jeys Marabini"
+        },
+        {
+          "name": "Ubuntu Botho Arts"
+        },
+        {
+          "name": "Indosakusa"
+        },
+        {
+          "name": "Great Mates"
+        }
+      ],
+      "search_terms": [
+        "imbube",
+        "zimbabwean mainstream",
+        "black umfolosi",
+        "jeys marabini",
+        "ubuntu botho arts",
+        "indosakusa",
+        "great mates"
+      ]
+    },
+    {
+      "id": "kanindo",
+      "name": "Kanindo",
+      "family_id": "zimbabwean_mainstream",
+      "family": "Zimbabwean Mainstream",
+      "description": "East and Central African-influenced guitar dance music with fast melodic patterns.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Simaro Mafiapool"
+        },
+        {
+          "name": "Shambare Brothers"
+        },
+        {
+          "name": "Moses Chibhasha"
+        },
+        {
+          "name": "Kuwadzana Express"
+        },
+        {
+          "name": "Marxist Brothers"
+        }
+      ],
+      "search_terms": [
+        "kanindo",
+        "zimbabwean mainstream",
+        "simaro mafiapool",
+        "shambare brothers",
+        "moses chibhasha",
+        "kuwadzana express",
+        "marxist brothers"
+      ]
+    },
+    {
+      "id": "zimbabwean_rumba",
+      "name": "Zimbabwean Rumba",
+      "family_id": "zimbabwean_mainstream",
+      "family": "Zimbabwean Mainstream",
+      "description": "Zimbabwean scene and adaptation of Congolese rumba and soukous guitar traditions.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Juntal"
+        },
+        {
+          "name": "Farai \"Roi\" Stanley"
+        },
+        {
+          "name": "Diamond Musica"
+        },
+        {
+          "name": "Lubumbashi Stars"
+        },
+        {
+          "name": "Real Sounds of Africa"
+        }
+      ],
+      "search_terms": [
+        "zimbabwean rumba",
+        "zimbabwean mainstream",
+        "juntal",
+        "farai \"roi\" stanley",
+        "diamond musica",
+        "lubumbashi stars",
+        "real sounds of africa"
+      ]
+    },
+    {
+      "id": "afro_fusion",
+      "name": "Afro-Fusion",
+      "family_id": "zimbabwean_mainstream",
+      "family": "Zimbabwean Mainstream",
+      "description": "African traditional sounds deliberately blended with modern genres.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Mokoomba"
+        },
+        {
+          "name": "Jah Prayzah"
+        },
+        {
+          "name": "Andy Brown"
+        },
+        {
+          "name": "Willom Tight"
+        },
+        {
+          "name": "Mwenje Mathole"
+        }
+      ],
+      "search_terms": [
+        "afro-fusion",
+        "zimbabwean mainstream",
+        "mokoomba",
+        "jah prayzah",
+        "andy brown",
+        "willom tight",
+        "mwenje mathole"
+      ]
+    },
+    {
+      "id": "afro_pop",
+      "name": "Afro-Pop",
+      "family_id": "zimbabwean_mainstream",
+      "family": "Zimbabwean Mainstream",
+      "description": "Contemporary African popular music focused on hooks, polished production and accessibility.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Ammara Brown"
+        },
+        {
+          "name": "ExQ"
+        },
+        {
+          "name": "Garry Mapanzure"
+        },
+        {
+          "name": "Tamy Moyo"
+        },
+        {
+          "name": "Kinsavyper"
+        }
+      ],
+      "search_terms": [
+        "afro-pop",
+        "zimbabwean mainstream",
+        "ammara brown",
+        "exq",
+        "garry mapanzure",
+        "tamy moyo",
+        "kinsavyper"
+      ]
+    },
+    {
+      "id": "zimdancehall",
+      "name": "Zimdancehall",
+      "family_id": "urban",
+      "family": "Urban Genres",
+      "description": "Zimbabwean interpretation of dancehall using local languages, slang and street culture.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Winky D"
+        },
+        {
+          "name": "Killer T"
+        },
+        {
+          "name": "Soul Jah Love"
+        },
+        {
+          "name": "Seh Calaz"
+        },
+        {
+          "name": "Enzo Ishall"
+        }
+      ],
+      "search_terms": [
+        "zimdancehall",
+        "urban genres",
+        "winky d",
+        "killer t",
+        "soul jah love",
+        "seh calaz",
+        "enzo ishall"
+      ]
+    },
+    {
+      "id": "urban_grooves",
+      "name": "Urban Grooves",
+      "family_id": "urban",
+      "family": "Urban Genres",
+      "description": "Zimbabwean urban movement blending R&B, hip-hop, pop and local influences.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Roki"
+        },
+        {
+          "name": "Stunner"
+        },
+        {
+          "name": "Trevor Dongo"
+        },
+        {
+          "name": "Nox Guni"
+        },
+        {
+          "name": "Plaxedes Wenyika"
+        }
+      ],
+      "search_terms": [
+        "urban grooves",
+        "urban genres",
+        "roki",
+        "stunner",
+        "trevor dongo",
+        "nox guni",
+        "plaxedes wenyika"
+      ]
+    },
+    {
+      "id": "zim_hip_hop",
+      "name": "Zim Hip Hop",
+      "family_id": "urban",
+      "family": "Urban Genres",
+      "description": "Zimbabwean hip-hop incorporating local languages, identity, humour and street culture.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Holy Ten"
+        },
+        {
+          "name": "Ti Gonzi"
+        },
+        {
+          "name": "Tehn Diamond"
+        },
+        {
+          "name": "Asaph"
+        },
+        {
+          "name": "Takura"
+        }
+      ],
+      "search_terms": [
+        "zim hip hop",
+        "urban genres",
+        "holy ten",
+        "ti gonzi",
+        "tehn diamond",
+        "asaph",
+        "takura"
+      ]
+    },
+    {
+      "id": "zim_amapiano",
+      "name": "Amapiano (Zimbabwean)",
+      "family_id": "urban",
+      "family": "Urban Genres",
+      "description": "Zimbabwean interpretation of amapiano with local vocals, slang and rhythms.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Sha Sha"
+        },
+        {
+          "name": "Kimberly Richards"
+        },
+        {
+          "name": "Shasha D"
+        },
+        {
+          "name": "Roseny"
+        },
+        {
+          "name": "DJ Zimboy"
+        }
+      ],
+      "search_terms": [
+        "amapiano (zimbabwean)",
+        "urban genres",
+        "sha sha",
+        "kimberly richards",
+        "shasha d",
+        "roseny",
+        "dj zimboy"
+      ]
+    },
+    {
+      "id": "zimbabwean_house",
+      "name": "Zimbabwean House",
+      "family_id": "urban",
+      "family": "Urban Genres",
+      "description": "Zimbabwean electronic house encompassing deep house, Afro-house and club-oriented styles.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Rayam (RayDizz)"
+        },
+        {
+          "name": "Jus Nativ"
+        },
+        {
+          "name": "DJ Stavo"
+        },
+        {
+          "name": "Reiss"
+        },
+        {
+          "name": "Nitefreak"
+        }
+      ],
+      "search_terms": [
+        "zimbabwean house",
+        "urban genres",
+        "rayam (raydizz)",
+        "jus nativ",
+        "dj stavo",
+        "reiss",
+        "nitefreak"
+      ]
+    },
+    {
+      "id": "zim_edm",
+      "name": "Zim EDM",
+      "family_id": "urban",
+      "family": "Urban Genres",
+      "description": "Zimbabwean electronic dance music and local electronic crossover production.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Sun El Musician (Zim Collaborations)"
+        },
+        {
+          "name": "Ryan Synth"
+        },
+        {
+          "name": "Markus Wormstorm (Zim Projects)"
+        },
+        {
+          "name": "DJ Tamuka"
+        },
+        {
+          "name": "Camo"
+        }
+      ],
+      "search_terms": [
+        "zim edm",
+        "urban genres",
+        "sun el musician (zim collaborations)",
+        "ryan synth",
+        "markus wormstorm (zim projects)",
+        "dj tamuka",
+        "camo"
+      ]
+    },
+    {
+      "id": "zim_trapsoul",
+      "name": "Zim-TrapSoul",
+      "family_id": "urban",
+      "family": "Urban Genres",
+      "description": "Trap production combined with R&B melodies and introspective emotional songwriting.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Kae Chaps"
+        },
+        {
+          "name": "Delroy Shewe"
+        },
+        {
+          "name": "Suahn"
+        },
+        {
+          "name": "Bryan K"
+        },
+        {
+          "name": "Hillzy"
+        }
+      ],
+      "search_terms": [
+        "zim-trapsoul",
+        "urban genres",
+        "kae chaps",
+        "delroy shewe",
+        "suahn",
+        "bryan k",
+        "hillzy"
+      ]
+    },
+    {
+      "id": "shona_hip_hop",
+      "name": "Shona Hip Hop",
+      "family_id": "hip_hop_subgenres",
+      "family": "Hip-Hop Subgenres",
+      "description": "Hip-hop substantially performed in Shona with vernacular wordplay and local storytelling.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Maskiri"
+        },
+        {
+          "name": "Ti Gonzi"
+        },
+        {
+          "name": "Noble Stylz"
+        },
+        {
+          "name": "Junior Brown"
+        },
+        {
+          "name": "Tingz"
+        }
+      ],
+      "search_terms": [
+        "shona hip hop",
+        "hip-hop subgenres",
+        "maskiri",
+        "ti gonzi",
+        "noble stylz",
+        "junior brown",
+        "tingz"
+      ]
+    },
+    {
+      "id": "ndebele_hip_hop",
+      "name": "Ndebele Hip Hop",
+      "family_id": "hip_hop_subgenres",
+      "family": "Hip-Hop Subgenres",
+      "description": "Hip-hop rooted in Ndebele language and Matabeleland/Bulawayo culture.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Cal Vin"
+        },
+        {
+          "name": "Asaph"
+        },
+        {
+          "name": "Luminous"
+        },
+        {
+          "name": "POY"
+        },
+        {
+          "name": "Kidd M Fazo"
+        }
+      ],
+      "search_terms": [
+        "ndebele hip hop",
+        "hip-hop subgenres",
+        "cal vin",
+        "asaph",
+        "luminous",
+        "poy",
+        "kidd m fazo"
+      ]
+    },
+    {
+      "id": "mbare_trap",
+      "name": "Mbare Trap",
+      "family_id": "hip_hop_subgenres",
+      "family": "Hip-Hop Subgenres",
+      "description": "Localized trap scene combining heavy trap production with Mbare street identity.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Kikky Badass"
+        },
+        {
+          "name": "Quonfuzed"
+        },
+        {
+          "name": "Blot"
+        },
+        {
+          "name": "Ghost Magician"
+        },
+        {
+          "name": "Silent Killer"
+        }
+      ],
+      "search_terms": [
+        "mbare trap",
+        "hip-hop subgenres",
+        "kikky badass",
+        "quonfuzed",
+        "blot",
+        "ghost magician",
+        "silent killer"
+      ]
+    },
+    {
+      "id": "ghetto_drill",
+      "name": "Ghetto Drill",
+      "family_id": "hip_hop_subgenres",
+      "family": "Hip-Hop Subgenres",
+      "description": "Zimbabwean drill influenced by international drill rhythms and local street narratives.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Brian Jeck"
+        },
+        {
+          "name": "Stunner"
+        },
+        {
+          "name": "Shingai"
+        },
+        {
+          "name": "Musa"
+        },
+        {
+          "name": "2Yung"
+        }
+      ],
+      "search_terms": [
+        "ghetto drill",
+        "hip-hop subgenres",
+        "brian jeck",
+        "stunner",
+        "shingai",
+        "musa",
+        "2yung"
+      ]
+    },
+    {
+      "id": "jecha_trap",
+      "name": "Jecha Trap",
+      "family_id": "hip_hop_subgenres",
+      "family": "Hip-Hop Subgenres",
+      "description": "Gritty Zimbabwean trap aesthetic focused on raw and relatable street storytelling.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Holy Ten"
+        },
+        {
+          "name": "Voltz JT"
+        },
+        {
+          "name": "Hweda"
+        },
+        {
+          "name": "Uncle Epatan"
+        },
+        {
+          "name": "Bling4"
+        }
+      ],
+      "search_terms": [
+        "jecha trap",
+        "hip-hop subgenres",
+        "holy ten",
+        "voltz jt",
+        "hweda",
+        "uncle epatan",
+        "bling4"
+      ]
+    },
+    {
+      "id": "clarks_rap",
+      "name": "Clarks Rap",
+      "family_id": "hip_hop_subgenres",
+      "family": "Hip-Hop Subgenres",
+      "description": "Fashion, lifestyle and street-swagger-oriented Zimbabwean rap identity.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Scripula"
+        },
+        {
+          "name": "Schingy"
+        },
+        {
+          "name": "Bwino"
+        },
+        {
+          "name": "Ti Gonzi"
+        },
+        {
+          "name": "Sharky"
+        }
+      ],
+      "search_terms": [
+        "clarks rap",
+        "hip-hop subgenres",
+        "scripula",
+        "schingy",
+        "bwino",
+        "ti gonzi",
+        "sharky"
+      ]
+    },
+    {
+      "id": "bulawayo_kasi_rap",
+      "name": "Bulawayo Kasi Rap",
+      "family_id": "hip_hop_subgenres",
+      "family": "Hip-Hop Subgenres",
+      "description": "Township-rooted Bulawayo rap associated with Ndebele, English and local street culture.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Kruiz"
+        },
+        {
+          "name": "Ganyobi"
+        },
+        {
+          "name": "Benny Jones"
+        },
+        {
+          "name": "Mlue Jay"
+        },
+        {
+          "name": "Thabbz"
+        }
+      ],
+      "search_terms": [
+        "bulawayo kasi rap",
+        "hip-hop subgenres",
+        "kruiz",
+        "ganyobi",
+        "benny jones",
+        "mlue jay",
+        "thabbz"
+      ]
+    },
+    {
+      "id": "zim_skhanda",
+      "name": "Zim-Skhanda",
+      "family_id": "hip_hop_subgenres",
+      "family": "Hip-Hop Subgenres",
+      "description": "Zimbabwean adaptation of Skhanda, mixing hip-hop, Kwaito and township rhythms.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Jey Mz"
+        },
+        {
+          "name": "Slickie Boi"
+        },
+        {
+          "name": "Flexxo"
+        },
+        {
+          "name": "TopFella"
+        },
+        {
+          "name": "Kasi Boss"
+        }
+      ],
+      "search_terms": [
+        "zim-skhanda",
+        "hip-hop subgenres",
+        "jey mz",
+        "slickie boi",
+        "flexxo",
+        "topfella",
+        "kasi boss"
+      ]
+    },
+    {
+      "id": "alternative_conscious_zim_rap",
+      "name": "Alternative / Conscious Zim-Rap",
+      "family_id": "hip_hop_subgenres",
+      "family": "Hip-Hop Subgenres",
+      "description": "Lyrically focused rap exploring philosophy, society, politics and introspection.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Synik"
+        },
+        {
+          "name": "Outspoken"
+        },
+        {
+          "name": "Sharky"
+        },
+        {
+          "name": "Metaphysics"
+        },
+        {
+          "name": "Asura"
+        }
+      ],
+      "search_terms": [
+        "alternative / conscious zim-rap",
+        "hip-hop subgenres",
+        "synik",
+        "outspoken",
+        "sharky",
+        "metaphysics",
+        "asura"
+      ]
+    },
+    {
+      "id": "diaspora_afro_drill",
+      "name": "Diaspora Afro-Drill",
+      "family_id": "hip_hop_subgenres",
+      "family": "Hip-Hop Subgenres",
+      "description": "Diaspora-linked artists mixing African identity with drill and international urban music.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Tkay Maidza"
+        },
+        {
+          "name": "Sampa the Great"
+        },
+        {
+          "name": "Jnr Spragga"
+        },
+        {
+          "name": "Kazz Khalif"
+        },
+        {
+          "name": "Shogun"
+        }
+      ],
+      "search_terms": [
+        "diaspora afro-drill",
+        "hip-hop subgenres",
+        "tkay maidza",
+        "sampa the great",
+        "jnr spragga",
+        "kazz khalif",
+        "shogun"
+      ]
+    },
+    {
+      "id": "gospel_hip_hop",
+      "name": "Gospel Hip Hop",
+      "family_id": "hip_hop_subgenres",
+      "family": "Hip-Hop Subgenres",
+      "description": "Christian or faith-based lyrical content delivered through hip-hop.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Mudiwa Hood"
+        },
+        {
+          "name": "Courtney Antipas"
+        },
+        {
+          "name": "J-Praise"
+        },
+        {
+          "name": "Christkidd"
+        },
+        {
+          "name": "Reformed MC"
+        }
+      ],
+      "search_terms": [
+        "gospel hip hop",
+        "hip-hop subgenres",
+        "mudiwa hood",
+        "courtney antipas",
+        "j-praise",
+        "christkidd",
+        "reformed mc"
+      ]
+    },
+    {
+      "id": "trap_gospel",
+      "name": "Trap Gospel",
+      "family_id": "hip_hop_subgenres",
+      "family": "Hip-Hop Subgenres",
+      "description": "Christian themes delivered over modern trap production.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Kingaveli"
+        },
+        {
+          "name": "Prophet T. Freddy"
+        },
+        {
+          "name": "Uncommon MC"
+        },
+        {
+          "name": "ZimPraise Legacy Rappers"
+        },
+        {
+          "name": "Nigel the Slick Pastor"
+        }
+      ],
+      "search_terms": [
+        "trap gospel",
+        "hip-hop subgenres",
+        "kingaveli",
+        "prophet t. freddy",
+        "uncommon mc",
+        "zimpraise legacy rappers",
+        "nigel the slick pastor"
+      ]
+    },
+    {
+      "id": "afro_gospel_rap",
+      "name": "Afro-Gospel Rap",
+      "family_id": "hip_hop_subgenres",
+      "family": "Hip-Hop Subgenres",
+      "description": "African rhythms and musical identity combined with Christian rap.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Mudiwa Hood"
+        },
+        {
+          "name": "Sam-E Lee Jones"
+        },
+        {
+          "name": "Tawana X"
+        },
+        {
+          "name": "Blessed Messenger"
+        },
+        {
+          "name": "Faith P"
+        }
+      ],
+      "search_terms": [
+        "afro-gospel rap",
+        "hip-hop subgenres",
+        "mudiwa hood",
+        "sam-e lee jones",
+        "tawana x",
+        "blessed messenger",
+        "faith p"
+      ]
+    },
+    {
+      "id": "conscious_christian_rap",
+      "name": "Conscious Christian Rap",
+      "family_id": "hip_hop_subgenres",
+      "family": "Hip-Hop Subgenres",
+      "description": "Theological, philosophical and socially reflective Christian hip-hop.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Courtney Antipas"
+        },
+        {
+          "name": "Ill-Cept"
+        },
+        {
+          "name": "The Messenger"
+        },
+        {
+          "name": "Sola Grace"
+        },
+        {
+          "name": "Disciple X"
+        }
+      ],
+      "search_terms": [
+        "conscious christian rap",
+        "hip-hop subgenres",
+        "courtney antipas",
+        "ill-cept",
+        "the messenger",
+        "sola grace",
+        "disciple x"
+      ]
+    },
+    {
+      "id": "sungura_trap",
+      "name": "Sungura Trap",
+      "family_id": "hip_hop_subgenres",
+      "family": "Hip-Hop Subgenres",
+      "description": "Crossover combining Sungura guitar ideas or samples with trap drums and rap structures.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Brian Jeck"
+        },
+        {
+          "name": "Holy Ten"
+        },
+        {
+          "name": "Voltz JT"
+        },
+        {
+          "name": "Leorage"
+        },
+        {
+          "name": "Tonzo"
+        }
+      ],
+      "search_terms": [
+        "sungura trap",
+        "hip-hop subgenres",
+        "brian jeck",
+        "holy ten",
+        "voltz jt",
+        "leorage",
+        "tonzo"
+      ]
+    },
+    {
+      "id": "rnb",
+      "name": "R&B",
+      "family_id": "popular_categories",
+      "family": "Other Popular Categories",
+      "description": "Vocal-driven contemporary rhythm and blues emphasizing groove, romance and emotion.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Trevor Dongo"
+        },
+        {
+          "name": "Hillzy"
+        },
+        {
+          "name": "Nyasha Timbe"
+        },
+        {
+          "name": "Shashl"
+        },
+        {
+          "name": "Kudzai Andrew"
+        }
+      ],
+      "search_terms": [
+        "r&b",
+        "other popular categories",
+        "trevor dongo",
+        "hillzy",
+        "nyasha timbe",
+        "shashl",
+        "kudzai andrew"
+      ]
+    },
+    {
+      "id": "soul",
+      "name": "Soul",
+      "family_id": "popular_categories",
+      "family": "Other Popular Categories",
+      "description": "Emotionally expressive vocal music with strong emphasis on feeling and songwriting.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Prudence Katomeni"
+        },
+        {
+          "name": "Garry Mapanzure"
+        },
+        {
+          "name": "Vuyo Brown"
+        },
+        {
+          "name": "Feli Nandi"
+        },
+        {
+          "name": "Tariro neGitare"
+        }
+      ],
+      "search_terms": [
+        "soul",
+        "other popular categories",
+        "prudence katomeni",
+        "garry mapanzure",
+        "vuyo brown",
+        "feli nandi",
+        "tariro negitare"
+      ]
+    },
+    {
+      "id": "gospel",
+      "name": "Gospel",
+      "family_id": "popular_categories",
+      "family": "Other Popular Categories",
+      "description": "Christian religious music spanning traditional, contemporary and worship styles.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Charles Charamba"
+        },
+        {
+          "name": "Olivia Charamba"
+        },
+        {
+          "name": "Mechanic Manyeruke"
+        },
+        {
+          "name": "Janet Manyowa"
+        },
+        {
+          "name": "Minister Michael Mahendere"
+        }
+      ],
+      "search_terms": [
+        "gospel",
+        "other popular categories",
+        "charles charamba",
+        "olivia charamba",
+        "mechanic manyeruke",
+        "janet manyowa",
+        "minister michael mahendere"
+      ]
+    },
+    {
+      "id": "jazz",
+      "name": "Jazz",
+      "family_id": "popular_categories",
+      "family": "Other Popular Categories",
+      "description": "Improvisation, complex harmony, rhythm and instrumental interaction.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Oliver Mtukudzi"
+        },
+        {
+          "name": "Tanga Wekando"
+        },
+        {
+          "name": "Prudence Katomeni"
+        },
+        {
+          "name": "Dudu Manhenga"
+        },
+        {
+          "name": "Rute Mbangwa"
+        }
+      ],
+      "search_terms": [
+        "jazz",
+        "other popular categories",
+        "oliver mtukudzi",
+        "tanga wekando",
+        "prudence katomeni",
+        "dudu manhenga",
+        "rute mbangwa"
+      ]
+    },
+    {
+      "id": "reggae",
+      "name": "Reggae",
+      "family_id": "popular_categories",
+      "family": "Other Popular Categories",
+      "description": "Bass-heavy Jamaican-rooted music with offbeat rhythms and conscious lyrical traditions.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Transit Crew"
+        },
+        {
+          "name": "Mic Inity"
+        },
+        {
+          "name": "Manouloud"
+        },
+        {
+          "name": "Cactus Agony"
+        },
+        {
+          "name": "Ras Jabulani"
+        }
+      ],
+      "search_terms": [
+        "reggae",
+        "other popular categories",
+        "transit crew",
+        "mic inity",
+        "manouloud",
+        "cactus agony",
+        "ras jabulani"
+      ]
+    },
+    {
+      "id": "dancehall",
+      "name": "Dancehall",
+      "family_id": "popular_categories",
+      "family": "Other Popular Categories",
+      "description": "Rhythm-driven Jamaican-rooted urban dance music.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Winky D"
+        },
+        {
+          "name": "Buffalo Souljah"
+        },
+        {
+          "name": "King Shaddy"
+        },
+        {
+          "name": "Ricky Fire"
+        },
+        {
+          "name": "Empress Sarafina"
+        }
+      ],
+      "search_terms": [
+        "dancehall",
+        "other popular categories",
+        "winky d",
+        "buffalo souljah",
+        "king shaddy",
+        "ricky fire",
+        "empress sarafina"
+      ]
+    },
+    {
+      "id": "afrobeat",
+      "name": "Afrobeat",
+      "family_id": "popular_categories",
+      "family": "Other Popular Categories",
+      "description": "African rhythmic music category; in modern usage often overlaps with contemporary Afrobeats-style production.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Jah Prayzah"
+        },
+        {
+          "name": "Tamy Moyo"
+        },
+        {
+          "name": "Amunizi"
+        },
+        {
+          "name": "Asaph"
+        },
+        {
+          "name": "Takura"
+        }
+      ],
+      "search_terms": [
+        "afrobeat",
+        "other popular categories",
+        "jah prayzah",
+        "tamy moyo",
+        "amunizi",
+        "asaph",
+        "takura"
+      ]
+    },
+    {
+      "id": "pop",
+      "name": "Pop",
+      "family_id": "popular_categories",
+      "family": "Other Popular Categories",
+      "description": "Accessible mainstream music emphasizing memorable hooks and broad appeal.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Ammara Brown"
+        },
+        {
+          "name": "Tamy Moyo"
+        },
+        {
+          "name": "Gemma Griffiths"
+        },
+        {
+          "name": "Chengeto Brown"
+        },
+        {
+          "name": "ExQ"
+        }
+      ],
+      "search_terms": [
+        "pop",
+        "other popular categories",
+        "ammara brown",
+        "tamy moyo",
+        "gemma griffiths",
+        "chengeto brown",
+        "exq"
+      ]
+    },
+    {
+      "id": "edm",
+      "name": "EDM",
+      "family_id": "popular_categories",
+      "family": "Other Popular Categories",
+      "description": "Umbrella category for electronic dance music.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "RayDizz"
+        },
+        {
+          "name": "DJ Stavo"
+        },
+        {
+          "name": "Ryan Synth"
+        },
+        {
+          "name": "Nitefreak"
+        },
+        {
+          "name": "Camo"
+        }
+      ],
+      "search_terms": [
+        "edm",
+        "other popular categories",
+        "raydizz",
+        "dj stavo",
+        "ryan synth",
+        "nitefreak",
+        "camo"
+      ]
+    },
+    {
+      "id": "house",
+      "name": "House",
+      "family_id": "popular_categories",
+      "family": "Other Popular Categories",
+      "description": "Electronic dance music typically driven by a steady four-on-the-floor rhythm.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Jus Nativ"
+        },
+        {
+          "name": "Nitefreak"
+        },
+        {
+          "name": "DJ Naida"
+        },
+        {
+          "name": "Reiss"
+        },
+        {
+          "name": "RayDizz"
+        }
+      ],
+      "search_terms": [
+        "house",
+        "other popular categories",
+        "jus nativ",
+        "nitefreak",
+        "dj naida",
+        "reiss",
+        "raydizz"
+      ]
+    },
+    {
+      "id": "amapiano",
+      "name": "Amapiano",
+      "family_id": "popular_categories",
+      "family": "Other Popular Categories",
+      "description": "South African-origin dance genre known for piano elements, spacious grooves and log drums.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Sha Sha"
+        },
+        {
+          "name": "DJ Zimboy"
+        },
+        {
+          "name": "Kimberly Richards"
+        },
+        {
+          "name": "Roseny"
+        },
+        {
+          "name": "Shasha D"
+        }
+      ],
+      "search_terms": [
+        "amapiano",
+        "other popular categories",
+        "sha sha",
+        "dj zimboy",
+        "kimberly richards",
+        "roseny",
+        "shasha d"
+      ]
+    },
+    {
+      "id": "kwaito",
+      "name": "Kwaito",
+      "family_id": "popular_categories",
+      "family": "Other Popular Categories",
+      "description": "Township-rooted southern African music combining house rhythms, hip-hop attitude and local slang.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "PoPo"
+        },
+        {
+          "name": "Guluva Se7en"
+        },
+        {
+          "name": "Mickie House"
+        },
+        {
+          "name": "Zinjaziyamluma"
+        },
+        {
+          "name": "AboStar"
+        }
+      ],
+      "search_terms": [
+        "kwaito",
+        "other popular categories",
+        "popo",
+        "guluva se7en",
+        "mickie house",
+        "zinjaziyamluma",
+        "abostar"
+      ]
+    },
+    {
+      "id": "gqom",
+      "name": "Gqom",
+      "family_id": "popular_categories",
+      "family": "Other Popular Categories",
+      "description": "Dark, stripped-down, percussion-heavy electronic dance music associated with Durban.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Brave Warriors"
+        },
+        {
+          "name": "DJ Skaiva"
+        },
+        {
+          "name": "Kasi Nutz"
+        },
+        {
+          "name": "Zulu Mafia"
+        },
+        {
+          "name": "DJ Yugoe"
+        }
+      ],
+      "search_terms": [
+        "gqom",
+        "other popular categories",
+        "brave warriors",
+        "dj skaiva",
+        "kasi nutz",
+        "zulu mafia",
+        "dj yugoe"
+      ]
+    },
+    {
+      "id": "international_hip_hop",
+      "name": "International Hip-Hop",
+      "family_id": "popular_categories",
+      "family": "Other Popular Categories",
+      "description": "Zimbabwean or diaspora-linked artists operating within broader international hip-hop formats.",
+      "artist_count": 5,
+      "artists": [
+        {
+          "name": "Tkay Maidza"
+        },
+        {
+          "name": "Sampa the Great"
+        },
+        {
+          "name": "Metaphysics"
+        },
+        {
+          "name": "Niconette"
+        },
+        {
+          "name": "Hillzy"
+        }
+      ],
+      "search_terms": [
+        "international hip-hop",
+        "other popular categories",
+        "tkay maidza",
+        "sampa the great",
+        "metaphysics",
+        "niconette",
+        "hillzy"
+      ]
+    }
+  ],
+  "relationships": {
+    "genre_to_artists": "genres[].artists",
+    "artist_to_genres": "derive by matching artist name across genre records"
+  },
+  "ui_hints": {
+    "default_view": "family",
+    "card_fields": [
+      "name",
+      "description",
+      "artist_count"
+    ],
+    "detail_fields": [
+      "name",
+      "family",
+      "description",
+      "artists",
+      "related_genres"
+    ]
+  },
+  "source_note": "Compiled directly from the user-provided genre taxonomy; artist associations are preserved as supplied."
+}

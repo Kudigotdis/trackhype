@@ -28,13 +28,11 @@
 
   <header class="th-header" data-app-header>
     <div class="th-header-inner">
-      <button class="th-icon-btn" type="button" aria-label="Back" onclick="history.back()">‹</button>
+<button class="th-btn primary th-header-back" type="button" onclick="history.back()">Back</button>
       <a class="th-brand" href="index.html">
         <img class="th-logo-badge" src="Assets/logos/TrackHype Logo Design Badge.webp" alt="TrackHype">
         <img class="th-logo-text" src="Assets/logos/track-hype-text-logo.webp" alt="TrackHype">
       </a>
-      <div class="th-header-context">Submit Music</div>
-      <button class="th-icon-btn" type="button" aria-label="Menu" onclick="location.href='menu.html'">☰</button>
     </div>
   </header>
 
@@ -138,11 +136,13 @@
     </div>
   </main>
 
-  <nav class="th-bottom" data-bottom>
-    <div class="th-bottom-inner" data-nav-host></div>
-  </nav>
+  <div class="bottom-swipe" data-bottom-swipe>
+    <nav class="bottom-nav" data-bottom>
+      <div class="bottom-nav-inner" data-nav-host></div>
+    </nav>
 
-  <aside class="promo-player" data-player></aside>
+    <aside class="promo-player" data-player></aside>
+  </div>
 
   <div class="th-modal-backdrop" data-modal>
     <div class="th-sheet" role="dialog" aria-modal="true">
@@ -153,10 +153,11 @@
     </div>
   </div>
 
+  <script src="demo-playlist.js"></script>
   <script src="trackhype.js"></script>
   <script>
     const GENRES = ['Sungura','Chimurenga','Tuku Music','Afro-Jazz','Zimbabwean Jazz','Imbube','Zimbabwean Rumba','Afro-Fusion','Afro-Pop','Zimdancehall','Urban Grooves','Zim Hip Hop','Amapiano','Zimbabwean House','Zim EDM','R&B','Soul','Gospel','Reggae','Dancehall','House','Mbira','Jiti','Mbende / Jerusarema','Amabhiza'];
-    const CHARTS = ['National Top 100','Zim Hip Hop Top 20','Zimdancehall Top 20','Zimbabwe Gospel Top 20','Sungura Top 20','Zimbabwean House Top 20','R&B Top 20'];
+    const CHARTS = ['National Top 100','Zim Hip Hop Top 20','Zimdancehall Top 20','Gospel Top 20','Sungura Top 20','Zimbabwean House Top 20','R&B Top 20'];
 const PRICE_PER_TRACK = 10;
     let trackCount = 0;
 

@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en-ZW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" type="image/webp" href="Assets/logos/TrackHype Logo Design Badge.webp">
+  <title>Promo-Playlist-Songs — TrackHype</title>
+  <link rel="stylesheet" href="trackhype.css">
+  <style>
+    .pl-row{display:flex;align-items:center;gap:11px;padding:11px 12px;border-bottom:1px solid var(--th-border-soft)}
+    .pl-row:last-child{border-bottom:0}
+    .pl-thumb{flex:none;width:46px;height:46px;border-radius:8px;object-fit:cover;background:var(--th-grey-2)}
+    .pl-meta{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+
+    .pl-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:4px;padding:0 2px}
+    .pl-card{cursor:pointer;border:0;background:none;padding:0;text-align:left;font:inherit}
+    .pl-card-art{display:block;position:relative;width:100%;aspect-ratio:1/1;border-radius:3px;overflow:hidden;background:var(--th-grey-2)}
+    .pl-card-art img{width:100%;height:100%;object-fit:cover;display:block}
+    .pl-grid-load{text-align:center;color:var(--th-muted);font-size:12px;padding:16px 0}
+
+    .pl-detail-banner{display:block;width:100vw;height:auto;object-fit:contain;background:var(--th-grey-2)}
+    .pl-detail-meta{min-width:0;padding:2px 2px 4px}
+    .pl-detail-title{font-size:18px;font-weight:900;line-height:1.2}
+    .pl-detail-sub{font-size:12px;color:var(--th-muted);margin-top:3px}
+    .pl-row.is-active{background:var(--th-grey-1)}
+    .pl-chart-cell{flex:none;display:flex;align-items:center}
+    .pl-chart{width:26px;height:26px;object-fit:contain}
+    .pl-chart-btn{background:none;border:0;padding:0;cursor:pointer;display:flex;flex:none}
+    .pl-chart-btn img{width:26px;height:26px;object-fit:contain;display:block}
+  </style>
+</head>
+<body data-active-nav="menu.html">
+
+  <header class="th-header" data-app-header>
+    <div class="th-header-inner">
+      <a class="th-brand" href="index.html">
+        <img class="th-logo-badge" src="Assets/logos/TrackHype Logo Design Badge.webp" alt="TrackHype">
+        <img class="th-logo-text" src="Assets/logos/track-hype-text-logo.webp" alt="TrackHype">
+      </a>
+    </div>
+  </header>
+
+  <main class="th-app">
+    <img id="detailArt" class="pl-detail-banner" src="" alt="" hidden>
+    <div class="th-shell">
+
+      <section id="gridSection">
+        <div class="pl-grid" id="playlistGrid"></div>
+        <div class="pl-grid-load" id="gridLoading">Loading…</div>
+      </section>
+
+      <section id="detailSection" hidden>
+        <div class="pl-detail-meta">
+          <div class="pl-detail-title" id="detailTitle"></div>
+          <div class="pl-detail-sub" id="detailSub"></div>
+        </div>
+        <div id="detailSongs"></div>
+        <div class="th-empty" id="detailEmpty" hidden>
+          <strong>This playlist is empty.</strong>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <div class="bottom-swipe" data-bottom-swipe>
+    <nav class="bottom-nav" data-bottom>
+      <div class="bottom-nav-inner" data-nav-host></div>
+    </nav>
+
+    <aside class="promo-player" data-player></aside>
+  </div>
+
+  <div class="th-modal-backdrop" data-modal>
+    <div class="th-sheet" role="dialog" aria-modal="true">
+      <div class="th-sheet-handle"></div>
+      <h3 data-modal-title></h3>
+      <div data-modal-body></div>
+      <div class="th-sheet-actions" data-modal-actions></div>
+    </div>
+  </div>
+
+  <script src="demo-playlist.js"></script>
+  <script src="playlists.js"></script>
+  <script src="trackhype.js"></script>
+  <script>
+    const PLAYLISTS = window.PLAYLISTS || [];
+    const PER_PAGE = 4;
+    let shown = 0;
+    let openPlaylistId = null;
+
+    function songChartKey(s){
+      return TrackHype.chartId(s.chart || "National Top 100");
+    }
+
+    function songChartId(s){
+      return String(s.id || "demo-" + TrackHype.chartId((s.artist || "") + " - " + (s.title || "")));
+    }
+
+    function isSongVotedInChart(s){
+      const key = songChartKey(s);
+      const sid = songChartId(s);
+      const ballots = typeof TrackHype.getWeekBallots === "function"
+        ? TrackHype.getWeekBallots(key, TrackHype.currentWeekKey())
+        : [];
+      if(ballots.some(b => (b.picks || []).some(p => String(p.submissionId) === sid))){ return true; }
+      if(typeof TrackHype.isSingleVote === "function"){
+        const v = TrackHype.isSingleVote(key);
+        if(v && String(v.songId) === sid){ return true; }
+      }
+      return false;
+    }
+
+    function songChartIcon(s, i){
+      const voted = isSongVotedInChart(s);
+      return voted
+        ? `<img class="pl-chart" src="Assets/icons/New_Song_Chart_Icon.webp" alt="In chart" title="In chart">`
+        : `<button class="pl-chart-btn" type="button" title="Vote to enter ${TrackHype.esc(s.chart || "National Top 100")}" onclick="voteSongIntoChart('${TrackHype.esc(openPlaylistId)}', ${i})"><img src="Assets/icons/New_Song_Chart_Vote_Icon.webp" alt="Vote for chart"></button>`;
+    }
+
+    function songChartCell(s, i){
+      return `<div class="pl-chart-cell" id="chart-cell-${i}">${songChartIcon(s, i)}</div>`;
+    }
+
+    function cardHtml(p){
+      return `
+        <button class="pl-card" type="button" onclick="openPlaylist('${TrackHype.esc(p.id)}')">
+          <span class="pl-card-art">
+            <img src="${TrackHype.esc(p.cover || TrackHype.getArtwork(0))}" alt="" onerror="this.style.visibility='hidden'">
+          </span>
+        </button>
+      `;
+    }
+
+    function renderMore(){
+      const grid = document.getElementById("playlistGrid");
+      const next = Math.min(shown + PER_PAGE, PLAYLISTS.length);
+      let html = "";
+      for(let i = shown; i < next; i++){
+        html += cardHtml(PLAYLISTS[i]);
+      }
+      grid.insertAdjacentHTML("beforeend", html);
+      shown = next;
+      const load = document.getElementById("gridLoading");
+      load.style.display = shown >= PLAYLISTS.length ? "none" : "block";
+    }
+
+    function onScroll(){
+      const app = document.querySelector(".th-app");
+      if(!app){ return; }
+      if(shown < PLAYLISTS.length && app.scrollTop + app.clientHeight >= app.scrollHeight - 120){
+        renderMore();
+      }
+    }
+
+    window.openPlaylist = (id) => {
+      const p = PLAYLISTS.find(x => x.id === id);
+      if(!p){ return; }
+      openPlaylistId = id;
+      document.getElementById("detailArt").src = p.cover || TrackHype.getArtwork(0);
+      document.getElementById("detailTitle").textContent = p.name;
+      document.getElementById("detailSub").textContent = p.songs.length + (p.songs.length === 1 ? " track" : " tracks") + (p.description ? " · " + p.description : "");
+      document.getElementById("detailSongs").innerHTML = p.songs.map((s, i) => `
+        <div class="pl-row" data-title="${TrackHype.esc(s.title)}">
+          <img class="pl-thumb" src="${TrackHype.esc(s.art || TrackHype.getArtwork(i))}" style="cursor:pointer" onclick="openSongInfo('${TrackHype.esc(p.id)}', ${i})" onerror="this.style.visibility='hidden'">
+          <div class="pl-meta" style="cursor:pointer" onclick="toggleRowPlay('${TrackHype.esc(p.id)}', ${i})">
+            <div style="min-width:0;flex:1">
+              <div style="font-weight:800;font-size:13px">${TrackHype.esc(s.artist)}</div>
+              <div style="font-size:12px;color:var(--th-muted)">${TrackHype.esc(s.title)}</div>
+            </div>
+          </div>
+          ${songChartCell(s, i)}
+        </div>`).join("");
+      document.getElementById("detailEmpty").hidden = p.songs.length !== 0;
+
+      document.getElementById("gridSection").hidden = true;
+      document.getElementById("detailSection").hidden = false;
+      document.getElementById("detailArt").hidden = false;
+      const app = document.querySelector(".th-app");
+      if(app){ window.scrollTo(0, 0); app.scrollTop = 0; }
+      applyRowStates();
+    };
+
+    window.closePlaylist = () => {
+      document.getElementById("gridSection").hidden = false;
+      document.getElementById("detailSection").hidden = true;
+      document.getElementById("detailArt").hidden = true;
+    };
+
+    window.openSongInfo = (id, i) => {
+      const p = PLAYLISTS.find(x => x.id === id);
+      const s = p && p.songs[i];
+      if(!s){ return; }
+      const params = new URLSearchParams();
+      params.set("title", s.title);
+      params.set("artist", s.artist);
+      if(s.art){ params.set("art", s.art); }
+      TrackHype.navigate("song.html?" + params.toString());
+    };
+
+    window.voteSongIntoChart = (id, i) => {
+      const p = PLAYLISTS.find(x => x.id === id);
+      const s = p && p.songs[i];
+      if(!s){ return; }
+      const chart = s.chart || "National Top 100";
+      TrackHype.confirmVoteSheet(chart, { id: songChartId(s), title: s.title, artist: s.artist, rank: 1 }, TrackHype.maxForChart(chart));
+    };
+
+    function refreshChartIcons(){
+      const p = PLAYLISTS.find(x => x.id === openPlaylistId);
+      if(!p){ return; }
+      p.songs.forEach((s, i) => {
+        const cell = document.getElementById("chart-cell-" + i);
+        if(cell){ cell.innerHTML = songChartIcon(s, i); }
+      });
+    }
+    document.addEventListener("trackhype:chart-update", refreshChartIcons);
+
+    function currentTrackTitle(){
+      const t = TrackHype.getState().currentTrack;
+      return String(t && t.title ? t.title : "").toLowerCase();
+    }
+
+    window.applyRowStates = () => {
+      const title = currentTrackTitle();
+      document.querySelectorAll("#detailSongs .pl-row").forEach(row => {
+        const isCurrent = String(row.getAttribute("data-title") || "").toLowerCase() === title;
+        row.classList.toggle("is-active", isCurrent);
+      });
+    };
+
+    window.toggleRowPlay = (id, i) => {
+      const p = PLAYLISTS.find(x => x.id === id);
+      const s = p && p.songs[i];
+      if(!s){ return; }
+      const current = TrackHype.getState().currentTrack;
+      const isCurrent = current && String(current.title || "").toLowerCase() === String(s.title || "").toLowerCase();
+      if(isCurrent){
+        TrackHype.togglePlayback();
+      }else{
+        TrackHype.playDemo({ title: s.title, artist: s.artist, src: s.src, art: s.art, fromPlaylist: id });
+        TrackHype.toast(s.title);
+      }
+      setTimeout(() => window.applyRowStates && window.applyRowStates(), 60);
+    };
+
+    window.playFrom = (id, i) => {
+      const p = PLAYLISTS.find(x => x.id === id);
+      if(!p || !p.songs[i]){ return; }
+      const s = p.songs[i];
+      TrackHype.playDemo({ title: s.title, artist: s.artist, src: s.src, art: s.art, fromPlaylist: id });
+      TrackHype.toast(s.title);
+      setTimeout(() => window.applyRowStates && window.applyRowStates(), 60);
+    };
+
+    const appEl = document.querySelector(".th-app");
+    if(appEl){ appEl.addEventListener("scroll", onScroll, { passive: true }); }
+    renderMore();
+
+    const openId = new URLSearchParams(location.search).get("open");
+    if(openId && PLAYLISTS.some(p => p.id === openId)){
+      openPlaylist(openId);
+    }
+  </script>
+
+</body>
+</html>

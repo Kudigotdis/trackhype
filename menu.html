@@ -10,8 +10,36 @@
   <style>
     .menu-row{display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid var(--th-border-soft);width:100%;background:none;border-left:0;border-right:0;border-top:0;text-align:left}
     .menu-row:last-child{border-bottom:0}
-    .menu-row .th-icon-btn{margin-left:auto}
+    .menu-row.centered{justify-content:center;text-align:center}
     .menu-chev{color:var(--th-faint);font-size:15px;font-weight:900;margin-left:auto}
+
+    .ps-avatar{flex:none;width:68px;height:68px;border-radius:var(--th-radius);background:var(--th-primary-dark);color:#fff;border:0;cursor:pointer;display:grid;place-items:center;font-weight:900;font-size:20px}
+    .Profile-User-Name{flex:1;min-width:0;background:none;border:0;text-align:left;font-size:18px;font-weight:900;color:var(--th-text);cursor:pointer;padding:0}
+    .ps-benefit{font-size:13px;color:var(--th-muted);line-height:1.6;margin:12px 0 0}
+
+    .fol-row{display:flex;align-items:center;justify-content:center;padding:6px 12px 14px}
+    .fol-btn{flex:none;background:none;border:0;padding:4px 10px;font-family:inherit;font-size:13px;font-weight:800;color:var(--th-text);cursor:pointer}
+    .fol-sep{color:rgba(15,25,40,.15);font-size:14px;font-weight:900}
+
+    .hc-hint{font-size:13px;color:var(--th-muted);margin:6px 0 12px}
+    .hc-row{display:flex;align-items:center;gap:10px;padding:11px 12px;border-bottom:1px solid var(--th-border-soft)}
+    .hc-row:last-child{border-bottom:0}
+    .hc-off .hc-name{color:var(--th-faint);text-decoration:line-through}
+    .hc-pos{width:18px;font-size:12px;font-weight:800;color:var(--th-muted);flex:none;text-align:center}
+    .hc-name{flex:1;min-width:0;font-weight:700;font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .hc-arrows{display:flex;gap:4px;flex:none}
+    .hc-arrows button{width:30px;height:30px;border-radius:8px;border:1px solid var(--th-border);background:#fff;color:var(--th-text);font-size:14px;font-weight:900;cursor:pointer;display:grid;place-items:center;line-height:1}
+    .hc-arrows button:disabled{opacity:.35;cursor:default}
+    .hc-arrows button:active{background:var(--th-grey-1)}
+    .hc-switch{flex:none;position:relative;width:44px;height:26px;border-radius:999px;background:var(--th-grey-3);border:none;cursor:pointer;transition:background .15s ease}
+    .hc-switch::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.3);transition:transform .15s ease}
+    .hc-switch[aria-pressed="true"]{background:var(--th-primary)}
+    .hc-switch[aria-pressed="true"]::after{transform:translateX(18px)}
+    .hc-head{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:var(--th-primary);border:0;border-radius:14px;padding:13px 14px;font-family:inherit;font-size:15px;font-weight:900;color:#fff;cursor:pointer}
+    #homeChartsSection{gap:4px}
+    .fol-head{display:flex;justify-content:center;padding:16px 16px 0}
+    .th-btn-orange{background:#ff8b1f;border-color:#ff8b1f;color:#fff}
+    .th-btn-orange:active{background:#e06e00}
   </style>
 </head>
 <body data-active-nav="menu.html">
@@ -20,75 +48,73 @@
     <div class="th-header-inner">
       <a class="th-brand" href="index.html">
         <img class="th-logo-badge" src="Assets/logos/TrackHype Logo Design Badge.webp" alt="TrackHype">
-        <img class="th-logo-text" src="Assets/logos/track-hype-text-logo.webp" alt="TrackHype">
+<img class="th-logo-text" src="Assets/logos/track-hype-text-logo.webp" alt="TrackHype">
       </a>
-      <div class="th-header-context">Menu</div>
     </div>
   </header>
 
   <main class="th-app">
     <div class="th-shell">
 
-      <section>
-        <div class="th-card" style="display:flex;align-items:center;gap:14px;padding:16px">
-          <div class="th-avatar" style="width:68px;height:68px;border-radius:50%;background:var(--th-primary-dark);color:#fff;display:grid;place-items:center;font-weight:900;font-size:20px">KC</div>
-          <div style="flex:1;min-width:0">
-            <div style="font-size:20px;font-weight:900">TrackHype User</div>
-            <div style="font-size:13px;color:var(--th-muted)">Personalised for your selected genres · Zimbabwe</div>
+      <section id="Profile-Section"></section>
+
+      <section class="th-section">
+        <div class="th-card">
+          <div class="fol-head"><h2>Following</h2></div>
+          <div class="fol-row">
+            <button class="fol-btn" type="button" onclick="TrackHype.navigate('onboarding.html')">Genres</button><span class="fol-sep">|</span>
+            <button class="fol-btn" type="button" onclick="TrackHype.navigate('playlist.html')">Songs</button><span class="fol-sep">|</span>
+            <button class="fol-btn" type="button" onclick="TrackHype.navigate('artists.html?filter=following')">Artists</button><span class="fol-sep">|</span>
+            <button class="fol-btn" type="button" onclick="TrackHype.navigate('charts.html')">Charts</button>
           </div>
-          <button class="th-icon-btn" type="button" aria-label="Edit profile" onclick="location.href='onboarding.html'">✎</button>
         </div>
       </section>
 
-      <section class="th-section">
-        <div class="th-section-head"><h2>Profile</h2></div>
+      <section class="th-section" id="Profile-Menu-Options">
         <div class="th-card">
-          <button class="menu-row" type="button" onclick="location.href='onboarding.html'"><span style="font-weight:800">Edit Profile</span><small style="display:block;font-size:11px;color:var(--th-muted)">Name, date of birth, mobile details</small><span class="menu-chev">›</span></button>
-          <button class="menu-row" type="button" onclick="location.href='onboarding.html'"><span style="font-weight:800">Music Preferences</span><small style="display:block;font-size:11px;color:var(--th-muted)">Manage your favourite genres</small><span class="menu-chev">›</span></button>
+          <button class="menu-row" type="button" onclick="TrackHype.navigate('playlist.html')"><span style="font-weight:800">Liked Songs</span><small style="display:block;font-size:11px;color:var(--th-muted)">Songs you've favourited</small><span class="menu-chev">›</span></button>
+          <button class="menu-row" type="button" onclick="TrackHype.navigate('playlists.html')"><span style="font-weight:800">Playlists</span><small style="display:block;font-size:11px;color:var(--th-muted)">Your listening list</small><span class="menu-chev">›</span></button>
+          <button class="menu-row" type="button" onclick="TrackHype.navigate('onboarding.html')"><span style="font-weight:800">Music Preferences</span><small style="display:block;font-size:11px;color:var(--th-muted)">Manage your favourite genres</small><span class="menu-chev">›</span></button>
+          <button class="menu-row centered" type="button" onclick="TrackHype.navigate('history.html')"><span style="font-weight:800">Vote History</span></button>
+          <button class="menu-row centered" type="button" onclick="TrackHype.navigate('notifications.html')"><span style="font-weight:800">Notifications</span></button>
+          <button class="menu-row centered" type="button" onclick="TrackHype.navigate('settings.html')"><span style="font-weight:800">Voting Rules</span></button>
+          <button class="menu-row centered" type="button" onclick="TrackHype.navigate('settings.html')"><span style="font-weight:800">Settings</span></button>
+          <button class="menu-row centered" type="button" onclick="TrackHype.navigate('artist-dashboard.html')"><span style="font-weight:800">Artists</span></button>
         </div>
       </section>
 
       <section class="th-section">
-        <div class="th-section-head"><h2>My TrackHype</h2></div>
-        <div class="th-card">
-<button class="menu-row" type="button" onclick="location.href='playlist.html'"><span style="font-weight:800">Liked Songs</span><small style="display:block;font-size:11px;color:var(--th-muted)">Songs you've favourited</small><span class="menu-chev">›</span></button>
-          <button class="menu-row" type="button" onclick="location.href='playlist.html'"><span style="font-weight:800">Playlists</span><small style="display:block;font-size:11px;color:var(--th-muted)">Your listening list</small><span class="menu-chev">›</span></button>
-          <button class="menu-row" type="button" onclick="location.href='artists.html?filter=following'"><span style="font-weight:800">Favourite Artists</span><small style="display:block;font-size:11px;color:var(--th-muted)">Artists you follow</small><span class="menu-chev">›</span></button>
-          <button class="menu-row" type="button" onclick="location.href='charts.html'"><span style="font-weight:800">Favourite Charts</span><small style="display:block;font-size:11px;color:var(--th-muted)">Charts you've saved</small><span class="menu-chev">›</span></button>
-          <button class="menu-row" type="button" onclick="location.href='history.html'"><span style="font-weight:800">Voting History</span><small style="display:block;font-size:11px;color:var(--th-muted)">Your recent chart votes</small><span class="menu-chev">›</span></button>
-        </div>
-      </section>
-
-      <section class="th-section">
-        <div class="th-section-head"><h2>Artist</h2></div>
         <div class="th-card pad">
           <div style="font-weight:900">Are you an artist?</div>
           <p style="margin:6px 0 12px;font-size:13px;color:var(--th-muted)">Submit music to TrackHype for <strong>$10.00 USD</strong> per song.</p>
-          <button class="th-btn primary block" type="button" onclick="location.href='submit-music.html'">SUBMIT MUSIC</button>
+          <button class="th-btn primary block" type="button" onclick="TrackHype.navigate('submit-music.html')">SUBMIT MUSIC</button>
         </div>
       </section>
 
-<section class="th-section">
-        <div class="th-section-head"><h2>App</h2></div>
-        <div class="th-card">
-          <button class="menu-row" type="button" onclick="location.href='artist-dashboard.html'"><span style="font-weight:800">Artist Dashboard</span><small style="display:block;font-size:11px;color:var(--th-muted)">Your submissions, payments and charts</small><span class="menu-chev">›</span></button>
-<button class="menu-row" type="button" onclick="TrackHype.toast('Notifications settings prototype')"><span style="font-weight:800">Notifications</span><small style="display:block;font-size:11px;color:var(--th-muted)">Chart results, artist updates and new releases</small><span class="menu-chev">›</span></button>
-          <button class="menu-row" type="button" onclick="TrackHype.toast('Data settings prototype')"><span style="font-weight:800">Settings</span><small style="display:block;font-size:11px;color:var(--th-muted)">Data usage, preferences and account</small><span class="menu-chev">›</span></button>
-          <button class="menu-row" type="button" onclick="location.href='help.html#rules'"><span style="font-weight:800">Voting Rules</span><small style="display:block;font-size:11px;color:var(--th-muted)">How votes, points and charts work</small><span class="menu-chev">›</span></button>
-          <button class="menu-row" type="button" onclick="location.href='help.html#privacy'"><span style="font-weight:800">Privacy</span><small style="display:block;font-size:11px;color:var(--th-muted)">How TrackHype handles your data</small><span class="menu-chev">›</span></button>
-          <button class="menu-row" type="button" onclick="location.href='help.html#terms'"><span style="font-weight:800">Terms</span><small style="display:block;font-size:11px;color:var(--th-muted)">Terms of use for TrackHype</small><span class="menu-chev">›</span></button>
-          <button class="menu-row" type="button" onclick="location.href='help.html'"><span style="font-weight:800">Help</span><small style="display:block;font-size:11px;color:var(--th-muted)">Support, guides and FAQs</small><span class="menu-chev">›</span></button>
+      <section class="th-section" id="homeChartsSection">
+        <button class="hc-head" id="hcToggle" type="button" aria-expanded="false">Charts on Homepage</button>
+        <div class="th-card pad" id="hcBody" hidden>
+          <div class="hc-hint">Choose which chart sections appear on your home screen and their order. Tap a switch to show or hide a chart; use the arrows to reorder.</div>
+          <div id="homeChartsList"></div>
+        </div>
+      </section>
+
+      <section class="th-section">
+        <div class="th-card pad">
+          <button class="th-btn block th-btn-orange" type="button" onclick="TrackHype.navigate('bug-reporter.html')">Report a Bug</button>
         </div>
       </section>
 
     </div>
   </main>
 
-  <nav class="th-bottom" data-bottom>
-    <div class="th-bottom-inner" data-nav-host></div>
-  </nav>
+  <div class="bottom-swipe" data-bottom-swipe>
+    <nav class="bottom-nav" data-bottom>
+      <div class="bottom-nav-inner" data-nav-host></div>
+    </nav>
 
-  <aside class="promo-player" data-player></aside>
+    <aside class="promo-player" data-player></aside>
+  </div>
 
   <div class="th-modal-backdrop" data-modal>
     <div class="th-sheet" role="dialog" aria-modal="true">
@@ -99,6 +125,101 @@
     </div>
   </div>
 
+  <script src="demo-playlist.js"></script>
   <script src="trackhype.js"></script>
+  <script>
+    var hcPrefs = (typeof TrackHype.getHomeCharts === "function")
+      ? TrackHype.getHomeCharts()
+      : { order: [], enabled: {} };
+
+    function loadName(){
+      try{ return (localStorage.getItem("trackhype_user_name") || "").trim() || "TrackHype User"; }catch(e){ return "TrackHype User"; }
+    }
+
+    function initialsOf(name){
+      var parts = String(name).trim().split(/\s+/).filter(Boolean);
+      var i = (parts[0] ? parts[0].charAt(0) : "") + (parts.length > 1 ? parts[parts.length - 1].charAt(0) : "");
+      return (i || "U").toUpperCase();
+    }
+
+    function renderProfile(){
+      var host = document.getElementById("Profile-Section");
+      if(!host){ return; }
+      var complete = false;
+      try{ complete = localStorage.getItem("trackhype_onboarding_complete") === "true"; }catch(e){}
+      if(!complete){
+        host.innerHTML = '' +
+          '<div class="th-card pad">' +
+            '<button class="th-btn primary block" type="button" onclick="TrackHype.navigate(\'onboarding.html\')">Create an Account</button>' +
+            '<p class="ps-benefit">Look up your votes on every chart, follow the genres and artists you love, and keep the music you like saved while you listen.</p>' +
+          '</div>';
+        return;
+      }
+      var name = loadName();
+      host.innerHTML = '' +
+        '<div class="th-card" style="display:flex;align-items:center;gap:14px;padding:16px">' +
+          '<button class="ps-avatar" type="button" aria-label="Edit profile" onclick="TrackHype.navigate(\'onboarding.html\')">' + initialsOf(name) + '</button>' +
+          '<button class="Profile-User-Name" type="button" onclick="TrackHype.navigate(\'onboarding.html\')">' + TrackHype.esc(name) + '</button>' +
+        '</div>';
+    }
+
+    function hcRender(){
+      var list = document.getElementById("homeChartsList");
+      if(!list){ return; }
+      list.innerHTML = hcPrefs.order.map(function(name, i){
+        var on = hcPrefs.enabled[name] !== false;
+        return '' +
+          '<div class="hc-row' + (on ? '' : ' hc-off') + '">' +
+            '<span class="hc-pos">' + (i + 1) + '</span>' +
+            '<span class="hc-name">' + TrackHype.esc(name) + '</span>' +
+            '<span class="hc-arrows">' +
+              '<button type="button" aria-label="Move up" onclick="hcMove(' + i + ',-1)" ' + (i === 0 ? 'disabled' : '') + '>↑</button>' +
+              '<button type="button" aria-label="Move down" onclick="hcMove(' + i + ',1)" ' + (i === hcPrefs.order.length - 1 ? 'disabled' : '') + '>↓</button>' +
+            '</span>' +
+            '<button type="button" class="hc-switch" aria-pressed="' + on + '" aria-label="Show or hide ' + TrackHype.esc(name) + '" onclick="hcToggle(' + i + ')"></button>' +
+          '</div>';
+      }).join("");
+    }
+
+    function hcPersist(){
+      if(typeof TrackHype.setHomeCharts === "function"){
+        TrackHype.setHomeCharts(hcPrefs);
+      }
+    }
+
+    window.hcToggle = function(i){
+      var name = hcPrefs.order[i];
+      if(!name){ return; }
+      hcPrefs.enabled[name] = !(hcPrefs.enabled[name] !== false);
+      hcPersist();
+      hcRender();
+      TrackHype.toast(hcPrefs.enabled[name] ? (name + " charts on") : (name + " charts off"));
+    };
+
+    window.hcMove = function(i, dir){
+      var j = i + dir;
+      if(j < 0 || j >= hcPrefs.order.length){ return; }
+      var tmp = hcPrefs.order[i];
+      hcPrefs.order[i] = hcPrefs.order[j];
+      hcPrefs.order[j] = tmp;
+      hcPersist();
+      hcRender();
+    };
+
+    (function(){
+      var head = document.getElementById("hcToggle");
+      if(head){
+        head.addEventListener("click", function(){
+          var body = document.getElementById("hcBody");
+          body.hidden = !body.hidden;
+          head.setAttribute("aria-expanded", body.hidden ? "false" : "true");
+        });
+      }
+    })();
+
+    window.addEventListener("pageshow", renderProfile);
+    renderProfile();
+    hcRender();
+  </script>
 </body>
 </html>

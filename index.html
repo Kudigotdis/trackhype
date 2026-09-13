@@ -8,49 +8,49 @@
   <title>Hyped — TrackHype</title>
   <link rel="stylesheet" href="trackhype.css">
   <style>
-    .hy-kicker{font-size:11px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:var(--th-primary-dark);margin-bottom:7px}
-    .hy-hero-title{font-size:30px;font-weight:900;line-height:1.05;color:var(--th-text)}
-    .hy-hero-copy{margin-top:8px;font-size:13px;line-height:1.55;color:var(--th-muted)}
-    .hy-actions{display:flex;gap:8px;margin-top:15px;flex-wrap:wrap}
-    .hy-actions .th-btn{flex:1;min-width:130px}
-    .hy-featured{display:flex;gap:12px;align-items:center;background:linear-gradient(135deg,var(--th-primary),var(--th-primary-dark));color:#fff;border-radius:var(--th-radius);padding:14px;margin-bottom:4px}
-    .hy-featured-art{width:60px;height:60px;border-radius:var(--th-radius-sm);object-fit:cover;flex:none}
-    .hy-featured-meta{min-width:0;flex:1}
-    .hy-eyebrow{font-size:10px;font-weight:900;color:#fff;opacity:.9;text-transform:uppercase;letter-spacing:.7px}
-    .hy-featured-title{font-size:16px;font-weight:900;margin-top:3px;line-height:1.2}
-    .hy-featured-sub{font-size:12px;color:#fff;opacity:.9;margin-top:3px}
     .hy-meter{font-size:11px;font-weight:800;color:var(--th-muted)}
     .hy-strip{display:flex;gap:10px;overflow-x:auto;padding:2px 1px 8px;-webkit-overflow-scrolling:touch}
     .hy-strip::-webkit-scrollbar{display:none}
-    .hy-tile{flex:none;width:132px;cursor:pointer}
+    .hy-tile{flex:none;width:132px;cursor:pointer;text-decoration:none}
     .hy-tile-art{width:132px;height:132px;border-radius:var(--th-radius-sm);object-fit:cover;background:var(--th-grey-2);border:1px solid var(--th-border-soft)}
     .hy-tile-rank{position:relative;width:132px;height:132px;border-radius:var(--th-radius-sm);background:var(--th-grey-3);display:grid;place-items:center;font-size:22px;font-weight:900;color:var(--th-primary-dark)}
-    .hy-tile-meta{margin-top:7px}
-    .hy-tile-label{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;color:var(--th-faint)}
-    .hy-tile-title{font-size:13px;font-weight:900;color:var(--th-text);margin-top:1px;line-height:1.2}
-    .hy-tile-sub{font-size:11px;color:var(--th-muted);margin-top:1px}
-.hy-view-link{font-size:12px;font-weight:900;color:var(--th-primary-dark)}
-    .hy-genre-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
-    .hy-genre-meta{font-size:11px;color:var(--th-muted);font-weight:700}
-    #splash{position:fixed;inset:0;z-index:9999;background:var(--th-bg);display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity .5s ease;cursor:pointer}
-    #splash.fade{opacity:0;pointer-events:none}
-    .splash-logo{width:180px;height:180px;border-radius:24px;object-fit:contain}
-    .splash-fallback{width:160px;height:160px;border-radius:24px;background:linear-gradient(135deg,var(--th-primary),var(--th-primary-dark));display:none;align-items:center;justify-content:center;font-size:50px;font-weight:900;color:#fff;letter-spacing:-2px}
-    .splash-brand{margin-top:20px;font-size:32px;font-weight:900;letter-spacing:2px;color:var(--th-text)}
-    .splash-tag{font-size:13px;color:var(--th-muted);margin-top:6px}
+    .hy-view-link{font-size:12px;font-weight:900;color:var(--th-muted)}
 
     .th-advert{border:0;background:none;min-height:0;padding:0}
     .th-advert img{display:block;width:100%;height:auto}
+
+    .filter-row{position:relative;display:flex;align-items:center;height:42px;margin:0 -16px 4px;border-radius:0;background:var(--th-grey-3);background:color-mix(in srgb,var(--th-muted) 15%,transparent);overflow:hidden;-webkit-user-select:none;user-select:none}
+    .filter-row::before{content:"";position:absolute;top:0;bottom:0;left:0;width:50%;background:var(--th-primary);transition:transform .25s ease}
+    .filter-row[data-active="spiritual"]::before{transform:translateX(100%)}
+    .filter-btn{position:relative;flex:1;height:100%;border:0;background:none;font-size:13px;font-weight:800;text-align:center;color:var(--th-muted);transition:color .2s ease}
+    .filter-btn.is-active{color:#003a25}
+
+    .Hyped-Featured-Genre-Preview{display:flex;flex-direction:column;gap:12px;margin-top:14px}
+    .genre-hero{width:100%;aspect-ratio:1;object-fit:cover;border-radius:var(--th-radius);cursor:pointer;border:1px solid var(--th-border-soft);background:var(--th-grey-2)}
+    .genre-charting-strip{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:2px 1px 8px;-webkit-overflow-scrolling:touch}
+    .genre-charting-strip::-webkit-scrollbar{display:none}
+    .genre-page{flex:0 0 100%;scroll-snap-align:start;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:2px 1px}
+    .genre-scroll-cell{display:block;aspect-ratio:1;border-radius:var(--th-radius-sm);overflow:hidden;border:1px solid var(--th-border-soft);background:var(--th-grey-2)}
+    .genre-scroll-cell img{width:100%;height:100%;object-fit:cover;display:block}
+
+    .Recent-Charts-Section{display:flex;flex-direction:column;gap:12px}
+    .rc-scroll{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+    .rc-scroll::-webkit-scrollbar{display:none}
+    .rc-page{flex:0 0 100%;scroll-snap-align:start;display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:2px 1px}
+    .rc-page a{display:block;aspect-ratio:1;border-radius:var(--th-radius-sm);overflow:hidden;background:var(--th-grey-2);border:1px solid var(--th-border-soft)}
+    .rc-page img{width:100%;height:100%;object-fit:cover;display:block}
+
+    .acc-head{width:100%;display:flex;align-items:center;background:none;border:0;padding:0;text-align:left;cursor:pointer;-webkit-user-select:none;user-select:none}
+    .acc-head .th-section-head{width:100%}
+    .acc-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s ease;overflow:hidden}
+    .acc-body-inner{min-height:0;overflow:hidden}
+    .acc.open .acc-body{grid-template-rows:1fr}
+    .acc-advert{margin-top:14px}
+
+    .th-flag-btn{margin-left:auto}
   </style>
 </head>
 <body data-active-nav="index.html">
-
-  <div id="splash" onclick="dismissSplash()">
-    <img class="splash-logo" src="Assets/logos/TrackHype Logo Design Badge.webp" onerror="this.style.display='none';document.getElementById('splashFallback').style.display='flex';" alt="TrackHype">
-    <div id="splashFallback" class="splash-fallback">TH</div>
-    <div class="splash-brand">TRACK<span style="color:var(--th-primary-dark)">HYPE</span></div>
-    <div class="splash-tag">Zimbabwe's Music Pulse</div>
-  </div>
 
   <header class="th-header" data-app-header>
     <div class="th-header-inner">
@@ -58,88 +58,71 @@
         <img class="th-logo-badge" src="Assets/logos/TrackHype Logo Design Badge.webp" alt="TrackHype">
         <img class="th-logo-text" src="Assets/logos/track-hype-text-logo.webp" alt="TrackHype">
       </a>
-      <div class="th-header-context">Hyped</div>
-      <button class="th-icon-btn" type="button" aria-label="Search" onclick="location.href='search.html'">⌕</button>
-      <button class="th-icon-btn" type="button" aria-label="Menu" onclick="location.href='menu.html'">☰</button>
+      <a href="region-selector.html" title="Select region" style="display:inline-flex;margin-left:auto">
+        <span id="headerFlag" class="th-region-badge">ZW</span>
+      </a>
     </div>
   </header>
 
   <main class="th-app">
-<div class="th-shell">
+    <div class="th-shell">
 
-      <section class="hy-featured">
-        <img class="hy-featured-art" src="Assets/charts/top_40_chart/1.jpg" alt="">
-        <div class="hy-featured-meta">
-          <div class="hy-eyebrow">Today on TrackHype</div>
-          <div class="hy-featured-title">Discover what's moving</div>
-          <div class="hy-featured-sub">Explore today's charts, artists and Zimbabwe's newest sounds.</div>
-        </div>
-        <button class="th-btn" style="background:#fff;color:var(--th-primary-dark);border:0;flex:none" type="button" onclick="location.href='charts.html'">Charts</button>
-</section>
-
-      <div class="th-advert"><img src="Assets/Demo Media/DemoMedia - Paid Promo.webp" alt="DemoMedia - Paid Promo"></div>
-
-      <section class="th-section">
-        <div class="th-section-head">
-          <div>
-            <h2>Radio Shows</h2>
-            <div class="hy-genre-meta">Zimbabwe stations</div>
+      <section class="th-section acc open" id="acc-radio">
+        <div class="acc-head" role="button" tabindex="0" aria-expanded="true" onclick="toggleAcc('acc-radio')">
+          <div class="th-section-head">
+            <h2>Radio Charts</h2>
+            <a class="hy-view-link" href="radio-charts.html" onclick="event.stopPropagation()">All</a>
           </div>
-          <a class="hy-view-link" href="search.html?q=radio">View All</a>
         </div>
-        <div class="hy-strip" id="radioShows"></div>
+        <div class="acc-body"><div class="acc-body-inner">
+          <div class="hy-strip" id="radioShows"></div>
+        </div></div>
+        <div class="th-advert th-advert--full acc-advert"><img src="Assets/Demo Media/DemoMedia - Paid Promo.webp" alt="DemoMedia - Paid Promo"></div>
       </section>
 
-      <div class="th-advert"><img src="Assets/Demo Media/DemoMedia - Paid Promo.webp" alt="DemoMedia - Paid Promo"></div>
+      <div class="filter-row" id="filterRow" data-active="culture">
+        <button class="filter-btn is-active" data-filter="culture" onclick="setFilter('culture')">Mainstream</button>
+        <button class="filter-btn" data-filter="spiritual" onclick="setFilter('spiritual')">Spiritual</button>
+      </div>
 
-      <section class="th-section">
-        <div class="th-section-head">
-          <div>
+      <section class="th-section acc open" id="acc-recent">
+        <div class="acc-head" role="button" tabindex="0" aria-expanded="true" onclick="toggleAcc('acc-recent')">
+          <div class="th-section-head">
             <h2>Recent Charts</h2>
-            <div class="hy-genre-meta">Fresh chart updates</div>
+            <a class="hy-view-link" href="history.html" onclick="event.stopPropagation()">View All</a>
           </div>
-          <a class="hy-view-link" href="history.html">View All</a>
         </div>
-        <div class="th-grid-2" id="recentCharts"></div>
+        <div class="acc-body"><div class="acc-body-inner">
+          <div class="rc-scroll" id="recentCharts"></div>
+        </div></div>
+        <div class="th-advert th-advert--full acc-advert"><img src="Assets/Demo Media/DemoMedia - Paid Promo.webp" alt="DemoMedia - Paid Promo"></div>
       </section>
 
-      <div class="th-advert"><img src="Assets/Demo Media/DemoMedia - Paid Promo.webp" alt="DemoMedia - Paid Promo"></div>
-
-      <section class="th-section">
-        <div class="th-section-head">
-          <div>
-            <h2>All Number 1</h2>
-            <div class="hy-genre-meta">Current #1 songs across genres</div>
-          </div>
-          <a class="hy-view-link" href="charts.html">View All</a>
-        </div>
-        <div class="hy-strip" id="numberOnes"></div>
-      </section>
-
-      <div class="th-advert"><img src="Assets/Demo Media/DemoMedia - Paid Promo.webp" alt="DemoMedia - Paid Promo"></div>
-
-      <section class="th-section">
-        <div class="th-section-head">
-          <div>
+      <section class="th-section acc open" id="acc-national">
+        <div class="acc-head" role="button" tabindex="0" aria-expanded="true" onclick="toggleAcc('acc-national')">
+          <div class="th-section-head">
             <h2>National Top 100</h2>
-            <div class="hy-genre-meta">Zimbabwe's biggest songs</div>
+            <a class="hy-view-link" href="charts.html" onclick="event.stopPropagation()">View Chart</a>
           </div>
-          <a class="hy-view-link" href="charts.html">View Chart</a>
         </div>
-        <div class="th-grid-2" id="nationalTop"></div>
+        <div class="acc-body"><div class="acc-body-inner">
+          <div class="rc-scroll" id="nationalTop"></div>
+        </div></div>
+        <div class="th-advert th-advert--full acc-advert"><img src="Assets/Demo Media/DemoMedia - Paid Promo.webp" alt="DemoMedia - Paid Promo"></div>
       </section>
 
-      <div class="th-advert"><img src="Assets/Demo Media/DemoMedia - Paid Promo.webp" alt="DemoMedia - Paid Promo"></div>
       <div id="genreSections"></div>
 
     </div>
   </main>
 
-  <nav class="th-bottom" data-bottom>
-    <div class="th-bottom-inner" data-nav-host></div>
-  </nav>
+  <div class="bottom-swipe" data-bottom-swipe>
+    <nav class="bottom-nav" data-bottom>
+      <div class="bottom-nav-inner" data-nav-host></div>
+    </nav>
 
-  <aside class="promo-player" data-player></aside>
+    <aside class="promo-player" data-player></aside>
+  </div>
 
   <div class="th-modal-backdrop" data-modal>
     <div class="th-sheet" role="dialog" aria-modal="true">
@@ -150,94 +133,214 @@
     </div>
   </div>
 
-<script src="trackhype.js"></script>
+<script src="demo-playlist.js"></script>
+  <script src="playlists.js"></script>
+  <script src="radio-data.js"></script>
+  <script src="trackhype.js"></script>
   <script>
-    function dismissSplash(){
-      const s = document.getElementById("splash");
-      if(!s){ return; }
-      s.classList.add("fade");
-      setTimeout(() => { s.style.display = "none"; }, 500);
-    }
-    setTimeout(dismissSplash, 2000);
-
-    const topGenres = ["Zim Hip Hop","Zimdancehall","Amapiano","Sungura","Gospel","Afro-Pop","R&B","House","Chimurenga","Afro-Jazz"];
-    const genreArtists = {
-      "Zim Hip Hop":["Holy Ten","Saintfloew","T Gonzi","Tashinga Panda"],
-      "Zimdancehall":["Freeman HKD Boss","Enzo Ishall","Jah Master","Blacperl"],
-      "Amapiano":["TitoM","Poptain","Gemma Griffiths","Master H"],
-      "Sungura":["Alick Macheso","Jah Prayzah","Fungisai","Peter Moyo"],
-      "Gospel":["Mambo Dhuterere","Janet Manyowa","Minister Mahendere","Tino Chinyani"],
-      "Afro-Pop":["Feli Nandi","Takura","Andy Muridzo","Nutty O"],
-      "R&B":["Ammara","Hillzy","Vusa Mkhaya","Kudzai Terence"],
-      "House":["DJ Tamuka","Judgement Yard","Tashinga","Blaq Halo"],
-      "Chimurenga":["Thomas Mapfumo","Chiwoniso","Simbotah","Mudhara Vachauya"],
-      "Afro-Jazz":["Tendai Muparutsa","Alexio Kawara","Gary B","Mokoomba"]
+    const GENRE_ONE = {
+      "Sungura":{genre:"Sungura",title:"Bhiya",artist:"Killer T & Xiba",art:"Demo Charts/Demo_Artworks/Killer T & Xiba — Bhiya.jpg"},
+      "Zimdancehall":{genre:"Zimdancehall",title:"Mhuka Huru",artist:"Jnr Spragga",art:"Demo Charts/Demo_Artworks/Jnr Spragga - Mhuka Huru.jpg"},
+      "Soul":{genre:"Soul",title:"Grateful",artist:"Gemma Griffiths",art:"Demo Charts/Demo_Artworks/Gemma Griffiths - Grateful.png"},
+      "Afro-Fusion":{genre:"Afro-Fusion",title:"Chivanhu",artist:"Winky D",art:"Demo Charts/Demo_Artworks/Winky D - Chivanhu.jpg"},
+      "Amapiano":{genre:"Amapiano",title:"Kasi Motion",artist:"MT Tinashe",art:""},
+      "Urban Grooves":{genre:"Urban Grooves",title:"Teaser",artist:"ExQ",art:"Demo Charts/Demo_Artworks/ExQ - Teaser.jpg"},
+      "Dancehall":{genre:"Dancehall",title:"Handipower",artist:"Nutty O",art:"Demo Charts/Demo_Artworks/Nutty O - Handipower.webp"},
+      "Chimurenga":{genre:"Chimurenga",title:"Chitimera",artist:"Thomas Mapfumo",art:"Demo Charts/Demo_Artworks/Thomas Mapfumo — Chitimera.jpg"},
+      "Mbira":{genre:"Mbira",title:"Mbira Magic",artist:"Ephat Mujuru",art:"Demo Charts/Demo_Artworks/Ephat Mujuru - Mbira Magic.jpg"},
+      "Jiti":{genre:"Jiti",title:"Jit Jive",artist:"Bhundu Boys",art:"Demo Charts/Demo_Artworks/Bhundu Boys - Jit Jive.jpg"},
+      "Mhande":{genre:"Mhande",title:"Chinyakare",artist:"Ambuya Stella Chiweshe",art:"Demo Charts/Demo_Artworks/Ambuya Stella Chiweshe - Chinyakare.jpg"},
+      "Mbende":{genre:"Mbende",title:"Ngoma neHosho",artist:"Murewa Jerusarema Club",art:"Demo Charts/Demo_Artworks/Murewa Jerusarema Club - Ngoma neHosho.jpg"},
+      "Muchongoyo":{genre:"Muchongoyo",title:"Moyondizvo",artist:"Ndau Traditional Dancers",art:"Demo Charts/Demo_Artworks/Ndau Traditional Dancers - Moyondizvo.jpg"},
+      "Mbakumba":{genre:"Mbakumba",title:"Mbakumba Beat",artist:"Black Umfolosi",art:"Demo Charts/Demo_Artworks/Black Umfolosi - Mbakumba Beat.jpg"},
+      "Shangare":{genre:"Shangare",title:"Shangare Jam",artist:"Thomas Mapfumo",art:"Demo Charts/Demo_Artworks/Thomas Mapfumo - Shangare Jam.jpg"},
+      "Amabhiza":{genre:"Amabhiza",title:"Amabhiza Heritage",artist:"Albert Nyathi",art:"Demo Charts/Demo_Artworks/Albert Nyathi - Amabhiza Heritage.jpg"},
+      "Tuku Music":{genre:"Tuku Music",title:"Neria",artist:"Oliver Mtukudzi",art:"Demo Charts/Demo_Artworks/Oliver Mtukudzi - Neria.jpg"},
+      "Afro-Jazz":{genre:"Afro-Jazz",title:"BP Yangu Yakwira",artist:"Prudence Katomeni",art:"Demo Charts/Demo_Artworks/Prudence Katomeni — BP Yangu Yakwira.jpg"},
+      "Zimbabwean Jazz":{genre:"Zimbabwean Jazz",title:"Blue Sky",artist:"Cool Crooners",art:"Demo Charts/Demo_Artworks/Cool Crooners — Blue Sky.jpg"},
+      "Imbube":{genre:"Imbube",title:"Zvakaitika",artist:"Somandla Ndebele",art:"Demo Charts/Demo_Artworks/Somandla Ndebele - Zvakaitika.jpg"},
+      "Kanindo":{genre:"Kanindo",title:"Mabvi Dzo",artist:"Khiama Boys",art:"Demo Charts/Demo_Artworks/Khiama Boys — Mabvi Dzo.jpg"},
+      "Zimbabwean Rumba":{genre:"Zimbabwean Rumba",title:"Mutupo",artist:"Juntal",art:"Demo Charts/Demo_Artworks/Juntal - Mutupo.jpg"},
+      "Afro-Pop":{genre:"Afro-Pop",title:"Anondida",artist:"Takura ft. Tamy Moyo",art:"Demo Charts/Demo_Artworks/Takura ft. Tamy Moyo - Anondida.webp"},
+      "Zim Hip Hop":{genre:"Zim Hip Hop",title:"Handizvione",artist:"Takura",art:"Demo Charts/Demo_Artworks/Takura — Handizvione.webp"},
+      "Zimbabwean House":{genre:"Zimbabwean House",title:"Tequila",artist:"DJ Stavo",art:"Demo Charts/Demo_Artworks/DJ Stavo —- Tequila.jpg"},
+      "Zim EDM":{genre:"Zim EDM",title:"Vibe Zim",artist:"Ryan Synth",art:"Demo Charts/Demo_Artworks/Ryan Synth.jpg"},
+      "Zim-TrapSoul":{genre:"Zim-TrapSoul",title:"Heavy Weight",artist:"Bryan K",art:"Demo Charts/Demo_Artworks/Bryan K — Heavy Weight.jpg"},
+      "R&B":{genre:"R&B",title:"Ndaramba",artist:"Trevor Dongo",art:"Demo Charts/Demo_Artworks/Trevor Dongo - Ndaramba.jpg"},
+      "Gospel":{genre:"Gospel",title:"Mwari Huyai",artist:"Zimpraise",art:"Demo Charts/Demo_Artworks/Zimpraise - Mwari Huyai.jpg"},
+      "Reggae":{genre:"Reggae",title:"Lovers Reggae",artist:"Seh Calaz",art:"Demo Charts/Demo_Artworks/Seh Calaz - Lovers Reggae.jpg"},
+      "House":{genre:"House",title:"Harare Nights",artist:"Raydizz",art:"Demo Charts/Demo_Artworks/Raydizz - Harare Nights.png"}
     };
-    const chartArt = g => g === "Zim Hip Hop" ? "Assets/charts/top_25_local_hip_hop/1.jpg"
-      : g === "House" ? "Assets/charts/top_20_house/1.jpg"
-      : g === "R&B" ? "Assets/charts/top_20_rnb_chart/1.jpg"
-      : "Assets/charts/top_40_chart/1.jpg";
+    const cultureGenres = Object.keys(GENRE_ONE);
+    const spiritualGenres = cultureGenres.map(g => "Gospel " + g);
 
-    function art(index){
-      return "Assets/charts/top_40_chart/" + ((index % 40) + 1) + ".jpg";
+    const DEMO_SONGS = [
+      {title:"Uhambo",artist:"Andrea The Vocalist ft Aubrey Qwana"},
+      {title:"Inhliziyo Yami",artist:"Aphiwe & Sobancane"},
+      {title:"Sleepover",artist:"Denzel ft Skido, Hwiza, Micky Black"},
+      {title:"Mali",artist:"Dlala Thukzin ft Zee Nxumalo, Sykes"},
+      {title:"Different Breed",artist:"Hooksmith"},
+      {title:"Bhura Dhanzi",artist:"Hulengende feat. Madedido"},
+      {title:"Muchaita Sei",artist:"Killer T"},
+      {title:"Learn Shona",artist:"Learn Shona & Sane Wav"},
+      {title:"Ndiri Kushanda",artist:"Ndini Marshie"},
+      {title:"Pane Acha Chema",artist:"Nutty O ft Buffalo Souljah"},
+      {title:"Mudododo",artist:"Sugar Sugar"},
+      {title:"Mankalengkaleng",artist:"A.T.I"},
+      {title:"Stimamolelo",artist:"ATI"},
+      {title:"Bo Lavo 10.9",artist:"Bukzin Keyz ft Felo Le Tee, Tman Xpress"},
+      {title:"Ngwana'a Batho",artist:"Charama Gal"},
+      {title:"Insecurities",artist:"Coster ft JujuBoy"},
+      {title:"Mmele Pelo Le Moya",artist:"DJ Ngwazi, Han C & Donald"},
+      {title:"Ama Gear",artist:"Dlala Thukzin, Funky QLA & Zee Nxumalo"},
+      {title:"Dlala Thukzin",artist:"Dlala Thukzin, Zee Nxumalo"},
+      {title:"Tjuele",artist:"Mpho Sebina ft A.T.I"},
+      {title:"Heh Heeh",artist:"Royal Musiq & W4de"},
+      {title:"Transition",artist:"Samantha Mogwe ft Zeus"},
+      {title:"You",artist:"Samantha Mogwe Ft. Sasa Klaas"},
+      {title:"Ama Hem Hem",artist:"Thatohatsi ft Sjava"},
+      {title:"Remember",artist:"Tman Xpress & Mellow & Sleazy"},
+      {title:"Ha Tholakale",artist:"Vee Mampeezy"},
+      {title:"Chomi Yaago",artist:"Wave Rhyder & Han-C"},
+      {title:"Addictions",artist:"Brent Faiyaz"},
+      {title:"Burning Bridges",artist:"Drake"},
+      {title:"There's no Other",artist:"Felly"},
+      {title:"Recommend",artist:"Masego"},
+      {title:"Take My Space",artist:"Nimino"},
+      {title:"Don't You Know",artist:"Runway Richy ft Fetty Wap"},
+      {title:"Cocoanut Water",artist:"Trim"},
+      {title:"Slick",artist:"Victony"}
+    ];
+    const CHART_ART = ["Demo Charts/top_20_house/1.jpg","Demo Charts/top_20_house/2.jpg","Demo Charts/top_20_house/3.jpg","Demo Charts/top_20_house/4.jpg","Demo Charts/top_20_house/5.jpg","Demo Charts/top_20_house/6.jpg","Demo Charts/top_20_house/7.jpg","Demo Charts/top_20_house/8.jpg","Demo Charts/top_20_house/9.jpg","Demo Charts/top_20_house/10.jpg","Demo Charts/top_20_house/11.jpg","Demo Charts/top_20_house/12.jpg","Demo Charts/top_20_house/13.jpg","Demo Charts/top_20_house/14.jpg","Demo Charts/top_20_house/15.jpg","Demo Charts/top_20_house/16.jpg","Demo Charts/top_20_house/17.jpg","Demo Charts/top_20_house/18.jpg","Demo Charts/top_20_house/19.jpg","Demo Charts/top_20_house/20.jpg","Demo Charts/top_20_rnb_chart/1.jpg","Demo Charts/top_20_rnb_chart/2.jpg","Demo Charts/top_20_rnb_chart/3.jpg","Demo Charts/top_20_rnb_chart/4.jpg","Demo Charts/top_20_rnb_chart/5.jpg","Demo Charts/top_20_rnb_chart/6.jpg","Demo Charts/top_20_rnb_chart/7.jpg","Demo Charts/top_20_rnb_chart/8.jpg","Demo Charts/top_20_rnb_chart/9.jpg","Demo Charts/top_20_rnb_chart/10.jpg","Demo Charts/top_20_rnb_chart/11.jpg","Demo Charts/top_20_rnb_chart/12.jpg","Demo Charts/top_20_rnb_chart/13.jpg","Demo Charts/top_20_rnb_chart/14.jpg","Demo Charts/top_20_rnb_chart/15.png","Demo Charts/top_20_rnb_chart/16.png","Demo Charts/top_20_rnb_chart/17.png","Demo Charts/top_20_rnb_chart/18.jpg","Demo Charts/top_20_rnb_chart/19.png","Demo Charts/top_20_rnb_chart/20.jpeg","Demo Charts/top_25_local_hip_hop/1.jpg","Demo Charts/top_25_local_hip_hop/2.jpg","Demo Charts/top_25_local_hip_hop/3.jpg","Demo Charts/top_25_local_hip_hop/4.png","Demo Charts/top_25_local_hip_hop/5.jpg","Demo Charts/top_25_local_hip_hop/6.jpg","Demo Charts/top_25_local_hip_hop/7.jpg","Demo Charts/top_25_local_hip_hop/8.jpg","Demo Charts/top_25_local_hip_hop/9.jpg","Demo Charts/top_25_local_hip_hop/10.jpg","Demo Charts/top_25_local_hip_hop/11.webp","Demo Charts/top_25_local_hip_hop/12.jpg","Demo Charts/top_25_local_hip_hop/13.jpg","Demo Charts/top_25_local_hip_hop/14.webp","Demo Charts/top_25_local_hip_hop/15.jpg","Demo Charts/top_25_local_hip_hop/16.jpeg","Demo Charts/top_25_local_hip_hop/17.jpg","Demo Charts/top_25_local_hip_hop/18.jpg","Demo Charts/top_25_local_hip_hop/19.jpg","Demo Charts/top_25_local_hip_hop/20.jpg","Demo Charts/top_25_local_hip_hop/21.jpg","Demo Charts/top_25_local_hip_hop/22.jpeg","Demo Charts/top_25_local_hip_hop/23.jpg","Demo Charts/top_25_local_hip_hop/24.jpg","Demo Charts/top_25_local_hip_hop/25.jpg","Demo Charts/top_40_chart/1.jpg","Demo Charts/top_40_chart/2.jpg","Demo Charts/top_40_chart/3.jpg","Demo Charts/top_40_chart/4.jpg","Demo Charts/top_40_chart/5.jpg","Demo Charts/top_40_chart/6.jpg","Demo Charts/top_40_chart/7.jpg","Demo Charts/top_40_chart/8.jpg","Demo Charts/top_40_chart/9.jpg","Demo Charts/top_40_chart/10.jpg","Demo Charts/top_40_chart/11.jpg","Demo Charts/top_40_chart/12.jpg","Demo Charts/top_40_chart/13.jpg","Demo Charts/top_40_chart/14.jpg","Demo Charts/top_40_chart/15.jpg","Demo Charts/top_40_chart/16.jpg","Demo Charts/top_40_chart/17.jpg","Demo Charts/top_40_chart/18.jpg","Demo Charts/top_40_chart/19.jpg","Demo Charts/top_40_chart/20.jpg","Demo Charts/top_40_chart/21.jpg","Demo Charts/top_40_chart/22.jpg","Demo Charts/top_40_chart/23.jpg","Demo Charts/top_40_chart/24.webp","Demo Charts/top_40_chart/25.jpg","Demo Charts/top_40_chart/26.jpg","Demo Charts/top_40_chart/27.jpg","Demo Charts/top_40_chart/28.jpg","Demo Charts/top_40_chart/29.jpg","Demo Charts/top_40_chart/30.jpg","Demo Charts/top_40_chart/31.jpg","Demo Charts/top_40_chart/32.jpg","Demo Charts/top_40_chart/33.jpg","Demo Charts/top_40_chart/34.jpg","Demo Charts/top_40_chart/35.png","Demo Charts/top_40_chart/36.png","Demo Charts/top_40_chart/37.jpg","Demo Charts/top_40_chart/38.jpg","Demo Charts/top_40_chart/39.jpg","Demo Charts/top_40_chart/40.webp"];
+
+    function chartArt(g){
+      let base = g;
+      if(base.indexOf("Gospel ") === 0){ base = base.slice(7); }
+      const h = GENRE_ONE[base];
+      if(h && h.art){ return h.art; }
+      if(base === "Zim Hip Hop") return "Assets/charts/top_25_local_hip_hop/1.jpg";
+      if(base === "House" || base === "Zimbabwean House") return "Assets/charts/top_20_house/1.jpg";
+      if(base === "R&B") return "Assets/charts/top_20_rnb_chart/1.jpg";
+      return "Assets/charts/top_40_chart/1.jpg";
     }
 
-    function tile({label,title,sub,href,img}){
-      return `<a class="hy-tile" href="${href}" onclick="location.href='${href}';return false">
-        ${img ? `<img class="hy-tile-art" loading="lazy" src="${img}" alt="">`
-              : `<div class="hy-tile-rank">TH</div>`}
-        <div class="hy-tile-meta">
-          <div class="hy-tile-label">${label}</div>
-          <div class="hy-tile-title">${title}</div>
-          <div class="hy-tile-sub">${sub}</div>
-        </div>
-      </a>`;
+    function art(index){ return "Assets/charts/top_40_chart/" + ((index % 40) + 1) + ".jpg"; }
+
+    function currentRegionCountry(){
+      try{
+        const r = JSON.parse(localStorage.getItem("trackhype.region") || "null");
+        if(r && r.name && /botswana/i.test(r.name)) return "Botswana";
+      }catch(e){}
+      return "Zimbabwe";
+    }
+    (function(){
+      const country = currentRegionCountry();
+      const stations = (window.RADIO_STATIONS || []).filter(s => s.country === country);
+      document.getElementById("radioShows").innerHTML = stations.map(s =>
+        `<a class="hy-tile" href="radio-station.html?station=${encodeURIComponent(s.id)}">
+          <img class="hy-tile-art radio-logo" loading="lazy" src="${s.logo}" alt="${s.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';">
+          <div class="radio-logo-fallback">${s.name.charAt(0)}</div>
+        </a>`
+      ).join("");
+    })();
+
+
+    let activeFilter = "culture";
+
+    function setFilter(filter){
+      activeFilter = filter;
+      document.getElementById("filterRow").dataset.active = filter;
+      document.querySelectorAll(".filter-btn").forEach(b => {
+        b.classList.toggle("is-active", b.dataset.filter === filter);
+      });
+      renderAllContent();
     }
 
-    const radio = ["Star FM","ZiFM Stereo","Power FM","Classic 263","Nyaminyami FM","Hevoi FM"];
-    document.getElementById("radioShows").innerHTML = radio.map(x =>
-      tile({label:"Radio Show", title:x, sub:"Zimbabwe", href:"search.html?q=" + encodeURIComponent(x), img:art(5)})
-    ).join("");
+    function renderAllContent(){
+      const genres = activeFilter === "culture" ? cultureGenres : spiritualGenres;
+      const prefs = (typeof TrackHype.getHomeCharts === "function")
+        ? TrackHype.getHomeCharts()
+        : { order: cultureGenres.slice(), enabled: {} };
+      const sectionBase = prefs.order.filter(g => prefs.enabled[g] !== false);
+      const sectionGenres = activeFilter === "culture"
+        ? sectionBase
+        : sectionBase.map(g => "Gospel " + g);
 
-document.getElementById("recentCharts").innerHTML = topGenres.slice(0,10).map((g,i) =>
-      `<a class="th-card pad" style="cursor:pointer;text-decoration:none" href="charts.html?chart=${encodeURIComponent(g)}">
-        <img style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;border:1px solid var(--th-border-soft)" loading="lazy" src="${chartArt(g)}" alt="">
-        <div style="margin-top:10px;font-weight:900;color:var(--th-text)">${g}</div>
-        <div class="hy-meter">Current chart · ${["#1 National","Zim Hip Hop","House","R&B","Afro-Pop","Amapiano","Sungura","Gospel","Chimurenga","Afro-Jazz"][i]}</div>
-      </a>`
-    ).join("");
+      function pages(items){
+        const out = [];
+        for(let i = 0; i < items.length; i += 10){ out.push(items.slice(i, i + 10)); }
+        return out;
+      }
 
-    document.getElementById("numberOnes").innerHTML = topGenres.slice(0,6).map(g =>
-      tile({label:"#1 " + g, title:"Number One", sub:g, href:"charts.html?chart=" + encodeURIComponent(g), img:art(1)})
-    ).join("");
+      document.getElementById("recentCharts").innerHTML = pages(genres).map(chunk =>
+        '<div class="rc-page">' + chunk.map(g =>
+          `<a href="charts.html?chart=${encodeURIComponent(g)}"><img loading="lazy" src="${chartArt(g)}" alt=""></a>`
+        ).join("") + '</div>'
+      ).join("");
 
-    const nation = (typeof TrackHype.buildChartDataset === "function")
-      ? TrackHype.buildChartDataset("National Top 100 Chart").slice(0,10)
-      : null;
-    document.getElementById("nationalTop").innerHTML = (nation && nation.length ? nation : Array.from({length:10},(_,i)=>({id:i+1, title:"#"+(i+1), artist:"National Top 100"}))).map((s,i) =>
-      tile({
-        label:"National Top 100",
-        title:TrackHype.esc(s.title || ("#" + (i+1))),
-        sub:"#" + (i+1) + " · " + TrackHype.esc(s.artist || "TrackHype"),
-        href:"song.html?id=" + TrackHype.esc(s.id),
-        img:art(i)
-      })
-    ).join("");
+      const nation = (typeof TrackHype.buildChartDataset === "function")
+        ? TrackHype.buildChartDataset("National Top 100 Chart").slice(0,10)
+        : null;
+      const nationSongs = (nation && nation.length ? nation : Array.from({length:10},(_,i)=>({id:i+1, title:"#"+(i+1), artist:"National Top 100"})));
+      document.getElementById("nationalTop").innerHTML = pages(nationSongs).map(chunk =>
+        '<div class="rc-page">' + chunk.map((s,i) =>
+          `<a href="song.html?id=${TrackHype.esc(s.id)}"><img loading="lazy" src="${art(i)}" alt=""></a>`
+        ).join("") + '</div>'
+      ).join("");
 
-    document.getElementById("genreSections").innerHTML = topGenres.map((g,i) =>
-      `<section class="th-section">
-        <div class="hy-genre-head">
-          <span style="font-size:17px;font-weight:900">${g}</span>
-          <span style="display:flex;gap:10px">
-            <a class="hy-view-link" href="charts.html?chart=${encodeURIComponent(g)}">Chart</a>
-            <a class="hy-view-link" href="artists.html?genre=${encodeURIComponent(g)}">Artists</a>
-          </span>
-        </div>
-        <div class="hy-strip">${(genreArtists[g]||[]).map((a,j) =>
-          tile({label:g + " Top 20", title:a, sub:g, href:"artist.html?artist=" + encodeURIComponent(a), img:chartArt(g)})
-        ).join("")}</div>
-      </section>${i < topGenres.length - 1 ? '<div class="th-advert"><img src="Assets/Demo Media/DemoMedia - Paid Promo.webp" alt="DemoMedia - Paid Promo"></div>' : ""}`
-    ).join("");
+      function heroFor(g){
+        if(g.indexOf("Gospel ") === 0){ g = g.slice(7); }
+        return GENRE_ONE[g];
+      }
+
+      function randChartArt(){
+        return CHART_ART[Math.floor(Math.random() * CHART_ART.length)];
+      }
+
+      function randDemoSong(){
+        const s = DEMO_SONGS[Math.floor(Math.random() * DEMO_SONGS.length)];
+        return { title: s.title, artist: s.artist, art: randChartArt() };
+      }
+
+      document.getElementById("genreSections").innerHTML = sectionGenres.map((g,i) => {
+        const hero = heroFor(g);
+        const heroArt = (hero && hero.art) ? hero.art : randChartArt();
+        const heroHref = hero ? "song.html?title=" + encodeURIComponent(hero.title) + "&artist=" + encodeURIComponent(hero.artist) + "&genre=" + encodeURIComponent(hero.genre) + "&art=" + encodeURIComponent(heroArt) : randDemoSong();
+        const stripSongs = Array.from({length:9}, randDemoSong);
+        return `
+          ${i > 0 ? `<div class="th-advert th-advert--full"><img src="Assets/Demo Media/DemoMedia - Paid Promo.webp" alt="DemoMedia - Paid Promo"></div>` : ""}
+          <section class="Hyped-Featured-Genre-Preview">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">
+              <span style="font-size:17px;font-weight:900">${g}</span>
+              <span style="display:flex;gap:10px">
+                <a class="hy-view-link" href="charts.html?chart=${encodeURIComponent(g)}">Chart</a>
+                <a class="hy-view-link" href="artists.html?genre=${encodeURIComponent(g)}">Artists</a>
+              </span>
+            </div>
+            ${hero ? `<a href="${heroHref}"><img class="genre-hero" loading="lazy" src="${heroArt}" alt="${hero.title}"></a>` : ""}
+            <div class="genre-charting-strip">${(function(){
+              const pages=[];
+              for(let k=0;k<stripSongs.length;k+=3){ pages.push(stripSongs.slice(k,k+3)); }
+              return pages.map(page =>
+                `<div class="genre-page">` + page.map(sg => {
+                  const href = "song.html?title=" + encodeURIComponent(sg.title) + "&artist=" + encodeURIComponent(sg.artist) + "&art=" + encodeURIComponent(sg.art);
+                  return `<a class="genre-scroll-cell" href="${href}"><img loading="lazy" src="${sg.art}" alt="${sg.title}"></a>`;
+                }).join("") + `</div>`
+              ).join("");
+            })()}</div>
+          </section>`;
+      }).join("");
+    }
+
+    window.toggleAcc = (id) => {
+      const el = document.getElementById(id);
+      if(!el){ return; }
+      const open = el.classList.toggle("open");
+      const head = el.querySelector(".acc-head");
+      if(head){ head.setAttribute("aria-expanded", open ? "true" : "false"); }
+    };
+
+    renderAllContent();
   </script>
 </body>
 </html>

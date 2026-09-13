@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en-ZW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" type="image/webp" href="Assets/logos/TrackHype Logo Design Badge.webp">
+  <title>Voting &amp; Chart Rules — TrackHype</title>
+  <link rel="stylesheet" href="trackhype.css">
+  <style>
+    .pg-kicker{font-size:11px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:var(--th-primary-dark);text-align:center}
+    .pg-title{font-size:24px;font-weight:900;color:var(--th-text);margin-top:4px;text-align:center}
+    .pg-sub{font-size:13px;color:var(--th-muted);margin-top:6px;line-height:1.6;text-align:center}
+    .rules-section{margin-top:22px}
+    .rules-title{font-size:13px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:var(--th-primary-dark);margin:0 0 10px 2px}
+    .rules-list{list-style:none;margin:0;padding:0}
+    .rules-list li{position:relative;padding:9px 0 9px 26px;border-bottom:1px solid var(--th-border-soft);font-size:13.5px;line-height:1.6;color:var(--th-text)}
+    .rules-list li:last-child{border-bottom:0}
+    .rules-list li::before{content:"";position:absolute;left:0;top:15px;width:8px;height:8px;border-radius:3px;background:var(--th-primary)}
+    .rules-list li b{font-weight:900}
+    .rules-note{margin:16px 0 0;font-size:12.5px;line-height:1.6;color:var(--th-muted)}
+  </style>
+</head>
+<body data-active-nav="menu.html">
+
+  <header class="th-header" data-app-header>
+    <div class="th-header-inner">
+      <a class="th-brand" href="index.html">
+        <img class="th-logo-badge" src="Assets/logos/TrackHype Logo Design Badge.webp" alt="TrackHype">
+        <img class="th-logo-text" src="Assets/logos/track-hype-text-logo.webp" alt="TrackHype">
+      </a>
+    </div>
+  </header>
+
+  <main class="th-app">
+    <div class="th-shell">
+
+      <section>
+        <div class="pg-kicker">How TrackHype works</div>
+        <h1 class="pg-title">Voting &amp; Chart Rules</h1>
+        <p class="pg-sub">One ballot, fixed points, published at the Monday close. Here is exactly how ranked voting and chart tiers work.</p>
+      </section>
+
+      <section class="rules-section">
+        <h2 class="rules-title">The ballot</h2>
+        <ul class="rules-list">
+          <li>Every voter ranks <b>up to 10 songs</b> on one unified ballot: On Top, Contenders and Newest appear together under tier headings.</li>
+          <li>Points are fixed and always the same. <b>1st choice gets 10 points</b>, 2nd gets 9, and so on down to <b>10th choice getting 1 point</b>. Unranked songs get 0.</li>
+          <li>Only your most recent ballot counts. You can open your ballot and change your picks any time before the week closes — your new ballot replaces the old one.</li>
+          <li>A song can appear once per ballot, and you can only rank songs that are actually on the chart that week.</li>
+          <li>A chart with no competing songs cannot be voted on yet.</li>
+        </ul>
+      </section>
+
+      <section class="rules-section">
+        <h2 class="rules-title">The chart week</h2>
+        <ul class="rules-list">
+          <li>Each chart week starts on <b>Monday 00:00</b> and closes the following <b>Monday 00:00</b> (Africa/Harare).</li>
+          <li>During the week you can vote and edit your ballot. Standings are <b>not live</b> — published rankings appear only after the close.</li>
+          <li>At the close the chart is finalised: On Top, Contenders and Newest are recomputed and an immutable snapshot is published for the week.</li>
+        </ul>
+      </section>
+
+      <section class="rules-section">
+        <h2 class="rules-title">On Top</h2>
+        <ul class="rules-list">
+          <li>The official chart. Songs are ranked by total ballot points across On Top and Contenders ballots.</li>
+          <li>Chart size is fixed per chart (e.g. National Top 100 is 100 positions, genre charts are 20).</li>
+          <li>Movement is measured against the previous published snapshot: climbed, dropped, steady, or a NEW entry.</li>
+        </ul>
+      </section>
+
+      <section class="rules-section">
+        <h2 class="rules-title">Contenders</h2>
+        <ul class="rules-list">
+          <li>10 slots that bridge On Top and New Music, split in two:
+            <b>half</b> go to the highest-scoring songs that fell out of On Top, and
+            <b>half</b> go to the highest-scoring eligible Newest songs. If one side is short, the remaining slots spill over to the other side.</li>
+          <li>Contenders get <b>one chance</b> — any contender that does not reach On Top at the next close exits the contenders slot.</li>
+          <li>Contender ballots count exactly like On Top ballots toward the chart.</li>
+        </ul>
+      </section>
+
+      <section class="rules-section">
+        <h2 class="rules-title">Newest</h2>
+        <ul class="rules-list">
+          <li>A two-week discovery lane for <b>approved releases only</b>. Songs enter Newest when moderation approves an artist submission — the submit form itself never places a song on a chart.</li>
+          <li>Newest ballots use the same 10-point scale, but points decide <b>Newest promotion only</b> — a song cannot jump straight into On Top from Newest.</li>
+          <li>After two chart cycles, a promoted song moves to Contenders and a non-promoted song retires from the lane (it can stay on New Music).</li>
+        </ul>
+      </section>
+
+      <section class="rules-section">
+        <h2 class="rules-title">Tie-breakers</h2>
+        <ul class="rules-list">
+          <li>When total points are equal, the higher-ranked song is the one with <b>more voters</b>.</li>
+          <li>Still tied, the song that ranked <b>higher in the previous published chart</b> wins.</li>
+          <li>Next, the song <b>approved earlier</b>; finally the submission with the <b>earlier TrackHype ID</b>.</li>
+        </ul>
+      </section>
+
+      <section class="rules-section">
+        <h2 class="rules-title">Artist submissions</h2>
+        <ul class="rules-list">
+          <li>Submitting music is a <b>$10.00 USD per song</b> payment flow and creates a submission record. It does not guarantee chart placement.</li>
+          <li>A submission must be <b>approved</b> before it appears in New Music / the Newest lane.</li>
+        </ul>
+      </section>
+
+      <p class="rules-note">This prototype keeps all data locally in your browser so you can explore how ranking, promotion and published snapshots behave.</p>
+
+      <section style="margin-top:22px">
+        <button class="th-btn primary block" type="button" onclick="TrackHype.navigate('charts.html')">Open the charts</button>
+        <button class="th-btn secondary block" type="button" style="margin-top:10px" onclick="TrackHype.navigate('settings.html')">Back to Settings</button>
+      </section>
+
+    </div>
+  </main>
+
+  <div class="bottom-swipe" data-bottom-swipe>
+    <nav class="bottom-nav" data-bottom>
+      <div class="bottom-nav-inner" data-nav-host></div>
+    </nav>
+
+    <aside class="promo-player" data-player></aside>
+  </div>
+
+  <div class="th-modal-backdrop" data-modal>
+    <div class="th-sheet" role="dialog" aria-modal="true">
+      <div class="th-sheet-handle"></div>
+      <h3 data-modal-title></h3>
+      <div data-modal-body></div>
+      <div class="th-sheet-actions" data-modal-actions></div>
+    </div>
+  </div>
+
+  <script src="demo-playlist.js"></script>
+  <script src="trackhype.js"></script>
+</body>
+</html>

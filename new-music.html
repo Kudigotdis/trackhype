@@ -7,157 +7,300 @@
   <link rel="icon" type="image/webp" href="Assets/logos/TrackHype Logo Design Badge.webp">
   <title>New Music — TrackHype</title>
   <link rel="stylesheet" href="trackhype.css">
+  <style>
+    /* ---- page hero ---------------------------------------------------- */
+    .th-hero-nm{margin-bottom:14px}
+    .th-hero-nm h1{font-size:26px;font-weight:900;letter-spacing:-.6px}
+    .th-hero-nm p{margin-top:8px;font-size:13px;line-height:1.55;color:var(--th-muted);max-width:40ch}
+    .th-hero-nm p b{color:var(--th-text);font-weight:800}
+
+    /* ---- filters accordion body --------------------------------------- */
+    .th-filter-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:2px;padding-top:2px}
+    .th-filter-foot{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      margin-top:12px;padding-top:12px;border-top:1px solid var(--th-border-soft);
+    }
+    .th-filter-foot small{font-size:11.5px;color:var(--th-muted);font-weight:700}
+    .th-filter-foot .th-btn{padding:8px 12px;font-size:12px}
+
+    /* ---- track rows ----------------------------------------------------- */
+    .th-tracks{display:flex;flex-direction:column;gap:8px}
+    .th-track{
+      position:relative;
+      display:flex;align-items:center;gap:12px;
+      padding:10px 12px 10px 14px;
+      border:1px solid var(--th-border-soft);
+      border-radius:var(--th-radius);
+      background:var(--th-bg);
+      transition:border-color .18s ease,box-shadow .18s ease;
+    }
+    .th-track::before{
+      content:"";position:absolute;left:0;top:8px;bottom:8px;width:var(--th-rail);
+      border-radius:0 2px 2px 0;
+      background:var(--th-primary);
+      transform:scaleY(0);transform-origin:center;
+      transition:transform .28s cubic-bezier(.25,.8,.3,1);
+    }
+    .th-track.is-playing::before{transform:scaleY(1)}
+    .th-track.is-playing{border-color:var(--th-border)}
+
+    .th-track-main{
+      flex:1;min-width:0;
+      display:flex;align-items:center;gap:12px;
+      text-align:left;
+      font-family:inherit;color:inherit;background:none;border:0;padding:0;
+      cursor:pointer;
+      -webkit-tap-highlight-color:transparent;
+    }
+    .th-track-artist{
+      display:block;
+      font-size:11.5px;font-weight:800;letter-spacing:.02em;
+      color:var(--th-muted);
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .th-track-t{flex:1;min-width:0}
+    .th-track-title{
+      display:block;margin-top:2px;
+      font-size:14.5px;font-weight:900;letter-spacing:-.1px;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .th-track-meta{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+    .th-tag{
+      display:inline-block;
+      padding:2.5px 7px;
+      border-radius:var(--th-radius-art);
+      background:var(--th-grey-1);
+      border:1px solid var(--th-border-soft);
+      font-size:10.5px;font-weight:800;letter-spacing:.02em;
+      color:var(--th-muted);
+    }
+    .th-track-end{display:flex;align-items:center;gap:6px;flex:none}
+
+    /* ---- empty state ----------------------------------------------------- */
+    .th-empty-nm{border:1px dashed var(--th-grey-3);background:var(--th-grey-1)}
+    .th-empty-nm p{margin-top:6px;font-size:12.5px;line-height:1.6;color:var(--th-muted)}
+    .th-empty-nm .th-btn{margin:14px auto 0}
+  </style>
 </head>
 <body data-active-nav="hyped">
   <header class="th-header" data-app-header>
     <div class="th-header-inner">
-      <a class="th-brand" href="index.html">TrackHype</a>
-      <div class="th-header-context">New Music</div>
-      <button class="th-icon-btn" type="button" aria-label="Search" onclick="location.href='search.html'">⌕</button>
+<a class="th-brand" href="index.html">TrackHype</a>
     </div>
   </header>
 
   <main class="th-app">
     <div class="th-shell">
-      <section>
-        <h1 class="th-page-title">New Music</h1>
-        <p class="th-page-subtitle">
-          Discover approved new submissions before they become official chart entries.
-          New Music is not an official chart.
-        </p>
+      <section class="th-hero-nm">
+        <h1>New Music</h1>
+        <p>Discover approved releases before they reach the official charts. <b>New Music is not an official chart.</b></p>
       </section>
 
-      <section class="th-section">
-        <div class="th-advert">
-          <div><strong>TrackHype New Music</strong> Artist discovery and release promotion</div>
-        </div>
-      </section>
+      <div class="th-search" id="searchBox">
+        <svg class="th-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"/><path d="m20.2 20.2-3.6-3.6"/>
+        </svg>
+        <input id="q" type="search" placeholder="Search artist or song" autocomplete="off">
+        <button class="th-search-clear" id="qClear" type="button" aria-label="Clear search">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M2 2l8 8M10 2l-8 8"/>
+          </svg>
+        </button>
+      </div>
 
-      <section class="th-section">
-        <div class="th-chip-row" id="sortFilters">
-          <button class="th-chip is-active" data-sort="newest" type="button">Newest</button>
-          <button class="th-chip" data-sort="trending" type="button">Trending</button>
-          <button class="th-chip" data-sort="plays" type="button">Most Played</button>
-          <button class="th-chip" data-sort="favourites" type="button">Most Favourited</button>
-        </div>
-      </section>
+      <nav class="th-chip-row-scroll" id="sortChips" role="group" aria-label="Sort">
+        <button class="th-filter-chip" data-sort="newest" type="button" aria-pressed="true">Newest</button>
+        <button class="th-filter-chip" data-sort="trending" type="button" aria-pressed="false">Trending</button>
+        <button class="th-filter-chip" data-sort="plays" type="button" aria-pressed="false">Most Played</button>
+        <button class="th-filter-chip" data-sort="favourites" type="button" aria-pressed="false">Favourited</button>
+      </nav>
 
-      <section class="th-section">
-        <div class="th-section-head">
-          <h2>Filter</h2>
-          <button class="th-btn secondary" id="clearFilters" type="button">Clear</button>
-        </div>
-        <div class="th-card pad">
-          <div class="th-form-grid">
-            <div class="th-form-group">
-              <label for="genreFilter">Genre</label>
-              <select class="th-select" id="genreFilter">
-                <option value="">All genres</option>
-                <option>Zim Hip Hop</option>
-                <option>Zimdancehall</option>
-                <option>Amapiano</option>
-                <option>Sungura</option>
-                <option>Afro-Fusion</option>
-                <option>Gospel Hip Hop</option>
-              </select>
-            </div>
-            <div class="th-form-group">
-              <label for="artistFilter">Artist</label>
-              <input class="th-input" id="artistFilter" type="search" placeholder="Search artist name">
-            </div>
-            <div class="th-form-group">
-              <label for="cityFilter">City</label>
-              <select class="th-select" id="cityFilter">
-                <option value="">All cities</option>
-                <option>Harare</option>
-                <option>Bulawayo</option>
-                <option>Mutare</option>
-                <option>Gweru</option>
-                <option>Kwekwe</option>
-                <option>Masvingo</option>
-                <option>Kadoma</option>
-                <option>Chitungwiza</option>
-                <option>Other</option>
-              </select>
-            </div>
-<div class="th-form-group">
-              <label for="languageFilter">Language</label>
-              <select class="th-select" id="languageFilter">
-                <option value="">All languages</option>
-                <option>Shona</option>
-                <option>Ndebele</option>
-                <option>English</option>
-                <option>Shona / English</option>
-                <option>English / Shona</option>
-              </select>
-            </div>
-            <div class="th-form-group">
-              <label for="dateFilter">Date Added</label>
-              <select class="th-select" id="dateFilter">
-                <option value="">All dates</option>
-                <option value="7">Last 7 days</option>
-                <option value="30">Last 30 days</option>
-                <option value="90">Last 90 days</option>
-              </select>
-            </div>
+      <details class="th-acc" id="filters">
+        <summary>
+          <span class="th-acc-title">
+            <b>Filters</b>
+            <small id="filterSummary">All genres · All cities · All languages · Any date</small>
+          </span>
+          <span class="th-badge" id="filterBadge" hidden>0</span>
+          <span class="th-acc-mark" aria-hidden="true"></span>
+        </summary>
+        <div class="th-acc-body">
+          <div class="th-filter-grid">
+            <select class="th-sel" id="fGenre" aria-label="Genre">
+              <option value="">Any genre</option>
+              <option>Zim Hip Hop</option>
+              <option>Zimdancehall</option>
+              <option>Amapiano</option>
+              <option>Sungura</option>
+              <option>Afro-Fusion</option>
+              <option>Gospel Hip Hop</option>
+            </select>
+            <select class="th-sel" id="fCity" aria-label="City">
+              <option value="">Any city</option>
+              <option>Harare</option>
+              <option>Bulawayo</option>
+              <option>Mutare</option>
+              <option>Gweru</option>
+              <option>Kwekwe</option>
+              <option>Masvingo</option>
+              <option>Kadoma</option>
+              <option>Chitungwiza</option>
+              <option>Other</option>
+            </select>
+            <select class="th-sel" id="fLang" aria-label="Language">
+              <option value="">Any language</option>
+              <option>Shona</option>
+              <option>Ndebele</option>
+              <option>English</option>
+              <option>Shona / English</option>
+              <option>English / Shona</option>
+            </select>
+            <select class="th-sel" id="fDate" aria-label="Date added">
+              <option value="">Any date</option>
+              <option value="7">Last 7 days</option>
+              <option value="30">Last 30 days</option>
+              <option value="90">Last 90 days</option>
+            </select>
+          </div>
+          <div class="th-filter-foot">
+            <small id="footHint">No filters applied</small>
+            <button class="th-btn secondary" id="clearFilters" type="button">Clear all</button>
           </div>
         </div>
-      </section>
+      </details>
 
-      <section class="th-section">
-        <div class="th-section-head">
-          <h2>Latest discoveries</h2>
-          <p id="resultCount"></p>
-        </div>
-        <div class="th-grid-2" id="newMusicGrid"></div>
-        <div class="th-empty" id="noResults" hidden>
-          <strong>No music matches these filters.</strong>
-          Try clearing one or more filters.
-        </div>
-      </section>
+      <div class="th-results">
+        <h2>Latest discoveries</h2>
+        <span class="th-results-count" id="count">0 releases</span>
+      </div>
 
-      <section class="th-section">
-        <div class="th-card pad">
-          <strong>Where New Music fits</strong>
-          <p style="margin:7px 0 0;color:var(--th-muted);font-size:13px">
-            Submission → Payment → Review → Approved → New Music → Discovery → Chart Eligibility → Official Chart.
-            Payment does not guarantee chart placement.
-          </p>
+      <div class="th-tracks" id="tracks"></div>
+
+      <div class="th-empty th-empty-nm" id="empty" hidden>
+        <strong>Nothing matches these filters yet.</strong>
+        <p>Try widening the date range, or clear the filters to see every new release.</p>
+        <button class="th-btn primary" id="emptyClear" type="button">Clear all filters</button>
+      </div>
+
+      <details class="th-acc" style="margin-top:18px" id="fitAcc">
+        <summary>
+          <span class="th-acc-title">
+            <b>Where New Music fits</b>
+            <small>Discovery → Chart Eligibility → Official Chart</small>
+          </span>
+          <span class="th-acc-mark" aria-hidden="true"></span>
+        </summary>
+        <div class="th-acc-body">
+          <div class="th-pipeline" id="pipe"></div>
         </div>
-      </section>
+      </details>
     </div>
   </main>
 
-  <nav class="th-bottom" data-bottom>
-    <div class="th-bottom-inner" data-nav-host></div>
-  </nav>
+  <div class="bottom-swipe" data-bottom-swipe>
+    <nav class="bottom-nav" data-bottom>
+      <div class="bottom-nav-inner" data-nav-host></div>
+    </nav>
 
-  <aside class="promo-player" data-player></aside>
+    <aside class="promo-player" data-player></aside>
+  </div>
 
   <div class="th-modal-backdrop" data-modal>
     <div class="th-sheet" role="dialog" aria-modal="true" aria-labelledby="songModalTitle">
       <div class="th-sheet-handle"></div>
       <h3 id="songModalTitle" data-modal-title></h3>
       <div data-modal-body></div>
-      <div class="th-sheet-actions" data-modal-actions>
-        <button class="th-btn" type="button" data-modal-close>Close</button>
-      </div>
+      <div class="th-sheet-actions" data-modal-actions></div>
     </div>
   </div>
 
+  <script src="demo-playlist.js"></script>
   <script src="trackhype.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const music = TrackHype.makeNewMusicData();
-      const grid = document.getElementById("newMusicGrid");
-      const noResults = document.getElementById("noResults");
-      const resultCount = document.getElementById("resultCount");
-const genre = document.getElementById("genreFilter");
-      const artist = document.getElementById("artistFilter");
-      const city = document.getElementById("cityFilter");
-      const language = document.getElementById("languageFilter");
-      const dateEl = document.getElementById("dateFilter");
+      const CHART_NAMES = [
+        { title:"National Top 100",       genre:"All Genres — Zimbabwe" },
+        { title:"Zim Hip Hop Top 20",     genre:"Zim Hip Hop" },
+        { title:"Zimbabwean House Top 20",genre:"House" },
+        { title:"R&B Top 20",             genre:"R&B" },
+        { title:"Zimdancehall Top 20",    genre:"Zimdancehall" },
+        { title:"Gospel Top 20",          genre:"Gospel" },
+        { title:"Sungura Top 20",         genre:"Sungura" }
+      ];
+
+      function newestFromEngine(){
+        const wk = TrackHype.currentWeekKey();
+        const items = [];
+        CHART_NAMES.forEach(ch => {
+          const key = TrackHype.chartId(ch.title);
+          TrackHype.aggregateNewest(key, wk).forEach(s => {
+            if(!s || !s.submissionId){ return; }
+            const entered = s.newestEnteredWeekKey || s.weekKey || wk;
+            const cycles = TrackHype.weeksBetween ? (TrackHype.weeksBetween(entered, wk) + 1) : 1;
+            const ts = s.submittedAt || s.approvedForChartAt;
+            const seedTs = s.isSeed ? null : (ts && ts > 946684800000 ? ts : null);
+            const enteredMonday = TrackHype.mondayOfWeek ? TrackHype.mondayOfWeek(entered) : new Date();
+            const dateTag = seedTs
+              ? new Date(seedTs).toISOString().slice(0, 10)
+              : enteredMonday.toISOString().slice(0, 10);
+            items.push({
+              id: s.submissionId,
+              title: s.title || "Untitled",
+              artist: s.artistName || "Unknown Artist",
+              genre: ch.genre,
+              city: "Harare",
+              language: "English / Shona",
+              dateAdded: dateTag,
+              plays: Number(s.totalPoints) || 0,
+              favourites: Number(s.voteCount) || 0,
+              artwork: s.artwork || TrackHype.getArtwork(items.length % 6),
+              chart: ch.title,
+              newWeek: Math.min(2, cycles),
+              approved: true
+            });
+          });
+        });
+        return items;
+      }
+
+      const demoMusic = () => TrackHype.makeNewMusicData();
+      const all = () => {
+        const engine = newestFromEngine();
+        return engine.length ? engine : demoMusic();
+      };
+      let music = all();
+
+      const tracks = document.getElementById("tracks");
+      const emptyEl = document.getElementById("empty");
+      const countEl = document.getElementById("count");
+      const qEl = document.getElementById("q");
+      const searchBox = document.getElementById("searchBox");
+      const qClear = document.getElementById("qClear");
+      const genre = document.getElementById("fGenre");
+      const city = document.getElementById("fCity");
+      const language = document.getElementById("fLang");
+      const dateEl = document.getElementById("fDate");
+      const filterSummary = document.getElementById("filterSummary");
+      const filterBadge = document.getElementById("filterBadge");
+      const footHint = document.getElementById("footHint");
+
+      const filters = { q:"", genre:"", city:"", lang:"", days:0 };
       let sort = "newest";
+
+      function relTime(value){
+        const d = new Date(`${value}T12:00:00`);
+        if(Number.isNaN(d.getTime())) return "";
+        const ms = Date.now() - d.getTime();
+        if(ms < 0) return "soon";
+        const day = 86400000;
+        const days = Math.floor(ms / day);
+        if(days === 0) return "today";
+        if(days === 1) return "yesterday";
+        if(days < 7) return `${days}d ago`;
+        if(days < 30) return `${Math.floor(days / 7)}w ago`;
+        if(days < 365) return `${Math.floor(days / 30)}mo ago`;
+        return `${Math.floor(days / 365)}y ago`;
+      }
 
       function sorted(items){
         return [...items].sort((a,b)=>{
@@ -168,101 +311,168 @@ const genre = document.getElementById("genreFilter");
         });
       }
 
-function render(){
-        const q = artist.value.trim().toLowerCase();
-        const days = Number(dateEl.value || 0);
-        const cutoff = days ? Date.now() - (days * 24 * 60 * 60 * 1000) : 0;
-        let items = music.filter(item =>
-          (!genre.value || item.genre===genre.value) &&
-          (!city.value || item.city===city.value) &&
-          (!language.value || item.language===language.value) &&
-          (!q || item.artist.toLowerCase().includes(q)) &&
-          (!days || new Date(item.dateAdded + "T12:00:00").getTime() >= cutoff)
+      function filtered(){
+        const q = filters.q.trim().toLowerCase();
+        const cutoff = filters.days ? Date.now() - (filters.days * 86400000) : 0;
+        return music.filter(item =>
+          (!filters.genre || item.genre===filters.genre) &&
+          (!filters.city || item.city===filters.city) &&
+          (!filters.lang || item.language===filters.lang) &&
+          (!q || `${item.artist} ${item.title}`.toLowerCase().includes(q)) &&
+          (!cutoff || new Date(item.dateAdded + "T12:00:00").getTime() >= cutoff)
         );
-        items = sorted(items);
-
-        resultCount.textContent = `${items.length} ${items.length===1 ? "release":"releases"}`;
-        noResults.hidden = items.length !== 0;
-
-grid.innerHTML = items.map(item => `
-          <article class="th-card th-new-card">
-            <img class="th-new-card-art" loading="lazy" src="${TrackHype.esc(item.artwork)}" alt="" onclick="location.href='song.html?id=${TrackHype.esc(item.id)}'">
-            <div class="th-new-card-body">
-              <span class="th-artist-name" onclick="location.href='song.html?id=${TrackHype.esc(item.id)}'" style="cursor:pointer">${TrackHype.esc(item.artist)}</span>
-              <a class="th-song-title" style="display:block;text-decoration:none;color:var(--th-text)" href="song.html?id=${TrackHype.esc(item.id)}">${TrackHype.esc(item.title)}</a>
-              <div class="th-meta-row">
-                <span class="th-meta">${TrackHype.esc(item.genre)}</span>
-                <span class="th-meta">${TrackHype.esc(item.city)}</span>
-                <span class="th-meta">${TrackHype.esc(item.language)}</span>
-              </div>
-              <div class="th-meta-row">
-                <span class="th-meta">${item.plays.toLocaleString()} plays</span>
-                <span class="th-meta">${item.favourites.toLocaleString()} favourites</span>
-              </div>
-              <div class="th-card-actions">
-                <button class="th-btn primary" style="flex:1" type="button"
-                  data-action="play-track"
-                  data-id="${TrackHype.esc(item.id)}"
-                  data-title="${TrackHype.esc(item.title)}"
-                  data-artist="${TrackHype.esc(item.artist)}"
-                  data-artwork="${TrackHype.esc(item.artwork)}">Play</button>
-                <button class="th-mini-btn" type="button" data-action="favourite-song" data-id="${TrackHype.esc(item.id)}" aria-label="Favourite">
-                  ${TrackHype.getState().favouriteSongs.includes(item.id) ? "♥" : "♡"}
-                </button>
-              </div>
-              <button class="th-btn block secondary" style="margin-top:8px" type="button" data-song-info="${TrackHype.esc(item.id)}">
-                Song information
-              </button>
-              <a class="th-btn block" style="margin-top:6px;text-decoration:none;display:block" href="song.html?id=${TrackHype.esc(item.id)}">Open Song Page</a>
-            </div>
-          </article>
-        `).join("");
       }
 
-      document.getElementById("sortFilters").addEventListener("click",(event)=>{
+      function render(){
+        music = all();
+        const list = sorted(filtered());
+        const s = TrackHype.getState();
+        const favs = s.favouriteSongs || [];
+        const currentId = s.currentTrack ? s.currentTrack.id : null;
+
+        countEl.textContent = `${list.length} ${list.length===1 ? "release":"releases"}`;
+        emptyEl.hidden = list.length !== 0;
+
+        tracks.innerHTML = list.map(item => {
+          const isFav = favs.includes(item.id);
+          const isCurrent = currentId === item.id;
+          return `
+            <article class="th-track${isCurrent ? " is-playing" : ""}" data-id="${TrackHype.esc(item.id)}">
+              <button class="th-track-main" type="button" data-detail="${TrackHype.esc(item.id)}" aria-label="View details for ${TrackHype.esc(item.title)}">
+                <span class="th-art th-art-56"><img loading="lazy" src="${TrackHype.esc(item.artwork)}" alt="${TrackHype.esc(item.artist)} — ${TrackHype.esc(item.title)}"></span>
+                <span class="th-track-t">
+                  <span class="th-track-artist">${TrackHype.esc(item.artist)}</span>
+                  <span class="th-track-title">${TrackHype.esc(item.title)}</span>
+                  <span class="th-track-meta">
+                    <span class="th-tag">${TrackHype.esc(item.genre)}</span>
+                    ${item.chart ? `<span class="th-tag">${TrackHype.esc(item.chart)}</span>` : ""}
+                    ${item.newWeek ? `<span class="th-tag">Newest · week ${item.newWeek} of 2</span>` : ""}
+                    <span class="th-tag">${TrackHype.esc(relTime(item.dateAdded))}</span>
+                  </span>
+                </span>
+              </button>
+              <div class="th-track-end">
+                <button class="th-fav" type="button"
+                  data-action="favourite-song"
+                  data-id="${TrackHype.esc(item.id)}"
+                  aria-pressed="${isFav}"
+                  aria-label="Favourite ${TrackHype.esc(item.title)}">
+                  <img src="${isFav ? "Assets/icons/heart_active_icon.png" : "Assets/icons/heart_inactive_icon.png"}" alt="">
+                </button>
+              </div>
+            </article>`;
+        }).join("");
+
+        syncFilterUI();
+      }
+
+      function syncFilterUI(){
+        const activeCount = [filters.genre, filters.city, filters.lang, filters.days].filter(Boolean).length;
+        filterBadge.hidden = activeCount === 0;
+        filterBadge.textContent = activeCount;
+
+        const parts = [
+          filters.genre || "All genres",
+          filters.city || "All cities",
+          filters.lang || "All languages",
+          filters.days ? `Last ${filters.days} days` : "Any date"
+        ];
+        filterSummary.textContent = parts.join(" · ");
+
+        footHint.textContent = activeCount
+          ? `${activeCount} filter${activeCount===1 ? "" : "s"} applied`
+          : "No filters applied";
+
+        [[genre,"genre"],[city,"city"],[language,"lang"],[dateEl,"days"]].forEach(([el,key])=>{
+          el.classList.toggle("is-set", Boolean(filters[key]));
+        });
+      }
+
+      qEl.addEventListener("input",()=>{
+        filters.q = qEl.value;
+        searchBox.classList.toggle("has-value", qEl.value.length > 0);
+        render();
+      });
+      qClear.addEventListener("click",()=>{
+        qEl.value = "";
+        filters.q = "";
+        searchBox.classList.remove("has-value");
+        render();
+        qEl.focus();
+      });
+
+      document.getElementById("sortChips").addEventListener("click",(event)=>{
         const btn = event.target.closest("[data-sort]");
         if(!btn) return;
         sort = btn.dataset.sort;
-        document.querySelectorAll("[data-sort]").forEach(el=>el.classList.toggle("is-active",el===btn));
+        document.querySelectorAll("#sortChips [data-sort]").forEach(el=>el.setAttribute("aria-pressed",String(el===btn)));
         render();
       });
 
-[genre,artist,city,language,dateEl].forEach(el=>el.addEventListener("input",render));
-      [genre,city,language,dateEl].forEach(el=>el.addEventListener("change",render));
+      [genre].forEach(el=>el.addEventListener("change",()=>{ filters.genre = el.value; render(); }));
+      [city].forEach(el=>el.addEventListener("change",()=>{ filters.city = el.value; render(); }));
+      [language].forEach(el=>el.addEventListener("change",()=>{ filters.lang = el.value; render(); }));
+      [dateEl].forEach(el=>el.addEventListener("change",()=>{ filters.days = Number(el.value || 0); render(); }));
 
-      document.getElementById("clearFilters").addEventListener("click",()=>{
-        genre.value = "";
-        artist.value = "";
-        city.value = "";
-        language.value = "";
-        dateEl.value = "";
-        sort = "newest";
-        document.querySelectorAll("[data-sort]").forEach((el,i)=>el.classList.toggle("is-active",i===0));
+      function clearAll(){
+        filters.q = "";
+        qEl.value = "";
+        searchBox.classList.remove("has-value");
+        filters.genre = ""; filters.city = ""; filters.lang = ""; filters.days = 0;
+        genre.value = ""; city.value = ""; language.value = ""; dateEl.value = "";
         render();
-      });
+      }
+      document.getElementById("clearFilters").addEventListener("click", clearAll);
+      document.getElementById("emptyClear").addEventListener("click", clearAll);
 
-      grid.addEventListener("click",(event)=>{
-        const info = event.target.closest("[data-song-info]");
-        if(!info) return;
-        const item = music.find(song=>song.id===info.dataset.songInfo);
+      tracks.addEventListener("click",(event)=>{
+        const detail = event.target.closest("[data-detail]");
+        if(!detail) return;
+        const item = music.find(song=>song.id===detail.dataset.detail);
         if(!item) return;
         TrackHype.openSheet({
           title:item.title,
           html:`
             <p><strong>${TrackHype.esc(item.artist)}</strong> · ${TrackHype.esc(item.genre)}</p>
-            <div class="th-table-list">
-              <div class="th-table-row"><strong>City</strong><span>${TrackHype.esc(item.city)}</span><span></span></div>
-              <div class="th-table-row"><strong>Language</strong><span>${TrackHype.esc(item.language)}</span><span></span></div>
-              <div class="th-table-row"><strong>Date added</strong><span>${TrackHype.fmtDate(item.dateAdded)}</span><span></span></div>
-              <div class="th-table-row"><strong>Plays</strong><span>${item.plays.toLocaleString()}</span><span></span></div>
-              <div class="th-table-row"><strong>Favourites</strong><span>${item.favourites.toLocaleString()}</span><span></span></div>
-            </div>
-            <p style="margin-top:14px">This discovery item can later become chart eligible. It is not itself an official chart entry.</p>
+            <dl class="th-kv">
+              ${item.chart ? `<div><dt>Target chart</dt><dd>${TrackHype.esc(item.chart)}</dd></div>` : ""}
+              ${item.newWeek ? `<div><dt>Newest window</dt><dd>Week ${item.newWeek} of 2</dd></div>` : ""}
+              <div><dt>City</dt><dd>${TrackHype.esc(item.city)}</dd></div>
+              <div><dt>Language</dt><dd>${TrackHype.esc(item.language)}</dd></div>
+              <div><dt>Date approved</dt><dd>${TrackHype.fmtDate(item.dateAdded)}</dd></div>
+              <div><dt>Newest points</dt><dd class="num">${item.plays.toLocaleString()}</dd></div>
+              <div><dt>Ballot votes</dt><dd class="num">${item.favourites.toLocaleString()}</dd></div>
+            </dl>
+            <p style="margin-top:14px">This approved release is ranked in the ${TrackHype.esc(item.chart || "chart")} Newest lane. Newest points decide promotion after two chart cycles; it cannot jump straight into On Top.</p>
           `,
           actions:[{id:"dismiss",label:"Close",primary:true}]
         });
       });
 
+      window.addEventListener("trackhype:statechange", render);
+
+      document.getElementById("pipe").innerHTML = [
+        {label:"Submission", on:false},
+        {label:"Payment", on:false},
+        {label:"Review", on:false},
+        {label:"Approved", on:true},
+        {label:"New Music", on:true, here:true},
+        {label:"Discovery", on:true},
+        {label:"Chart Eligibility", on:false},
+        {label:"Official Chart", on:false}
+      ].map((step,i)=>{
+        const cls = "th-pipeline-item"
+          + (step.on ? " is-on" : "")
+          + (step.here ? " is-here" : "");
+        return `
+          <div class="${cls}">
+            <span class="th-pipeline-num">${i+1}</span>
+            <div class="th-pipeline-body"><strong>${TrackHype.esc(step.label)}</strong></div>
+            ${step.here ? '<span class="th-pipeline-tag">You are here</span>' : ""}
+          </div>`;
+      }).join("");
+
+      window.addEventListener("trackhype:statechange",render);
       render();
     });
   </script>

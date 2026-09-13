@@ -8,105 +8,140 @@
   <title>Artist — TrackHype</title>
   <link rel="stylesheet" href="trackhype.css">
   <style>
-    .ar-top{display:flex;gap:16px;align-items:center;padding:16px}
-    .ar-avatar{flex:none;width:96px;height:96px;border-radius:50%;object-fit:cover;background:var(--th-grey-2);border:1px solid var(--th-border-soft)}
+body[data-active-nav="artists.html"] .th-shell{gap:14px;padding-top:0}
+    .ar-hero{position:relative;margin:0 -16px}
+    .ar-carousel{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;background:var(--th-grey-2)}
+    .ar-carousel::-webkit-scrollbar{display:none}
+    .ar-avatar{flex:none;width:100%;aspect-ratio:1;object-fit:cover;display:block;background:var(--th-grey-2)}
+    .ar-dots{position:absolute;left:0;right:0;bottom:14px;display:flex;justify-content:center;gap:8px;z-index:1}
+    .ar-dot{width:7px;height:7px;border-radius:50%;background:#fff;opacity:.45;transition:opacity .2s ease;padding:0;border:0}
+    .ar-dot.is-active{opacity:1}
+    .ar-info{padding:16px 16px 0}
     .ar-bio{font-size:13px;line-height:1.7;color:var(--th-muted);white-space:pre-line}
     .ar-row{display:flex;align-items:center;gap:11px;padding:11px 12px;border-bottom:1px solid var(--th-border-soft)}
     .ar-row:last-child{border-bottom:0}
     .ar-thumb{flex:none;width:44px;height:44px;border-radius:8px;object-fit:cover;background:var(--th-grey-2)}
-    .ar-rank{flex:none;width:30px;height:30px;display:grid;place-items:center;border:1px solid var(--th-border);border-radius:8px;font-weight:900;font-size:13px;color:var(--th-muted)}
-    .ar-social{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-    .ar-soc{display:flex;flex-direction:column;align-items:center;gap:6px;border:1px solid var(--th-border);background:var(--th-grey-1);border-radius:var(--th-radius-sm);padding:12px 8px;font-size:11px;font-weight:800;color:var(--th-text)}
-    .ar-soc img{width:26px;height:26px;object-fit:contain}
+    .ar-accordion{display:flex;flex-direction:column;gap:10px}
+    .ar-accordion summary{list-style:none;cursor:pointer;text-align:center;font-size:17px;font-weight:900;color:var(--th-text);padding:12px;background:rgba(15,25,40,.10);border-radius:3px;-webkit-user-select:none;user-select:none}
+    .ar-accordion summary::-webkit-details-marker{display:none}
+    .ar-vote{flex:none;width:30px;height:30px;display:grid;place-items:center}
+    .ar-vote img,.ar-vote button{width:22px;height:22px;object-fit:contain;padding:0;border:0;background:none;cursor:pointer}
+    .ar-links{display:flex;justify-content:space-between;gap:10px;padding:0}
+    .ar-links a{flex:1;display:grid;place-items:center}
+    .ar-links img{width:26px;height:26px;object-fit:contain}
+    #genres{display:flex;align-items:center;flex-wrap:wrap;gap:0}
+    #genres .th-chip{background:none!important;border:0;padding:0;border-radius:0;font-size:13px;font-weight:800;color:var(--th-text)}
+    #genres .th-chip-sep{color:#c7cdd6;font-weight:800;padding:0 6px}
+    .ar-back{margin-top:8px}
   </style>
 </head>
 <body data-active-nav="artists.html">
 
   <header class="th-header" data-app-header>
-    <div class="th-header-inner">
-      <button class="th-icon-btn" type="button" aria-label="Back" onclick="history.back()">‹</button>
+<div class="th-header-inner">
       <a class="th-brand" href="index.html">
         <img class="th-logo-badge" src="Assets/logos/TrackHype Logo Design Badge.webp" alt="TrackHype">
         <img class="th-logo-text" src="Assets/logos/track-hype-text-logo.webp" alt="TrackHype">
       </a>
-<div class="th-header-context" id="headArtist">Artist</div>
-      <button class="th-icon-btn" type="button" aria-label="Search" onclick="location.href='search.html'">⌕</button>
-      <button class="th-icon-btn" type="button" aria-label="Menu" onclick="location.href='menu.html'">☰</button>
     </div>
   </header>
 
   <main class="th-app">
     <div class="th-shell">
 
-      <section>
-        <div class="th-card ar-top">
-          <img class="ar-avatar" id="artistPortrait" src="Assets/charts/top_40_chart/1.jpg" onerror="this.style.visibility='hidden'">
-          <div style="flex:1;min-width:0">
-            <div style="font-size:24px;font-weight:900" id="artistName">Zimbabwe Artist</div>
-            <div style="font-size:13px;color:var(--th-muted);margin-top:4px">Zimbabwe · <span id="artistGenre">Genre</span></div>
-            <div style="display:flex;gap:7px;margin-top:10px">
-              <button class="th-btn primary" style="flex:1" type="button" id="followBtn" onclick="toggleFollow()">Follow</button>
-              <button class="th-btn secondary" style="flex:1" type="button" onclick="location.href='song.html?id=1'">Top Song</button>
-            </div>
+<section class="ar-hero">
+        <div class="ar-carousel" id="artistCarousel">
+          <img class="ar-avatar" src="Assets/charts/top_40_chart/1.jpg" alt="Image 1">
+          <img class="ar-avatar" src="Assets/charts/top_20_house/1.jpg" alt="Image 2">
+          <img class="ar-avatar" src="Assets/charts/top_20_rnb_chart/1.jpg" alt="Image 3">
+        </div>
+        <div class="ar-dots">
+          <button class="ar-dot is-active" type="button" data-dot="0" aria-label="Image 1 of 3"></button>
+          <button class="ar-dot" type="button" data-dot="1" aria-label="Image 2 of 3"></button>
+          <button class="ar-dot" type="button" data-dot="2" aria-label="Image 3 of 3"></button>
+        </div>
+        <div class="ar-info">
+          <div style="font-size:24px;font-weight:900" id="artistName">Zimbabwe Artist</div>
+          <div style="font-size:13px;color:var(--th-muted);margin-top:4px">Zimbabwe · <span id="artistGenre">Genre</span></div>
+          <div style="display:flex;gap:7px;margin-top:10px">
+            <button class="th-btn primary" style="flex:1" type="button" id="followBtn" onclick="toggleFollow()">Follow</button>
+            <button class="th-btn secondary" style="flex:1" type="button" onclick="TrackHype.navigate('song.html?id=1')">Top Song</button>
           </div>
         </div>
       </section>
 
-      <section class="th-section">
+<section class="th-section">
         <div class="th-section-head"><h2>About</h2></div>
         <div class="th-card pad">
           <p class="ar-bio">Artist profile, approved biography, current activity, genre identity and official links will appear here.</p>
         </div>
       </section>
 
-<section class="th-section">
-        <div class="th-section-head"><h2>Top Songs</h2><a class="hy-view-link" href="charts.html">View Charts</a></div>
-        <div class="th-card" id="songs"></div>
-      </section>
-
       <section class="th-section">
-        <div class="th-section-head"><h2>Current Charts</h2><a class="hy-view-link" href="charts.html">View All Charts</a></div>
-        <div class="th-card" id="chartsList"></div>
-      </section>
-
-      <section class="th-section">
-        <div class="th-section-head"><h2>Latest Releases</h2><a class="hy-view-link" href="new-music.html">View New Music</a></div>
-        <div class="th-card" id="releasesList"></div>
-      </section>
-
-      <section class="th-section">
-        <div class="th-section-head"><h2>New Music</h2><a class="hy-view-link" href="new-music.html">View All</a></div>
-        <div class="th-card" id="newMusicList"></div>
-      </section>
-
-      <section class="th-section">
-        <div class="th-section-head"><h2>Genres</h2></div>
-        <div class="th-card pad"><div class="th-chip-row" id="genres"></div></div>
-      </section>
-
-      <section class="th-section">
-        <div class="th-section-head"><h2>Artist Links</h2></div>
-        <div class="ar-social">
-          <a class="ar-soc" href="#" target="_blank" rel="noopener"><img src="Assets/icons/YouTube_On.png" alt="">YouTube</a>
-          <a class="ar-soc" href="#" target="_blank" rel="noopener"><img src="Assets/icons/Spotify_icon.svg.webp" alt="">Spotify</a>
-          <a class="ar-soc" href="#" target="_blank" rel="noopener"><img src="Assets/icons/Instagram_On.png" alt="">Instagram</a>
-          <a class="ar-soc" href="#" target="_blank" rel="noopener"><img src="Assets/icons/TikTok_On.png" alt="">TikTok</a>
+        <div class="ar-links">
+          <a href="#" target="_blank" rel="noopener" title="YouTube"><img src="Assets/icons/YouTube_On.png" alt=""></a>
+          <a href="#" target="_blank" rel="noopener" title="Spotify"><img src="Assets/icons/Spotify_icon.svg.webp" alt=""></a>
+          <a href="#" target="_blank" rel="noopener" title="Instagram"><img src="Assets/icons/Instagram_On.png" alt=""></a>
+          <a href="#" target="_blank" rel="noopener" title="TikTok"><img src="Assets/icons/TikTok_On.png" alt=""></a>
         </div>
       </section>
 
       <section class="th-section">
-        <div class="th-section-head"><h2>Chart History</h2><a class="hy-view-link" href="history.html">View History</a></div>
-        <div class="th-card" id="historyList"></div>
+        <details class="ar-accordion" id="accGenres">
+          <summary>Genres</summary>
+          <div class="th-card pad"><div class="th-chip-row" id="genres"></div></div>
+        </details>
+      </section>
+
+      <section class="th-section">
+        <details class="ar-accordion" id="accSongs">
+          <summary>Top Songs</summary>
+          <div class="th-card" id="songs"></div>
+        </details>
+      </section>
+
+      <section class="th-section">
+        <details class="ar-accordion" id="accCharts">
+          <summary>Current Charts</summary>
+          <div class="th-card" id="chartsList"></div>
+        </details>
+      </section>
+
+      <section class="th-section">
+        <details class="ar-accordion" id="accHistory">
+          <summary>Chart History</summary>
+          <div class="th-card" id="historyList"></div>
+        </details>
+      </section>
+
+      <section class="th-section">
+        <details class="ar-accordion" id="accReleases">
+          <summary>Latest Releases</summary>
+          <div class="th-card" id="releasesList"></div>
+        </details>
+      </section>
+
+      <section class="th-section">
+        <details class="ar-accordion" id="accNewMusic">
+          <summary>New Music</summary>
+          <div class="th-card" id="newMusicList"></div>
+        </details>
+      </section>
+
+      <section class="th-section">
+        <button class="th-btn primary block ar-back" type="button" onclick="history.back()">Back</button>
       </section>
 
     </div>
   </main>
 
-  <nav class="th-bottom" data-bottom>
-    <div class="th-bottom-inner" data-nav-host></div>
-  </nav>
+  <div class="bottom-swipe" data-bottom-swipe>
+    <nav class="bottom-nav" data-bottom>
+      <div class="bottom-nav-inner" data-nav-host></div>
+    </nav>
 
-  <aside class="promo-player" data-player></aside>
+    <aside class="promo-player" data-player></aside>
+  </div>
 
   <div class="th-modal-backdrop" data-modal>
     <div class="th-sheet" role="dialog" aria-modal="true">
@@ -117,6 +152,7 @@
     </div>
   </div>
 
+  <script src="demo-playlist.js"></script>
   <script src="trackhype.js"></script>
   <script>
     const name = new URLSearchParams(location.search).get("artist") || "Zimbabwe Artist";
@@ -129,27 +165,59 @@
     };
     const genre = GENRE_BY_NAME[name] || "Zim Hip Hop";
 
-    document.title = name + " — TrackHype";
-    document.getElementById("headArtist").textContent = name;
+document.title = name + " — TrackHype";
     document.getElementById("artistName").textContent = name;
     document.getElementById("artistGenre").textContent = genre;
 
-    document.getElementById("genres").innerHTML = [genre, "Zimbabwe", "Officially Charting"]
-      .map(g => `<span class="th-chip" style="background:var(--th-grey-1)">${TrackHype.esc(g)}</span>`).join("");
+document.getElementById("genres").innerHTML = [genre, "Zimbabwe", "Officially Charting"]
+      .map((g, i) => (i ? '<span class="th-chip-sep">-</span>' : "") + `<span class="th-chip">${TrackHype.esc(g)}</span>`).join("");
 
-    document.getElementById("songs").innerHTML = Array.from({length:5},(_,i) => {
+    function songChartKey(s){ return TrackHype.chartId(s.chart || "National Top 100"); }
+    function songChartId(s){
+      return String(s.id || "demo-" + TrackHype.chartId((s.artist || "") + " - " + (s.title || "")));
+    }
+    function isSongVotedInChart(s){
+      const key = songChartKey(s);
+      const sid = songChartId(s);
+      const ballots = typeof TrackHype.getWeekBallots === "function"
+        ? TrackHype.getWeekBallots(key, TrackHype.currentWeekKey())
+        : [];
+      if(ballots.some(b => (b.picks || []).some(p => String(p.submissionId) === sid))){ return true; }
+      if(typeof TrackHype.isSingleVote === "function"){
+        const v = TrackHype.isSingleVote(key);
+        if(v && String(v.songId) === sid){ return true; }
+      }
+      return false;
+    }
+    function songVoteIcon(s, list, i){
+      if(isSongVotedInChart(s)){
+        return `<div class="ar-vote" data-vote-cell data-vote-list="${list}" data-vote-i="${i}"><img src="Assets/icons/New_Song_Chart_Icon.webp" alt="In chart" title="In chart"></div>`;
+      }
+      return `<div class="ar-vote" data-vote-cell data-vote-list="${list}" data-vote-i="${i}"><button type="button" title="Vote to enter ${TrackHype.esc(s.chart || "National Top 100")}" onclick="voteArtistSong('${list}', ${i})"><img src="Assets/icons/New_Song_Chart_Vote_Icon.webp" alt="Vote for chart"></button></div>`;
+    }
+    window.voteArtistSong = (list, i) => {
+      const s = SONG_LISTS[list] && SONG_LISTS[list][i];
+      if(!s){ return; }
+      const chart = s.chart || "National Top 100";
+      TrackHype.confirmVoteSheet(chart, { id: songChartId(s), title: s.title, artist: s.artist, rank: 1 }, TrackHype.maxForChart(chart));
+    };
+
+    const SONG_LISTS = { top: [], releases: [], recent: [] };
+
+    const topSongs = Array.from({length:5},(_,i) => {
       const r = i + 1;
-      return `
-        <div class="ar-row">
-          <div class="ar-rank">${r}</div>
-          <img class="ar-thumb" src="Assets/charts/top_40_chart/${r}.jpg" onerror="this.style.visibility='hidden'">
+      return { id: r, title: name + " — Track " + r, artist: name };
+    });
+    SONG_LISTS.top = topSongs;
+    document.getElementById("songs").innerHTML = topSongs.map((s,i) => `
+        <div class="ar-row" onclick="TrackHype.navigate('song.html?id=${s.id}')" style="cursor:pointer">
+          ${songVoteIcon(s, "top", i)}
           <div style="flex:1;min-width:0">
-            <div style="font-weight:800;font-size:13px">${TrackHype.esc(name)} — Track ${r}</div>
-            <div style="font-size:12px;color:var(--th-muted)">Charting · ${21 - r} pts</div>
+            <div style="font-weight:800;font-size:13px">${TrackHype.esc(s.title)}</div>
+            <div style="font-size:12px;color:var(--th-muted)">Charting · ${21 - (i + 1)} pts</div>
           </div>
-          <button class="th-icon-btn" type="button" onclick="location.href='song.html?id=${r}'" aria-label="Play">▶</button>
-        </div>`;
-    }).join("");
+          <span style="color:var(--th-primary)">›</span>
+        </div>`).join("");
 
 document.getElementById("historyList").innerHTML = Array.from({length:6},(_,i) => `
       <div class="th-table-row" style="grid-template-columns:1.4fr 1fr auto">
@@ -165,8 +233,7 @@ document.getElementById("historyList").innerHTML = Array.from({length:6},(_,i) =
       {chart:"National Top 100 Chart", pos:3}
     ];
     document.getElementById("chartsList").innerHTML = CHART_SLOTS.map(s => `
-      <div class="ar-row" onclick="location.href='charts.html?chart=${encodeURIComponent(s.chart)}'" style="cursor:pointer">
-        <div class="ar-rank">#${s.pos}</div>
+      <div class="ar-row" onclick="TrackHype.navigate('charts.html?chart=${encodeURIComponent(s.chart)}')" style="cursor:pointer">
         <div style="flex:1;min-width:0">
           <div style="font-weight:800;font-size:13px">${TrackHype.esc(s.chart)}</div>
           <div style="font-size:12px;color:var(--th-muted)">${TrackHype.esc(name)} is charting now</div>
@@ -181,9 +248,11 @@ document.getElementById("historyList").innerHTML = Array.from({length:6},(_,i) =
     const releaseRows = (mySongs.length ? mySongs : Array.from({length:3},(_,i)=>({
       id: i + 1, title: name + " — Track " + (i + 1), artist: name,
       dateAdded: ["2026-08-20","2026-08-14","2026-07-30"][i] || "2026-08-01"
-    }))).map(s => `
-      <div class="ar-row" onclick="location.href='song.html?id=${TrackHype.esc(s.id)}'" style="cursor:pointer">
-        <img class="ar-thumb" src="${TrackHype.getArtwork(s.id)}" onerror="this.style.visibility='hidden'">
+    })));
+    SONG_LISTS.releases = releaseRows.map(s => ({...s, chart: s.chart || "National Top 100"}));
+    document.getElementById("releasesList").innerHTML = SONG_LISTS.releases.map((s,i) => `
+      <div class="ar-row" onclick="TrackHype.navigate('song.html?id=${TrackHype.esc(s.id)}')" style="cursor:pointer">
+        ${songVoteIcon(s, "releases", i)}
         <div style="flex:1;min-width:0">
           <div style="font-weight:800;font-size:13px">${TrackHype.esc(s.title || (s.artist + " — Track " + s.id))}</div>
           <div style="font-size:12px;color:var(--th-muted)">Released ${TrackHype.fmtDate ? TrackHype.fmtDate(s.dateAdded) : s.dateAdded}</div>
@@ -191,22 +260,51 @@ document.getElementById("historyList").innerHTML = Array.from({length:6},(_,i) =
         <span style="color:var(--th-primary)">›</span>
       </div>
     `).join("");
-    document.getElementById("releasesList").innerHTML = releaseRows;
 
     const newRows = (mySongs.length ? mySongs : Array.from({length:3},(_,i)=>({
       id: i + 1, title: name + " — Track " + (i + 1), artist: name
-    }))).map(s => `
-      <div class="ar-row" onclick="location.href='song.html?id=${TrackHype.esc(s.id)}'" style="cursor:pointer">
-        <div class="ar-rank" style="border-color:var(--th-primary);color:var(--th-primary)">NEW</div>
-        <img class="ar-thumb" src="${TrackHype.getArtwork(s.id)}" onerror="this.style.visibility='hidden'">
+    })));
+    SONG_LISTS.recent = newRows.map(s => ({...s, chart: s.chart || "National Top 100"}));
+    document.getElementById("newMusicList").innerHTML = SONG_LISTS.recent.map((s,i) => `
+      <div class="ar-row" onclick="TrackHype.navigate('song.html?id=${TrackHype.esc(s.id)}')" style="cursor:pointer">
+        ${songVoteIcon(s, "recent", i)}
         <div style="flex:1;min-width:0">
           <div style="font-weight:800;font-size:13px">${TrackHype.esc(s.title || (s.artist + " — Track " + s.id))}</div>
           <div style="font-size:12px;color:var(--th-muted)">New release on TrackHype</div>
         </div>
-        <button class="th-icon-btn" type="button" onclick="event.stopPropagation();location.href='song.html?id=${TrackHype.esc(s.id)}'" aria-label="Open song">▶</button>
+        <span style="color:var(--th-primary)">›</span>
       </div>
     `).join("");
-    document.getElementById("newMusicList").innerHTML = newRows;
+
+    function refreshVoteCells(){
+      ["top","releases","recent"].forEach(list => {
+        const arr = SONG_LISTS[list] || [];
+        arr.forEach((s, i) => {
+          document.querySelectorAll(`[data-vote-list="${list}"][data-vote-i="${i}"]`).forEach(cell => {
+            cell.innerHTML = songVoteIcon(s, list, i);
+          });
+        });
+      });
+    }
+    document.addEventListener("trackhype:chart-update", refreshVoteCells);
+
+    const carousel = document.getElementById("artistCarousel");
+    const dots = [...document.querySelectorAll(".ar-dot")];
+    if(carousel && dots.length){
+      function syncDots(){
+        const i = Math.min(dots.length - 1, Math.max(0, Math.round(carousel.scrollLeft / (carousel.clientWidth || 1))));
+        dots.forEach((d, k) => d.classList.toggle("is-active", k === i));
+      }
+      let raf = 0;
+      carousel.addEventListener("scroll", () => {
+        if(raf){ return; }
+        raf = requestAnimationFrame(() => { raf = 0; syncDots(); });
+      });
+      dots.forEach(d => d.addEventListener("click", () => {
+        carousel.scrollTo({ left: Number(d.dataset.dot) * carousel.clientWidth, behavior: "smooth" });
+      }));
+      syncDots();
+    }
 
     function renderFollow(){
       const following = (TrackHype.getState().followingArtists || []).includes(name);

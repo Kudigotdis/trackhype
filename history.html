@@ -8,13 +8,29 @@
   <title>History — TrackHype</title>
   <link rel="stylesheet" href="trackhype.css">
   <style>
-    .tabs{display:flex;gap:8px}
-    .tab{border:1px solid var(--th-border);background:var(--th-bg);border-radius:999px;padding:8px 16px;font-size:12px;font-weight:800;color:var(--th-muted)}
-    .tab.is-active{background:var(--th-primary);border-color:var(--th-primary);color:#fff}
+    .tabs{display:flex;justify-content:center;gap:26px;width:100%}
+    .tab{flex:none;background:none;border:0;border-radius:0;padding:10px 0 2px;font-size:14px;font-weight:800;color:rgba(15,25,40,.4);cursor:pointer;white-space:nowrap}
+    .tab.is-active{color:#1f2937;box-shadow:inset 0 -2px 0 var(--th-primary)}
+    button.th-input,button.th-select{font:inherit;cursor:pointer;text-align:center;width:100%;color:var(--th-text)}
+    button.th-select::after{content:"▾";margin-left:8px;color:var(--th-muted)}
     .history-row{display:flex;align-items:center;gap:11px;padding:11px 12px;border-bottom:1px solid var(--th-border-soft)}
     .history-row:last-child{border-bottom:0}
     .history-rank{flex:none;width:34px;height:34px;display:grid;place-items:center;background:var(--th-primary);color:#fff;border-radius:9px;font-weight:900}
+    .history-rank.placeholder{background:var(--th-grey-3);color:var(--th-muted)}
     .history-thumb{flex:none;width:34px;height:34px;border-radius:7px;object-fit:cover;background:var(--th-grey-2)}
+    .hn-move{flex:none;font-size:12px;font-weight:900;min-width:42px;text-align:center}
+    .hn-move.up{color:var(--th-primary-dark)}
+    .hn-move.dn{color:#b91c1c}
+    .hn-move.new{color:var(--th-primary-dark)}
+    .hn-move.muted{color:var(--th-fold)}
+    .hn-foot{font-size:12px;color:var(--th-muted);text-align:center;padding:12px}
+    .hp-field{margin-top:14px}
+    .hp-label{font-size:11px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:var(--th-muted);margin-bottom:8px}
+    .hp-chips{display:flex;gap:8px;flex-wrap:wrap}
+    .hp-chips.months{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+    .hp-chip{flex:1;min-width:0;border:1px solid var(--th-border);background:var(--th-bg);border-radius:var(--th-radius-sm);padding:10px;font-size:13px;font-weight:800;color:var(--th-text);cursor:pointer}
+    .hp-chip.is-active{background:var(--th-primary);border-color:var(--th-primary);color:#fff}
+    .hp-today{margin-top:16px;width:100%;border:1px solid var(--th-border);background:var(--th-grey-1);border-radius:var(--th-radius-sm);padding:12px;font-size:13px;font-weight:800;color:var(--th-text);cursor:pointer;text-align:center}
   </style>
 </head>
 <body data-active-nav="history.html">
@@ -23,11 +39,8 @@
     <div class="th-header-inner">
       <a class="th-brand" href="index.html">
         <img class="th-logo-badge" src="Assets/logos/TrackHype Logo Design Badge.webp" alt="TrackHype">
-        <img class="th-logo-text" src="Assets/logos/track-hype-text-logo.webp" alt="TrackHype">
+<img class="th-logo-text" src="Assets/logos/track-hype-text-logo.webp" alt="TrackHype">
       </a>
-<div class="th-header-context">History</div>
-      <button class="th-icon-btn" type="button" aria-label="Search" onclick="location.href='search.html'">⌕</button>
-      <button class="th-icon-btn" type="button" aria-label="Menu" onclick="location.href='menu.html'">☰</button>
     </div>
   </header>
 
@@ -41,42 +54,36 @@
 
       <section>
         <div class="th-card pad">
-          <div style="font-weight:900;margin-bottom:10px">Choose a period</div>
-          <input class="th-input" id="date" type="date" value="2026-08-24">
+          <button class="th-input" id="weekBtn" type="button"></button>
           <div style="height:12px"></div>
-          <select class="th-select" id="chart">
-            <option>National Top 100</option>
-            <option>Zim Hip Hop Top 20</option>
-            <option>Zimdancehall Top 20</option>
-            <option>Sungura Top 20</option>
-            <option>Gospel Top 20</option>
-            <option>Amapiano Top 20</option>
-            <option>Zimbabwean House Top 20</option>
-            <option>R&B Top 20</option>
-          </select>
-          <div style="height:12px"></div>
-          <button class="th-btn primary block" type="button" onclick="loadHistory()">VIEW CHART</button>
+          <button class="th-select" id="chartBtn" type="button"></button>
         </div>
       </section>
 
       <section>
         <div class="tabs">
           <button class="tab is-active" type="button" data-tab="chart" onclick="setTab('chart',this)">Chart</button>
-          <button class="tab" type="button" data-tab="highlights" onclick="setTab('highlights',this)">Highlights</button>
+          <button class="tab" type="button" data-tab="stats" onclick="setTab('stats',this)">Stats</button>
           <button class="tab" type="button" data-tab="artists" onclick="setTab('artists',this)">Artists</button>
         </div>
       </section>
 
       <section id="historyResults"></section>
 
+      <section>
+        <button class="th-btn primary block" type="button" onclick="history.back()">Back</button>
+      </section>
+
     </div>
   </main>
 
-  <nav class="th-bottom" data-bottom>
-    <div class="th-bottom-inner" data-nav-host></div>
-  </nav>
+  <div class="bottom-swipe" data-bottom-swipe>
+    <nav class="bottom-nav" data-bottom>
+      <div class="bottom-nav-inner" data-nav-host></div>
+    </nav>
 
-  <aside class="promo-player" data-player></aside>
+    <aside class="promo-player" data-player></aside>
+  </div>
 
   <div class="th-modal-backdrop" data-modal>
     <div class="th-sheet" role="dialog" aria-modal="true">
@@ -87,66 +94,375 @@
     </div>
   </div>
 
+<script src="demo-playlist.js"></script>
+  <script src="docs/Demo Charts/chart_history-data.js"></script>
   <script src="trackhype.js"></script>
   <script>
-    const NAMES = ["Tino Mungoma","Kudzi Nyakudya","Mambo Dhuterere","Feli Nandi","Takura","Soul Jah Love","Holy Ten","Alick Macheso","ExQ","Winky D"];
+    const CHARTS = [
+      {key:"top40",     title:"National Top 100",        genre:"All Genres — Zimbabwe", folder:"top_40_chart",
+        label:"National Top 100", genreFilter:"",      mapped:true},
+      {key:"hiphop",    title:"Zim Hip Hop Top 20",      genre:"Zim Hip Hop",          folder:"top_25_local_hip_hop",
+        label:"Zim Hip Hop",       genreFilter:"Zim Hip Hop", mapped:true},
+      {key:"house",     title:"Zimbabwean House Top 20", genre:"House",                folder:"top_20_house",
+        label:"House",             genreFilter:"House", mapped:true},
+      {key:"rnb",       title:"R&B Top 20",              genre:"R&B",                  folder:"top_20_rnb_chart",
+        label:"R&B",               genreFilter:"R&B", mapped:true},
+      {key:"dancehall", title:"Zimdancehall Top 20",     genre:"Zimdancehall",         folder:"",
+        label:"Zimdancehall", genreFilter:"Zimdancehall", mapped:false},
+      {key:"gospel",    title:"Gospel Top 20",           genre:"Gospel",               folder:"",
+        label:"Gospel",           genreFilter:"Gospel", mapped:false},
+      {key:"sungura",   title:"Sungura Top 20",          genre:"Sungura",              folder:"",
+        label:"Sungura",          genreFilter:"Sungura", mapped:false},
+      {key:"top40",     title:"Top 40 Chart",            genre:"All Genres — Zimbabwe", folder:"top_40_chart",
+        label:"National Top 100", genreFilter:"",      mapped:true},
+      {key:"hiphop",    title:"Top 25 Local Hip-Hop",    genre:"Zim Hip Hop",          folder:"top_25_local_hip_hop",
+        label:"Zim Hip Hop",       genreFilter:"Zim Hip Hop", mapped:true},
+      {key:"house",     title:"Amapiano Top 20",         genre:"House",                folder:"top_20_house",
+        label:"House",             genreFilter:"House", mapped:true}
+    ];
+    const DEFAULT_CHART = "National Top 100";
+    const CHART_KEY = "trackhype.historyChart";
+    const WEEK_KEY = "trackhype.historyWeek";
+    const CHART_SOURCES = {
+      top40:     { charts: ["Top 100 Chart List", "Top 40 Chart"], genres: [], poolMax: 100 },
+      hiphop:    { charts: ["Zim Hip-Hop Top 20", "Top 25 Local Hip-Hop"], genres: ["Zim Hip Hop"], poolMax: 20 },
+      house:     { charts: ["Top 20 House"], genres: ["Amapiano"], poolMax: 20 },
+      rnb:       { charts: ["Top 20 RnB"], genres: ["R&B"], poolMax: 20 },
+      dancehall: { charts: ["Zimdancehall"], genres: [], poolMax: 20 },
+      gospel:    { charts: ["Gospel"], genres: [], poolMax: 20 },
+      sungura:   { charts: ["Sungura"], genres: [], poolMax: 20 }
+    };
+    const genreArtists = {
+      "Zim Hip Hop": ["Holy Ten","Saintfloew","T Gonzi","Tashinga Panda","Voltz JT"],
+      "House": ["DJ Tamuka","Judgement Yard","Tashinga","Blaq Halo"],
+      "R&B": ["Ammara","Hillzy","Vusa Mkhaya","Kudzai Terence"],
+      "Zimdancehall": ["Freeman HKD Boss","Enzo Ishall","Jah Master","Blacperl"],
+      "Gospel": ["Mambo Dhuterere","Janet Manyowa","Minister Mahendere","Tino Chinyani"],
+      "Sungura": ["Alick Macheso","Jah Prayzah","Fungisai","Peter Moyo"],
+      "": ["Zimbabwe Artist"]
+    };
+    const PLACEHOLDER_SVG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect width='80' height='80' rx='14' fill='%23eef3f1'/%3E%3Ccircle cx='40' cy='40' r='18' fill='%2301db8b'/%3E%3Cpath d='M34 52V30l14-3v22' fill='none' stroke='%2302925e' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E";
+    const ART = {
+      "top_40_chart": {1:"jpg",2:"jpg",3:"jpg",4:"jpg",5:"jpg",6:"jpg",7:"jpg",8:"jpg",9:"jpg",10:"jpg",11:"jpg",12:"jpg",13:"jpg",14:"jpg",15:"jpg",16:"jpg",17:"jpg",18:"jpg",19:"jpg",20:"jpg",21:"jpg",22:"jpg",23:"jpg",24:"webp",25:"jpg",26:"jpg",27:"jpg",28:"jpg",29:"jpg",30:"jpg",31:"jpg",32:"jpg",33:"jpg",34:"png",35:"png",36:"png",37:"jpg",38:"jpg",39:"jpg",40:"webp"},
+      "top_25_local_hip_hop": {1:"jpg",2:"jpg",3:"jpg",4:"png",5:"jpg",6:"jpg",7:"jpg",8:"jpg",9:"jpg",10:"jpg",11:"webp",12:"jpg",13:"jpg",14:"webp",15:"jpg",16:"jpeg",17:"jpg",18:"jpg",19:"jpg",20:"jpg",21:"jpg",22:"jpeg",23:"jpg",24:"jpg",25:"jpg"},
+      "top_20_house": {1:"jpg",2:"jpg",3:"jpg",4:"jpg",5:"jpg",6:"jpg",7:"jpg",8:"jpg",9:"jpg",10:"jpg",11:"jpg",12:"jpg",13:"jpg",14:"jpg",15:"jpg",16:"jpg",17:"jpg",18:"jpg",19:"jpg",20:"jpg"},
+      "top_20_rnb_chart": {1:"jpg",2:"jpg",3:"jpg",4:"jpg",5:"jpg",6:"jpg",7:"jpg",8:"jpg",9:"jpg",10:"jpg",11:"jpg",12:"jpg",13:"jpg",14:"jpg",15:"png",16:"png",17:"png",18:"jpg",19:"png",20:"jpeg"}
+    };
+
+    /* ---- snapshot seeding (mirrors charts.html so keys + data align) ---- */
+
+    function makeFiller(rank){
+      const artists = genreArtists[current.genreFilter] || genreArtists[""];
+      const i = rank - 1;
+      const star = artists[i % artists.length];
+      return {
+        id: rank,
+        title: "Zimbabwe " + (current.genreFilter || "") + " Track " + rank,
+        artist: star,
+        artwork: artUrl(rank),
+        upvotes: 1 + (rank % 5)
+      };
+    }
+
+    function parseHistLine(line){
+      const m = String(line || "").match(/^Week (\d+) \u2022 (.+) \u2022 ([0-9,]+) votes$/);
+      if(!m){ return null; }
+      return { week: Number(m[1]), chart: m[2].trim(), votes: Number(m[3].replace(/,/g, "")) };
+    }
+
+    function recordsForChart(src){
+      if(!window.CHART_HISTORY){ return []; }
+      const chartHits = src.charts && src.charts.length;
+      const genreHits = src.genres && src.genres.length;
+      return window.CHART_HISTORY.map(r => {
+        const cn = String(r.chart || "").trim();
+        const g = String(r.genre || "").trim();
+        const onThis = (r.history || []).map(parseHistLine).filter(l => l && (
+          (chartHits && src.charts.indexOf(l.chart) >= 0) ||
+          (genreHits && src.genres.indexOf(l.chart) >= 0)
+        ));
+        const matches = (chartHits && src.charts.indexOf(cn) >= 0) || (genreHits && src.genres.indexOf(g) >= 0);
+        return { r, lines: onThis, matches };
+      }).filter(x => x.matches);
+    }
+
+    function buildCatalogFor(src){
+      const scored = [];
+      recordsForChart(src).forEach(({r, lines}) => {
+        const latest = lines.reduce((m, l) => (!m || l.week > m.week ? l : m), null);
+        if(latest){ scored.push({ r, votes: latest.votes }); }
+      });
+      scored.sort((a, b) => (b.votes - a.votes) || (String(a.r.title) < String(b.r.title) ? -1 : 1));
+      const groups = { 1: [], 2: [], 3: [] };
+      const add = (tier, n, base) => {
+        for(let i = 0; i < n; i++){
+          const rec = base[i];
+          groups[tier].push(rec
+            ? { id: rec.r.id || (i + 1), title: rec.r.title, artist: rec.r.artist, artwork: rec.r.artwork || "", upvotes: 1 + ((i * 7 + rec.r.title.length) % 5) }
+            : makeFiller(i + 1));
+        }
+      };
+      add(1, 20, scored);
+      add(2, Math.max(0, Math.min(src.poolMax, scored.length) - 20), scored.slice(20, src.poolMax));
+      add(3, Math.max(0, Math.min(scored.length, src.poolMax + 20) - src.poolMax), scored.slice(src.poolMax, src.poolMax + 20));
+      return groups;
+    }
+
+    function seedWeeks(c, src, idByTitle){
+      const now = TrackHype.currentWeekKey();
+      const weeks = {};
+      recordsForChart(src).forEach(({r, lines}) => {
+        const sid = idByTitle[String(r.title).trim().toLowerCase()];
+        if(!sid){ return; }
+        lines.forEach(l => {
+          if(l.week >= 20){ return; }
+          const wk = TrackHype.shiftWeekKey(now, l.week - 20);
+          (weeks[wk] = weeks[wk] || []).push({ sid, title: r.title, artist: r.artist, artwork: r.artwork || "", votes: l.votes });
+        });
+      });
+      const path = Object.keys(weeks).map(wk => ({
+        weekKey: wk,
+        pickRate: 0,
+        entries: weeks[wk].slice().sort((a, b) => b.votes - a.votes).map((e, i) => ({
+          submissionId: e.sid, title: e.title, artistName: e.artist, artwork: e.artwork, votes: e.votes, rank: i + 1, movement: null
+        }))
+      }));
+      path.sort((a, b) => (a.weekKey < b.weekKey ? -1 : 1));
+      const prevBySid = {};
+      path.forEach(p => {
+        p.entries.forEach(e => {
+          const prev = prevBySid[e.submissionId];
+          e.movement = prev == null ? null : (prev.rank - e.rank);
+          prevBySid[e.submissionId] = { rank: e.rank };
+        });
+      });
+      TrackHype.seedWeeklySnapshots(c, path);
+    }
+
+    function seedChart(c, src){
+      const groups = buildCatalogFor(src);
+      const seeded = TrackHype.seedCatalogTiers(c, groups);
+      const idByTitle = {};
+      [1, 2, 3].forEach(t => {
+        (groups[t] || []).forEach((s, i) => {
+          idByTitle[String(s.title).trim().toLowerCase()] = seeded[t][i].id;
+        });
+      });
+      seedWeeks(c, src, idByTitle);
+    }
+
+    function artUrl(i){
+      const map = ART[current.folder];
+      if(!map || !i){ return PLACEHOLDER_SVG; }
+      const count = Math.max(1, Object.keys(map).length);
+      const seq = i > count ? ((i - 1) % count) + 1 : i;
+      return "Assets/charts/" + current.folder + "/" + seq + "." + (map[seq] || "jpg");
+    }
+
+    /* ---- week + chart state ---- */
+
+    function loadChart(){
+      try{ const v = localStorage.getItem(CHART_KEY); if(v){ return v; } }catch(e){}
+      return DEFAULT_CHART;
+    }
+
+    function loadWeekKey(){
+      try{ const v = localStorage.getItem(WEEK_KEY); if(v){ return v; } }catch(e){}
+      return "";
+    }
+
+    function saveWeekKey(v){
+      try{ localStorage.setItem(WEEK_KEY, v); }catch(e){}
+    }
+
+    let current = CHARTS.find(c => c.title === loadChart()) || CHARTS.find(c => c.title === DEFAULT_CHART);
     let activeTab = "chart";
+    let weekKey = loadWeekKey();
 
-    function setTab(tab, el){
-      document.querySelectorAll(".tab").forEach(x=>x.classList.remove("is-active"));
-      if(el){ el.classList.add("is-active"); }
-      activeTab = tab;
-      if(tab === "chart") loadHistory();
-      if(tab === "highlights") renderHighlights();
-      if(tab === "artists") renderArtists();
+    function availableSnapshots(){
+      return TrackHype.getSnapshots(TrackHype.chartId(current.title));
     }
 
-    function loadHistory(){
-      const chartName = document.getElementById("chart").value;
-      const date = document.getElementById("date").value;
-      const header = `<div class="th-section-head"><h2>${TrackHype.esc(chartName)}</h2><p>${TrackHype.esc(date)}</p></div>`;
-      const rows = Array.from({length:20},(_,i) => {
-        const r = i + 1;
-        return `
-          <div class="history-row">
-            <div class="history-rank">${r}</div>
-            <img class="history-thumb" src="Assets/charts/top_40_chart/${(i % 10)+1}.jpg" onerror="this.style.visibility='hidden'">
-            <div style="flex:1;min-width:0">
-              <div style="font-weight:800;font-size:13px">Historical Song ${r}</div>
-              <div style="font-size:12px;color:var(--th-muted)">${NAMES[i % NAMES.length]} · ${TrackHype.esc(chartName)}</div>
-            </div>
-            <span class="th-chip" style="background:var(--th-grey-1)">${21 - r} pts</span>
-          </div>`;
-      }).join("");
-      document.getElementById("historyResults").innerHTML = '<section class="th-section">' + header + '<div class="th-card">' + rows + '</div></section>';
+    function ensureSeed(){
+      const c = TrackHype.chartId(current.title);
+      const subs = TrackHype.getWeekSubmissions(c);
+      const hasAny = Object.keys(subs).some(k => subs[k].length);
+      if(hasAny){ return; }
+      seedChart(c, CHART_SOURCES[current.key] || CHART_SOURCES.top40);
     }
 
-    function renderHighlights(){
+    function currentSnapshot(){
+      const snaps = availableSnapshots();
+      if(weekKey && TrackHype.getSnapshotFor(TrackHype.chartId(current.title), weekKey)){
+        return TrackHype.getSnapshotFor(TrackHype.chartId(current.title), weekKey);
+      }
+      return snaps[0] || null;
+    }
+
+    /* ---- rendering ---- */
+
+    function moveChip(m){
+      if(m === null || m === undefined){ return '<span class="hn-move muted">—</span>'; }
+      if(m === "new"){ return '<span class="hn-move new">NEW</span>'; }
+      if(m === 0){ return '<span class="hn-move muted">—</span>'; }
+      if(m > 0){ return '<span class="hn-move up">\u2191 ' + m + '</span>'; }
+      return '<span class="hn-move dn">\u2193 ' + Math.abs(m) + '</span>';
+    }
+
+    function snapshotRows(snap){
+      return (snap && snap.rankings || []).slice().sort((a, b) => (a.rank - b.rank)).map(r => ({
+        rank: r.rank,
+        title: r.title || "Untitled",
+        artist: r.artistName || "Unknown Artist",
+        artwork: r.artwork || artUrl(r.rank),
+        move: r.movement == null ? null : r.movement,
+        isSeed: !!r.isSeed,
+        sid: r.submissionId
+      }));
+    }
+
+    function weekLabel(){
+      if(weekKey){ return "Week " + weekKey; }
+      const snaps = availableSnapshots();
+      const top = snaps[0];
+      return top ? "Week " + top.weekKey : "No published weeks";
+    }
+
+    function renderChart(){
+      ensureSeed();
+      const snap = currentSnapshot();
+      const rows = snapshotRows(snap);
+      const html = rows.map(e => `
+        <div class="history-row">
+          <div class="history-rank">${e.rank}</div>
+          <img class="history-thumb" src="${TrackHype.esc(e.artwork)}" onerror="this.style.visibility='hidden'">
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:800;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${TrackHype.esc(e.title)}</div>
+            <div style="font-size:12px;color:var(--th-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${TrackHype.esc(e.artist)}</div>
+          </div>
+          ${moveChip(e.move)}
+        </div>`).join("");
+      document.getElementById("historyResults").innerHTML =
+        '<section class="th-section"><div class="th-card">' + (html || '<div class="th-empty"><strong>No published chart yet.</strong>This chart has no finalized weeks to show.</div>')
+        + '</div><div class="hn-foot">' + TrackHype.esc(weekLabel()) + ' \u2022 ' + TrackHype.esc(current.title) + '</div></section>';
+    }
+
+    function renderStats(){
+      ensureSeed();
+      const rows = snapshotRows(currentSnapshot());
+      const top = rows[0] || null;
+      const climber = rows.filter(e => e.move !== "new" && e.move && e.move > 0).sort((a, b) => b.move - a.move)[0] || rows[1] || null;
+      const newest = rows.filter(e => e.move === "new")[0] || null;
+      const card = (label, title, sub) => `
+        <div class="th-card pad">
+          <div style="font-size:12px;font-weight:900;color:var(--th-primary-dark);text-transform:uppercase">${label}</div>
+          <div style="font-weight:900;margin-top:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${TrackHype.esc(title || "—")}</div>
+          <div style="font-size:13px;color:var(--th-muted)">${TrackHype.esc(sub || "")}</div>
+        </div>`;
+      const climberSub = climber ? (climber.move === "new" ? "newly charted this week" : "\u2191 " + climber.move + " places") : "";
       document.getElementById("historyResults").innerHTML = `
         <section class="th-section">
           <div class="th-grid-2">
-            <div class="th-card pad"><div style="font-size:12px;font-weight:900;color:var(--th-primary-dark);text-transform:uppercase">#1 Song</div><div style="font-weight:900;margin-top:8px">Historical Song 1</div><div style="font-size:13px;color:var(--th-muted)">${NAMES[0]}</div></div>
-            <div class="th-card pad"><div style="font-size:12px;font-weight:900;color:var(--th-primary-dark);text-transform:uppercase">Biggest Climber</div><div style="font-weight:900;margin-top:8px">Historical Song 7</div><div style="font-size:13px;color:var(--th-muted)">↑ 12 places</div></div>
-            <div class="th-card pad"><div style="font-size:12px;font-weight:900;color:var(--th-primary-dark);text-transform:uppercase">New Entry</div><div style="font-weight:900;margin-top:8px">Historical Song 15</div><div style="font-size:13px;color:var(--th-muted)">Debut at #15</div></div>
-            <div class="th-card pad"><div style="font-size:12px;font-weight:900;color:var(--th-primary-dark);text-transform:uppercase">Longest Charting</div><div style="font-weight:900;margin-top:8px">Historical Song 3</div><div style="font-size:13px;color:var(--th-muted)">18 weeks</div></div>
+            ${card("#1 Song", top && top.title, top && top.artist)}
+            ${card("Biggest Climber", climber && climber.title, climberSub)}
+            ${card("New Entry", newest && newest.title, newest ? newest.artist : "")}
           </div>
+          <div class="hn-foot">${TrackHype.esc(weekLabel())} \u2022 ${TrackHype.esc(current.title)}</div>
         </section>`;
     }
 
     function renderArtists(){
+      ensureSeed();
+      const rows = snapshotRows(currentSnapshot());
+      const counts = {};
+      const order = [];
+      rows.slice(0, 40).forEach(e => {
+        counts[e.artist] = (counts[e.artist] || 0) + 1;
+        if(order.indexOf(e.artist) < 0){ order.push(e.artist); }
+      });
+      order.sort((a, b) => (counts[b] - counts[a]) || (a < b ? -1 : 1));
       document.getElementById("historyResults").innerHTML = `
         <section class="th-section">
           <div class="th-section-head"><h2>Artists shaping the chart</h2></div>
-          <div class="th-card">${NAMES.slice(0,8).map((n,i) => `
+          <div class="th-card">${order.map((n, i) => {
+            const c = counts[n];
+            return `
             <div class="history-row">
-              <div class="history-rank" style="background:var(--th-grey-3);color:var(--th-muted)">${i+1}</div>
-              <div style="flex:1;min-width:0"><div style="font-weight:800">${TrackHype.esc(n)}</div><div style="font-size:12px;color:var(--th-muted)">${i+1} chart appearance${i===0?"s":""}</div></div>
-              <button class="th-btn secondary" type="button" onclick="location.href='artist.html?artist='+encodeURIComponent('${TrackHype.esc(n).replace(/'/g,"\\'")}')">View</button>
-            </div>`).join("")}</div>
+              <div class="history-rank" style="background:var(--th-grey-3);color:var(--th-muted)">${i + 1}</div>
+              <div style="flex:1;min-width:0"><div style="font-weight:800">${TrackHype.esc(n)}</div><div style="font-size:12px;color:var(--th-muted)">${c} chart appearance${c === 1 ? "" : "s"}</div></div>
+            </div>`;
+          }).join("")}</div>
         </section>`;
     }
 
-    setTab("chart", document.querySelector('[data-tab="chart"]'));
+    function updateControls(){
+      document.getElementById("weekBtn").textContent = weekLabel();
+      document.getElementById("chartBtn").textContent = current.title;
+    }
+
+    function render(){
+      updateControls();
+      if(activeTab === "chart") renderChart();
+      if(activeTab === "stats") renderStats();
+      if(activeTab === "artists") renderArtists();
+    }
+
+    function setTab(tab, el){
+      document.querySelectorAll(".tab").forEach(x => x.classList.remove("is-active"));
+      if(el){ el.classList.add("is-active"); }
+      activeTab = tab;
+      render();
+    }
+
+    function applyWeek(key){
+      weekKey = key;
+      saveWeekKey(key);
+      if(TrackHype && TrackHype.closeSheet){ TrackHype.closeSheet(); }
+      render();
+    }
+
+    function openWeekModal(){
+      if(!TrackHype || !TrackHype.openSheet){ return; }
+      const snaps = availableSnapshots();
+      const chip = (k, label, active) => `<button type="button" class="hp-chip${active ? " is-active" : ""}" data-week-pick="${TrackHype.esc(k)}">${label}</button>`;
+      const none = !snaps.length
+        ? '<p style="margin:0;color:var(--th-muted);font-size:13px">No published weeks yet for this chart.</p>'
+        : '';
+      TrackHype.openSheet({
+        title: "Pick a week",
+        html:
+          `<div class="hp-field"><div class="hp-label">Published weeks for ${TrackHype.esc(current.title)}</div><div class="hp-chips" data-rows="week">` +
+          snaps.map(s => chip(s.weekKey, s.weekKey, weekKey === s.weekKey)).join("") +
+          `</div></div>${none}`,
+        actions: [{ id: "dismiss", label: "Close", primary: true }]
+      });
+    }
+
+    function bindModal(){
+      const body = document.querySelector("[data-modal-body]");
+      if(!body){ return; }
+      body.addEventListener("click", function(ev){
+        const pick = ev.target.closest("[data-week-pick]");
+        if(pick){
+          applyWeek(pick.dataset.weekPick);
+        }
+      });
+    }
+
+    window.addEventListener("pageshow", function(){
+      const picked = loadChart();
+      const next = CHARTS.find(c => c.title === picked) || CHARTS.find(c => c.title === DEFAULT_CHART);
+      current = next;
+      render();
+    });
+
+    document.getElementById("weekBtn").addEventListener("click", openWeekModal);
+    document.getElementById("chartBtn").addEventListener("click", function(){
+      TrackHype.navigate("trackhype-charts.html");
+    });
+
+    bindModal();
+    render();
   </script>
 </body>
 </html>

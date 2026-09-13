@@ -8,29 +8,114 @@
   <title>Charts — TrackHype</title>
   <link rel="stylesheet" href="trackhype.css">
   <style>
+    .chart-hero-wrap{position:relative;overflow:hidden;border-radius:var(--th-radius);background:var(--th-grey-2);border:1px solid var(--th-border-soft)}
+    .chart-hero{display:block;width:100%;height:auto;aspect-ratio:3/1;object-fit:cover;background:var(--th-grey-2)}
+    .chart-hero-overlay{position:absolute;left:0;right:0;bottom:0;padding:34px 16px 15px;background:linear-gradient(transparent,rgba(15,25,40,.78));color:#fff}
+    .chart-hero-kicker{font-size:10px;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;opacity:.82}
+    .chart-hero-title{font-size:22px;line-height:1.1;font-weight:950;margin-top:3px}
+    .chart-hero-meta{font-size:12px;font-weight:700;opacity:.9;margin-top:4px}
+    .chart-filter-row{display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:14px;flex-wrap:nowrap}
+    .cf-btns{display:flex;align-items:center;gap:12px;flex-wrap:nowrap;min-width:0;overflow:auto;scrollbar-width:none}
+    .cf-btns::-webkit-scrollbar{display:none}
+    .cf-btn{background:none;border:0;padding:7px 1px;font-size:13px;font-weight:800;color:rgba(15,25,40,.4);cursor:pointer;white-space:nowrap}
+    .cf-btn.is-active{color:#1f2937}
+    .chart-fav{width:26px;height:26px;object-fit:contain;cursor:pointer;flex:none}
+    .week-archive{width:315.2px;max-width:100%;margin:0 auto}
+    .week-archive summary{list-style:none;display:flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--th-border);border-radius:var(--th-radius-sm);background:var(--th-bg);padding:10px 12px;font-size:13px;font-weight:800;color:var(--th-text);cursor:pointer;text-align:center}
+    .week-archive summary::-webkit-details-marker{display:none}
+    .week-archive summary::after{content:"▾";font-size:10px;color:var(--th-muted)}
+    .week-archive[open] summary::after{content:"▴"}
+    .week-archive-list{list-style:disc;width:315.2px;max-width:100%;margin:8px auto 0;padding:0 12px 0 28px}
+    .week-item{display:block;width:100%;text-align:left;border:0;background:none;padding:6px 0;font-size:13px;font-weight:800;color:var(--th-text);cursor:pointer}
+    .week-item.is-active{color:var(--th-primary-dark)}
+    #chartList{background:transparent;border:0;box-shadow:none;border-radius:0}
+    #chartFoot{display:flex;flex-direction:column;align-items:center;text-align:center}
+    #chartFoot .th-btn{margin-top:14px;background:var(--th-primary);border-color:var(--th-primary);color:#fff;padding:10px 16px;font-size:12px}
+    .vote-cta{width:100%;max-width:315.2px}
+    .ch-status{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+    .ch-status-title{font-size:14px;font-weight:950;color:var(--th-text)}
+    .ch-status-pill{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;padding:5px 8px;border-radius:999px;background:var(--th-grey-1);color:var(--th-muted);white-space:nowrap}
+    .ch-status-pill.live{background:rgba(1,219,139,.12);color:var(--th-primary-dark)}
+    .ch-status-pill.pub{background:rgba(15,25,40,.1);color:#1f2937}
+    .ch-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+    .ch-stat{padding:9px 8px;border:1px solid var(--th-border-soft);border-radius:8px;background:var(--th-bg);text-align:center}
+    .ch-stat-value{font-size:15px;font-weight:950;color:var(--th-text)}
+    .ch-stat-label{font-size:9px;font-weight:800;color:var(--th-muted);text-transform:uppercase;letter-spacing:.45px;margin-top:2px}
+    .ch-legend{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:12px}
+    .ch-legend .mv{font-size:9px;font-weight:900;letter-spacing:.4px;padding:3px 6px;border-radius:999px;border:1px solid var(--th-border-soft);color:var(--th-muted)}
+    .ch-legend .mv.is-up{color:var(--th-primary-dark);border-color:rgba(1,219,139,.35)}
+    .ch-legend .mv.is-down{color:#a63b3b;border-color:rgba(166,59,59,.35)}
+    .ch-legend .mv.is-new{color:var(--th-primary-dark);border-color:rgba(1,219,139,.35)}
     .ch-tabs{display:flex;gap:8px;flex-wrap:wrap}
     .ch-head{display:flex;align-items:center;gap:14px}
     .ch-cover{width:76px;height:76px;border-radius:var(--th-radius-sm);object-fit:cover;background:var(--th-grey-2);border:1px solid var(--th-border-soft);flex:none}
     .ch-title{font-size:20px;font-weight:900}
     .ch-meta{font-size:12px;color:var(--th-muted);margin-top:3px}
-    .ch-row{display:flex;align-items:center;gap:11px;padding:11px 12px;border-bottom:1px solid var(--th-border-soft)}
+    .ch-row{display:flex;align-items:center;gap:11px;padding:11px 12px;border-bottom:1px solid var(--th-border-soft);transition:background .18s ease}
     .ch-row:last-child{border-bottom:0}
-    .ch-rank{flex:none;width:40px;height:40px;display:grid;place-items:center;background:var(--th-primary);color:#fff;border-radius:9px;font-weight:900;font-size:16px}
+    .ch-rank{flex:none;width:40px;height:40px;display:grid;place-items:center;background:var(--th-primary);color:#fff;border-radius:9px;font-weight:900;font-size:16px;cursor:pointer}
+    .ch-rank.r1{background:#c9a227;color:#fff}
+    .ch-rank.r2{background:#9ca3af;color:#fff}
+    .ch-rank.r3{background:#b87333;color:#fff}
     .ch-rank.placeholder{background:var(--th-grey-3);color:var(--th-muted)}
     .ch-thumb{flex:none;width:40px;height:40px;border-radius:8px;object-fit:cover;background:var(--th-grey-2);border:1px solid var(--th-border-soft);cursor:pointer}
     .ch-info{flex:1;min-width:0;cursor:pointer}
     .ch-song{font-weight:900;font-size:14px;color:var(--th-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .ch-artist{font-size:12px;color:var(--th-muted);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .ch-points{flex:none;font-size:12px;font-weight:900;color:var(--th-primary-dark);margin-left:auto}
-    .ch-vote{flex:none;border:1px solid var(--th-border);background:var(--th-bg);border-radius:8px;padding:8px 12px;font-size:12px;font-weight:800;color:var(--th-primary-dark)}
-    .ch-vote:active{background:var(--th-grey-1)}
-    .ch-vote.voted{opacity:.5;cursor:default}
+    .ch-points{flex:none;font-size:11px;font-weight:900;color:var(--th-primary-dark);white-space:nowrap}
+    .ch-move{flex:none;min-width:52px;display:flex;align-items:center;justify-content:center;gap:3px;font-size:10px;font-weight:950;text-align:center;color:var(--th-muted)}
+    .ch-move img{width:20px;height:20px;object-fit:contain;display:inline-block}
+    .ch-move-text{min-width:20px}
+    .ch-move.is-up{color:var(--th-primary-dark)}
+    .ch-move.is-down{color:#a63b3b}
+    .ch-move.is-new{color:var(--th-primary-dark);text-transform:uppercase}
+    .ch-move.is-steady{color:var(--th-muted)}
     .ch-panel{display:none;border-top:1px solid var(--th-border-soft);padding:12px}
     .ch-panel.open{display:block}
     .ch-youtube{width:100%;aspect-ratio:16/9;border:0;border-radius:8px;display:block;background:#000}
-    .ch-detail-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
-    .ch-detail-actions .th-btn{padding:9px 6px;font-size:12px}
+    .ch-hist-line{font-size:12px;font-weight:900;color:var(--th-text);margin-bottom:8px;line-height:1.5}
+    .ch-hist-list{max-height:192px;overflow-y:auto;border:1px solid var(--th-border-soft);border-radius:8px}
+    .ch-hist-row{display:flex;align-items:center;padding:8px 10px;border-bottom:1px solid var(--th-border-soft);font-size:12.5px;font-weight:700;color:var(--th-text);line-height:1.4}
+    .ch-hist-row:last-child{border-bottom:0}
     .ch-note{font-size:12px;color:var(--th-muted);line-height:1.5;margin-top:10px;padding:10px;border:1px dashed var(--th-grey-3);border-radius:8px;background:var(--th-grey-1)}
+    .ch-tier-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+
+    .Music-Icons{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:nowrap}
+    .sg-link{display:inline-flex;align-items:center;justify-content:center;line-height:0}
+    .sg-link:active{transform:scale(.94)}
+    .sg-link img{width:36px;height:36px;object-fit:contain}
+    #favIcon{width:31px;height:31px;object-fit:contain}
+
+    .ballot-body .th-sheet{max-height:92vh}
+    .bp-rows{display:flex;flex-direction:column;gap:8px}
+    .bp-head{font-size:10px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:var(--th-muted);padding:8px 4px 2px;border-bottom:1px solid var(--th-border-soft);margin-top:6px}
+    .bp-hint{font-size:12px;color:var(--th-muted);line-height:1.5;padding:10px 12px;border:1px dashed var(--th-grey-3);border-radius:8px;background:var(--th-grey-1);margin-bottom:10px}
+    .bp-card{position:relative;display:flex;align-items:center;gap:11px;padding:10px 12px;background:#ffffff;border:1px solid var(--th-border);border-radius:var(--th-radius);box-shadow:var(--th-shadow-soft);flex-wrap:wrap}
+    .bp-rank{flex:none;width:34px;height:34px;display:grid;place-items:center;background:var(--th-primary);color:#fff;border-radius:8px;font-weight:900;font-size:15px;border:0;cursor:pointer}
+    .bp-rank.unranked{background:var(--th-grey-3);color:var(--th-muted)}
+    .bp-thumb{flex:none;width:42px;height:42px;border-radius:8px;object-fit:cover;background:var(--th-grey-2);border:1px solid var(--th-border-soft)}
+    .bp-info{flex:1;min-width:0}
+    .bp-song{font-weight:900;font-size:14px;color:var(--th-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .bp-artist{font-size:12px;color:var(--th-muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .bp-crown{flex:none;background:none;border:0;padding:2px;line-height:0;cursor:pointer}
+    .bp-crown img{width:24px;height:24px;object-fit:contain}
+    .bp-stepper{flex:none;display:flex;flex-direction:column;align-items:center}
+    .bp-stepper button{width:26px;height:22px;display:grid;place-items:center;border:1px solid var(--th-border);background:var(--th-grey-1);color:var(--th-text);font-weight:900;font-size:13px;cursor:pointer;border-radius:5px}
+    .bp-stepper button + button{border-top:0;border-radius:0 0 5px 5px}
+    .bp-stepper button:first-child{border-radius:5px 5px 0 0}
+    .bp-stepper button:active{background:var(--th-grey-2)}
+    .bp-history{flex-basis:100%;width:100%;font-size:12px;color:var(--th-muted);line-height:1.5;padding-top:8px;border-top:1px solid var(--th-border-soft);margin-top:2px}
+
+    .ballot-mode .bottom-swipe{display:none}
+    .ballot-mode .th-app{background:rgba(15,25,40,.15)}
+    .ballot-mode .chart-hero-area,
+    .ballot-mode .week-archive-section,
+    .ballot-mode .chart-filter-row,
+    .ballot-mode .chart-above,
+    .ballot-mode #chartFoot{display:none}
+    .ballot-mode #chartList{background:transparent;border:0;box-shadow:none;margin-bottom:80px}
+    .ballot-bar{position:fixed;left:0;right:0;bottom:0;z-index:132;display:flex;gap:8px;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:rgba(15,25,40,.15)}
+    .ballot-bar .th-btn{flex:1}
   </style>
 </head>
 <body data-active-nav="index.html">
@@ -41,52 +126,83 @@
         <img class="th-logo-badge" src="Assets/logos/TrackHype Logo Design Badge.webp" alt="TrackHype">
         <img class="th-logo-text" src="Assets/logos/track-hype-text-logo.webp" alt="TrackHype">
       </a>
-<div class="th-header-context" id="headChart">Charts</div>
-      <button class="th-icon-btn" type="button" aria-label="Search" onclick="location.href='search.html'">⌕</button>
-      <button class="th-icon-btn" type="button" aria-label="Menu" onclick="location.href='menu.html'">☰</button>
     </div>
   </header>
 
   <main class="th-app">
     <div class="th-shell">
 
-      <section>
-        <h1 class="th-page-title">Charts</h1>
-        <p class="th-page-subtitle">Zimbabwe's official charts. Tap a song for details and official YouTube. Tap <strong>Vote</strong> to rank it — enter a target position to reorder. Your single vote is recorded and aggregated, never directly mutating the published chart.</p>
-      </section>
-
-      <section class="th-section">
-        <div class="th-chip-row ch-tabs" id="chartTabs"></div>
-      </section>
-
-      <section>
-        <div class="th-card pad ch-head">
-          <img id="chartCover" class="ch-cover" src="Assets/charts/top_40_chart/cover.jpg" onerror="this.style.visibility='hidden'">
-          <div style="flex:1;min-width:0">
-            <div class="ch-title" id="chartTitle">National Top 100</div>
-            <div class="ch-meta" id="chartMeta">All Genres — Zimbabwe</div>
-            <div class="ch-meta">20 → 1 points · one vote per chart per 24h</div>
-            <div class="ch-meta" id="chartCountdown" style="display:none;color:var(--th-primary-dark);font-weight:800"></div>
+      <section class="th-section chart-hero-area">
+        <div class="chart-hero-wrap">
+          <img id="chartCover" class="chart-hero" src="Assets/charts/top_40_chart/cover.jpg" onerror="this.style.visibility='hidden'">
+          <div class="chart-hero-overlay">
+            <div class="chart-hero-kicker">TrackHype Charts</div>
+            <div class="chart-hero-title" id="chartHeroTitle">National Top 100</div>
+            <div class="chart-hero-meta" id="chartHeroMeta">All Genres — Zimbabwe</div>
           </div>
-          <img id="chartFav" src="Assets/icons/heart_inactive_icon.png" alt="Favourite" style="width:26px;height:26px;object-fit:contain;cursor:pointer;flex:none">
         </div>
       </section>
 
-      <section>
-        <div class="th-card" id="chartList"></div>
-        <div class="ch-note">
-          <strong>How voting works:</strong> tap <strong>Vote</strong> on a song, then enter the target position you want it to reach. The song moves there and the incumbent shifts down one. #1 = 20 pts, #20 = 1 pt. Your choices go into your vote record — the published chart updates only after aggregation.
-        </div>
+      <section class="th-section week-archive-section">
+        <details class="week-archive" id="weekArc">
+          <summary>Week archive</summary>
+          <ul class="week-archive-list" id="weekArcList"></ul>
+        </details>
       </section>
+
+      <section class="th-section chart-filter-row">
+        <img id="chartFav" class="chart-fav" src="Assets/icons/heart_inactive_icon.png" alt="Favourite" title="Favourite chart">
+        <div class="cf-btns" id="filterRow"></div>
+      </section>
+
+      <div class="chart-below">
+
+        <section class="th-section chart-above">
+          <div class="th-card pad">
+            <div class="ch-status">
+              <div style="min-width:0">
+                <div class="ch-status-title" id="chartModeTitle">On Top</div>
+                <div class="ch-meta" id="tierDesc"></div>
+              </div>
+              <div class="ch-status-pill live" id="chartStatusPill">Live ballot</div>
+            </div>
+            <button id="Vote-Button" class="th-btn primary vote-cta" type="button">Vote</button>
+            <div class="ch-legend">
+              <span class="mv is-new">NEW</span>
+              <span class="mv is-up">↑ climbed</span>
+              <span class="mv is-down">↓ dropped</span>
+              <span class="mv is-up">— steady</span>
+            </div>
+            <div class="ch-stats" id="chartStats"></div>
+            <div id="votedNote" class="ch-note" style="display:none;margin-top:10px"></div>
+            <div id="chartCountdown" style="display:none;color:var(--th-primary-dark);font-weight:800;margin-top:10px"></div>
+          </div>
+        </section>
+
+        <section>
+          <div class="th-card" id="chartList"></div>
+          <div class="ch-note" id="chartFoot">
+            <strong>How voting works:</strong> rank your personal <strong>Top 10</strong> across the unified sheet (On&nbsp;Top + Contenders + Newest). #1 = 10 points, #10 = 1 point, unranked = 0. You can edit your ballot until voting closes — only your latest saved ballot counts. Newest points only decide Newest promotion and can never jump a song straight into On Top. Contenders get one weekly chance to make On Top. The chart finalises from the published snapshot every Monday 00:00 (Africa/Harare).
+          </div>
+        </section>
+
+      </div>
 
     </div>
   </main>
 
-  <nav class="th-bottom" data-bottom>
-    <div class="th-bottom-inner" data-nav-host></div>
-  </nav>
+  <div class="bottom-swipe" data-bottom-swipe>
+    <nav class="bottom-nav" data-bottom>
+      <div class="bottom-nav-inner" data-nav-host></div>
+    </nav>
 
-  <aside class="promo-player" data-player></aside>
+    <aside class="promo-player" data-player></aside>
+  </div>
+
+  <div class="ballot-bar" id="ballotBar" hidden>
+    <button class="th-btn secondary" type="button" id="bp-cancel">Cancel</button>
+    <button class="th-btn primary" type="button" id="bp-submit">Vote</button>
+  </div>
 
   <div class="th-modal-backdrop" data-modal>
     <div class="th-sheet" role="dialog" aria-modal="true">
@@ -97,6 +213,8 @@
     </div>
   </div>
 
+  <script src="demo-playlist.js"></script>
+  <script src="docs/Demo Charts/chart_history-data.js"></script>
   <script src="trackhype.js"></script>
   <script>
     const CHARTS = [
@@ -116,7 +234,17 @@
         label:"Sungura",          genreFilter:"Sungura", mapped:false}
     ];
 
-let current = CHARTS[0];
+    const FILTERS = [
+      {label:"About",      tier:0},
+      {label:"On Top",     tier:1},
+      {label:"Contenders", tier:2},
+      {label:"Newest",     tier:3}
+    ];
+
+    let current = CHARTS[0];
+    let filter = 1;
+    let tier = 1;
+    let week = "current";
     let order = [];
     let openPanelIndex = -1;
     let openPanelKind = "";
@@ -137,59 +265,187 @@ let current = CHARTS[0];
       "top_20_house": {1:"jpg",2:"jpg",3:"jpg",4:"jpg",5:"jpg",6:"jpg",7:"jpg",8:"jpg",9:"jpg",10:"jpg",11:"jpg",12:"jpg",13:"jpg",14:"jpg",15:"jpg",16:"jpg",17:"jpg",18:"jpg",19:"jpg",20:"jpg"},
       "top_20_rnb_chart": {1:"jpg",2:"jpg",3:"jpg",4:"jpg",5:"jpg",6:"jpg",7:"jpg",8:"jpg",9:"jpg",10:"jpg",11:"jpg",12:"jpg",13:"jpg",14:"jpg",15:"png",16:"png",17:"png",18:"jpg",19:"png",20:"jpeg"}
     };
-function artUrl(i){
+    const PLACEHOLDER_SVG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect width='80' height='80' rx='14' fill='%23eef3f1'/%3E%3Ccircle cx='40' cy='40' r='18' fill='%2301db8b'/%3E%3Cpath d='M34 52V30l14-3v22' fill='none' stroke='%2302925e' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E";
+    function artUrl(i){
       const map = ART[current.folder];
-      if(!map || !i){ return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect width='80' height='80' rx='14' fill='%23eef3f1'/%3E%3Ccircle cx='40' cy='40' r='18' fill='%2301db8b'/%3E%3Cpath d='M34 52V30l14-3v22' fill='none' stroke='%2302925e' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E"; }
+      if(!map || !i){ return PLACEHOLDER_SVG; }
       const count = Math.max(1, Object.keys(map).length);
       const seq = i > count ? ((i - 1) % count) + 1 : i;
       return "Assets/charts/" + current.folder + "/" + seq + "." + (map[seq] || "jpg");
     }
 
-    function buildSongs(){
+    const TH_SEED_REV = 2;
+
+    const CHART_SOURCES = {
+      top40:     { charts: ["Top 100 Chart List", "Top 40 Chart"], genres: [], poolMax: 100 },
+      hiphop:    { charts: ["Zim Hip-Hop Top 20", "Top 25 Local Hip-Hop"], genres: ["Zim Hip Hop"], poolMax: 20 },
+      house:     { charts: ["Top 20 House"], genres: ["Amapiano"], poolMax: 20 },
+      rnb:       { charts: ["Top 20 RnB"], genres: ["R&B"], poolMax: 20 },
+      dancehall: { charts: ["Zimdancehall"], genres: [], poolMax: 20 },
+      gospel:    { charts: ["Gospel"], genres: [], poolMax: 20 },
+      sungura:   { charts: ["Sungura"], genres: [], poolMax: 20 }
+    };
+
+    function makeFiller(rank){
       const artists = genreArtists[current.genreFilter] || genreArtists[""];
-      const n = current.key === "top40" ? 100 : 20;
-      return Array.from({length:n}, (_,i)=>{
-        const rank = i + 1;
-        return {
-          id: rank,
-          title: "Zimbabwe " + current.genreFilter + " Track " + rank,
-          artist: artists[i % artists.length],
-          artwork: artUrl(rank)
-        };
-      });
-    }
-
-    function renderTabs(){
-      document.getElementById("chartTabs").innerHTML = CHARTS.map(c => {
-        const active = c.key === current.key;
-        return `<button class="th-chip ${active?"is-active":""}" type="button" data-chart="${c.key}">${c.label}</button>`;
-      }).join("");
-      document.getElementById("chartTabs").onclick = (e) => {
-        const b = e.target.closest("[data-chart]");
-        if(!b) return;
-        switchChart(b.dataset.chart);
+      const i = rank - 1;
+      const star = artists[i % artists.length];
+      const feat = rank % 3 === 0 || rank % 5 === 0 ? [artists[(i + 1) % artists.length]] : [];
+      const item = {
+        id: rank,
+        title: "Zimbabwe " + (current.genreFilter || "") + " Track " + rank,
+        artist: star,
+        featured: feat,
+        artwork: artUrl(rank),
+        upvotes: 1 + (rank % 5)
       };
+      return item;
     }
 
-function switchChart(key){
+    function parseHistLine(line){
+      const m = String(line || "").match(/^Week (\d+) \u2022 (.+) \u2022 ([0-9,]+) votes$/);
+      if(!m){ return null; }
+      return { week: Number(m[1]), chart: m[2].trim(), votes: Number(m[3].replace(/,/g, "")) };
+    }
+
+    function recordsForChart(src){
+      if(!window.CHART_HISTORY){ return []; }
+      const chartHits = src.charts && src.charts.length;
+      const genreHits = src.genres && src.genres.length;
+      return window.CHART_HISTORY.map(r => {
+        const cn = String(r.chart || "").trim();
+        const g = String(r.genre || "").trim();
+        const onThis = (r.history || []).map(parseHistLine).filter(l => l && (
+          (chartHits && src.charts.indexOf(l.chart) >= 0) ||
+          (genreHits && src.genres.indexOf(l.chart) >= 0)
+        ));
+        const matches = (chartHits && src.charts.indexOf(cn) >= 0) || (genreHits && src.genres.indexOf(g) >= 0);
+        return { r, lines: onThis, matches };
+      }).filter(x => x.matches);
+    }
+
+    function buildCatalogFor(src){
+      const scored = [];
+      recordsForChart(src).forEach(({r, lines}) => {
+        const latest = lines.reduce((m, l) => (!m || l.week > m.week ? l : m), null);
+        if(latest){ scored.push({ r, votes: latest.votes }); }
+      });
+      scored.sort((a, b) => (b.votes - a.votes) || (String(a.r.title) < String(b.r.title) ? -1 : 1));
+
+      const groups = { 1: [], 2: [], 3: [] };
+      const add = (tier, n, base) => {
+        for(let i = 0; i < n; i++){
+          const rec = base[i];
+          const item = rec
+            ? { id: rec.r.id || (i + 1), title: rec.r.title, artist: rec.r.artist, artwork: rec.r.artwork || "", upvotes: 1 + ((i * 7 + rec.r.title.length) % 5) }
+            : makeFiller(i + 1);
+          groups[tier].push(item);
+        }
+      };
+
+      add(1, 20, scored);
+      add(2, Math.max(0, Math.min(src.poolMax, scored.length) - 20), scored.slice(20, src.poolMax));
+      add(3, Math.max(0, Math.min(scored.length, src.poolMax + 20) - src.poolMax), scored.slice(src.poolMax, src.poolMax + 20));
+      return groups;
+    }
+
+    function seedWeeks(c, src, idByTitle){
+      const now = TrackHype.currentWeekKey();
+      const weeks = {};
+      recordsForChart(src).forEach(({r, lines}) => {
+        const sid = idByTitle[String(r.title).trim().toLowerCase()];
+        if(!sid){ return; }
+        lines.forEach(l => {
+          if(l.week >= 20){ return; }
+          const wk = TrackHype.shiftWeekKey(now, l.week - 20);
+          (weeks[wk] = weeks[wk] || []).push({ sid, title: r.title, artist: r.artist, artwork: r.artwork || "", votes: l.votes });
+        });
+      });
+      const path = Object.keys(weeks).map(wk => ({
+        weekKey: wk,
+        pickRate: 0,
+        entries: weeks[wk].slice().sort((a, b) => b.votes - a.votes).map((e, i) => ({
+          submissionId: e.sid, title: e.title, artistName: e.artist, artwork: e.artwork, votes: e.votes, rank: i + 1, movement: null
+        }))
+      }));
+      path.sort((a, b) => (a.weekKey < b.weekKey ? -1 : 1));
+      const prevBySid = {};
+      path.forEach(p => {
+        p.entries.forEach(e => {
+          const prev = prevBySid[e.submissionId];
+          e.movement = prev == null ? null : (prev.rank - e.rank);
+          prevBySid[e.submissionId] = { rank: e.rank };
+        });
+      });
+      TrackHype.seedWeeklySnapshots(c, path);
+    }
+
+    function seedChart(c, src){
+      const groups = buildCatalogFor(src);
+      const seeded = TrackHype.seedCatalogTiers(c, groups);
+      const idByTitle = {};
+      [1, 2, 3].forEach(t => {
+        (groups[t] || []).forEach((s, i) => {
+          idByTitle[String(s.title).trim().toLowerCase()] = seeded[t][i].id;
+        });
+      });
+      seedWeeks(c, src, idByTitle);
+    }
+
+    function maybeResetSeeds(){
+      let rev = 0;
+      try{ rev = Number(localStorage.getItem("trackhype.seedRev") || 0); }catch(e){}
+      if(rev === TH_SEED_REV){ return; }
+      CHARTS.forEach(ch => {
+        try{ TrackHype.clearChartWeekly(TrackHype.chartId(ch.title)); }catch(e){}
+      });
+      try{ localStorage.setItem("trackhype.seedRev", String(TH_SEED_REV)); }catch(e){}
+    }
+
+    const ck = () => TrackHype.chartId(current.title);
+    const isArchived = () => week !== "current";
+    const MAX = TrackHype.getMaxRankedPicks();
+
+    function ensureSeed(){
+      if(isArchived()){ return; }
+      maybeResetSeeds();
+      const c = ck();
+      const subs = TrackHype.getWeekSubmissions(c);
+      const hasAny = Object.keys(subs).some(k => subs[k].length);
+      if(!hasAny){
+        seedChart(c, CHART_SOURCES[current.key] || CHART_SOURCES.top40);
+      }
+    }
+
+    function votedMain(){ return isArchived() ? true : TrackHype.hasBallotThisWeek(ck()); }
+
+    function setFilter(i){
+      i = ((i % FILTERS.length) + FILTERS.length) % FILTERS.length;
+      filter = i;
+      tier = FILTERS[i].tier;
+      openPanelIndex = -1;
+      openPanelKind = "";
+      renderAll();
+    }
+
+    function switchChart(key){
       current = CHARTS.find(c => c.key === key) || CHARTS[0];
+      filter = 1;
+      tier = 1;
+      week = "current";
       openPanelIndex = -1;
       openPanelKind = "";
       history.replaceState({}, "", "charts.html?chart=" + key);
-      renderTabs();
-      renderHeader();
-      buildOrder();
-      renderChart();
+      renderAll();
     }
 
-function renderHeader(){
-      document.getElementById("headChart").textContent = current.title;
-      document.getElementById("chartCover").src = current.folder
+    function renderHeader(){
+      const cover = document.getElementById("chartCover");
+      cover.src = current.folder
         ? "Assets/charts/" + current.folder + "/cover.jpg"
-        : "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect width='80' height='80' rx='14' fill='%23eef3f1'/%3E%3Ccircle cx='40' cy='40' r='18' fill='%2301db8b'/%3E%3Cpath d='M34 52V30l14-3v22' fill='none' stroke='%2302925e' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E";
-      document.getElementById("chartTitle").textContent = current.title;
-      document.getElementById("chartMeta").textContent = current.genre + " — Zimbabwe";
-      updateFavIcon();
+        : PLACEHOLDER_SVG;
+      document.getElementById("chartHeroTitle").textContent = current.title;
+      document.getElementById("chartHeroMeta").textContent = current.genre;
     }
 
     function updateFavIcon(){
@@ -199,128 +455,587 @@ function renderHeader(){
         : "Assets/icons/heart_inactive_icon.png";
     }
 
-    function buildOrder(){
-      order = buildSongs().map(s => ({ ...s, points: s.rank <= 20 ? (21 - s.rank) : 1 }));
+    function renderFilterRow(){
+      const el = document.getElementById("filterRow");
+      el.innerHTML = FILTERS.map((f,i) =>
+        `<button type="button" class="cf-btn ${filter === i ? "is-active" : ""}" data-filter="${i}">${f.label}</button>`
+      ).join("");
+      el.onclick = (e) => {
+        const b = e.target.closest("[data-filter]");
+        if(!b){ return; }
+        setFilter(Number(b.dataset.filter));
+      };
     }
 
-function votedToday(){
-      return TrackHype.hasVotedToday(current.title).length > 0;
+    function renderWeekArchive(){
+      const list = document.getElementById("weekArcList");
+      const snaps = TrackHype.getSnapshots(ck());
+      list.innerHTML =
+        `<li><button type="button" class="week-item ${week === "current" ? "is-active" : ""}" data-week="current">This Week · ${TrackHype.esc(TrackHype.currentWeekKey())}</button></li>` +
+        snaps.map(s =>
+          `<li><button type="button" class="week-item ${week === s.weekKey ? "is-active" : ""}" data-week="${TrackHype.esc(s.weekKey)}">Week ${TrackHype.esc(s.weekKey)}</button></li>`
+        ).join("");
+      list.onclick = (e) => {
+        const b = e.target.closest("[data-week]");
+        if(!b){ return; }
+        week = b.dataset.week;
+        openPanelIndex = -1;
+        openPanelKind = "";
+        const acc = document.getElementById("weekArc");
+        if(acc){ acc.removeAttribute("open"); }
+        renderAll();
+      };
     }
 
-    function nextVoteAvailable(){
-      const recs = TrackHype.hasVotedToday(current.title);
-      if(!recs.length){ return ""; }
-      const last = recs[recs.length - 1];
-      const t = Number((last.id || "").replace("vote-", ""));
-      if(!t){ return ""; }
-      const left = Math.max(0, (t + 24 * 60 * 60 * 1000) - Date.now());
-      const h = Math.floor(left / 3600000);
-      const m = Math.floor((left % 3600000) / 60000);
-      if(h <= 0 && m <= 0 && left > 0){ return "less than a minute"; }
-      return h + "h " + m + "m";
-    }
-
-    function renderChart(){
-      const list = document.getElementById("chartList");
-      list.innerHTML = order.map((song,index) => {
-        const rank = index + 1;
-        const points = song.points;
-return `
-          <article class="ch-row" data-idx="${index}">
-            <div class="ch-rank ${song.artwork ? "" : "placeholder"}">${rank}</div>
-            <img class="ch-thumb" src="${song.artwork || ""}" onerror="this.style.visibility='hidden'" onclick="openVideo(${index})" alt="">
-            <div class="ch-info" onclick="openInfo(${index})">
-              <div class="ch-song">${TrackHype.esc(song.title)}</div>
-              <div class="ch-artist">${TrackHype.esc(song.artist)}</div>
-            </div>
-            <div class="ch-points">${points} pts</div>
-            <button class="ch-vote ${votedToday() ? "voted" : ""}" type="button" onclick="openVote(${index})">${votedToday() ? "VOTED" : "VOTE"}</button>
-          </article>
-          <div class="ch-panel" id="panel-${index}"></div>`;
-      }).join("");
-      const cnt = document.getElementById("chartCountdown");
-      if(cnt){
-        const left = nextVoteAvailable();
-        cnt.style.display = left ? "" : "none";
-        if(left){ cnt.textContent = "Next vote available in " + left; }
-      }
-    }
-
-    function openVote(index){
-      if(votedToday()){
-        TrackHype.toast("You already voted on this chart today.");
+    function renderTierIntro(){
+      const descEl = document.getElementById("tierDesc");
+      const cta = document.getElementById("Vote-Button");
+      const note = document.getElementById("votedNote");
+      const modeEl = document.getElementById("chartModeTitle");
+      const pill = document.getElementById("chartStatusPill");
+      if(isArchived()){
+        modeEl.textContent = (FILTERS[filter] || FILTERS[1]).label;
+        descEl.textContent = "Read-only published snapshot for week " + week + ".";
+        cta.style.display = "none";
+        note.style.display = "none";
+        pill.className = "ch-status-pill pub";
+        pill.textContent = "Archive";
         return;
       }
-      const song = order[index];
-      openPanelIndex = -1;
-      openPanelKind = "";
-      TrackHype.confirmVoteSheet(current.title, song, order.length);
+      const c = ck();
+      const cfg = TrackHype.chartConfigFor(c);
+      const currentSnap = TrackHype.getSnapshotFor(c, TrackHype.currentWeekKey());
+      pill.className = currentSnap ? "ch-status-pill pub" : "ch-status-pill live";
+      pill.textContent = currentSnap ? "Published" : "Live ballot";
+      if(filter === 0){
+        modeEl.textContent = "About";
+        descEl.textContent = "Weekly ranked ballots · close Monday 00:00 (Africa/Harare). Rank your Top 10 across the unified sheet.";
+        cta.style.display = "none";
+        note.style.display = "none";
+        return;
+      }
+      const voted = votedMain();
+      if(tier === 1){
+        modeEl.textContent = "On Top";
+        descEl.textContent = "Official chart · Top " + cfg.size + " by ranking points at close. View the published standings; rank your Top 10 to shape next Monday.";
+        cta.textContent = voted ? "Edit ballot" : "Vote";
+        cta.style.display = "block";
+        cta.onclick = openBallotSheet;
+      } else if(tier === 2){
+        modeEl.textContent = "Contenders";
+        descEl.textContent = "10 spots every week — 5 dropped from On Top + 5 promoted from Newest. Contenders get one weekly chance to reach On Top.";
+        cta.style.display = "block";
+        cta.textContent = voted ? "Edit ballot" : "Vote";
+        cta.onclick = openBallotSheet;
+      } else {
+        modeEl.textContent = "Newest";
+        descEl.textContent = "Two-week discovery lane for approved releases. Rank Newest in your Top 10 — points only decide Newest promotion; no direct jump into On Top.";
+        cta.style.display = "block";
+        cta.textContent = voted ? "Edit ballot" : "Vote";
+        cta.onclick = openBallotSheet;
+      }
+      note.style.display = voted ? "block" : "none";
+      note.innerHTML = voted
+        ? "<strong>Ballot saved.</strong> You can edit it until voting closes — only your latest saved ballot counts, then the chart publishes at Monday 00:00 (Africa/Harare)."
+        : "";
     }
 
-    function openVideo(index){
-      openPanel(index, "video");
+    function renderChartStats(){
+      const c = ck();
+      const now = TrackHype.currentWeekKey();
+      const mainPool = TrackHype.getSubmissionsForTier(c, now, 1).length;
+      const t2 = TrackHype.getSubmissionsForTier(c, now, 2).length;
+      const snaps = TrackHype.getSnapshots(c).length;
+      document.getElementById("chartStats").innerHTML =
+        `<div class="ch-stat"><div class="ch-stat-value">${mainPool}</div><div class="ch-stat-label">On Top pool</div></div>` +
+        `<div class="ch-stat"><div class="ch-stat-value">${t2}</div><div class="ch-stat-label">Contenders</div></div>` +
+        `<div class="ch-stat"><div class="ch-stat-value">${snaps}</div><div class="ch-stat-label">Published weeks</div></div>`;
     }
 
-    function openInfo(index){
-      openPanel(index, "info");
+    function displaySnapshotData(c){
+      const now = TrackHype.currentWeekKey();
+      const cur = TrackHype.getSnapshotFor(c, now);
+      const list = TrackHype.getSnapshots(c);
+      const prev = list.filter(s => s.weekKey < now)[0] || null;
+      return { snap: cur || prev, current: !!cur };
     }
 
-    function openPanel(index, kind){
-      const panel = document.getElementById("panel-" + index);
-      const wasOpen = panel.classList.contains("open");
-      document.querySelectorAll(".ch-panel").forEach(p => p.classList.remove("open"));
-      openPanelIndex = wasOpen && openPanelKind === kind ? -1 : index;
-      openPanelKind = kind;
-      if(openPanelIndex >= 0){
-        panel.classList.add("open");
-        panel.innerHTML = kind === "video" ? videoPanel(order[index]) : infoPanel(order[index]);
-        if(kind === "video"){
-          const v = panel.querySelector("video");
-          if(v && "play" in v){
-            v.play().catch(()=>{});
-          }
+    function newsestLabel(s, now){
+      if(s.isSeed){ return "Newest"; }
+      const entered = s.newestEnteredWeekKey || s.weekKey;
+      const cycles = TrackHype.weeksBetween ? (TrackHype.weeksBetween(entered, now) + 1) : 1;
+      return "Newest · week " + Math.min(2, cycles) + " of 2";
+    }
+
+    function subToSong(sub){
+      return { id: sub.id, songId: sub.songId, title: sub.title, artist: sub.artistName, artwork: sub.artwork };
+    }
+
+    function movementBadge(m, archived){
+      let src = "Song_No_Movement_Icon.webp";
+      let title = "Steady";
+      let cls = "is-steady";
+      let text = "—";
+
+      if(m === "new"){
+        src = "New_Song_Chart_Icon.webp";
+        title = "New Entry";
+        cls = "is-new";
+        text = "NEW";
+      } else if(m === null || m === undefined){
+        title = archived ? "No prior comparable placement" : "No prior published placement";
+      } else if(Number(m) > 0){
+        const n = Number(m);
+        src = n >= 3 ? "Song_Climb_Icon_b.webp" : "Song_Climb_Icon_a.webp";
+        title = "Up " + n;
+        cls = "is-up";
+        text = "↑" + n;
+      } else if(Number(m) < 0){
+        const n = Math.abs(Number(m));
+        src = n >= 3 ? "Song_Drop_Icon_b.webp" : "Song_Drop_Icon_a.webp";
+        title = "Down " + n;
+        cls = "is-down";
+        text = "↓" + n;
+      }
+
+      return `<div class="ch-move ${cls}" title="${title}" aria-label="${title}"><img src="Assets/icons/${src}" alt=""><span class="ch-move-text">${text}</span></div>`;
+    }
+
+    function rowHtml(item, index, archived){
+      const artistLine = item.pickRate != null
+        ? `<div class="ch-artist">${item.pickRate}% pick rate</div>`
+        : `<div class="ch-artist">${TrackHype.esc(item.artistName || "")}</div>`;
+      const points = item.totalPoints != null && item.totalPoints !== 0
+        ? `<div class="ch-points">${item.totalPoints} pts</div>`
+        : "";
+      const medal = !item.artwork ? "placeholder" : (item.rank === 1 ? "r1" : (item.rank === 2 ? "r2" : (item.rank === 3 ? "r3" : "")));
+      return `
+        <article class="ch-row">
+          <div class="ch-rank ${medal}" onclick="openHistory(${index})">${item.rank}</div>
+          <img class="ch-thumb" src="${item.artwork || ""}" onerror="this.style.visibility='hidden'" onclick="openVideo(${index})" alt="">
+          <div class="ch-info" onclick="openInfo(${index})">
+            <div class="ch-song">${TrackHype.esc(item.title)}</div>
+            ${artistLine}
+          </div>
+          ${points}
+          ${movementBadge(item.movement, archived)}
+        </article>
+        <div class="ch-panel" id="panel-${index}"></div>`;
+    }
+
+    function tierRowHtml(s, index, sublabel){
+      return `
+        <article class="ch-row">
+          <div class="ch-rank placeholder" onclick="openHistory(${index})">${index + 1}</div>
+          <img class="ch-thumb" src="${s.artwork || ""}" onerror="this.style.visibility='hidden'" onclick="openVideo(${index})" alt="">
+          <div class="ch-info" onclick="openInfo(${index})">
+            <div class="ch-song">${TrackHype.esc(s.title)}</div>
+            <div class="ch-artist">${TrackHype.esc(s.artistName)} · ${sublabel}</div>
+          </div>
+        </article>
+        <div class="ch-panel" id="panel-${index}"></div>`;
+    }
+
+    function aboutPane(){
+      return `
+        <div class="th-card pad">
+          <div style="font-size:13px;color:var(--th-text);line-height:1.55">Weekly ranked ballots · rank your Top 10 across the unified sheet · close Monday 00:00 (Africa/Harare). #1 = 10 pts, #10 = 1 pt, unranked = 0. Newest points only decide Newest promotion. Contenders get one chance each week. Only latest saved ballot counts.</div>
+        </div>`;
+    }
+
+    function renderList(){
+      const list = document.getElementById("chartList");
+      if(filter === 0){
+        list.innerHTML = aboutPane();
+        return;
+      }
+      if(isArchived()){
+        const snap = TrackHype.getSnapshotFor(ck(), week);
+        const rows = snap ? snap.rankings : [];
+        order = rows.map(r => ({ id: r.submissionId, songId: r.submissionId, title: r.title, artist: r.artistName, artwork: r.artwork }));
+        list.innerHTML = rows.map((r, i) => rowHtml(r, i, true)).join("")
+          || '<p style="padding:18px;text-align:center;color:var(--th-muted);font-size:13px">No snapshot for this week yet.</p>';
+        return;
+      }
+      const c = ck();
+      if(tier === 1){
+        const { snap } = displaySnapshotData(c);
+        if(!snap){
+          list.innerHTML = '<p style="padding:18px;text-align:center;color:var(--th-muted);font-size:13px">No published chart yet — it appears at the Monday close.</p>';
+          return;
         }
+        const rows = snap.rankings || [];
+        order = rows.map(r => subToSong(r));
+        list.innerHTML = rows.map((item, i) => rowHtml(item, i, false)).join("")
+          || '<p style="padding:18px;text-align:center;color:var(--th-muted);font-size:13px">No songs on this chart yet.</p>';
+      } else if(tier === 2){
+        const t2 = TrackHype.getSubmissionsForTier(c, TrackHype.currentWeekKey(), 2);
+        order = t2.map(s => subToSong(s));
+        list.innerHTML = t2.map((s, i) => tierRowHtml(s, i, "Contender · one chance to make On Top")).join("")
+          || '<p style="padding:18px;text-align:center;color:var(--th-muted);font-size:13px">No contenders yet — they are set at the Monday close.</p>';
+      } else {
+        const t3 = TrackHype.getSubmissionsForTier(c, TrackHype.currentWeekKey(), 3);
+        order = t3.map(s => subToSong(s));
+        list.innerHTML = t3.map((s, i) => tierRowHtml(s, i, newsestLabel(s, TrackHype.currentWeekKey()))).join("")
+          || '<p style="padding:18px;text-align:center;color:var(--th-muted);font-size:13px">No Newest songs yet — approved releases appear after moderation approval.</p>';
       }
     }
 
-    function videoPanel(song){
-      return `
-        <div style="font-weight:900;font-size:15px;margin-bottom:4px">${TrackHype.esc(song.title)}</div>
-        <div style="font-size:13px;color:var(--th-muted);margin-bottom:8px">${TrackHype.esc(song.artist)}</div>
-        <video class="ch-youtube" style="aspect-ratio:16/9" controls playsinline preload="metadata" src="Assets/video/Victony - SLICK (Official Visualizer) - Victony (360p, h264, youtube).mp4"></video>`;
+    function renderAll(){
+      ensureSeed();
+      renderHeader();
+      updateFavIcon();
+      renderFilterRow();
+      renderWeekArchive();
+      renderTierIntro();
+      renderChartStats();
+      renderList();
+      updateCountdown();
+      bindChartListSwipe();
     }
 
-    function favKey(song){
-      return "chart-entry:" + current.key + ":" + song.id;
+    function updateCountdown(){
+      const cnt = document.getElementById("chartCountdown");
+      const refresh = () => {
+        if(!cnt){ return; }
+        if(isArchived()){
+          cnt.style.display = "none";
+          return;
+        }
+        const ms = TrackHype.getNextResetTime() - Date.now();
+        if(ms <= 0){
+          cnt.style.display = "none";
+          window._thCountdown && clearInterval(window._thCountdown);
+          runAutoResetIfDue();
+          renderAll();
+          return;
+        }
+        cnt.style.display = "block";
+        cnt.textContent = "Voting closes · " + TrackHype.weekCountdownText(ms) + " · Mon 00:00 Harare";
+      };
+      refresh();
+      if(window._thCountdown){ clearInterval(window._thCountdown); }
+      window._thCountdown = setInterval(refresh, 30000);
     }
 
-    function isFav(song){
-      return (TrackHype.getState().favouriteSongs || []).includes(favKey(song));
+    function runAutoResetIfDue(){
+      const c = ck();
+      const snap = TrackHype.maybeRunAutoReset(c);
+      if(snap){ TrackHype.toast("Weekly chart published for " + snap.weekKey + "."); }
+      return snap;
     }
 
-    function infoPanel(song){
-      const id = TrackHype.esc(song.id);
-      const faved = isFav(song);
-      return `
-        <div style="font-weight:900;font-size:15px">${TrackHype.esc(song.title)}</div>
-        <div style="font-size:13px;color:var(--th-muted);margin-bottom:10px">${TrackHype.esc(song.artist)} · ${TrackHype.esc(current.genre)}</div>
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-          <img class="ch-thumb" src="${song.artwork || ""}" onerror="this.style.visibility='hidden'" alt="">
-          <div><div style="font-weight:800">${TrackHype.esc(song.artist)}</div><div style="font-size:12px;color:var(--th-muted)">Primary Artist</div></div>
-        </div>
-        <div class="ch-detail-actions">
-          <button class="th-btn secondary" type="button">Apple Music</button>
-          <button class="th-btn secondary" type="button">Spotify</button>
-          <button class="th-btn secondary" type="button">YouTube</button>
-          <button class="th-btn secondary" type="button">Amazon Music</button>
-          <button class="th-btn secondary" type="button" onclick="toggleChartFav(${TrackHype.esc(song.id)})">${faved ? "♥ Favourited" : "♡ Favourite"}</button>
-          <button class="th-btn secondary" type="button" onclick="location.href='song.html?id=${id}&chart=${TrackHype.esc(current.key)}'">Lyrics</button>
-        </div>
-        <a style="display:block;margin-top:10px;font-size:13px;font-weight:800;color:var(--th-primary-dark);text-decoration:none" href="song.html?id=${id}&chart=${TrackHype.esc(current.key)}">VIEW SONG + LYRICS →</a>`;
+    /* =========================================================
+       Infinite horizontal swipe across chartList panes
+       (About ⇄ On Top ⇄ Contenders ⇄ Newest)
+       ========================================================= */
+
+    let chartSwipeBound = false;
+
+    function bindChartListSwipe(){
+      const el = document.getElementById("chartList");
+      if(!el || chartSwipeBound){ return; }
+      chartSwipeBound = true;
+
+      const SWIPE_THRESHOLD = 24;
+      const FLING_VX = 0.35;
+      let drag = null;
+      let suppressClick = false;
+      let clickTimer = null;
+
+      el.addEventListener("pointerdown", (event) => {
+        if(document.body.classList.contains("ballot-mode")){ return; }
+        if(event.target.closest("[data-seek]")){ return; }
+        drag = {
+          id: event.pointerId,
+          startX: event.clientX,
+          lastX: event.clientX,
+          lastT: event.timeStamp,
+          vx: 0
+        };
+        el.style.transition = "none";
+        try{ el.setPointerCapture(event.pointerId); }catch(e){}
+      });
+
+      el.addEventListener("pointermove", (event) => {
+        if(!drag || event.pointerId !== drag.id){ return; }
+        const dx = event.clientX - drag.startX;
+        const dt = Math.max(1, event.timeStamp - drag.lastT);
+        drag.vx = (event.clientX - drag.lastX) / dt;
+        drag.lastX = event.clientX;
+        drag.lastT = event.timeStamp;
+        el.style.transform = "translateX(" + dx + "px)";
+      });
+
+      el.addEventListener("pointerup", (event) => {
+        if(!drag || event.pointerId !== drag.id){ return; }
+        const dx = event.clientX - drag.startX;
+        const swiped = Math.abs(dx) >= SWIPE_THRESHOLD || Math.abs(drag.vx) > FLING_VX;
+        drag = null;
+        try{ el.releasePointerCapture(event.pointerId); }catch(e){}
+
+        if(swiped){
+          const dir = dx < 0 ? 1 : -1;
+          setFilter(filter + dir);
+        }
+        el.style.transition = "transform .28s cubic-bezier(.25,.8,.3,1)";
+        el.style.transform = "translateX(0)";
+        if(swiped){
+          suppressClick = true;
+          clearTimeout(clickTimer);
+          clickTimer = setTimeout(() => { suppressClick = false; }, 120);
+        }
+      });
+
+      el.addEventListener("pointercancel", () => {
+        drag = null;
+        el.style.transition = "transform .28s cubic-bezier(.25,.8,.3,1)";
+        el.style.transform = "translateX(0)";
+      });
+
+      el.addEventListener("click", (event) => {
+        if(!suppressClick){ return; }
+        event.preventDefault();
+        event.stopPropagation();
+        clearTimeout(clickTimer);
+        suppressClick = false;
+      }, true);
+    }
+
+    /* =========================================================
+       Unified inline ballot — rank your Top 10 across
+       On Top + Contenders + Newest under tier headings.
+       +/− steppers, long-press to type an exact rank, and a
+       Keep-at-#1 crown (a ballot shortcut — no extra vote).
+       Latest saved ballot wins until Monday 00:00 Harare.
+       ========================================================= */
+
+    function openBallotSheet(){
+      const c = ck();
+      const wk = TrackHype.currentWeekKey();
+      const mainPool = TrackHype.getMainPool(c);
+      const newDrops = TrackHype.getSubmissionsForTier(c, wk, 3);
+      const pool = mainPool.concat(newDrops);
+      if(!pool.length){ TrackHype.toast("No songs competing on this chart yet."); return; }
+
+      const saved = TrackHype.getBallot(c, wk);
+      const indexed = pool.map((s, i) => ({
+        submissionId: s.id,
+        title: s.title,
+        artistName: s.artistName,
+        artwork: s.artwork,
+        tier: Number(s.tier) || 1,
+        isSeed: !!s.isSeed,
+        newestEnteredWeekKey: s.newestEnteredWeekKey || s.weekKey,
+        poolIndex: i
+      }));
+      const byId = {};
+      indexed.forEach(r => { byId[r.submissionId] = r; });
+
+      let order = [];
+      if(saved && saved.picks && saved.picks.length){
+        saved.picks.slice().sort((a, b) => a.rank - b.rank).forEach(p => {
+          const row = byId[p.submissionId];
+          if(row){ order.push(Object.assign({}, row, { rank: p.rank })); }
+        });
+        indexed.forEach(r => {
+          if(!order.some(o => o.submissionId === r.submissionId)){ order.push(Object.assign({}, r, { rank: null })); }
+        });
+      } else {
+        order = indexed.map(r => Object.assign({}, r));
+      }
+      assignRanks();
+      let suppressClick = false;
+
+      document.body.classList.add("ballot-mode");
+      document.getElementById("ballotBar").hidden = false;
+      const submitBtn = document.getElementById("bp-submit");
+      submitBtn.textContent = saved ? "Update ballot" : "Vote";
+
+      const listEl = document.getElementById("chartList");
+      const cancelBtn = document.getElementById("bp-cancel");
+
+      function exitBallot(){
+        document.body.classList.remove("ballot-mode");
+        document.getElementById("ballotBar").hidden = true;
+        openPanelIndex = -1;
+        openPanelKind = "";
+        week = "current";
+        renderAll();
+      }
+      cancelBtn.onclick = exitBallot;
+
+      function assignRanks(){
+        order.forEach((r, i) => { r.rank = i < MAX ? (i + 1) : null; });
+      }
+
+      function tierTitle(t){
+        return t === 1 ? "On Top" : (t === 2 ? "Contenders" : "Newest");
+      }
+
+      function artistLine(row){
+        const main = TrackHype.esc(row.artistName || "");
+        const tierName = tierTitle(row.tier);
+        let cycle = "";
+        if(row.tier === 3 && !row.isSeed){
+          cycle = " · " + newsestLabel({ isSeed: row.isSeed, newestEnteredWeekKey: row.newestEnteredWeekKey, weekKey: wk }, wk);
+        }
+        return main + " · " + tierName + cycle;
+      }
+
+      function rowHtml(row){
+        const isRank1 = row.rank === 1;
+        const crown = isRank1
+          ? `<button class="bp-crown" type="button" data-keep="${row.submissionId}" title="Keep at #1">
+               <img src="Assets/icons/crown_icon.png" alt="Keep at #1">
+             </button>`
+          : "";
+        const rankCls = row.rank == null ? "unranked" : "";
+        return `
+          <div class="bp-head" data-tier-head="${row.tier}">${tierTitle(row.tier)}</div>
+          <article class="bp-card" data-row="${row.submissionId}">
+            <button class="bp-rank ${rankCls}" type="button" data-move="${row.submissionId}" title="Set exact position">${row.rank == null ? "–" : row.rank}</button>
+            <img class="bp-thumb" src="${row.artwork || ""}" onerror="this.style.visibility='hidden'" alt="">
+            <div class="bp-info">
+              <div class="bp-song">${TrackHype.esc(row.title)}</div>
+              <div class="bp-artist">${artistLine(row)}</div>
+            </div>
+            ${crown}
+            <div class="bp-stepper">
+              <button type="button" data-up="${row.submissionId}">+</button>
+              <button type="button" data-down="${row.submissionId}">−</button>
+            </div>
+          </article>`;
+      }
+
+      function render(){
+        let prevTier = null;
+        listEl.innerHTML = `
+          <div class="bp-hint">Rank your Top ${MAX}: #1 = ${MAX} pts, #10 = 1 pt, unranked = 0. Tap +/− or long-press a row to set an exact rank. You can change your ballot until Monday 00:00 — the latest saved ballot counts.</div>
+          <div class="bp-rows">${order.map(rowHtml).join("")}</div>`;
+
+        listEl.querySelectorAll("[data-row]").forEach(a => {
+          const id = a.dataset.row;
+          bindRowLongPress(a, id);
+          suppressClick = false;
+        });
+
+        listEl.querySelectorAll("[data-up]").forEach(b => {
+          b.onclick = (e) => { e.stopPropagation(); moveRow(b.dataset.up, -1); };
+        });
+        listEl.querySelectorAll("[data-down]").forEach(b => {
+          b.onclick = (e) => { e.stopPropagation(); moveRow(b.dataset.down, 1); };
+        });
+        listEl.querySelectorAll("[data-move]").forEach(b => {
+          b.onclick = (e) => { e.stopPropagation(); openMoveModal(b.dataset.move); };
+        });
+        listEl.querySelectorAll("[data-keep]").forEach(b => {
+          b.onclick = (e) => {
+            e.stopPropagation();
+            TrackHype.toast("Kept at #1 — earns " + MAX + " points when you save your ballot.");
+          };
+        });
+
+        const heads = listEl.querySelectorAll(".bp-head");
+        let shown = {};
+        heads.forEach(h => {
+          const t = h.dataset.tierHead;
+          if(shown[t]){ h.style.display = "none"; }
+          shown[t] = true;
+        });
+      }
+
+      function moveRow(id, delta){
+        const idx = order.findIndex(r => r.submissionId === id);
+        if(idx < 0){ return; }
+        const target = idx + delta;
+        if(target < 0 || target >= order.length){ return; }
+        const [row] = order.splice(idx, 1);
+        order.splice(target, 0, row);
+        assignRanks();
+        render();
+      }
+
+      function bindRowLongPress(rowEl, id){
+        let timer = null;
+        let moved = false;
+        let sx = 0;
+        let sy = 0;
+        const cancel = () => {
+          if(timer){ clearTimeout(timer); timer = null; }
+        };
+        rowEl.addEventListener("touchstart", (e) => {
+          moved = false;
+          sx = e.touches[0].clientX;
+          sy = e.touches[0].clientY;
+          cancel();
+          timer = setTimeout(() => {
+            timer = null;
+            if(!moved && !suppressClick){ openMoveModal(id); }
+          }, 500);
+        }, { passive: true });
+        rowEl.addEventListener("touchmove", (e) => {
+          const t = e.touches && e.touches[0];
+          if(t && (Math.abs(t.clientX - sx) > 8 || Math.abs(t.clientY - sy) > 8)){ moved = true; cancel(); }
+        }, { passive: true });
+        rowEl.addEventListener("touchend", cancel);
+        rowEl.addEventListener("touchcancel", cancel);
+      }
+
+      function openMoveModal(id){
+        const row = order.find(r => r.submissionId === id);
+        if(!row){ return; }
+        const cur = row.rank == null ? MAX + 1 : row.rank;
+        const cap = Math.min(MAX, order.length);
+        TrackHype.openSheet({ title: "Move Song", actions: [] });
+        const b = document.querySelector("[data-modal-body]");
+        const a = document.querySelector("[data-modal-actions]");
+        if(!b || !a){ return; }
+        b.classList.add("ballot-body");
+        b.innerHTML = `
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+            <img class="bp-thumb" src="${row.artwork || ""}" onerror="this.style.visibility='hidden'" alt="">
+            <div style="min-width:0">
+              <div style="font-weight:900;font-size:14px;color:var(--th-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${TrackHype.esc(row.title)}</div>
+              <div style="font-size:12px;color:var(--th-muted)">${TrackHype.esc(row.artistName || "")} · ${tierTitle(row.tier)}</div>
+            </div>
+          </div>
+          <div style="font-size:12px;color:var(--th-muted);margin-bottom:6px">${row.rank == null ? "Currently unranked (0 pts)" : "Currently #" + row.rank} · move to rank 1–${cap} (#1 = ${MAX} pts)</div>
+          <input class="th-input" id="bpm-input" type="number" min="1" max="${cap}" value="${Math.min(cap, cur)}" autocomplete="off">
+        `;
+        a.innerHTML = `
+          <button class="th-btn secondary" type="button" data-bpm-cancel>Cancel</button>
+          <button class="th-btn primary" type="button" id="bpm-move" style="flex:1">Move</button>
+        `;
+        a.querySelector("[data-bpm-cancel]").onclick = () => TrackHype.closeSheet();
+        a.querySelector("#bpm-move").onclick = () => {
+          const target = Math.max(1, Math.min(cap, Math.round(Number(document.getElementById("bpm-input").value) || 1)));
+          order = order.filter(r => r.submissionId !== id);
+          order.splice(Math.max(0, Math.min(target - 1, order.length)), 0, row);
+          assignRanks();
+          TrackHype.closeSheet();
+          render();
+        };
+      }
+
+      function submit(){
+        const picks = order
+          .filter(r => r.rank != null && r.rank >= 1 && r.rank <= MAX)
+          .map(r => ({ submissionId: r.submissionId, rank: r.rank }));
+        const res = TrackHype.submitBallot(c, picks);
+        if(!res.ok){ TrackHype.toast(res.error); return; }
+        TrackHype.toast(res.replaced
+          ? "Ballot updated — only your latest saved ballot counts until close."
+          : "Ballot saved — you can edit until Monday 00:00 Harare.");
+        exitBallot();
+      }
+
+      submitBtn.onclick = submit;
+      render();
     }
 
     window.toggleChartFav = (id) => {
-      const song = order.find(s => String(s.id) === String(id));
+      const song = order.find(s => String(s.id) === String(id) || String(s.songId) === String(id));
       if(!song){ return; }
       const key = favKey(song);
       TrackHype.updateState(s => {
@@ -328,23 +1043,152 @@ return `
         const i = s.favouriteSongs.indexOf(key);
         if(i >= 0){ s.favouriteSongs.splice(i,1); } else { s.favouriteSongs.push(key); }
       });
-      const panel = document.getElementById("panel-" + order.indexOf(song));
-      if(panel && panel.classList.contains("open")){ panel.innerHTML = infoPanel(song); }
+      if(openPanelIndex >= 0 && openPanelKind === "info"){
+        const panel = document.getElementById("panel-" + openPanelIndex);
+        if(panel){ panel.innerHTML = infoPanel(song); }
+      }
       TrackHype.toast("Updated favourites");
     };
 
-    document.addEventListener("trackhype:chart-update", (e) => {
-      const detail = e.detail || {};
-      if(!detail.chart || TrackHype.chartId(detail.chart) !== TrackHype.chartId(current.title)){
-        return;
+    function openVideo(index){ openPanel(index, "video"); }
+    function openInfo(index){ openPanel(index, "info"); }
+    function openHistory(index){ openHistoryPanel(index); }
+
+    function openPanel(index, kind){
+      const panel = document.getElementById("panel-" + index);
+      if(!panel){ return; }
+      const wasOpen = panel.classList.contains("open") && openPanelKind === kind;
+      document.querySelectorAll(".ch-panel").forEach(p => p.classList.remove("open"));
+      openPanelIndex = -1;
+      openPanelKind = "";
+      if(wasOpen){ return; }
+      const song = order[index];
+      if(!song){ return; }
+      openPanelIndex = index;
+      openPanelKind = kind;
+      panel.classList.add("open");
+      panel.innerHTML = kind === "video" ? videoPanel(song) : infoPanel(song);
+      if(kind === "video"){
+        const v = panel.querySelector("video");
+        if(v && "play" in v){ v.play().catch(()=>{}); }
       }
-if(detail.songId && detail.targetPos){
-        order = TrackHype.moveSong(order, detail.songId, detail.targetPos);
-        openPanelIndex = -1;
-        openPanelKind = "";
+    }
+
+    function openHistoryPanel(index){
+      const panel = document.getElementById("panel-" + index);
+      const song = order[index];
+      if(!panel || !song){ return; }
+      const wasOpen = panel.classList.contains("open") && openPanelKind === "history";
+      document.querySelectorAll(".ch-panel").forEach(p => p.classList.remove("open"));
+      openPanelIndex = -1;
+      openPanelKind = "";
+      if(wasOpen){ return; }
+      openPanelIndex = index;
+      openPanelKind = "history";
+      panel.classList.add("open");
+      panel.innerHTML = historyPanel(song, index);
+      const sc = panel.querySelector(".ch-hist-list");
+      if(sc){
+        let shown = 5;
+        const all = window.__chHist[index] || [];
+        sc.addEventListener("scroll", () => {
+          if(sc.scrollTop + sc.clientHeight >= sc.scrollHeight - 24 && shown < all.length){
+            sc.insertAdjacentHTML("beforeend", all.slice(shown, shown + 5).map(historyRowHtml).join(""));
+            shown = Math.min(all.length, shown + 5);
+          }
+        });
       }
-      renderChart();
-    });
+    }
+
+    function buildChartHistory(song){
+      const c = ck();
+      const id = song.songId || song.id || song.submissionId;
+      const out = [];
+      TrackHype.getSnapshots(c).forEach(s => {
+        const r = (s.rankings || []).find(x => String(x.submissionId) === String(id));
+        if(r){ out.push({ weekKey: s.weekKey, rank: r.rank, votes: r.voteCount || 0 }); }
+      });
+      if(!isArchived()){
+        const snapCur = TrackHype.getSnapshotFor(c, TrackHype.currentWeekKey());
+        if(snapCur){
+          const r = (snapCur.rankings || []).find(x => String(x.submissionId) === String(id));
+          if(r){ out.unshift({ weekKey: snapCur.weekKey, rank: r.rank, votes: r.voteCount || 0 }); }
+        }
+      }
+      return out;
+    }
+
+    function countChartsFor(song){
+      const title = String(song.title || "").trim().toLowerCase();
+      const now = TrackHype.currentWeekKey();
+      let n = 0;
+      CHARTS.forEach(ch => {
+        if(ch.key === current.key){ return; }
+        let rows = [];
+        try{
+          const key = TrackHype.chartId(ch.title);
+          const cfg = TrackHype.chartConfigFor(key);
+          rows = TrackHype.aggregatePool(key, now, [1, 2]).slice(0, cfg.size);
+        }catch(e){}
+        if(rows.some(r => String(r.title || "").trim().toLowerCase() === title)){
+          n++;
+        }
+      });
+      const cfgCur = TrackHype.chartConfigFor(ck());
+      const curRows = TrackHype.aggregatePool(ck(), now, [1, 2]).slice(0, cfgCur.size);
+      if(curRows.some(r => String(r.title || "").trim().toLowerCase() === title)){
+        n++;
+      }
+      return n || 1;
+    }
+
+    function historyRowHtml(r){
+      return `<div class="ch-hist-row">Week ${TrackHype.esc(r.weekKey)} · ${r.rank} · ${r.votes} votes.</div>`;
+    }
+
+    function historyPanel(song, index){
+      const all = buildChartHistory(song);
+      window.__chHist = window.__chHist || {};
+      window.__chHist[index] = all;
+      const peak = all.length ? Math.min.apply(null, all.map(r => r.rank)) : "-";
+      const weeks = all.length;
+      const charts = countChartsFor(song);
+      let rowHtml = all.length
+        ? `<div class="ch-hist-list">${all.slice(0, 5).map(historyRowHtml).join("")}</div>`
+        : `<div class="ch-hist-row" style="color:var(--th-muted)">No chart history yet.</div>`;
+      return `
+        <div class="ch-hist-line">Peak #${peak} • Weeks on Chart ${weeks} • Charts ${charts}</div>
+        ${rowHtml}`;
+    }
+
+    function videoPanel(song){
+      return `<video class="ch-youtube" style="aspect-ratio:16/9" controls playsinline preload="metadata" src="Assets/video/Victony - SLICK (Official Visualizer) - Victony (360p, h264, youtube).mp4"></video>`;
+    }
+
+    function favKey(song){
+      return "chart-entry:" + current.key + ":" + (song.songId || song.id);
+    }
+
+    function isFav(song){
+      return (TrackHype.getState().favouriteSongs || []).includes(favKey(song));
+    }
+
+    function infoPanel(song){
+      const id = TrackHype.esc(song.songId || song.id);
+      const faved = isFav(song);
+      return `
+        <div class="ch-song">${TrackHype.esc(song.title)}</div>
+        <div class="ch-artist" style="margin-bottom:12px">${TrackHype.esc(song.artist)} · ${TrackHype.esc(current.genre)}</div>
+        <div class="Music-Icons">
+          <a id="favBtn" style="text-decoration:none;line-height:0" title="Favourite" onclick="toggleChartFav('${id}')">
+            <img id="favIcon" src="${faved ? "Assets/icons/heart_active_icon.png" : "Assets/icons/heart_inactive_icon.png"}" alt="">
+          </a>
+          <a class="sg-link" href="#" target="_blank" rel="noopener" aria-label="Listen on Spotify"><img src="Assets/icons/Spotify_icon.svg.webp" alt=""></a>
+          <a class="sg-link" href="#" target="_blank" rel="noopener" aria-label="Listen on YouTube"><img src="Assets/icons/YouTube_On.png" alt=""></a>
+          <a class="sg-link" href="#" target="_blank" rel="noopener" aria-label="Listen on Amazon Music"><img src="Assets/icons/amazon_music_icon.webp" alt=""></a>
+          <a class="sg-link" href="#" target="_blank" rel="noopener" aria-label="Listen on iTunes"><img src="Assets/icons/itunes_icon.png" alt=""></a>
+        </div>`;
+    }
 
     document.getElementById("chartFav").onclick = () => {
       TrackHype.updateState(s => {
@@ -355,15 +1199,52 @@ if(detail.songId && detail.targetPos){
       updateFavIcon();
     };
 
-    const urlChart = new URLSearchParams(location.search).get("chart");
-    if(urlChart){
-      current = CHARTS.find(c => c.key === urlChart) || CHARTS[0];
+    function testReset(){
+      const c = ck();
+      TrackHype.finalizeChartCycle(c, TrackHype.currentWeekKey());
+      week = "current";
+      renderAll();
+      TrackHype.toast("Weekly reset run — the published snapshot is live for this week.");
     }
 
-    renderTabs();
-    renderHeader();
-    buildOrder();
-    renderChart();
+    function onChartEvent(e){
+      const d = (e.detail && e.detail.chartKey) ? e.detail.chartKey : null;
+      if(d && d !== ck()){ return; }
+      if(isArchived()){ return; }
+      renderAll();
+    }
+    document.addEventListener("trackhype:ballot-submitted", onChartEvent);
+    document.addEventListener("trackhype:song-submitted", onChartEvent);
+    document.addEventListener("trackhype:weekly-reset", onChartEvent);
+
+    function resolveChartFrom(value){
+      const v = String(value || "").trim().toLowerCase();
+      if(!v){ return CHARTS[0]; }
+      const byKey = CHARTS.find(c => c.key === v);
+      if(byKey){ return byKey; }
+      const byTitle = CHARTS.find(c => c.title.toLowerCase() === v);
+      if(byTitle){ return byTitle; }
+      const byGenre = CHARTS.find(c => c.genre && c.genre.toLowerCase() === v);
+      if(byGenre){ return byGenre; }
+      const bySub = CHARTS.find(c => c.genre && c.genre.toLowerCase() && v.indexOf(c.genre.toLowerCase()) >= 0);
+      if(bySub){ return bySub; }
+      if(v.indexOf("national") >= 0 || v.indexOf("top 100") >= 0){ return CHARTS.find(c => c.key === "top40") || CHARTS[0]; }
+      if(v.indexOf("hip hop") >= 0){ return CHARTS.find(c => c.key === "hiphop") || CHARTS[0]; }
+      if(v.indexOf("dancehall") >= 0){ return CHARTS.find(c => c.key === "dancehall") || CHARTS[0]; }
+      if(v.indexOf("house") >= 0){ return CHARTS.find(c => c.key === "house") || CHARTS[0]; }
+      if(v.indexOf("r&b") >= 0 || v.indexOf("rnb") >= 0){ return CHARTS.find(c => c.key === "rnb") || CHARTS[0]; }
+      if(v.indexOf("gospel") >= 0){ return CHARTS.find(c => c.key === "gospel") || CHARTS[0]; }
+      if(v.indexOf("sungura") >= 0){ return CHARTS.find(c => c.key === "sungura") || CHARTS[0]; }
+      return CHARTS[0];
+    }
+    const urlChart = new URLSearchParams(location.search).get("chart");
+    if(urlChart){
+      current = resolveChartFrom(urlChart);
+    }
+
+    renderAll();
+    runAutoResetIfDue();
+    document.getElementById("chartFoot").innerHTML += '<button class="th-btn" type="button" onclick="testReset()">Test weekly reset</button>';
   </script>
 </body>
 </html>

@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en-ZW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" type="image/webp" href="Assets/logos/TrackHype Logo Design Badge.webp">
+  <title>Select Region — TrackHype</title>
+  <link rel="stylesheet" href="trackhype.css">
+  <style>
+    .rs-kicker{font-size:11px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:var(--th-primary-dark)}
+    .rs-title{font-size:24px;font-weight:900;color:var(--th-text);margin-top:4px}
+    .rs-sub{font-size:13px;color:var(--th-muted);margin-top:6px;line-height:1.6}
+    .rs-search{margin-top:14px;display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:var(--th-primary);border:0;border-radius:var(--th-radius);padding:12px;cursor:pointer;color:#fff}
+    .rs-search img{width:22px;height:22px;filter:brightness(0) invert(1)}
+    .rs-search-input{margin-top:14px;display:block;width:100%;background:var(--th-bg);border:1px solid var(--th-border);border-radius:var(--th-radius);padding:11px 12px;font-size:14px;color:var(--th-text);outline:none}
+    .rs-search-input:focus{border-color:var(--th-primary)}
+    .rs-search[hidden],.rs-search-input[hidden]{display:none!important}
+    .rs-group{margin-top:18px}
+    .rs-group-title{font-size:11px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:var(--th-faint);margin-bottom:10px;padding:0 2px}
+    .rs-list{display:flex;flex-direction:column;gap:8px}
+    .rs-item{display:flex;align-items:center;gap:12px;width:100%;background:var(--th-bg);border:1px solid var(--th-border);border-radius:var(--th-radius-sm);padding:12px;cursor:pointer;text-align:left;transition:box-shadow .15s ease,transform .05s ease}
+    .rs-item:active{transform:scale(.99)}
+    .rs-flag{flex:none;width:48px;height:32px;border-radius:1px;object-fit:cover;border:1px solid var(--th-border-soft);background:var(--th-grey-2)}
+    .rs-name{font-weight:800;font-size:14px;color:var(--th-text)}
+    .rs-current{margin-top:14px;display:flex;align-items:center;gap:12px;background:var(--th-bg);border:1px solid var(--th-primary);box-shadow:0 0 0 1px var(--th-primary);border-radius:var(--th-radius-sm);padding:12px}
+  </style>
+</head>
+<body data-active-nav="menu.html">
+
+  <header class="th-header" data-app-header>
+    <div class="th-header-inner">
+      <a class="th-brand" href="index.html">
+        <img class="th-logo-badge" src="Assets/logos/TrackHype Logo Design Badge.webp" alt="TrackHype">
+        <img class="th-logo-text" src="Assets/logos/track-hype-text-logo.webp" alt="TrackHype">
+      </a>
+    </div>
+  </header>
+
+  <main class="th-app">
+    <div class="th-shell">
+
+      <div>
+        <div class="rs-kicker">Region</div>
+        <h1 class="rs-title">Select Region</h1>
+        <p class="rs-sub">Pick your country. Your region adjusts the charts, artists and content that load into the app.</p>
+
+        <button id="rsSearchBtn" class="rs-search" type="button" aria-label="Search countries">
+          <img src="Assets/icons/search_icon.svg" alt="Search countries">
+        </button>
+        <input id="regionSearch" class="rs-search-input" type="search" placeholder="Search countries…" autocomplete="off" aria-label="Search countries" hidden>
+      </div>
+
+      <div id="regionCurrent"></div>
+
+      <div id="regionGroups"></div>
+
+    </div>
+  </main>
+
+  <script src="demo-playlist.js"></script>
+  <script src="trackhype.js"></script>
+  <script src="countries-data.js"></script>
+  <script>
+    var REGION_KEY = "trackhype.region";
+    var DEFAULT_REGION = { name: "Zimbabwe", code: "ZW", flag: "zw.png" };
+
+    function loadRegion(){
+      try { var r = JSON.parse(localStorage.getItem(REGION_KEY) || "null"); return r || DEFAULT_REGION; }
+      catch(e){ return DEFAULT_REGION; }
+    }
+
+    var byCode = {};
+    COUNTRIES.forEach(function(c){ byCode[c.code] = c; });
+
+    function findSADC(){
+      return SADC.map(function(code){
+        var c = byCode[code.toUpperCase()] || byCode[code.toLowerCase()];
+        return c;
+      }).filter(Boolean);
+    }
+
+    function itemHtml(c){
+      return '<button type="button" class="rs-item" data-code="' + c.code + '">'
+        + '<img class="rs-flag" src="Country-Flag-Icons/' + c.code + '.png" alt="' + (window.esc ? TrackHype.esc(c.name) : c.name) + '" loading="lazy">'
+        + '<span class="rs-name">' + (window.esc ? TrackHype.esc(c.name) : c.name) + '</span>'
+        + '</button>';
+    }
+
+    function filterCountries(q){
+      if(!q){ return COUNTRIES; }
+      var t = q.toLowerCase();
+      return COUNTRIES.filter(function(c){
+        return c.name.toLowerCase().indexOf(t) !== -1 || c.code.toLowerCase().indexOf(t) !== -1;
+      });
+    }
+
+    function renderCurrent(){
+      var c = loadRegion();
+      var matched = byCode[(c.code || "").toLowerCase()];
+      if(matched){ c = matched; }
+      var flag = c.code.toLowerCase();
+      document.getElementById("regionCurrent").innerHTML =
+        '<div class="rs-current">'
+        + '<img class="rs-flag" src="Country-Flag-Icons/' + flag + '.png" alt="' + (window.esc ? TrackHype.esc(c.name) : c.name) + '" loading="lazy">'
+        + '<span class="rs-name">' + (window.esc ? TrackHype.esc(c.name) : c.name) + '</span>'
+        + '</div>';
+    }
+
+    function render(q){
+      renderCurrent();
+      var host = document.getElementById("regionGroups");
+      var list = filterCountries(q);
+      var sadcCodes = SADC.map(function(c){ return c; });
+      var featured = list.filter(function(c){ return sadcCodes.indexOf(c.code.toUpperCase()) !== -1; });
+      var rest = list.filter(function(c){ return sadcCodes.indexOf(c.code.toUpperCase()) === -1; });
+
+      var html = "";
+      if(q){ featured = []; rest = list; } // when searching, show single flat list
+      if(featured.length){
+        html += '<div class="rs-group"><div class="rs-group-title">SADC Spotlight</div><div class="rs-list">'
+          + featured.map(function(c){ return itemHtml(c); }).join("")
+          + '</div></div>';
+      }
+      if(rest.length){
+        html += '<div class="rs-group"><div class="rs-group-title">' + (q ? 'Results' : 'All Countries') + '</div><div class="rs-list">'
+          + rest.map(function(c){ return itemHtml(c); }).join("")
+          + '</div></div>';
+      } else if(!featured.length && !q){
+        html = '<div class="rs-list">' + featured.map(function(c){ return itemHtml(c); }).join("") + '</div>';
+      }
+      host.innerHTML = html || '<p style="color:var(--th-muted);font-size:13px;padding:12px 2px">No countries match "' + (window.esc ? TrackHype.esc(q) : q) + '".</p>';
+    }
+
+    function bindEvents(){
+      document.getElementById("regionGroups").addEventListener("click", function(ev){
+        var btn = ev.target.closest(".rs-item");
+        if(!btn){ return; }
+        var code = btn.dataset.code;
+        var c = byCode[code];
+        if(!c){ return; }
+        var region = { name: c.name, code: c.code.toUpperCase(), flag: c.code + ".png" };
+        localStorage.setItem(REGION_KEY, JSON.stringify(region));
+        if(TrackHype && TrackHype.toast){ TrackHype.toast("Region set to " + c.name); }
+        history.back();
+      });
+
+      document.getElementById("rsSearchBtn").addEventListener("click", function(){
+        this.hidden = true;
+        var input = document.getElementById("regionSearch");
+        input.hidden = false;
+        input.focus();
+      });
+
+      document.getElementById("regionSearch").addEventListener("input", function(){
+        render(this.value.trim());
+      });
+    }
+
+    render("");
+    bindEvents();
+  </script>
+</body>
+</html>

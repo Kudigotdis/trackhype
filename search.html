@@ -21,10 +21,8 @@
     <div class="th-header-inner">
       <a class="th-brand" href="index.html">
         <img class="th-logo-badge" src="Assets/logos/TrackHype Logo Design Badge.webp" alt="TrackHype">
-        <img class="th-logo-text" src="Assets/logos/track-hype-text-logo.webp" alt="TrackHype">
+<img class="th-logo-text" src="Assets/logos/track-hype-text-logo.webp" alt="TrackHype">
       </a>
-      <div class="th-header-context">Search</div>
-      <button class="th-icon-btn" type="button" aria-label="Menu" onclick="location.href='menu.html'">☰</button>
     </div>
   </header>
 
@@ -57,11 +55,13 @@
     </div>
   </main>
 
-  <nav class="th-bottom" data-bottom>
-    <div class="th-bottom-inner" data-nav-host></div>
-  </nav>
+  <div class="bottom-swipe" data-bottom-swipe>
+    <nav class="bottom-nav" data-bottom>
+      <div class="bottom-nav-inner" data-nav-host></div>
+    </nav>
 
-  <aside class="promo-player" data-player></aside>
+    <aside class="promo-player" data-player></aside>
+  </div>
 
   <div class="th-modal-backdrop" data-modal>
     <div class="th-sheet" role="dialog" aria-modal="true">
@@ -72,6 +72,7 @@
     </div>
   </div>
 
+  <script src="demo-playlist.js"></script>
   <script src="trackhype.js"></script>
   <script>
     let currentType = "all";
@@ -104,15 +105,15 @@ function runSearch(){
               <div style="font-weight:800;font-size:14px">${TrackHype.esc(title)}</div>
               <div style="font-size:12px;color:var(--th-muted)">${TrackHype.esc(sub)} · ${x.kind}</div>
             </div>
-            <button class="th-btn secondary" type="button" onclick="location.href='${target}'">View</button>
+            <button class="th-btn secondary" type="button" onclick="TrackHype.navigate('${target}')">View</button>
           </div>`;
       }).join("") : '<div class="th-empty"><strong>No results</strong>Try an artist, song, chart, genre or lyric.</div>';
     }
 
     window.openResult = (type, value) => {
-      if(type === "Artist"){ location.href = "artist.html?artist=" + encodeURIComponent(value); return; }
-      if(type === "Chart" || type === "Genre"){ location.href = "charts.html?chart=" + encodeURIComponent(value); return; }
-      location.href = "song.html?id=" + encodeURIComponent(value);
+      if(type === "Artist"){ TrackHype.navigate("artist.html?artist=" + encodeURIComponent(value)); return; }
+      if(type === "Chart" || type === "Genre"){ TrackHype.navigate("charts.html?chart=" + encodeURIComponent(value)); return; }
+      TrackHype.navigate("song.html?id=" + encodeURIComponent(value));
     };
 
     runSearch();

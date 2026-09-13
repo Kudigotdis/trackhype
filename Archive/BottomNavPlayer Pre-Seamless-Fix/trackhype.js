@@ -1,0 +1,3906 @@
+/* =========================================================
+   TrackHype — Shared Application Logic
+   Mobile Android portrait first: 320–430px
+   ========================================================= */
+
+(function(){
+  "use strict";
+
+  /* Hidden-iframe fragment mode: when this page is loaded inside the SPA
+     router's isolated iframe viewer, skip bootstrap (no footer, no audio,
+     no swipe engine) — only the TrackHype API + page scripts are needed
+     for the parent to serialize the target page. */
+  var FRAGMENT_MODE = (location.hash === "#__fragment");
+
+  const STORAGE_KEY = "trackhype.state.v1";
+
+  const PLACEHOLDER_ART = [
+    "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=600&q=75",
+    "https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=600&q=75",
+    "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=75",
+    "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?auto=format&fit=crop&w=600&q=75",
+    "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?auto=format&fit=crop&w=600&q=75"
+  ];
+
+  const SONG_LYRICS = [
+    "Baby, do you love me? Do you want me?",
+    "Put your hands all on my body",
+    "No worry, go crazy, go crazy",
+    "Oh, baby, do you love me? Do you want me?",
+    "Put your hands all on my body",
+    "No worry, go crazy, go crazy, yeah",
+    "",
+    "Slick, slick, slick, slick",
+    "Slick, slick, slick, slick (eh, Nwanne, how far na? Heh)",
+    "",
+    "Nwanne and Swagger l'ọmọ",
+    "It's a banger, you already know",
+    "Too many girls, oh, for my parlour",
+    "Eleganza, know as e dey go (e dey go)",
+    "Amanda, put on a show",
+    "Give me your high notes, Wande Coal (wawa)",
+    "Amanda, put on a show",
+    "Atlanta, we go",
+    "",
+    "Slick, slick, slick, slick (swagger l'ọmọ)",
+    "Slick, slick, slick, slick (stubborn)",
+    "Slick, slick, slick, slick (mm-mm-mm, mm-mm-mm, lelele)",
+    "Slick, slick, slick, slick (mm-mm-mm)",
+    "",
+    "Uh, on to the next",
+    "Oh, my baby, now, on to the next",
+    "Uh, she fuck with the best",
+    "Oh, my baby, come show them finesse",
+    "Oh, my baby, come show them finesse",
+    "Girl, you sweet like sugar, hundred percent",
+    "On your wrist, Van Cleef, oh, Audemars Piguet",
+    "Everybody, get out the way, oh, woah",
+    "",
+    "Hm, she slick (she slick)",
+    "And her body, biscuit",
+    "I dey for Boho, wanna get lit?",
+    "Bad bitches with me wanna get rich, uh-huh",
+    "",
+    "Baby, do you love me? Do you want me?",
+    "Put your hands all on my body",
+    "No worry, go crazy, go crazy",
+    "Oh, baby (slick), do you love me? Do you want me?",
+    "Put your hands all on my body (slick)",
+    "No worry (slick), go crazy (slick)",
+    "Go crazy (slick), yeah"
+  ].join("\n");
+
+  const defaultState = {
+    currentTrack: null,
+    isPlaying: false,
+    progress: 0,
+    bottomMode: "navigation",
+
+    followingArtists: [],
+    favouriteSongs: [],
+    favouriteCharts: [],
+
+    newMusicFilter: "newest",
+    dashboardTab: "overview",
+
+    artist: {
+      name: "Your Artist Profile",
+      handle: "@yourartist",
+      genre: "Zim Hip Hop",
+      city: "Zimbabwe",
+      bio: "Complete your artist profile to start building your TrackHype presence.",
+      portrait: PLACEHOLDER_ART[0]
+    },
+
+    submissions: [
+      {
+        id: "TH-000123",
+        title: "Midnight in Harare",
+        artist: "Your Artist Profile",
+        genre: "Zim Hip Hop",
+        city: "Harare",
+        language: "English / Shona",
+        dateAdded: "2026-08-25",
+        status: "Published in New Music",
+        plays: 482,
+        favourites: 36,
+        chartEligible: false,
+        artwork: PLACEHOLDER_ART[2]
+      },
+
+      {
+        id: "TH-000119",
+        title: "City Lights",
+        artist: "Your Artist Profile",
+        genre: "Afro-Fusion",
+        city: "Harare",
+        language: "English",
+        dateAdded: "2026-08-20",
+        status: "Chart Eligible",
+        plays: 793,
+        favourites: 61,
+        chartEligible: true,
+        artwork: PLACEHOLDER_ART[1]
+      },
+
+      {
+        id: "TH-000107",
+        title: "Home Soil",
+        artist: "Your Artist Profile",
+        genre: "Sungura",
+        city: "Gweru",
+        language: "Shona",
+        dateAdded: "2026-08-14",
+        status: "Under Review",
+        plays: 0,
+        favourites: 0,
+        chartEligible: false,
+        artwork: PLACEHOLDER_ART[3]
+      }
+    ],
+
+    payments: [
+      {
+        id: "PAY-000123",
+        submissionId: "TH-000123",
+        amount: 10,
+        date: "2026-08-25",
+        status: "Paid"
+      },
+
+      {
+        id: "PAY-000119",
+        submissionId: "TH-000119",
+        amount: 10,
+        date: "2026-08-20",
+        status: "Paid"
+      },
+
+      {
+        id: "PAY-000107",
+        submissionId: "TH-000107",
+        amount: 10,
+        date: "2026-08-14",
+        status: "Paid"
+      }
+    ],
+
+    weekly: {
+      submissions: {},
+      ballots: {},
+      snapshots: {},
+      drafts: {}
+    }
+  };
+
+  /* =========================================================
+     Utility Functions
+     ========================================================= */
+
+  function deepClone(value){
+    return JSON.parse(JSON.stringify(value));
+  }
+
+  function mergeState(base, extra){
+    if(!extra || typeof extra !== "object"){
+      return deepClone(base);
+    }
+
+    const merged = {
+      ...deepClone(base),
+      ...extra
+    };
+
+    merged.artist = {
+      ...base.artist,
+      ...(extra.artist || {})
+    };
+
+    return merged;
+  }
+
+  function getState(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+
+      if(!raw){
+        const fresh = deepClone(defaultState);
+
+        localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify(fresh)
+        );
+
+        return fresh;
+      }
+
+      return mergeState(
+        defaultState,
+        JSON.parse(raw)
+      );
+
+    }catch(error){
+
+      console.warn(
+        "TrackHype state read failed:",
+        error
+      );
+
+      return deepClone(defaultState);
+    }
+  }
+
+  function setState(patch){
+
+    const current = getState();
+
+    const next = mergeState(
+      current,
+      patch
+    );
+
+    try{
+
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(next)
+      );
+
+    }catch(error){
+
+      console.warn(
+        "TrackHype state write failed:",
+        error
+      );
+
+    }
+
+    window.dispatchEvent(
+      new CustomEvent(
+        "trackhype:statechange",
+        {
+          detail: next
+        }
+      )
+    );
+
+    return next;
+  }
+
+  function updateState(mutator){
+
+    const current = getState();
+
+    const next = deepClone(current);
+
+    mutator(next);
+
+    try{
+
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(next)
+      );
+
+    }catch(error){
+
+      console.warn(
+        "TrackHype state write failed:",
+        error
+      );
+
+    }
+
+    window.dispatchEvent(
+      new CustomEvent(
+        "trackhype:statechange",
+        {
+          detail: next
+        }
+      )
+    );
+
+    return next;
+  }
+
+  function esc(value){
+
+    return String(value ?? "")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  function fmtMoney(value){
+
+    return `$${Number(value || 0).toFixed(2)} USD`;
+  }
+
+  function fmtDate(value){
+
+    if(!value){
+      return "—";
+    }
+
+    const d = new Date(
+      `${value}T12:00:00`
+    );
+
+    if(Number.isNaN(d.getTime())){
+      return value;
+    }
+
+    return d.toLocaleDateString(
+      "en-ZW",
+      {
+        day: "numeric",
+        month: "short",
+        year: "numeric"
+      }
+    );
+  }
+
+  function statusClass(status){
+
+    if(
+      /paid|approved|published|eligible|charting/i
+        .test(status)
+    ){
+      return "success";
+    }
+
+    if(
+      /review|received/i
+        .test(status)
+    ){
+      return "warning";
+    }
+
+    if(
+      /rejected/i
+        .test(status)
+    ){
+      return "danger";
+    }
+
+    return "";
+  }
+
+  function getArtwork(index = 0){
+
+    return PLACEHOLDER_ART[
+      index % PLACEHOLDER_ART.length
+    ];
+  }
+
+  /* =========================================================
+     Toast
+     ========================================================= */
+
+  function toast(message){
+
+    let node =
+      document.querySelector(".th-toast");
+
+    if(!node){
+
+      node =
+        document.createElement("div");
+
+      node.className =
+        "th-toast";
+
+      node.style.cssText = [
+        "position:fixed",
+        "left:50%",
+        "bottom:calc(var(--th-bottom-h) + env(safe-area-inset-bottom, 0px))",
+        "transform:translateX(-50%) translateY(calc(100% + 12px))",
+        "z-index:129",
+        "color:#fff",
+        "padding:10px 14px",
+        "font-weight:800",
+        "font-size:13px",
+        "box-shadow:0 10px 28px rgba(0,0,0,.25)",
+        "width:100%",
+        "text-align:center",
+        "pointer-events:none",
+        "transition:transform .35s cubic-bezier(.4,0,.2,1)"
+      ].join(";");
+
+      document.body.appendChild(node);
+    }
+
+    node.textContent = message;
+    void node.offsetHeight;
+    node.style.transform = "translateX(-50%) translateY(0)";
+
+    clearTimeout(node._timer);
+
+    node._timer = setTimeout(
+      () => {
+        node.style.transform = "translateX(-50%) translateY(calc(100% + 12px))";
+      },
+      4000
+    );
+  }
+
+  /* =========================================================
+     Global Scroll Behaviour
+     ========================================================= */
+
+  function initialiseHeaderScroll(){
+
+    const header =
+      document.querySelector(
+        "[data-app-header]"
+      );
+
+    const bottomWrap =
+      document.querySelector(
+        "[data-bottom-swipe]"
+      );
+
+    if(!header){
+      return;
+    }
+
+    let lastY =
+      window.scrollY;
+
+    let ticking = false;
+
+    const threshold = 10;
+
+    function apply(){
+
+      const currentY =
+        window.scrollY;
+
+      const delta =
+        currentY - lastY;
+
+      if(
+        Math.abs(delta) >= threshold
+      ){
+
+        const goingDown =
+          delta > 0 &&
+          currentY > 70;
+
+        header.classList.toggle(
+          "is-hidden",
+          goingDown
+        );
+
+        if(bottomWrap){
+
+          bottomWrap.classList.toggle(
+            "is-hidden",
+            goingDown &&
+            bottomWrap.dataset.locked !== "true"
+          );
+
+          syncBottomPanels();
+        }
+
+        const toast =
+          document.querySelector(".th-toast");
+
+        if(toast){
+          if(goingDown){
+            clearTimeout(toast._timer);
+            toast.style.transform =
+              "translateX(-50%) translateY(calc(100vh))";
+          }
+        }
+
+        lastY = currentY;
+      }
+
+      ticking = false;
+    }
+
+    window.addEventListener(
+      "scroll",
+      () => {
+
+        if(!ticking){
+
+          requestAnimationFrame(
+            apply
+          );
+
+          ticking = true;
+        }
+
+      },
+      {
+        passive: true
+      }
+    );
+  }
+
+  /* =========================================================
+     Bottom Navigation
+     ========================================================= */
+
+  function renderBottomNavigation(active){
+
+    const host =
+      document.querySelector(
+        "[data-nav-host]"
+      );
+
+    if(!host){
+      return;
+    }
+
+    const SVG_HOME =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 10.6 12 3.9l8.5 6.7V20a1 1 0 0 1-1 1h-4.6v-6H9.1v6H4.5a1 1 0 0 1-1-1z"/></svg>';
+    const SVG_HISTORY =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.4V12l3.1 1.9"/></svg>';
+    const SVG_ARTISTS =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 18V6.2l10-2V16"/><circle cx="6.4" cy="18" r="2.6"/><circle cx="16.4" cy="16" r="2.6"/></svg>';
+    const SVG_SEARCH =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"/><path d="m20.2 20.2-3.6-3.6"/></svg>';
+    const SVG_MENU =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg>';
+
+    const items = [
+      { href: "index.html",   label: "Hyped",   icon: SVG_HOME    },
+      { href: "history.html", label: "History", icon: SVG_HISTORY },
+      { href: "artists.html", label: "Artists", icon: SVG_ARTISTS },
+      { href: "search.html",  label: "Search",  icon: SVG_SEARCH  },
+      { href: "menu.html",    label: "Menu",    icon: SVG_MENU    }
+    ];
+
+    const norm = (v) => String(v || "").toLowerCase().replace(/\.html$/,"");
+    const activeKey = norm(active);
+
+    const pageUrl = (href) => {
+      try{
+        return new URL(href, document.baseURI).href;
+      }catch(error){
+        return href;
+      }
+    };
+
+    host.innerHTML =
+      items
+        .map(
+          (item) => {
+
+            const isActive =
+              norm(item.href) === activeKey ||
+              norm(item.label) === activeKey;
+
+            return `
+              <a
+                class="bottom-nav-item ${isActive ? "is-active" : ""}"
+                href="${esc(pageUrl(item.href))}"
+                aria-current="${isActive ? "page" : "false"}"
+                aria-label="${esc(item.label)}"
+                title="${esc(item.label)}"
+              >
+                ${item.icon}
+              </a>
+            `;
+
+          }
+        )
+        .join("");
+  }
+
+  /* =========================================================
+     Global Player
+     ========================================================= */
+
+/* Where the current song lives on the Promo-Playlist page:
+      maps to the single curated playlist that contains it. */
+  function resolvePlaylistId(track){
+    if(!track){
+      return "";
+    }
+    const playlists = window.PLAYLISTS || [];
+    const inPl = (f) => {
+      const p = playlists.find(p2 => (p2.songs || []).some(f));
+      return p ? p.id : "";
+    };
+    let id = inPl(s => s.src && track.src && s.src === track.src);
+    if(!id){
+      id = inPl(s => s.title && track.title &&
+        s.title === track.title &&
+        (s.artist || "") === (track.artist || ""));
+    }
+    if(!id){
+      id = inPl(s => s.title && track.title && s.title === track.title);
+    }
+    if(id){
+      return id;
+    }
+    const data = window.DEMO_SONGS_DATA || [];
+    const found = data.find(t =>
+      (t.src && track.src && t.src === track.src) ||
+      (t.title && track.title && t.title === track.title));
+    if(found){
+      if(String(found.artist || "").toLowerCase() === "wokeeyes"){
+        return "wokeeyes";
+      }
+      const idMap = { Zimbabwe: "zim-hits", Botswana: "botswana-grooves", International: "international-vibes" };
+      return idMap[found.region || "Zimbabwe"] || "zim-hits";
+    }
+    return "wokeeyes";
+  }
+
+  function currentPlaylistTarget(){
+    const track = getState().currentTrack || {};
+    const playlists = window.PLAYLISTS || [];
+    if(track.fromPlaylist && playlists.some(p => p.id === track.fromPlaylist)){
+      return "playlist.html?id=" + encodeURIComponent(track.fromPlaylist);
+    }
+    const resolved = resolvePlaylistId(track);
+    if(resolved){
+      return "playlist.html?id=" + encodeURIComponent(resolved);
+    }
+    const match = playlists.find(p => p.songs && p.songs.some(s => s.src === track.src));
+    if(match){
+      return "playlist.html?id=" + encodeURIComponent(match.id);
+    }
+    const data = window.DEMO_SONGS_DATA || [];
+    const found = data.find(t => t.src === track.src);
+    if(found){
+      if((found.artist || "").toLowerCase() === "wokeeyes"){
+        return "playlist.html?id=wokeeyes";
+      }
+      const region = found.region || "Zimbabwe";
+      const idMap = { Zimbabwe: "zim-hits", Botswana: "botswana-grooves", International: "international-vibes" };
+      return "playlist.html?id=" + encodeURIComponent(idMap[region] || "zim-hits");
+    }
+    return "playlist.html?id=wokeeyes";
+  }
+
+  function renderPlayer(){
+
+    const player =
+      document.querySelector(
+        "[data-player]"
+      );
+
+    if(!player){
+      return;
+    }
+
+    const state =
+      getState();
+
+    const track =
+      state.currentTrack ||
+      {
+        artist: "TrackHype",
+        title: "Choose a song",
+        artwork: getArtwork(0)
+      };
+
+    const progress =
+      Math.max(
+        0,
+        Math.min(
+          100,
+          Number(state.progress) || 0
+        )
+      );
+
+    const scaleX = (progress / 100).toFixed(4);
+    const isPlaying = !!state.isPlaying;
+
+    player.innerHTML = `
+      <div class="promo-player-inner">
+
+        <div
+          class="promo-progress"
+          data-seek
+          data-action="seek"
+          role="slider"
+          aria-label="Track progress"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="${Math.round(progress)}"
+        >
+          <span
+            class="promo-progress-fill"
+            style="transform:scaleX(${scaleX})"
+          ></span>
+        </div>
+
+        <div class="promo-main">
+
+          <a
+            class="promo-art"
+            href="playlists.html"
+            aria-label="Open playlists"
+          >
+            <img
+              alt=""
+              width="46"
+              height="46"
+              decoding="async"
+              src="${esc(track.artwork || getArtwork(0))}"
+            >
+          </a>
+
+          <a
+            class="promo-meta"
+            href="${currentPlaylistTarget()}"
+            aria-label="Open promo playlist"
+          >
+            <span class="promo-artist">${esc(track.artist)}</span>
+            <span class="promo-title">${esc(track.title)}</span>
+          </a>
+
+          <button
+            class="promo-toggle ${isPlaying ? "is-playing" : ""}"
+            type="button"
+            data-action="player-toggle"
+            aria-label="${isPlaying ? "Pause" : "Play"}"
+            aria-pressed="${isPlaying ? "true" : "false"}"
+          >
+            <img
+              class="player-toggle-icon"
+              src="Assets/icons/${isPlaying ? "pause_button" : "play_button"}.webp"
+              alt=""
+            >
+          </button>
+
+        </div>
+      </div>
+    `;
+  }
+
+  function setProgressFromEvent(bar, event){
+    const rect =
+      bar.getBoundingClientRect();
+
+    const ratio =
+      rect.width > 0
+        ? (event.clientX - rect.left) / rect.width
+        : 0;
+
+    const progress =
+      Math.max(
+        0,
+        Math.min(100, ratio * 100)
+      );
+
+    updateState(
+      state => {
+        state.progress =
+          progress;
+      }
+    );
+
+    const a =
+      getAudioElement();
+
+    if(
+      a &&
+      a.duration &&
+      Number.isFinite(a.duration)
+    ){
+
+      a.currentTime =
+        (progress / 100) * a.duration;
+    }
+
+    updateProgressUI(
+      progress
+    );
+  }
+
+  function bindSeekDrag(){
+
+    const player =
+      document.querySelector(
+        "[data-player]"
+      );
+
+    if(!player){
+      return;
+    }
+
+    let dragging = false;
+
+    const handleMove = (event) => {
+      if(!dragging){
+        return;
+      }
+      const bar =
+        player.querySelector(
+          "[data-seek]"
+        );
+      if(bar){
+        setProgressFromEvent(
+          bar,
+          event
+        );
+      }
+    };
+
+    player.addEventListener(
+      "pointerdown",
+      (event) => {
+
+        const bar =
+          event.target.closest(
+            "[data-seek]"
+          );
+
+        if(!bar){
+          return;
+        }
+
+        dragging = true;
+        bar.setPointerCapture(
+          event.pointerId
+        );
+        setProgressFromEvent(
+          bar,
+          event
+        );
+      }
+    );
+
+    player.addEventListener(
+      "pointermove",
+      handleMove
+    );
+
+    const end = () => {
+      dragging = false;
+    };
+
+    player.addEventListener(
+      "pointerup",
+      end
+    );
+
+    player.addEventListener(
+      "pointercancel",
+      end
+    );
+  }
+
+  /* =========================================================
+     Real Audio Demo Player
+     ========================================================= */
+
+  let demoAudio = null;
+  let demoPlaylist = [];
+  let demoIndex = -1;
+  var loadTrackId = 0;
+  var resumeFallbackTimer = 0;
+
+  /* ---------------------------------------------------------
+     Playback persistence
+     We keep a small snapshot of the currently playing track in
+     localStorage so that navigating between pages (static HTML,
+     each page re-executes this file) can resume the exact same
+     song at the same position instead of stopping or restarting.
+     On a fresh app open we start a random demo track instead.
+     --------------------------------------------------------- */
+  const PLAYBACK_KEY = "trackhype.playback.v1";
+  let lastSnapshotSave = 0;
+
+  function readPlaybackSnapshot(){
+    try{
+      const raw = localStorage.getItem(PLAYBACK_KEY);
+      if(!raw){
+        return null;
+      }
+      const s = JSON.parse(raw);
+      if(!s || !s.src){
+        return null;
+      }
+      return s;
+    }catch(e){
+      return null;
+    }
+  }
+
+  function savePlaybackSnapshot(extra){
+    const cur = getState().currentTrack || {};
+    try{
+      const src = extra && extra.src ? extra.src : cur.src;
+      if(!src){
+        localStorage.removeItem(PLAYBACK_KEY);
+        return;
+      }
+      const el = demoAudio;
+      const snapshot = {
+        src: src,
+        title: extra && extra.title ? extra.title : (cur.title || ""),
+        artist: extra && extra.artist ? extra.artist : (cur.artist || ""),
+        artwork: extra && extra.artwork ? extra.artwork : (cur.artwork || ""),
+        index: typeof (extra && extra.index) === "number"
+          ? extra.index
+          : (demoIndex >= 0 ? demoIndex : 0),
+        currentTime: el && Number.isFinite(el.currentTime)
+          ? el.currentTime
+          : 0,
+        ts: Date.now()
+      };
+      localStorage.setItem(PLAYBACK_KEY, JSON.stringify(snapshot));
+    }catch(e){}
+  }
+
+  function clearPlaybackSnapshot(){
+    try{
+      localStorage.removeItem(PLAYBACK_KEY);
+    }catch(e){}
+  }
+
+  function getAudioElement(){
+    if(demoAudio){
+      return demoAudio;
+    }
+    const el = document.createElement("audio");
+    el.preload = "auto";
+    document.body.appendChild(el);
+    el.addEventListener("timeupdate", onAudioTime);
+    el.addEventListener("ended", onAudioEnded);
+    el.addEventListener("play", () => {
+      if(!getState().isPlaying){
+        updateState(s => { s.isPlaying = true; });
+      }
+      syncPlayerToggleIcon();
+    });
+    el.addEventListener("pause", () => {
+      if(getState().isPlaying){
+        updateState(s => { s.isPlaying = false; });
+      }
+      syncPlayerToggleIcon();
+      savePlaybackSnapshot();
+    });
+    demoAudio = el;
+    return el;
+  }
+
+  function matchRegion(name, code){
+    const n = String(name || "").toLowerCase();
+    const c = String(code || "").toLowerCase();
+    if(c === "bw" || n.includes("botswana")){
+      return "Botswana";
+    }
+    if(c === "zw" || n.includes("zimbabwe")){
+      return "Zimbabwe";
+    }
+    return "International";
+  }
+
+  function buildDemoPlaylist(){
+    const data = window.DEMO_SONGS_DATA || [];
+    if(!data.length){
+      return [];
+    }
+    let saved = null;
+    try{
+      saved = JSON.parse(
+        localStorage.getItem("trackhype.region") || "null"
+      );
+    }catch(error){
+      saved = null;
+    }
+    const savedRegion = matchRegion(saved && saved.name, saved && saved.code);
+    const rankOf = (region) => {
+      if(savedRegion && region === savedRegion){
+        return 0;
+      }
+      return region === "International"
+        ? 2
+        : 1;
+    };
+    return data
+      .slice()
+      .sort((a, b) => rankOf(a.region) - rankOf(b.region));
+  }
+
+  function currentPlaylist(){
+    if(!demoPlaylist.length){
+      demoPlaylist = buildDemoPlaylist();
+    }
+    return demoPlaylist;
+  }
+
+  function loadTrack(index){
+    const list = currentPlaylist();
+    if(!list.length){
+      return false;
+    }
+    demoIndex = index >= 0
+      ? index % list.length
+      : 0;
+    const t = list[demoIndex];
+    const prev = getState().currentTrack || {};
+    updateState(s => {
+      s.currentTrack = {
+        title: t.title,
+        artist: t.artist,
+        artwork: t.art || getArtwork(demoIndex),
+        src: t.src,
+        fromPlaylist: ""
+      };
+      s.isPlaying = false;
+      s.progress = 0;
+    });
+    const el = getAudioElement();
+    loadTrackId++;
+    clearTimeout(resumeFallbackTimer);
+    el.onloadedmetadata = null;
+    el.src = t.src;
+    el.load();
+    renderPlayer();
+    return true;
+  }
+
+  function updateProgressUI(progress){
+    const value = Math.max(0, Math.min(100, Number(progress) || 0));
+    const player = document.querySelector("[data-player]");
+    if(!player){
+      return;
+    }
+    const fill = player.querySelector(".promo-progress-fill");
+    const slider = player.querySelector("[data-seek]");
+    if(fill){
+      fill.style.transform = "scaleX(" + (value / 100).toFixed(4) + ")";
+    }
+    if(slider){
+      slider.setAttribute("aria-valuenow", String(Math.round(value)));
+    }
+  }
+
+  function syncPlayerToggleIcon(){
+    const player = document.querySelector("[data-player]");
+    if(!player){
+      return;
+    }
+    const btn = player.querySelector("[data-action='player-toggle']");
+    if(btn){
+      const img = btn.querySelector("img");
+      const playing = getState().isPlaying;
+      if(img){
+        img.src = playing
+          ? "Assets/icons/pause_button.webp"
+          : "Assets/icons/play_button.webp";
+      }
+      btn.classList.toggle("is-playing", playing);
+      btn.setAttribute("aria-pressed", playing ? "true" : "false");
+      btn.setAttribute("aria-label", playing ? "Pause" : "Play");
+    }
+  }
+
+  function onAudioTime(){
+    const el = demoAudio;
+    if(!el || !el.duration || !Number.isFinite(el.duration)){
+      return;
+    }
+    const progress = (el.currentTime / el.duration) * 100;
+    updateProgressUI(progress);
+    const now = Date.now();
+    if(now - lastSnapshotSave > 1000){
+      lastSnapshotSave = now;
+      savePlaybackSnapshot();
+    }
+  }
+
+  function onAudioEnded(){
+    const list = currentPlaylist();
+    if(!list.length){
+      updateState(s => { s.isPlaying = false; });
+      syncPlayerToggleIcon();
+      clearPlaybackSnapshot();
+      return;
+    }
+    loadTrack(demoIndex + 1);
+    const el = getAudioElement();
+    el.currentTime = 0;
+    savePlaybackSnapshot({ index: demoIndex });
+    el.play().catch(() => {});
+  }
+
+  function toggleAudioPlayback(){
+    const list = currentPlaylist();
+    if(list.length){
+      const el = getAudioElement();
+      if(!el.src && el.paused){
+        unlockPlayback();
+        return;
+      }
+      if(el.paused){
+        unlockPlayback();
+      }else{
+        el.pause();
+        updateState(s => { s.isPlaying = false; });
+        syncPlayerToggleIcon();
+      }
+      return;
+    }
+    updateState(s => { s.isPlaying = !s.isPlaying; });
+    renderPlayer();
+  }
+
+  const AUTOSTART_WINDOW_MS = 10 * 60 * 1000;
+
+  /* Decide which track to start. If a playback snapshot exists and
+     is recent, we are navigating between pages -> resume that exact
+     song at its position. Otherwise it is a fresh app open -> pick a
+     random demo track. Returns { index, resumeFrom } or null. */
+  function chooseAutostartTrack(){
+    const list = currentPlaylist();
+    if(!list.length){
+      return null;
+    }
+    const snap = readPlaybackSnapshot();
+    if(snap){
+      const recent = (Date.now() - (snap.ts || 0)) < AUTOSTART_WINDOW_MS;
+      if(recent){
+        let idx = list.findIndex(t => t.src === snap.src);
+        if(idx < 0 && typeof snap.index === "number" &&
+           snap.index >= 0 && snap.index < list.length){
+          idx = snap.index;
+        }
+        if(idx >= 0){
+          return { index: idx, resumeFrom: Number(snap.currentTime) || 0 };
+        }
+      }
+    }
+    const randomIdx = Math.floor(Math.random() * list.length);
+    return { index: randomIdx, resumeFrom: null };
+  }
+
+  function unlockPlayback(){
+    const el = getAudioElement();
+    if(!el.src){
+      const decision = chooseAutostartTrack();
+      if(!decision){
+        updateState(s => { s.isPlaying = false; });
+        syncPlayerToggleIcon();
+        return;
+      }
+      loadTrack(decision.index);
+      if(decision.resumeFrom != null && decision.resumeFrom > 0){
+        const restore = Number(decision.resumeFrom);
+        const expectedTrackId = loadTrackId;
+        clearTimeout(resumeFallbackTimer);
+        el.onloadedmetadata = function onReady(){
+          if(loadTrackId !== expectedTrackId) return;
+          el.onloadedmetadata = null;
+          if(Number.isFinite(restore)){
+            el.currentTime = Math.min(restore, Number.isFinite(el.duration) ? el.duration : restore);
+          }
+          updateState(s => { s.isPlaying = true; });
+          syncPlayerToggleIcon();
+          savePlaybackSnapshot({ index: demoIndex });
+          const p = el.play();
+          if(p && p.catch){ p.catch(() => {}); }
+        };
+        resumeFallbackTimer = setTimeout(function(){
+          if(loadTrackId === expectedTrackId && el.onloadedmetadata){
+            el.onloadedmetadata = null;
+            if(el.readyState >= 2){
+              updateState(s => { s.isPlaying = true; });
+              syncPlayerToggleIcon();
+              const p = el.play();
+              if(p && p.catch){ p.catch(() => {}); }
+            }
+          }
+        }, 4000);
+        return;
+      }
+    }
+    /* Never try to play without a source (NoExplicitSrc). */
+    if(!el.src) return;
+    const promise = el.play();
+    if(promise && promise.catch){
+      promise.catch(() => {});
+    }
+    updateState(s => { s.isPlaying = true; });
+    syncPlayerToggleIcon();
+    savePlaybackSnapshot({ index: demoIndex });
+  }
+
+  /* Auto-play a song on every page load: resume the last track at its
+     saved position, or pick a random demo track on a fresh open. If the
+     browser blocks autoplay, retry on the first user interaction. */
+  function attemptAutoResume(){
+    unlockPlayback();
+    var el = demoAudio;
+    if(!el || !el.paused){
+      return;
+    }
+    var EVENTS = ["pointerdown", "touchstart", "keydown", "click"];
+    function resumeOnce(){
+      for(var i = 0; i < EVENTS.length; i++){
+        document.removeEventListener(EVENTS[i], resumeOnce, true);
+      }
+      if(el && el.paused && el.src){
+        var p = el.play();
+        if(p && p.catch){ p.catch(function(){}); }
+        updateState(s => { s.isPlaying = true; });
+        syncPlayerToggleIcon();
+      }
+    }
+    for(var j = 0; j < EVENTS.length; j++){
+      document.addEventListener(EVENTS[j], resumeOnce, true);
+    }
+  }
+
+  /* =========================================================
+     Bottom Swipe (player ⇄ navigation)
+     Per-panel absolute seating — each panel translated individually.
+     ========================================================= */
+
+  var MODE_NAV    = "navigation";
+  var MODE_PLAYER = "player";
+  var AXIS_LOCK   = 8;
+  var SWIPE_MIN   = 48;
+  var FLING_V     = 0.35;
+  var FLING_D     = 12;
+  var TRANSITION  = 280;
+  var GUARD_MS    = 500;
+
+  var swipeState  = {
+    mode: MODE_NAV,
+    tracking: false,
+    axis: null,
+    startX: 0,
+    startY: 0,
+    lastDelta: 0,
+    samples: [],
+    activePointerId: null,
+    captured: false,
+    clickGuard: false,
+    guardTimer: 0,
+    downTarget: null,
+    settleTimer: 0,
+    resized: false,
+    wheelAcc: 0,
+    wheelTimer: 0,
+    lastWheelSwitch: 0,
+    wheelLockedUntil: 0,
+    wheelUnit: "",
+    wheelLastEvent: 0
+  };
+
+  function viewportWidth(){
+    var wrap = document.querySelector("[data-bottom-swipe]");
+    if(!wrap) return window.innerWidth;
+    var r = wrap.getBoundingClientRect();
+    return r.width || wrap.clientWidth || window.innerWidth;
+  }
+
+  function currentPanel(){
+    var sel = swipeState.mode === MODE_PLAYER ? "[data-player]" : "[data-bottom]";
+    return document.querySelector(sel);
+  }
+
+  function incomingPanel(){
+    var sel = swipeState.mode === MODE_PLAYER ? "[data-bottom]" : "[data-player]";
+    return document.querySelector(sel);
+  }
+
+  function panelSetX(el, x){
+    if(!el) return;
+    el.style.transform = "translate3d(" + (Math.round(x * 100) / 100) + "px,0,0)";
+  }
+
+  function seat(){
+    var wrap = document.querySelector("[data-bottom-swipe]");
+    if(!wrap) return;
+    if(swipeState.tracking || swipeState.settleTimer) return;
+    var w = viewportWidth();
+    var nav = wrap.querySelector("[data-bottom]");
+    var pl  = wrap.querySelector("[data-player]");
+    wrap.classList.add("no-anim");
+    panelSetX(nav, swipeState.mode === MODE_NAV    ? 0 : -w);
+    panelSetX(pl,  swipeState.mode === MODE_PLAYER ? 0 :  w);
+    void wrap.offsetWidth;
+    wrap.classList.remove("no-anim");
+  }
+
+  function applyDrag(d){
+    var wrap = document.querySelector("[data-bottom-swipe]");
+    if(!wrap) return;
+    var w = viewportWidth();
+    panelSetX(currentPanel(), d);
+    panelSetX(incomingPanel(), (d < 0 ? w : -w) + d);
+  }
+
+  function settlePanels(shouldSwitch, d){
+    var wrap = document.querySelector("[data-bottom-swipe]");
+    if(!wrap) return;
+    var w        = viewportWidth();
+    var outgoing = currentPanel();
+    var incoming = incomingPanel();
+
+    wrap.classList.remove("is-dragging");
+    void wrap.offsetWidth;
+
+    if(shouldSwitch){
+      swipeState.mode = (swipeState.mode === MODE_NAV) ? MODE_PLAYER : MODE_NAV;
+      updateState(s => { s.bottomMode = swipeState.mode; });
+      panelSetX(incoming, 0);
+      panelSetX(outgoing, d < 0 ? -w : w);
+    }else{
+      panelSetX(outgoing, 0);
+      panelSetX(incoming, d < 0 ? w : -w);
+    }
+
+    clearTimeout(swipeState.settleTimer);
+    swipeState.settleTimer = setTimeout(function(){
+      swipeState.settleTimer = null;
+      seat();
+    }, TRANSITION + 60);
+  }
+
+  function recordSample(x, y){
+    var t = (window.performance && performance.now) ? performance.now() : Date.now();
+    swipeState.samples.push({ x: x, y: y, t: t });
+    while(swipeState.samples.length > 2 && t - swipeState.samples[0].t > 120){
+      swipeState.samples.shift();
+    }
+    if(swipeState.samples.length > 8) swipeState.samples.shift();
+  }
+
+  function velocity(){
+    var s = swipeState.samples;
+    if(s.length < 2) return 0;
+    var a  = s[0];
+    var b  = s[s.length - 1];
+    var dt = b.t - a.t;
+    if(dt <= 0) return 0;
+    return (swipeState.axis === "y" ? (b.y - a.y) : (b.x - a.x)) / dt;
+  }
+
+  function armClickGuard(){
+    swipeState.clickGuard = true;
+    clearTimeout(swipeState.guardTimer);
+    swipeState.guardTimer = setTimeout(function(){
+      swipeState.clickGuard = false;
+    }, GUARD_MS);
+  }
+
+  function clearClickGuard(){
+    swipeState.clickGuard = false;
+    clearTimeout(swipeState.guardTimer);
+  }
+
+  function bindBottomSwipe(){
+    var wrap = document.querySelector("[data-bottom-swipe]");
+    if(!wrap) return;
+
+    var navPanel    = wrap.querySelector("[data-bottom]");
+    var playerPanel = wrap.querySelector("[data-player]");
+    if(!navPanel || !playerPanel) return;
+
+    /* --- pointer events --------------------------------------------------- */
+    function onPointerDown(e){
+      if(e.isPrimary === false) return;
+      if(e.pointerType === "mouse" && e.button !== 0) return;
+      if(e.target.closest("[data-seek]")) return;
+      if(swipeState.tracking) return;
+      clearClickGuard();
+      swipeState.downTarget = e.target;
+      swipeState.activePointerId = e.pointerId;
+      gestureStart(e.clientX, e.clientY);
+    }
+
+    function onPointerMove(e){
+      if(e.pointerId !== swipeState.activePointerId) return;
+      gestureMove(e.clientX, e.clientY);
+      if(swipeState.axis === "x" && !swipeState.captured &&
+         Math.abs(swipeState.lastDelta) >= SWIPE_MIN){
+        try{
+          wrap.setPointerCapture(e.pointerId);
+          swipeState.captured = true;
+        }catch(error){}
+      }
+      if(swipeState.axis === "x" && e.cancelable){
+        e.preventDefault();
+      }
+    }
+
+    function onPointerUp(e){
+      if(e.pointerId !== swipeState.activePointerId) return;
+      swipeState.activePointerId = null;
+      gestureEnd(false);
+      if(swipeState.captured){
+        swipeState.captured = false;
+        try{
+          wrap.releasePointerCapture(e.pointerId);
+        }catch(error){}
+      }
+    }
+
+    function onPointerCancel(e){
+      if(e.pointerId !== swipeState.activePointerId) return;
+      swipeState.activePointerId = null;
+      gestureEnd(true);
+      if(swipeState.captured){
+        swipeState.captured = false;
+        try{
+          wrap.releasePointerCapture(e.pointerId);
+        }catch(error){}
+      }
+    }
+
+    /* --- touch events ----------------------------------------------------- */
+    function onTouchStart(e){
+      if(e.touches.length !== 1 || swipeState.tracking) return;
+      var t = e.touches[0];
+      if(e.target && e.target.closest && e.target.closest("[data-seek]")) return;
+      clearClickGuard();
+      swipeState.downTarget = e.target;
+      gestureStart(t.clientX, t.clientY);
+    }
+
+    function onTouchMove(e){
+      var t = e.touches[0];
+      if(!t) return;
+      gestureMove(t.clientX, t.clientY);
+      if(swipeState.axis === "x" && e.cancelable) e.preventDefault();
+    }
+
+    function onTouchEnd(){    gestureEnd(false); }
+    function onTouchCancel(){ gestureEnd(true); }
+
+    /* --- mouse events ----------------------------------------------------- */
+    function onMouseDown(e){
+      if(e.button !== 0 || swipeState.tracking) return;
+      clearClickGuard();
+      swipeState.downTarget = e.target;
+      gestureStart(e.clientX, e.clientY);
+    }
+    function onMouseMove(e){ gestureMove(e.clientX, e.clientY); }
+    function onMouseUp(){    gestureEnd(false); }
+
+    /* --- gesture core ----------------------------------------------------- */
+    function gestureStart(x, y){
+      if(swipeState.tracking) return;
+      swipeState.tracking  = true;
+      swipeState.axis      = null;
+      swipeState.startX    = x;
+      swipeState.startY    = y;
+      swipeState.lastDelta = 0;
+      swipeState.samples   = [];
+      recordSample(x, y);
+      clearTimeout(swipeState.settleTimer);
+      swipeState.settleTimer = null;
+    }
+
+    function gestureMove(x, y){
+      if(!swipeState.tracking) return;
+      var dx = x - swipeState.startX;
+      var dy = y - swipeState.startY;
+
+      if(swipeState.axis === null){
+        var adx = Math.abs(dx);
+        var ady = Math.abs(dy);
+        if(adx > AXIS_LOCK && adx > ady){
+          swipeState.axis = "x";
+          wrap.classList.add("is-dragging");
+        }else if(ady > AXIS_LOCK){
+          swipeState.axis = "y";
+        }else{
+          return;
+        }
+      }
+
+      if(swipeState.axis === "y"){
+        swipeState.lastDelta = dy;
+        recordSample(x, y);
+        return;
+      }
+
+      swipeState.lastDelta = dx;
+      recordSample(x, y);
+      applyDrag(dx);
+    }
+
+    /* Resolves a dock link tapped without a swipe. Returns an absolute URL
+       string, or null when the pressed element is not a dock link. */
+    function dockTapHref(node){
+      var link = (node && node.closest)
+        ? node.closest(".bottom-nav-item, .promo-art, .promo-meta")
+        : null;
+      if(!link || !wrap.contains(link)) return null;
+      if(link.target && link.target !== "_self" && link.target !== "") return null;
+      if(link.hasAttribute("download")) return null;
+      var href = (link.getAttribute("href") || "").replace(/^\s+/, "");
+      if(!href || /^(#|mailto:|tel:|javascript:|data:|about:)/i.test(href)) return null;
+      try{
+        return new URL(href, document.baseURI).href;
+      }catch(error){
+        return null;
+      }
+    }
+
+    function gestureEnd(cancelled){
+      if(!swipeState.tracking) return;
+      swipeState.tracking = false;
+
+      var switched = false;
+      if(swipeState.axis === "x"){
+        var v = velocity();
+        var shouldSwitch =
+          Math.abs(swipeState.lastDelta) >= SWIPE_MIN ||
+          (Math.abs(v) >= FLING_V && Math.abs(swipeState.lastDelta) >= FLING_D);
+        switched = shouldSwitch;
+        settlePanels(shouldSwitch, swipeState.lastDelta);
+        if(shouldSwitch){
+          armClickGuard();
+        }
+      }else if(wrap.classList.contains("is-dragging")){
+        wrap.classList.remove("is-dragging");
+      }
+
+      /* A tap-release on a dock link navigates directly from the pointerup.
+         This beats unreliable touch-click synthesis — thumb drift can make the
+         browser discard the synthetic click entirely. Dock links ALWAYS do a
+         full page load (window.location), so the destination arrives even if
+         the SPA loader cannot; a real panel-switching swipe is exempt, and the
+         armed guard swallows the redundant click so it never fires twice. */
+      if(!cancelled && !switched){
+        var tapHref = dockTapHref(swipeState.downTarget);
+        swipeState.downTarget = null;
+        if(tapHref){
+          armClickGuard();
+          window.location.href = tapHref;
+        }
+      }
+
+      swipeState.axis = null;
+    }
+
+    /* --- bind events ------------------------------------------------------ */
+    if(window.PointerEvent){
+      wrap.addEventListener("pointerdown", onPointerDown);
+      window.addEventListener("pointermove", onPointerMove, { passive: false });
+      window.addEventListener("pointerup", onPointerUp);
+      window.addEventListener("pointercancel", onPointerCancel);
+      window.addEventListener("pointerdown", clearClickGuard, true);
+    }else{
+      wrap.addEventListener("touchstart", onTouchStart, { passive: true });
+      window.addEventListener("touchmove", onTouchMove, { passive: false });
+      window.addEventListener("touchend", onTouchEnd);
+      window.addEventListener("touchcancel", onTouchCancel);
+      wrap.addEventListener("mousedown", onMouseDown);
+      window.addEventListener("mousemove", onMouseMove);
+      window.addEventListener("mouseup", onMouseUp);
+      window.addEventListener("touchstart", clearClickGuard, true);
+      window.addEventListener("mousedown", clearClickGuard, true);
+    }
+
+    /* --- click guard ------------------------------------------------------ */
+    wrap.addEventListener("click", function(e){
+      if(!swipeState.clickGuard) return;
+      swipeState.clickGuard = false;
+      clearTimeout(swipeState.guardTimer);
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    }, true);
+
+    /* --- dock-link backstop ----------------------------------------------
+       Routes promo-art / promo-meta / bottom-nav-item clicks through the
+       SPA on the SAME bubble path as the (working) player toggle, but only
+       when the capture-phase router did not already handle the click. */
+    wrap.addEventListener("click", function(e){
+      if(e.defaultPrevented) return;
+      if(swipeState.clickGuard) return;
+      var node = e.target;
+      var link = (node && node.closest)
+        ? node.closest(".bottom-nav-item, .promo-art, .promo-meta")
+        : null;
+      if(!link || !wrap.contains(link)) return;
+      var href = link.getAttribute("href") || "";
+      if(!href || /^(#|mailto:|tel:|javascript:|data:|about:)/i.test(href.replace(/^\s+/, ""))){
+        return;
+      }
+      if(!isInternalAppUrl(href)) return;
+      e.preventDefault();
+      window.location.href = new URL(href, document.baseURI).href;
+    });
+
+    /* --- resize re-seat --------------------------------------------------- */
+    var resizeTimer = 0;
+    window.addEventListener("resize", function(){
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function(){
+        if(!swipeState.tracking) seat();
+      }, 120);
+    });
+
+    /* --- trackpad wheel: 2-finger swipe / upward flick -------------------- */
+    function onWheel(e){
+      if(swipeState.tracking || swipeState.settleTimer) return;
+      if(e.target && e.target.closest && e.target.closest("[data-seek]")) return;
+
+      var ax = Math.abs(e.deltaX);
+      var ay = Math.abs(e.deltaY);
+
+      if(ax > 0 && ax >= ay * 1.05){
+        var now = Date.now();
+        var delta = e.deltaMode === 1 ? e.deltaX * 16 : e.deltaX;
+        var gap = now - swipeState.wheelLastEvent;
+        if(gap > 260){
+          swipeState.wheelAcc = 0;
+        }
+        swipeState.wheelLastEvent = now;
+        if(now < swipeState.wheelLockedUntil){
+          swipeState.wheelLockedUntil = now + 360;
+          return;
+        }
+        swipeState.wheelAcc += delta;
+        clearTimeout(swipeState.wheelTimer);
+        swipeState.wheelTimer = setTimeout(function(){ swipeState.wheelAcc = 0; }, 280);
+        if(Math.abs(swipeState.wheelAcc) >= 28){
+          swipeState.lastWheelSwitch = now;
+          swipeState.wheelLockedUntil = now + 600;
+          swipeState.wheelAcc = 0;
+          settlePanels(true, delta < 0 ? -1 : 1);
+        }
+        return;
+      }
+      /* Vertical wheel is deliberately ignored: switching is left/right only. */
+    }
+    wrap.addEventListener("wheel", onWheel, { passive: false });
+
+    /* --- nav click: update active state ----------------------------------- */
+    navPanel.addEventListener("click", function(e){
+      var node = e.target;
+      var link = (node && node.closest) ? node.closest(".bottom-nav-item") : null;
+      if(!link || !navPanel.contains(link)) return;
+      var items = navPanel.querySelectorAll(".bottom-nav-item");
+      for(var i = 0; i < items.length; i++){
+        items[i].removeAttribute("aria-current");
+        items[i].classList.remove("is-active");
+      }
+      link.setAttribute("aria-current", "page");
+      link.classList.add("is-active");
+    });
+
+    /* --- boot seating: restore the panel mode you last left ----------------- */
+    swipeState.mode = (getState().bottomMode === MODE_PLAYER)
+      ? MODE_PLAYER
+      : MODE_NAV;
+    seat();
+  }
+
+  function syncBottomPanels(){
+    seat();
+  }
+
+  function playDemoTrack(query){
+    const source = currentPlaylist().length
+      ? currentPlaylist()
+      : (window.DEMO_SONGS_DATA || []);
+
+    if(!source.length){
+      return false;
+    }
+
+    let index = -1;
+
+    if(typeof query === "number"){
+      index = query;
+    }else if(query && typeof query === "object"){
+      if(query.src){
+        index = source.findIndex(t => t.src === query.src);
+      }
+      if(index < 0 && query.title){
+        index = source.findIndex(t => t.title === query.title);
+      }
+      if(index < 0 && query.artist){
+        index = source.findIndex(t => t.artist === query.artist);
+      }
+    }else if(typeof query === "string"){
+      const q = String(query).toLowerCase();
+      index = source.findIndex(t =>
+        String(t.title || "").toLowerCase() === q ||
+        String(t.artist || "").toLowerCase() === q
+      );
+    }
+
+    if(index < 0){
+      index = 0;
+    }
+
+    const track = source[index];
+    if(!track){
+      return false;
+    }
+
+    demoIndex = index;
+    demoPlaylist = source;
+
+    let fromPlaylist = (query && query.fromPlaylist) || "";
+    if(fromPlaylist && !(window.PLAYLISTS || []).some(p => p.id === fromPlaylist)){
+      fromPlaylist = "";
+    }
+    if(!fromPlaylist){
+      fromPlaylist = resolvePlaylistId(track);
+    }
+    if(!fromPlaylist){
+      fromPlaylist = (getState().currentTrack || {}).fromPlaylist || "";
+    }
+
+    updateState(s => {
+      s.currentTrack = {
+        title: track.title,
+        artist: track.artist,
+        artwork: track.art || getArtwork(index),
+        src: track.src,
+        fromPlaylist: fromPlaylist
+      };
+      s.isPlaying = true;
+      s.progress = 0;
+    });
+
+    const el = getAudioElement();
+    el.src = track.src;
+    el.load();
+
+    const promise = el.play();
+    if(promise && promise.catch){
+      promise.catch(() => {});
+    }
+
+    syncPlayerToggleIcon();
+    savePlaybackSnapshot({ index: index });
+    if(document.querySelector("[data-player]")){
+      renderPlayer();
+    }
+    return true;
+  }
+
+  function initialiseGlobalPlayer(){
+
+    document.addEventListener(
+      "click",
+      (event) => {
+
+        const action =
+          event.target
+            .closest("[data-action]")
+            ?.dataset.action;
+
+        if(!action){
+          return;
+        }
+
+        /* -----------------------------------------
+           Player Play / Pause
+           ----------------------------------------- */
+
+        if(
+          action === "player-toggle"
+        ){
+
+          toggleAudioPlayback();
+
+          return;
+        }
+
+        /* -----------------------------------------
+           Open Song Info (from player art)
+           ----------------------------------------- */
+
+        if(
+          action === "open-song-info"
+        ){
+
+          const t =
+            getState().currentTrack;
+
+          if(
+            t &&
+            t.title
+          ){
+
+            const params =
+              new URLSearchParams();
+
+            params.set(
+              "title",
+              t.title
+            );
+
+            if(
+              t.artist
+            ){
+              params.set(
+                "artist",
+                t.artist
+              );
+            }
+
+            if(
+              t.artwork
+            ){
+              params.set(
+                "art",
+                t.artwork
+              );
+            }
+
+            navigate("song.html?" + params.toString());
+
+          }else{
+
+            toast(
+              "No song selected"
+            );
+          }
+
+          return;
+        }
+
+        /* -----------------------------------------
+           Open Detail Songs (playlist) from player
+           ----------------------------------------- */
+
+        if(
+          action === "open-detail-songs"
+        ){
+
+          let id =
+            "wokeeyes";
+
+          const t =
+            getState().currentTrack;
+
+          const lists =
+            typeof window.PLAYLISTS !==
+              "undefined"
+              ? window.PLAYLISTS
+              : [];
+
+          if(
+            t &&
+            t.title &&
+            lists.length
+          ){
+
+            const needle =
+              String(t.title)
+                .toLowerCase();
+
+            const match =
+              lists.find(
+                p =>
+                  (p.songs || [])
+                    .some(
+                      s =>
+                        String(
+                          s.title || ""
+                        )
+                        .toLowerCase() ===
+                        needle
+                    )
+              );
+
+            if(
+              match
+            ){
+              id =
+                match.id;
+            }
+          }
+
+          navigate("playlists.html?open=" + encodeURIComponent(id));
+
+          return;
+        }
+
+
+        /* -----------------------------------------
+           Seek / Progress
+           ----------------------------------------- */
+
+        if(
+          action === "seek" ||
+          event.target.closest("[data-seek]")
+        ){
+
+          const bar =
+            event.target.closest(
+              "[data-seek]"
+            );
+
+          if(
+            !bar ||
+            bar.closest("[data-action='seek']") !== bar
+          ){
+            return;
+          }
+
+          setProgressFromEvent(
+            bar,
+            event
+          );
+
+          return;
+        }
+
+        /* -----------------------------------------
+           Play Track
+           ----------------------------------------- */
+
+        if(
+          action === "play-track"
+        ){
+
+          const el =
+            event.target.closest(
+              "[data-action='play-track']"
+            );
+
+          if(!el){
+            return;
+          }
+
+          const track = {
+
+            id:
+              el.dataset.id,
+
+            title:
+              el.dataset.title,
+
+            artist:
+              el.dataset.artist,
+
+            artwork:
+              el.dataset.artwork
+
+          };
+
+          updateState(
+            state => {
+
+              state.currentTrack =
+                track;
+
+              state.isPlaying =
+                true;
+
+              state.progress =
+                0;
+
+            }
+          );
+
+          renderPlayer();
+
+          toast(
+            `${track.title}`
+          );
+
+          return;
+        }
+
+        /* -----------------------------------------
+           Favourite Song
+           ----------------------------------------- */
+
+        if(
+          action === "favourite-song"
+        ){
+
+          const el =
+            event.target.closest(
+              "[data-action='favourite-song']"
+            );
+
+          if(!el){
+            return;
+          }
+
+          const id =
+            el.dataset.id;
+
+          updateState(
+            state => {
+
+              state.favouriteSongs =
+                state.favouriteSongs ||
+                [];
+
+              const index =
+                state.favouriteSongs
+                  .indexOf(id);
+
+              if(index >= 0){
+
+                state.favouriteSongs
+                  .splice(
+                    index,
+                    1
+                  );
+
+              }else{
+
+                state.favouriteSongs
+                  .push(id);
+
+              }
+
+            }
+          );
+
+          el.textContent =
+            getState()
+              .favouriteSongs
+              .includes(id)
+              ? "♥"
+              : "♡";
+        }
+
+      }
+    );
+
+    renderPlayer();
+
+    bindSeekDrag();
+
+    bindBottomSwipe();
+
+    syncBottomPanels();
+  }
+
+  /* =========================================================
+     Modal Bottom Sheet
+     ========================================================= */
+
+  function openSheet({
+    title,
+    text,
+    html,
+    actions = []
+  }){
+
+    const backdrop =
+      document.querySelector(
+        "[data-modal]"
+      );
+
+    if(!backdrop){
+      return;
+    }
+
+    const body =
+      backdrop.querySelector(
+        "[data-modal-body]"
+      );
+
+    const titleNode =
+      backdrop.querySelector(
+        "[data-modal-title]"
+      );
+
+    const actionsNode =
+      backdrop.querySelector(
+        "[data-modal-actions]"
+      );
+
+    titleNode.textContent =
+      title || "";
+
+    body.innerHTML =
+      html ||
+      `<p>${esc(text || "")}</p>`;
+
+    actionsNode.innerHTML =
+      actions
+        .map(
+          action => {
+
+            return `
+              <button
+                class="th-btn ${
+                  action.primary
+                    ? "primary"
+                    : ""
+                }"
+                type="button"
+                data-modal-action="${esc(
+                  action.id
+                )}"
+              >
+                ${esc(
+                  action.label
+                )}
+              </button>
+            `;
+          }
+        )
+        .join("");
+
+    backdrop.classList.add(
+      "is-open"
+    );
+
+    document.body.style.overflow =
+      "hidden";
+  }
+
+  function closeSheet(){
+
+    const backdrop =
+      document.querySelector(
+        "[data-modal]"
+      );
+
+    if(!backdrop){
+      return;
+    }
+
+    backdrop.classList.remove(
+      "is-open"
+    );
+
+    document.body.style.overflow =
+      "";
+  }
+
+  function initialiseModal(){
+
+    const backdrop =
+      document.querySelector(
+        "[data-modal]"
+      );
+
+    if(!backdrop){
+      return;
+    }
+
+    backdrop.addEventListener(
+      "click",
+      (event) => {
+
+        if(
+          event.target === backdrop ||
+          event.target.closest(
+            "[data-modal-close]"
+          )
+        ){
+
+          closeSheet();
+
+          return;
+        }
+
+        const action =
+          event.target.closest(
+            "[data-modal-action]"
+          )?.dataset
+            .modalAction;
+
+        if(
+          action === "dismiss"
+        ){
+
+          closeSheet();
+        }
+
+      }
+    );
+  }
+
+  /* =========================================================
+     Demo / Prototype New Music Dataset
+     ========================================================= */
+
+  function makeNewMusicData(){
+
+    return [
+
+      {
+        id: "song-101",
+        title: "Mbare After Dark",
+        artist: "JAZZWRLD",
+        genre: "Zim Hip Hop",
+        city: "Harare",
+        language: "Shona",
+        dateAdded: "2026-08-27",
+        plays: 1240,
+        favourites: 108,
+        artwork: getArtwork(2),
+        youtube: "dQw4w9WgXcQ"
+      },
+
+      {
+        id: "song-102",
+        title: "Night Bus",
+        artist: "Holy Ten",
+        genre: "Zimdancehall",
+        city: "Chitungwiza",
+        language: "Shona / English",
+        dateAdded: "2026-08-26",
+        plays: 904,
+        favourites: 83,
+        artwork: getArtwork(1),
+        youtube: "dQw4w9WgXcQ"
+      },
+
+      {
+        id: "song-103",
+        title: "Golden Hour",
+        artist: "Feli Nandi",
+        genre: "Afro-Fusion",
+        city: "Bulawayo",
+        language: "English",
+        dateAdded: "2026-08-25",
+        plays: 788,
+        favourites: 74,
+        artwork: getArtwork(3),
+        youtube: "dQw4w9WgXcQ"
+      },
+
+      {
+        id: "song-104",
+        title: "Homecoming",
+        artist: "Alick Macheso",
+        genre: "Sungura",
+        city: "Gweru",
+        language: "Shona",
+        dateAdded: "2026-08-23",
+        plays: 640,
+        favourites: 91,
+        artwork: getArtwork(4),
+        youtube: "dQw4w9WgXcQ"
+      },
+
+      {
+        id: "song-105",
+        title: "As We Rise",
+        artist: "Winky D",
+        genre: "Gospel Hip Hop",
+        city: "Mutare",
+        language: "English",
+        dateAdded: "2026-08-22",
+        plays: 611,
+        favourites: 52,
+        artwork: getArtwork(0),
+        youtube: "dQw4w9WgXcQ"
+      },
+
+      {
+        id: "song-106",
+        title: "Kasi Motion",
+        artist: "MT Tinashe",
+        genre: "Amapiano",
+        city: "Bulawayo",
+        language: "Ndebele",
+        dateAdded: "2026-08-21",
+        plays: 570,
+        favourites: 46,
+        artwork: getArtwork(2),
+        youtube: "dQw4w9WgXcQ"
+      }
+
+    ];
+  }
+
+  /* =========================================================
+     Shared Demo Catalog
+     Richer dataset used by search and browse surfaces.
+     ========================================================= */
+
+  const CATALOG = (function buildCatalog(){
+    const songs = [
+      ["Mbare After Dark","Example Artist","Zim Hip Hop","Shona","song-101"],
+      ["Night Bus","Example Artist","Zimdancehall","Shona / English","song-102"],
+      ["Golden Hour","Example Artist","Afro-Fusion","English","song-103"],
+      ["Homecoming","Example Artist","Sungura","Shona","song-104"],
+      ["As We Rise","Example Artist","Gospel Hip Hop","English","song-105"],
+      ["Kasi Motion","Example Artist","Amapiano","Ndebele","song-106"],
+      ["uValo","JAZZWRLD","Afro-Fusion","Shona / English","song-201"],
+      ["Zim Dreams","Feli Nandi","Afro-Soul","English","song-202"],
+      ["Mambo","Mambo Dhuterere","Zimdancehall","Shona","song-203"],
+      ["Musarovha","Killer T","Zimdancehall","Shona","song-204"],
+      ["Worroro","Holy Ten","Zim Hip Hop","Shona / English","song-205"],
+      ["Rokita","Killer T","Zimdancehall","Shona","song-206"],
+      ["Number Lelo","Killer T","Zimdancehall","Shona / English","song-207"],
+      ["Bleed","IKabod","Zim Hip Hop","English","song-208"],
+      ["Makomana","Chikwata","Zim Hip Hop","Shona","song-209"],
+      ["Dear Haters","Voltz JT","Urban Grooves","Shona / English","song-210"],
+      ["Floeky","Junior Music","Amapiano","English","song-211"],
+      ["John Vuli Gate","Voltz JT","Amapiano","Shona / English","song-212"],
+      ["Nhaka Yedu","Feli Nandi","Afro-Soul","Shona","song-213"],
+      ["Ropa Dzangu","Feli Nandi","Afro-Fusion","Shona","song-214"],
+      ["Zvakaitika","Somandla Ndebele","Imbube","Ndebele","song-215"],
+      ["Nkande","MT Tinashe","Amapiano","Shona","song-216"],
+      ["Tsano Wangu","MT Tinashe","Zim Hip Hop","Shona","song-217"],
+      ["Yewo","MT Tinashe","Afro-Pop","Shona","song-218"],
+      ["Heat Free","Hwinza","Zim Hip Hop","Shona","song-219"],
+      ["Season Maroja","Hwinza","Zim Hip Hop","Shona","song-220"]
+    ];
+
+    const artists = [
+      ["Winky D","Zimdancehall","Harare","artist-1"],
+      ["Holy Ten","Zim Hip Hop","Harare","artist-2"],
+      ["Feli Nandi","Afro-Soul","Harare","artist-3"],
+      ["Alick Macheso","Sungura","Bindura","artist-4"],
+      ["Jah Prayzah","Afro-Fusion","Makoni","artist-5"],
+      ["Killer T","Zimdancehall","Harare","artist-6"],
+      ["Voltz JT","Zim Hip Hop","Harare","artist-7"],
+      ["MT Tinashe","Zim Hip Hop","Harare","artist-8"],
+      ["Hwinza","Zim Hip Hop","Harare","artist-9"],
+      ["JAZZWRLD","Afro-Fusion","Harare","artist-10"],
+      ["Somandla Ndebele","Imbube","Bulawayo","artist-11"],
+      ["Mambo Dhuterere","Zimdancehall","Harare","artist-12"],
+      ["Mustapha Mughal","Ghazal","Bulawayo","artist-13"],
+      ["Zivuya","Zimdancehall","Chitungwiza","artist-14"],
+      ["Chicco Nguruve","Sungura","Gweru","artist-15"],
+      ["Knowley D","Urban Grooves","Bulawayo","artist-16"],
+      ["Doc Shebeleza","Amapiano","Johannesburg / Zim","artist-17"],
+      ["Squash","Zim Hip Hop","Harare","artist-18"],
+      ["X.O","Zim Hip Hop","Harare","artist-19"],
+      ["Poptain","Zim Hip Hop","Harare","artist-20"],
+      ["Asaph","Gospel","Harare","artist-21"],
+      ["Tamy Moyo","Afro-Pop","Harare","artist-22"],
+      ["Gemma Griffiths","Afro-Fusion","Harare","artist-23"],
+      ["Freeman","Urban Grooves","Kwekwe","artist-24"],
+      ["Seh Calaz","Zimdancehall","Harare","artist-25"]
+    ];
+
+    const genres = [
+      "Mbira","Jiti","Mhande","Mbende / Jerusarema","Muchongoyo","Mbakumba","Shangare","Amabhiza",
+      "Sungura","Chimurenga","Tuku Music","Afro-Jazz","Zimbabwean Jazz","Imbube","Kanindo",
+      "Zimbabwean Rumba","Afro-Fusion","Afro-Pop","Zimdancehall","Urban Grooves","Zim Hip Hop",
+      "Amapiano","Zimbabwean House","Zim EDM","Zim-TrapSoul","R&B","Soul","Gospel","Reggae",
+      "Dancehall","House","Gqom","Kwaito","Gospel Hip Hop","Trap Gospel","Afro-Gospel Rap"
+    ];
+
+    return {
+      songs: songs.map(s => ({
+        id: s[4], title: s[0], artist: s[1], genre: s[2], language: s[3],
+        kind: "Song", lyrics: SONG_LYRICS, artwork: getArtwork(parseInt(s[4].slice(-1), 10) || 0)
+      })),
+      artists: artists.map(a => ({
+        id: a[3], name: a[0], genre: a[1], city: a[2], kind: "Artist"
+      })),
+      genres: genres.map(g => ({
+        id: "genre-" + chartId(g), title: g, kind: "Genre"
+      }))
+    };
+  })();
+
+  function searchInCatalog(query, type){
+    const q = String(query || "").toLowerCase().trim();
+    const kinds = type === "all" ? ["Song", "Artist", "Chart", "Genre"] : [kindFromType(type)];
+    const items = [];
+    if(kinds.includes("Song")){
+      for(const s of CATALOG.songs){
+        if(!q || (s.title + " " + s.artist + " " + s.genre + " " + s.language + " " + (s.lyrics || "")).toLowerCase().includes(q)){
+          items.push(s);
+        }
+      }
+    }
+    if(kinds.includes("Artist")){
+      for(const a of CATALOG.artists){
+        if(!q || (a.name + " " + a.genre + " " + a.city).toLowerCase().includes(q)){
+          items.push(a);
+        }
+      }
+    }
+    if(kinds.includes("Chart")){
+      const CHART_NAMES = ["National Top 100","Zim Hip Hop Top 20","Zimdancehall Top 20","Zimbabwe Gospel Top 20","Sungura Top 20","Zimbabwean House Top 20","R&B Top 20"];
+      for(const name of CHART_NAMES){
+        if(!q || name.toLowerCase().includes(q)){
+          items.push({ id: "chart-" + chartId(name), title: name, kind: "Chart" });
+        }
+      }
+    }
+    if(kinds.includes("Genre")){
+      for(const g of CATALOG.genres){
+        if(!q || g.title.toLowerCase().includes(q)){
+          items.push(g);
+        }
+      }
+    }
+    return items;
+  }
+
+  function kindFromType(t){
+    if(t === "songs"){ return "Song"; }
+    if(t === "artists"){ return "Artist"; }
+    if(t === "charts"){ return "Chart"; }
+    if(t === "genres"){ return "Genre"; }
+    return "Song";
+  }
+
+  /* =========================================================
+     Legacy / Progressive-Enhancement Adapters
+     These let the earlier prototype pages open directly from
+     their own HTML while the new shell initialises in the
+     background. Every access is guarded so nothing crashes if
+     a legacy hook or element is missing.
+     ========================================================= */
+
+  function readFavs(key){
+    try{
+      return JSON.parse(localStorage.getItem(key) || "[]");
+    }catch(error){
+      return [];
+    }
+  }
+
+  window.TrackHypeShell = {
+    esc,
+    init: function(activeNav){
+      window.TrackHype?.init({activeNav});
+    }
+  };
+
+  window.initShell = function(activeNav){
+    window.TrackHype?.init({activeNav});
+  };
+
+  window.nav = function(href){
+    navigate(href);
+  };
+
+  window.esc = function(value){
+    return esc(value);
+  };
+
+  window.togglePlay = function(){
+    const state = getState();
+    updateState(s => { s.isPlaying = !s.isPlaying; });
+    renderPlayer();
+    if(!state.isPlaying){
+      return;
+    }
+  };
+
+  window.playAll = function(){
+    toast("Play all is ready from your Playlist.");
+  };
+
+  window.closePlaylist = function(){
+    const overlay = document.getElementById("playlistOverlay");
+    if(overlay){
+      overlay.style.display = "none";
+    }
+  };
+
+  window.openPlaylist = function(){
+    const overlay = document.getElementById("playlistOverlay");
+    if(overlay){
+      overlay.style.display = "flex";
+    }
+  };
+
+  window.setPlayer = function(title, artist, artwork){
+    const list = currentPlaylist();
+    let src = "";
+    let index = -1;
+    if(list.length){
+      const wantTitle = String(title || "").toLowerCase();
+      const wantArtist = String(artist || "").toLowerCase();
+      for(let i = 0; i < list.length; i++){
+        const t = list[i];
+        if(
+          (wantTitle && String(t.title || "").toLowerCase() === wantTitle) ||
+          (wantArtist && String(t.artist || "").toLowerCase() === wantArtist)
+        ){
+          src = t.src;
+          index = i;
+          break;
+        }
+      }
+    }
+    updateState(s => {
+      s.currentTrack = {
+        title,
+        artist,
+        artwork,
+        src
+      };
+      s.isPlaying = true;
+      s.progress = 0;
+    });
+    if(src){
+      demoIndex = index;
+      const el = getAudioElement();
+      el.src = src;
+      el.load();
+    }
+    savePlaybackSnapshot({ index: demoIndex, src: src, title: title, artist: artist, artwork: artwork });
+    renderPlayer();
+    syncPlayerToggleIcon();
+  };
+
+  window.fav = function(category, id){
+    const KEY = "trackhype:" + String(category);
+    const arr = readFavs(KEY);
+    const index = arr.indexOf(id);
+    if(index >= 0){
+      arr.splice(index, 1);
+    }else{
+      arr.push(id);
+    }
+    try{
+      localStorage.setItem(KEY, JSON.stringify(arr));
+    }catch(error){}
+    return arr.includes(id);
+  };
+
+  /* =========================================================
+     Voting Engine
+     Vote flow (override): tap a song's vote → open the vote
+     modal → enter target position (1..max) → song moves there,
+     incumbent shifts down one. Points are 20→1 by final
+     position. One vote per chart per 24h.
+     The FULL pipeline is: user order → vote record →
+     aggregation → published chart. A single vote must never
+     mutate the published chart directly.
+     ========================================================= */
+
+  function todayKey(){
+    return new Date().toISOString().slice(0,10);
+  }
+
+  function chartId(name){
+    return String(name || "").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"") || "chart";
+  }
+
+  function defaultChartOrder(max = 20){
+    const base = {
+      "national-top-100": "top_40_chart",
+      "zim-hip-hop": "top_25_local_hip_hop",
+      "zimbabwean-house": "top_20_house",
+      "house": "top_20_house",
+      "r-b": "top_20_rnb_chart",
+      "rnb": "top_20_rnb_chart"
+    };
+    return base[chartId(max)] || "";
+  }
+
+  function buildChartDataset(chartName){
+    const dir = defaultChartOrder(chartName);
+    const max = maxForChart(chartName);
+    const items = [];
+    for(let i = 1; i <= max; i++){
+      items.push({
+        id: "entry-" + chartId(chartName) + "-" + i,
+        rank: i,
+        title: "Track " + i,
+        artist: chartName,
+        plays: 0,
+        artwork: dir ? "Assets/charts/" + dir + "/" + (i % 20 || 20) + (Math.random() < 0.12 ? ".webp" : ".jpg") : ""
+      });
+    }
+    return items;
+  }
+
+  function maxForChart(chartName){
+    const key = chartId(chartName);
+    if(key.charAt(0) === "n") return 100;
+    return 20;
+  }
+
+  function pointsForPosition(pos){
+    if(!pos || pos < 1 || pos > 20){
+      return 1;
+    }
+    return 21 - pos;
+  }
+
+  function positionFromPoints(points){
+    const p = Math.max(1, Math.min(20, Math.round(points)));
+    return 21 - p;
+  }
+
+  function hasVotedToday(chartName, chartKey){
+    const state = getState();
+    const key = chartKey || chartId(chartName);
+    const records = (state.votes || []).filter(v => v.chart === key && v.date === todayKey());
+    window.TrackHype._lastHasVoted = records;
+    return records;
+  }
+
+  function isSingleVote(chartName){
+    const state = getState();
+    const records = hasVotedToday(chartName);
+    return records.length > 0 ? records[0] : null;
+  }
+
+  function recordVote(chartName, song, targetPos){
+    const key = chartId(chartName);
+    const vote = {
+      id: "vote-" + Date.now(),
+      chart: key,
+      date: todayKey(),
+      songId: song.id,
+      songTitle: song.title,
+      fromRank: song.rank,
+      targetPos,
+      points: pointsForPosition(targetPos)
+    };
+    updateState(s => {
+      s.votes = (s.votes || []).filter(v => !(v.chart === key && v.date === todayKey()));
+      s.votes.push(vote);
+    });
+    return vote;
+  }
+
+  function confirmVoteSheet(chartName, song, max){
+    const key = chartId(chartName);
+    const chartMax = maxForChart(chartName);
+    const limit = (max && max > 0) ? max : chartMax;
+
+    const existing = isSingleVote(chartName);
+    if(existing){
+      const msg = existing.songTitle
+        ? ("You already voted for " + existing.songTitle + " at position " + existing.targetPos + " on this chart today.")
+        : "You have already voted on this chart today.";
+      TrackHypeAlert({ title: "Already voted", text: msg });
+      return;
+    }
+
+    openSheet({
+      title: "Vote · " + chartName,
+      text: "Rank \"" + (song && song.title ? song.title : "this song") + "\" by entering a target position (1–" + limit + "). The song moves there and the incumbent shifts down one.",
+      actions: [
+        { id: "cancel-vote-" + key, label: "Cancel" }
+      ]
+    });
+
+    const body = document.querySelector("[data-modal-body]");
+    const actions = document.querySelector("[data-modal-actions]");
+    if(!body || !actions){
+      return;
+    }
+
+    body.innerHTML = `
+      <form id="vote-form" style="margin-top:6px">
+        <label class="ob-label" style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--th-muted)">Target position</label>
+        <input class="th-input" id="vote-pos" type="number" min="1" max="${max}" inputmode="numeric" placeholder="Position 1–${max}" required>
+        <p style="margin-top:8px;color:var(--th-muted);font-size:12px;line-height:1.5">Points by position: #1 → 20 … → #20 → 1. One vote per chart per day.</p>
+      </form>
+    `;
+
+    actions.innerHTML = `
+      <button class="th-btn secondary" type="button" data-modal-action="cancel-vote-${key}">Cancel</button>
+      <button class="th-btn primary" type="button" data-vote-confirm>Confirm</button>
+    `;
+
+    const confirmBtn = actions.querySelector("[data-vote-confirm]");
+    confirmBtn.onclick = () => {
+      const input = document.getElementById("vote-pos");
+      const val = parseInt((input && input.value) || "", 10);
+      if(!val || val < 1 || val > max){
+        if(input){ input.focus(); }
+        toast("Enter a position between 1 and " + max + ".");
+        return;
+      }
+      const rec = recordVote(chartName, song, val);
+      window.TrackHype._lastVote = rec;
+      closeSheet();
+      document.dispatchEvent(new CustomEvent("trackhype:chart-update", {
+        detail: {
+          chart: chartName,
+          songId: song.id,
+          targetPos: val,
+          points: pointsForPosition(val),
+          vote: rec
+        }
+      }));
+      toast("Vote ranked #" + val + " (" + pointsForPosition(val) + " pts). Public chart updates after aggregation.");
+    };
+
+    const cancelBtn = actions.querySelector('[data-modal-action="cancel-vote-' + key + '"]');
+    if(cancelBtn){
+      cancelBtn.onclick = () => { closeSheet(); };
+    }
+  }
+
+  function moveSong(order, songId, targetPos){
+    const source = Array.isArray(order) ? order.slice() : [];
+    const pos = Math.max(1, Math.min(source.length, Math.round(Number(targetPos) || 1)));
+    const idx = source.findIndex(x => x.id === songId);
+    if(idx < 0){
+      return source;
+    }
+    const [song] = source.splice(idx, 1);
+    const insertAt = Math.max(0, Math.min(pos - 1, source.length));
+    source.splice(insertAt, 0, song);
+    return source.map((x, i) => Object.assign({}, x, { rank: i + 1, points: pointsForPosition(i + 1) }));
+  }
+
+  function publishChart(){
+    window.TrackHype._lastPublishedChart = true;
+    toast("Chart published for " + todayKey() + ".");
+    return window.TrackHype._lastVoteResult || [];
+  }
+
+  function aggregateVotes(chartName){
+    return window.TrackHype._lastVoteResult || buildChartDataset(chartName);
+  }
+
+  function TrackHypeAlert({ title, text }){
+    openSheet({
+      title: title || "TrackHype",
+      text: text || "",
+      actions: [] // no-actions sheet; backdrop tap closes via the modal handler
+    });
+    const actions = document.querySelector("[data-modal-actions]");
+    if(actions){
+      actions.innerHTML = '<button class="th-btn primary" type="button" data-modal-action="dismiss">OK</button>';
+    }
+  }
+
+  /* =========================================================
+     Weekly Ballot Engine (3-Tier)
+     Weekly competition: Tier 1 = last week's top, Tier 2 =
+     promoted contenders, Tier 3 = fresh submissions.
+     Ballot covers the full competing pool (no 50% limit) —
+     users rearrange all songs to rank them.
+     Points = ballotLength + 1 - rank (top pick = len, last = 1).
+     Reset at Sunday 00:00, device-local time. A single ballot
+     never mutates the published chart — the chart comes only
+     from aggregation over stored ballots.
+     ========================================================= */
+
+  function currentWeekKey(){
+    const now = new Date();
+    const d = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+    return d.getUTCFullYear() + "-W" + String(weekNo).padStart(2, "0");
+  }
+
+  function mondayOfWeek(weekKey){
+    const m = String(weekKey || "").match(/^(\d{4})-W(\d{1,2})$/);
+    if(!m){ return new Date(); }
+    const year = Number(m[1]);
+    const week = Number(m[2]);
+    const jan4 = new Date(Date.UTC(year, 0, 4));
+    const day = jan4.getUTCDay() || 7;
+    const week1Monday = jan4.getTime() - (day - 1) * 86400000;
+    return new Date(week1Monday + (week - 1) * 7 * 86400000);
+  }
+
+  function shiftWeekKey(weekKey, delta){
+    const base = mondayOfWeek(weekKey);
+    const m = new Date(base.getTime() + (delta || 0) * 7 * 86400000);
+    const year = m.getUTCFullYear();
+    const jan4 = new Date(Date.UTC(year, 0, 4));
+    const day = jan4.getUTCDay() || 7;
+    const week1Monday = jan4.getTime() - (day - 1) * 86400000;
+    const week = Math.floor((m.getTime() - week1Monday) / (7 * 86400000)) + 1;
+    return year + "-W" + String(week).padStart(2, "0");
+  }
+
+  function weekKeyToDateRange(weekKey){
+    const start = mondayOfWeek(weekKey);
+    const end = new Date(start.getTime() + 6 * 86400000);
+    const ms = start.toLocaleString("en-US", { month: "short", timeZone: "UTC" });
+    const ds = start.getUTCDate();
+    const me = end.toLocaleString("en-US", { month: "short", timeZone: "UTC" });
+    const de = end.getUTCDate();
+    return ms === me
+      ? ms + " " + ds + "–" + de
+      : ms + " " + ds + " – " + me + " " + de;
+  }
+
+  function getNextResetTime(){
+    const now = new Date();
+    const next = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    let days = (7 - now.getDay()) % 7;
+    if(days === 0){ days = 7; }
+    next.setDate(next.getDate() + days);
+    next.setHours(0, 0, 0, 0);
+    return next.getTime();
+  }
+
+  function weekCountdownText(ms){
+    if(!ms || ms <= 0){ return ""; }
+    const d = Math.floor(ms / 86400000);
+    const h = Math.floor((ms % 86400000) / 3600000);
+    const m = Math.floor((ms % 3600000) / 60000);
+    if(d > 0){ return d + "d " + h + "h " + m + "m"; }
+    if(h > 0){ return h + "h " + m + "m"; }
+    return Math.max(1, Math.round(ms / 60000)) + "m";
+  }
+
+  function subTierKey(chartKey, weekKey, tier){
+    return chartKey + "::" + (weekKey || currentWeekKey()) + "::t" + tier;
+  }
+
+  function ballotStoreKey(chartKey, weekKey){
+    return chartKey + "::" + (weekKey || currentWeekKey());
+  }
+
+  function getWeekSubmissions(chartKey, weekKey){
+    const store = getState().weekly.submissions;
+    return {
+      1: store[subTierKey(chartKey, weekKey, 1)] || [],
+      2: store[subTierKey(chartKey, weekKey, 2)] || [],
+      3: store[subTierKey(chartKey, weekKey, 3)] || []
+    };
+  }
+
+  function getSubmissionsForTier(chartKey, weekKey, tier){
+    return getWeekSubmissions(chartKey, weekKey)[tier] || [];
+  }
+
+  function saveSubmissionsForTier(chartKey, weekKey, tier, arr){
+    updateState(s => {
+      s.weekly.submissions[subTierKey(chartKey, weekKey, tier)] = arr || [];
+    });
+  }
+
+  function seedCuratedCatalog(chartKey, items){
+    const weekKey = currentWeekKey();
+    const existing = getSubmissionsForTier(chartKey, weekKey, 1);
+    if(existing.length){ return existing; }
+    const seeded = (items || []).map((item, i) => ({
+      id: "seed-" + chartKey + "-" + (i + 1),
+      chartKey,
+      weekKey,
+      tier: 1,
+      songId: item.id,
+      title: item.title,
+      artistName: item.artist,
+      featured: item.featured,
+      artwork: item.artwork || "",
+      submittedAt: 0,
+      status: "active",
+      upvotes: 0,
+      isSeed: true,
+      seedRank: i + 1
+    }));
+    saveSubmissionsForTier(chartKey, weekKey, 1, seeded);
+    return seeded;
+  }
+
+  function seedCatalogTiers(chartKey, groups){
+    const weekKey = currentWeekKey();
+    const seeded = {};
+    [1, 2, 3].forEach(tier => {
+      const items = (groups && groups[tier]) || [];
+      const arr = items.map((item, i) => ({
+        id: "seed-" + chartKey + "-t" + tier + "-" + (i + 1),
+        chartKey,
+        weekKey,
+        tier,
+        songId: item.id != null ? item.id : item.title,
+        title: item.title,
+        artistName: item.artist,
+        featured: item.featured,
+        artwork: item.artwork || "",
+        submittedAt: 0,
+        status: "active",
+        upvotes: tier === 3 ? (Number(item.upvotes) || 0) : 0,
+        isSeed: true,
+        seedRank: tier === 1 ? (i + 1) : null
+      }));
+      saveSubmissionsForTier(chartKey, weekKey, tier, arr);
+      seeded[tier] = arr;
+    });
+    return seeded;
+  }
+
+  function clearChartWeekly(chartKey){
+    updateState(s => {
+      const w = s.weekly;
+      Object.keys(w.submissions).forEach(k => {
+        if(k.indexOf(chartKey + "::") === 0){ delete w.submissions[k]; }
+      });
+      Object.keys(w.snapshots).forEach(k => {
+        if((w.snapshots[k] || {}).chartKey === chartKey){ delete w.snapshots[k]; }
+      });
+      Object.keys(w.ballots).forEach(k => {
+        if(k.indexOf(chartKey + "::") === 0){ delete w.ballots[k]; }
+      });
+    });
+  }
+
+  function seedWeeklySnapshots(chartKey, weeks){
+    const paths = (weeks || []).filter(w => w && w.entries && w.entries.length).slice(-13);
+    if(!paths.length){ return paths; }
+    updateState(s => {
+      paths.forEach(w => {
+        const wk = String(w.weekKey);
+        const rankings = (w.entries || []).map(r => ({
+          submissionId: String(r.submissionId),
+          title: r.title,
+          artistName: r.artistName,
+          artwork: r.artwork || "",
+          isSeed: true,
+          totalPoints: Number(r.votes) || 0,
+          voteCount: Number(r.votes) || 0,
+          rank: Number(r.rank) || 0,
+          pickRate: Number(w.pickRate) || 0,
+          movement: r.movement == null ? null : Number(r.movement)
+        }));
+        s.weekly.snapshots[chartKey + "::" + wk] = {
+          id: "snapshot-" + chartKey + "-" + wk,
+          chartKey,
+          weekKey: wk,
+          publishedAt: Date.now(),
+          rankings
+        };
+      });
+    });
+    return paths;
+  }
+
+  function submitSongToChart(chartKey, meta){
+    const weekKey = currentWeekKey();
+    const sub = {
+      id: "sub-" + Date.now(),
+      chartKey,
+      weekKey,
+      tier: 3,
+      songId: meta.songId || meta.title,
+      title: meta.title,
+      artistName: meta.artistName || "Your Artist Profile",
+      artwork: meta.artwork || "",
+      releaseDate: meta.releaseDate || null,
+      submittedAt: Date.now(),
+      status: "active",
+      upvotes: 0,
+      isSeed: false
+    };
+    const arr = getSubmissionsForTier(chartKey, weekKey, 3);
+    arr.push(sub);
+    saveSubmissionsForTier(chartKey, weekKey, 3, arr);
+    document.dispatchEvent(new CustomEvent("trackhype:song-submitted", {
+      detail: { chartKey, weekKey, submission: sub }
+    }));
+    return sub;
+  }
+
+  function getMainPool(chartKey){
+    const wk = currentWeekKey();
+    return getSubmissionsForTier(chartKey, wk, 1).concat(getSubmissionsForTier(chartKey, wk, 2));
+  }
+
+  function ballotLengthFor(chartKey){
+    const pool = getMainPool(chartKey);
+    return pool.length;
+  }
+
+  function pointsForRank(rank, len){
+    const n = Math.max(1, Number(len) || 1);
+    const r = Math.max(1, Math.min(n, Number(rank) || 1));
+    return n + 1 - r;
+  }
+
+  function getWeekBallots(chartKey, weekKey){
+    const store = getState().weekly.ballots;
+    return store[ballotStoreKey(chartKey, weekKey)] || [];
+  }
+
+  function hasBallotThisWeek(chartKey){
+    return getWeekBallots(chartKey, currentWeekKey()).length > 0;
+  }
+
+  function hasDiscoveryThisWeek(chartKey){
+    const store = getState().weekly.ballots;
+    const key = chartKey + "::" + currentWeekKey() + "::discovery";
+    return (store[key] || []).length > 0;
+  }
+
+  function submitBallot(chartKey, picks){
+    const weekKey = currentWeekKey();
+    if(hasBallotThisWeek(chartKey)){
+      return { ok: false, error: "You already submitted a ballot for this chart this week." };
+    }
+    const pool = getMainPool(chartKey).concat(getSubmissionsForTier(chartKey, weekKey, 3));
+    if(!pool.length){
+      return { ok: false, error: "No songs are competing on this chart yet." };
+    }
+    const len = pool.length;
+    const clean = (picks || [])
+      .map(p => ({ submissionId: String(p.submissionId), rank: Math.round(Number(p.rank)) }))
+      .filter(p => p.submissionId && p.rank >= 1);
+    if(!clean.length){
+      return { ok: false, error: "Rank at least one song on your ballot." };
+    }
+    const ids = clean.map(p => p.submissionId);
+    if(new Set(ids).size !== ids.length){
+      return { ok: false, error: "Each song can appear once on your ballot." };
+    }
+    const poolIds = new Set(pool.map(p => p.id));
+    if(!clean.every(p => poolIds.has(p.submissionId))){
+      return { ok: false, error: "Your ballot contains songs that aren't on this chart." };
+    }
+    const byId = {};
+    pool.forEach(p => { byId[p.id] = p; });
+    const ballot = {
+      id: "ballot-" + Date.now(),
+      chartKey,
+      weekKey,
+      submittedAt: Date.now(),
+      picks: clean.map(p => ({
+        submissionId: p.submissionId,
+        title: byId[p.submissionId].title,
+        artistName: byId[p.submissionId].artistName,
+        rank: p.rank,
+        points: pointsForRank(p.rank, len)
+      }))
+    };
+    updateState(s => {
+      s.weekly.ballots[ballotStoreKey(chartKey, weekKey)] = [ballot];
+    });
+    document.dispatchEvent(new CustomEvent("trackhype:ballot-submitted", {
+      detail: { chartKey, weekKey, ballot }
+    }));
+    return { ok: true, ballot };
+  }
+
+  function submitDiscoveryBallot(chartKey, upvoteIds){
+    const weekKey = currentWeekKey();
+    if(hasDiscoveryThisWeek(chartKey)){
+      return { ok: false, error: "You already voted to advance this week." };
+    }
+    const ids = [...new Set((upvoteIds || []).map(String))];
+    if(!ids.length){
+      return { ok: false, error: "Upvote at least one new drop." };
+    }
+    const cap = 5;
+    if(ids.length > cap){
+      return { ok: false, error: "You can upvote up to " + cap + " songs." };
+    }
+    const votes = {
+      id: "discovery-" + Date.now(),
+      chartKey,
+      weekKey,
+      submittedAt: Date.now(),
+      upvotes: ids
+    };
+    updateState(s => {
+      const store = s.weekly.ballots;
+      store[chartKey + "::" + weekKey + "::discovery"] = [votes];
+      ids.forEach(id => {
+        const sub = (s.weekly.submissions[subTierKey(chartKey, weekKey, 3)] || []).find(x => x.id === id);
+        if(sub){ sub.upvotes = (sub.upvotes || 0) + 1; }
+      });
+    });
+    document.dispatchEvent(new CustomEvent("trackhype:discovery-vote-submitted", {
+      detail: { chartKey, weekKey, votes }
+    }));
+    return { ok: true, votes };
+  }
+
+  function aggregateMainChart(chartKey, weekKey){
+    const wk = weekKey || currentWeekKey();
+    const pool = getSubmissionsForTier(chartKey, wk, 1).concat(getSubmissionsForTier(chartKey, wk, 2));
+    const ballots = getWeekBallots(chartKey, wk);
+    const scores = {};
+    pool.forEach(sub => {
+      scores[sub.id] = {
+        submissionId: sub.id,
+        title: sub.title,
+        artistName: sub.artistName,
+        artwork: sub.artwork,
+        isSeed: !!sub.isSeed,
+        totalPoints: 0,
+        voteCount: 0
+      };
+    });
+    let ballotsUsed = 0;
+    (ballots || []).forEach(b => {
+      ballotsUsed++;
+      (b.picks || []).forEach(p => {
+        const s = scores[p.submissionId];
+        if(s){
+          s.totalPoints += Number(p.points) || 0;
+          s.voteCount++;
+        }
+      });
+    });
+    return Object.keys(scores)
+      .map(k => scores[k])
+      .sort((a, b) => (b.totalPoints - a.totalPoints) || (b.voteCount - a.voteCount))
+      .map((item, idx) => ({
+        ...item,
+        rank: idx + 1,
+        pickRate: ballotsUsed ? Math.round((item.voteCount / ballotsUsed) * 1000) / 10 : 0
+      }));
+  }
+
+  function prevSnapshot(chartKey, weekKey){
+    const wk = weekKey || currentWeekKey();
+    const store = getState().weekly.snapshots;
+    let prev = null;
+    Object.keys(store).forEach(k => {
+      const snap = store[k];
+      if(snap.chartKey === chartKey && snap.weekKey < wk){
+        if(!prev || snap.weekKey > prev.weekKey){ prev = snap; }
+      }
+    });
+    return prev;
+  }
+
+  function getMovementMap(chartKey, weekKey){
+    const prev = prevSnapshot(chartKey, weekKey);
+    const map = {};
+    if(prev){
+      (prev.rankings || []).forEach(r => { map[r.submissionId] = r.rank; });
+    }
+    return map;
+  }
+
+  function getSnapshots(chartKey){
+    const store = getState().weekly.snapshots;
+    return Object.keys(store)
+      .filter(k => store[k].chartKey === chartKey)
+      .map(k => store[k])
+      .sort((a, b) => (a.weekKey < b.weekKey ? 1 : -1));
+  }
+
+  function getSnapshotFor(chartKey, weekKey){
+    return getState().weekly.snapshots[chartKey + "::" + weekKey] || null;
+  }
+
+  function publishWeeklySnapshot(chartKey){
+    const weekKey = currentWeekKey();
+    const rankings = aggregateMainChart(chartKey, weekKey);
+    const prevMap = getMovementMap(chartKey, weekKey);
+    const snapshot = {
+      id: "snapshot-" + chartKey + "-" + weekKey,
+      chartKey,
+      weekKey,
+      publishedAt: Date.now(),
+      rankings: rankings.slice(0, 20).map(r => {
+        const last = prevMap[r.submissionId];
+        let movement = null;
+        if(last != null){ movement = last - r.rank; }
+        else if(!r.isSeed){ movement = "new"; }
+        return { ...r, movement };
+      })
+    };
+    updateState(s => {
+      const store = s.weekly.snapshots;
+      const key = chartKey + "::" + weekKey;
+      store[key] = snapshot;
+      const keys = Object.keys(store).filter(k => store[k].chartKey === chartKey).sort();
+      while(keys.length > 13){
+        const oldest = keys.shift();
+        if(store[oldest] && store[oldest].weekKey !== weekKey){
+          delete store[oldest];
+        }
+      }
+    });
+    document.dispatchEvent(new CustomEvent("trackhype:weekly-reset", {
+      detail: { chartKey, weekKey, snapshot }
+    }));
+    return snapshot;
+  }
+
+  function executeWeeklyReset(chartKey){
+    const weekKey = currentWeekKey();
+    const wkNext = shiftWeekKey(weekKey, 1);
+    const rankings = aggregateMainChart(chartKey, weekKey);
+    const tier1All = getSubmissionsForTier(chartKey, weekKey, 1);
+    const tier2All = getSubmissionsForTier(chartKey, weekKey, 2);
+    const tier3 = getSubmissionsForTier(chartKey, weekKey, 3);
+    const pool = tier1All.concat(tier2All);
+    const byId = {};
+    pool.forEach(sub => { byId[sub.id] = sub; });
+
+    const nextTier1 = rankings.slice(0, 20)
+      .map(r => {
+        const sub = byId[r.submissionId];
+        return sub ? Object.assign({}, sub, { tier: 1, weekKey: wkNext, seedRank: r.rank }) : null;
+      })
+      .filter(Boolean);
+
+    saveSubmissionsForTier(chartKey, wkNext, 1, nextTier1.length ? nextTier1 : tier1All.map(s => Object.assign({}, s, { weekKey: wkNext })));
+
+    const promoted = tier3.slice()
+      .sort((a, b) => (b.upvotes - a.upvotes))
+      .slice(0, Math.max(1, Math.ceil(tier3.length * 0.5)))
+      .map(sub => Object.assign({}, sub, { tier: 2, weekKey: wkNext }));
+
+    saveSubmissionsForTier(chartKey, wkNext, 2, promoted);
+    saveSubmissionsForTier(chartKey, wkNext, 3, []);
+
+    const snapshot = publishWeeklySnapshot(chartKey);
+    document.dispatchEvent(new CustomEvent("trackhype:weekly-reset-done", {
+      detail: { chartKey, weekKey, snapshot }
+    }));
+    return snapshot;
+  }
+
+  /* =========================================================
+     Home Charts (curated genre sections on the home screen)
+     ==========================================================*/
+
+  const HOME_CHARTS_KEY = "trackhype.homeCharts.v1";
+
+  const HOME_GENRES = [
+    "Sungura","Zimdancehall","Soul","Afro-Fusion","Amapiano","Urban Grooves","Dancehall",
+    "Chimurenga","Mbira","Jiti","Mhande","Mbende","Muchongoyo","Mbakumba",
+    "Shangare","Amabhiza","Tuku Music","Afro-Jazz","Zimbabwean Jazz",
+    "Imbube","Kanindo","Zimbabwean Rumba","Afro-Pop","Zim Hip Hop",
+    "Zimbabwean House","Zim EDM","Zim-TrapSoul","R&B","Gospel","Reggae","House"
+  ];
+
+  function defaultHomeCharts(){
+    return {
+      order: HOME_GENRES.slice(),
+      enabled: HOME_GENRES.reduce((m, g) => { m[g] = true; return m; }, {})
+    };
+  }
+
+  function getHomeCharts(){
+    const def = defaultHomeCharts();
+    try{
+      const raw = JSON.parse(localStorage.getItem(HOME_CHARTS_KEY) || "null");
+      if(raw && Array.isArray(raw.order)){
+        const order = raw.order.filter(g => HOME_GENRES.indexOf(g) !== -1);
+        HOME_GENRES.forEach(g => { if(order.indexOf(g) === -1){ order.push(g); } });
+        const enabled = {};
+        HOME_GENRES.forEach(g => {
+          enabled[g] = (raw.enabled && typeof raw.enabled[g] === "boolean")
+            ? raw.enabled[g]
+            : true;
+        });
+        return { order, enabled };
+      }
+    }catch(error){ /* ignore */ }
+    return def;
+  }
+
+  function setHomeCharts(prefs){
+    const cur = getHomeCharts();
+    const order = (prefs && Array.isArray(prefs.order)) ? prefs.order.slice() : cur.order;
+    const enabled = Object.assign({}, cur.enabled, (prefs && prefs.enabled) || {});
+    try{
+      localStorage.setItem(HOME_CHARTS_KEY, JSON.stringify({ order, enabled }));
+    }catch(error){ /* ignore */ }
+    return { order, enabled };
+  }
+
+  /* =========================================================
+     Web Router — gapless in-app navigation (SPA)
+     Target pages are read through a hidden same-origin iframe and
+     their <main> + header + page styles + inline scripts are swapped
+     into THIS document, so the shell (and the <audio> element) is
+     never destroyed. The audio keeps playing across page changes.
+     ========================================================= */
+
+  var PRE_SHELL_PAGES =
+    (function(){
+      var map = {};
+      ["landing.html", "region-selector.html"].forEach(function(name){ map[name] = 1; });
+      return map;
+    })();
+
+  var router = {
+    loading: false,
+    pagePath: "",
+    scrollKey: "trackhype.scrollmap",
+    timerPages: []
+  };
+
+  function isInternalAppUrl(url){
+    try{
+      var u = new URL(url, document.baseURI);
+      if(u.protocol !== "http:" && u.protocol !== "https:" && u.protocol !== "file:"){
+        return false;
+      }
+      if((u.origin || "null") !== (location.origin || "null")){
+        return false;
+      }
+      var name = u.pathname.split("/").pop() || "";
+      if(!/\.html$/i.test(name)){
+        return false;
+      }
+      if(PRE_SHELL_PAGES[name]){
+        return false;
+      }
+      return true;
+    }catch(error){
+      return false;
+    }
+  }
+
+  /* Fingerprints the SPA "path" (pathname + querystring) of a URL. */
+  function routerPath(url){
+    var u = new URL(url, document.baseURI);
+    return u.pathname + u.search;
+  }
+
+  /* Main navigation entry point used by every funnel below and by
+     rewritten onclick="location.href=…" handlers. */
+  function navigate(url){
+    if(FRAGMENT_MODE){
+      window.location = url;
+      return;
+    }
+    if(router.loading){
+      return;
+    }
+    if(!isInternalAppUrl(url)){
+      window.location = url;
+      return;
+    }
+    var parsed;
+    var path;
+    try{
+      parsed = new URL(url, document.baseURI);
+      path = routerPath(url);
+    }catch(error){
+      window.location = url;
+      return;
+    }
+    if(path === router.pagePath){
+      try{
+        if(parsed.hash && swipeState.mode === MODE_PLAYER){
+          settlePanels(true, 1);
+        }
+        var el = parsed.hash ? document.querySelector(parsed.hash) : null;
+        if(el){
+          el.scrollIntoView({ behavior: "auto", block: "start" });
+        }else{
+          window.scrollTo(0, 0);
+        }
+      }catch(error){}
+      return;
+    }
+    try{
+      loadPage(path, false, parsed.hash);
+    }catch(error){
+      router.loading = false;
+      console.error("[TrackHype] SPA navigation failed, doing a full navigation:", error);
+      window.location = new URL(path, location.href).href;
+    }
+  }
+
+  function loadPage(path, replace, hash){
+    router.loading = true;
+    saveCurrentScroll();
+
+    var iframe = document.createElement("iframe");
+    iframe.setAttribute("aria-hidden", "true");
+    iframe.setAttribute("tabindex", "-1");
+    iframe.style.cssText =
+      "position:absolute;left:-99999px;top:0;width:40px;height:40px;" +
+      "border:0;visibility:hidden;pointer-events:none";
+
+    var done = false;
+    var timeout = setTimeout(function(){
+      console.warn("[TrackHype] SPA iframe load timed out, falling back to full navigation");
+      finish(null);
+    }, location.protocol === "file:" ? 3000 : 6000);
+
+    iframe.onload = function(){ finish(iframe); };
+
+    function finish(frame){
+      if(done){ return; }
+      done = true;
+      clearTimeout(timeout);
+      var html = null;
+      if(frame){
+        try{
+          if(frame.contentDocument && frame.contentDocument.documentElement){
+            html = frame.contentDocument.documentElement.outerHTML;
+          }
+        }catch(error){
+          console.warn("[TrackHype] Could not read SPA iframe document:", error);
+        }
+      }
+      try{
+        if(frame && frame.parentNode){
+          frame.parentNode.removeChild(frame);
+        }
+      }catch(error){}
+      try{
+        applyPage(html, path, replace, hash);
+      }catch(error){
+        router.loading = false;
+        console.error("[TrackHype] SPA apply failed, doing a full navigation:", error);
+        var fallbackUrl = path;
+        try{ fallbackUrl = new URL(path, location.href).href; }catch(e){}
+        window.location = fallbackUrl;
+      }
+    }
+
+    document.body.appendChild(iframe);
+    try{
+      iframe.src = new URL(path, location.href).href.split("#")[0] + "#__fragment";
+    }catch(error){
+      done = true;
+      clearTimeout(timeout);
+      router.loading = false;
+      console.error("[TrackHype] Invalid SPA target, doing a full navigation:", error);
+      window.location = path;
+    }
+  }
+
+  function applyPage(html, path, replace, hash){
+    router.loading = false;
+    router.pagePath = path;
+
+    var fullUrl;
+    try{
+      fullUrl = new URL(path, location.href).href;
+    }catch(error){
+      fullUrl = path;
+    }
+
+    if(!html){
+      window.location = fullUrl;
+      return;
+    }
+
+    flushPageTimers();
+    clearTimeout(resumeFallbackTimer);
+
+    var doc;
+    try{
+      doc = new DOMParser().parseFromString(html, "text/html");
+    }catch(error){
+      window.location = fullUrl;
+      return;
+    }
+
+    if(doc.title){
+      document.title = doc.title;
+    }
+
+    var activeNav = "";
+    if(doc.body && doc.body.dataset.activeNav){
+      activeNav = doc.body.dataset.activeNav;
+    }
+    if(document.body){
+      document.body.setAttribute("data-active-nav", activeNav);
+    }
+
+    /* --- page styles (per-page <style> blocks) ------------------- */
+    var styleText = [];
+    var styles = doc.querySelectorAll("style");
+    for(var i = 0; i < styles.length; i++){
+      styleText.push(styles[i].textContent || "");
+    }
+    ensurePageStyleElement().textContent = styleText.join("\n");
+
+    /* --- <main> swap --------------------------------------------- */
+    var liveMain = document.querySelector("main");
+    var freshMain = doc.querySelector("main");
+    if(freshMain && liveMain){
+      var mainHtml = rewriteNavAttrs(buildMainHtml(freshMain));
+      var holder = document.createElement("div");
+      holder.innerHTML = mainHtml;
+      var parsedMain = holder.firstElementChild;
+      if(parsedMain){
+        liveMain.parentNode.replaceChild(parsedMain, liveMain);
+      }
+    }
+
+    /* --- header swap --------------------------------------------- */
+    var liveHeader = document.querySelector("[data-app-header]");
+    var freshHeader = doc.querySelector("[data-app-header]");
+    if(liveHeader && freshHeader){
+      liveHeader.innerHTML = freshHeader.innerHTML;
+    }
+
+    /* --- run the target page's inline scripts -------------------- */
+    var blocks = doc.querySelectorAll("script:not([src])");
+    withTrackedTimers(function(){
+      for(var j = 0; j < blocks.length; j++){
+        runPageScript(blocks[j].textContent || "");
+      }
+    });
+
+    /* --- refresh shell state after the swap ---------------------- */
+    try{
+      renderBottomNavigation(activeNav);
+      swipeState.mode = (getState().bottomMode === MODE_PLAYER)
+        ? MODE_PLAYER
+        : MODE_NAV;
+      seat();
+      syncBottomPanels();
+    }catch(error){
+      console.error("[TrackHype] shell refresh failed after SPA swap:", error);
+    }
+
+    var saved = savedScrollFor(path);
+    if(hash){
+      var el = document.querySelector(hash);
+      if(el){
+        el.scrollIntoView({ behavior: "auto", block: "start" });
+      }else{
+        window.scrollTo(0, saved >= 0 ? saved : 0);
+      }
+    }else{
+      window.scrollTo(0, saved >= 0 ? saved : 0);
+    }
+
+    try{
+      if(replace){
+        history.replaceState({ thPath: path }, "", path);
+      }else{
+        history.pushState({ thPath: path }, "", path);
+      }
+    }catch(error){ /* file:// may reject history updates — stay in-page */ }
+  }
+
+  function buildMainHtml(main){
+    var out = "<main";
+    var attrs = main.attributes;
+    for(var i = 0; i < attrs.length; i++){
+      var attr = attrs[i];
+      out += " " + attr.name + '="' + esc(attr.value) + '"';
+    }
+    out += ">" + main.innerHTML + "</main>";
+    return out;
+  }
+
+  /* Converts baked-in onclick="location.href='x'" (and window.location
+     variants, plus "song.html?" + expr() concat forms) to
+     TrackHype.navigate(...) so the SPA routes them. RHS must be a quoted
+     string literal (optionally + concat tail) — the dominant pattern. */
+  function rewriteNavAttrs(text){
+    return String(text).replace(
+      /([\s\"'`(){}\[\]:;,>=])((?:window\.)?location\.href)\s*=\s*((?:"[^"]*"|'[^']*'|`[^`]*`)(?:\s*\+\s*[^;\n]+)?)/g,
+      function(whole, prefix, name, rhs){
+        return prefix + "TrackHype.navigate(" + rhs + ")";
+      }
+    );
+  }
+
+  /* Runs a page's inline script in the shell document. const/let are
+     rewritten to var (they only hold per-visit data and must not throw
+     "already declared" when the same page is reopened). */
+  function runPageScript(code){
+    if(!code){ return; }
+    try{
+      code = rewriteNavAttrs(code)
+        .replace(/\bconst\s+/g, "var ")
+        .replace(/\blet\s+/g, "var ");
+      var script = document.createElement("script");
+      script.textContent = code;
+      (document.head || document.documentElement).appendChild(script);
+      script.parentNode.removeChild(script);
+    }catch(error){
+      console.error("[TrackHype] page script failed:", error);
+    }
+  }
+
+  function ensurePageStyleElement(){
+    var el = document.getElementById("th_pagestyles");
+    if(el){ return el; }
+    el = document.createElement("style");
+    el.id = "th_pagestyles";
+    el.setAttribute("data-th-pagestyles", "1");
+    (document.head || document.documentElement).appendChild(el);
+    return el;
+  }
+
+  /* Timer isolation: timers (and animation frame handles) created by a
+     page's scripts are flushed when the user navigates away, so nothing
+     from a previous page can fire against the swapped-in DOM. */
+  function withTrackedTimers(fn){
+    var page = { ints: {}, tos: {}, raf: {} };
+    var savedSetInterval    = window.setInterval;
+    var savedSetTimeout     = window.setTimeout;
+    var savedClearInterval  = window.clearInterval;
+    var savedClearTimeout   = window.clearTimeout;
+    var savedRAF            = window.requestAnimationFrame;
+    var savedCancelRAF      = window.cancelAnimationFrame;
+    window.setInterval = function(f, t){
+      var id = savedSetInterval(f, t);
+      page.ints[id] = true;
+      return id;
+    };
+    window.setTimeout = function(f, t){
+      var id = savedSetTimeout(f, t);
+      page.tos[id] = true;
+      return id;
+    };
+    window.clearInterval = function(id){
+      delete page.ints[id];
+      savedClearInterval(id);
+    };
+    window.clearTimeout = function(id){
+      delete page.tos[id];
+      savedClearTimeout(id);
+    };
+    window.requestAnimationFrame = function(f){
+      var id = savedRAF(f);
+      page.raf[id] = true;
+      return id;
+    };
+    window.cancelAnimationFrame = function(id){
+      delete page.raf[id];
+      savedCancelRAF(id);
+    };
+    try{
+      fn();
+    }finally{
+      window.setInterval          = savedSetInterval;
+      window.setTimeout           = savedSetTimeout;
+      window.clearInterval        = savedClearInterval;
+      window.clearTimeout         = savedClearTimeout;
+      window.requestAnimationFrame = savedRAF;
+      window.cancelAnimationFrame  = savedCancelRAF;
+    }
+    router.timerPages.push(page);
+  }
+
+  function flushPageTimers(){
+    for(var i = 0; i < router.timerPages.length; i++){
+      var page = router.timerPages[i];
+      for(var k in page.ints){ try{ clearInterval(parseInt(k, 10)); }catch(e){} }
+      for(var j in page.tos){  try{ clearTimeout(parseInt(j, 10));  }catch(e){} }
+      for(var r in page.raf){  try{ cancelAnimationFrame(parseInt(r, 10)); }catch(e){} }
+    }
+    router.timerPages.length = 0;
+  }
+
+  function savedScrollFor(path){
+    try{
+      var map = JSON.parse(sessionStorage.getItem(router.scrollKey) || "{}");
+      var value = map[path];
+      return (typeof value === "number" && value >= 0) ? value : -1;
+    }catch(error){
+      return -1;
+    }
+  }
+
+  function saveCurrentScroll(){
+    try{
+      var map = JSON.parse(sessionStorage.getItem(router.scrollKey) || "{}");
+      map[router.pagePath] = (window.pageYOffset || 0);
+      sessionStorage.setItem(router.scrollKey, JSON.stringify(map));
+    }catch(error){}
+  }
+
+  /* Capture-phase click routing for <a href> links (header, nav, content). */
+  function bindGlobalNavigation(){
+    document.addEventListener("click", function(event){
+      var target = event.target;
+      var link = (target && target.closest) ? target.closest("a[href]") : null;
+      if(!link){ return; }
+      if(swipeState.clickGuard){
+        swipeState.clickGuard = false;
+        clearTimeout(swipeState.guardTimer);
+        event.preventDefault();
+        return;
+      }
+      if(event.defaultPrevented){ return; }
+      if(event.metaKey || event.ctrlKey || event.shiftKey || event.altKey){ return; }
+      if(event.button && event.button !== 0){ return; }
+      if(link.target && link.target !== "_self" && link.target !== ""){ return; }
+      if(link.hasAttribute("download")){ return; }
+      var href = link.getAttribute("href") || "";
+      if(/^(#|mailto:|tel:|javascript:|data:|about:)/i.test(href.replace(/^\s+/, ""))){
+        return;
+      }
+      if(!isInternalAppUrl(href)){ return; }
+      event.preventDefault();
+
+      /* Dock links (bottom nav, promo art/meta) always do a full page load so
+         the destination is guaranteed to arrive; interior links keep the SPA. */
+      if(link.closest(".bottom-nav-item, .promo-art, .promo-meta")){
+        console.log("[TrackHype] dock navigate (full load): " + href);
+        window.location.href = new URL(href, document.baseURI).href;
+        return;
+      }
+      console.log("[TrackHype] clicking link: " + href);
+      navigate(new URL(href, document.baseURI).href);
+    }, true);
+  }
+
+  window.addEventListener("popstate", function(){
+    var path = location.pathname + location.search;
+    if(path === router.pagePath){
+      return;
+    }
+    if(!isInternalAppUrl(path)){
+      return;
+    }
+    loadPage(path, true, location.hash || "");
+  });
+
+  /* =========================================================
+     Bottom Footer Boot
+     The bottom nav + player are painted by JS into empty host
+     containers. Paint them FIRST and isolate every wiring step so
+     a single failure can never blank the footer again.
+     ========================================================= */
+
+  let shellBooted = false;
+
+  function bootShell(activeNav){
+
+    if(FRAGMENT_MODE){
+      return;
+    }
+
+    const active =
+      activeNav ||
+      (document.body && document.body.dataset.activeNav) ||
+      "";
+
+    const paint = (name, fn) => {
+      try{
+        fn();
+      }catch(err){
+        console.error("[TrackHype] " + name + " failed:", err);
+      }
+    };
+
+    paint("renderBottomNavigation", () => renderBottomNavigation(active));
+    paint("renderPlayer", renderPlayer);
+
+    if(shellBooted){
+      return;
+    }
+    shellBooted = true;
+
+    paint("syncBottomPanels", syncBottomPanels);
+    paint("initialiseHeaderScroll", initialiseHeaderScroll);
+    paint("initialiseGlobalPlayer", initialiseGlobalPlayer);
+    paint("initialiseModal", initialiseModal);
+    paint("attemptAutoResume", attemptAutoResume);
+    paint("bindGlobalNavigation", bindGlobalNavigation);
+
+    if(document.body){
+      document.body.dataset.trackhypeBoot = "ok";
+    }
+    console.log("[TrackHype] shell booted");
+  }
+
+  /* =========================================================
+     Public TrackHype API
+     ==========================================================*/
+
+  window.TrackHype = {
+
+setState,
+
+    updateState,
+
+    getState,
+
+    esc,
+
+    navigate,
+
+    fmtMoney,
+
+    fmtDate,
+
+    statusClass,
+
+    getArtwork,
+
+    toast,
+
+    HOME_GENRES,
+    getHomeCharts,
+    setHomeCharts,
+
+    DEMO_PLAYLIST: (function(){
+      return window.DEMO_SONGS_DATA || [];
+    })(),
+
+    playDemo: function(query){
+      return playDemoTrack(query);
+    },
+
+    togglePlayback: function(){
+      return toggleAudioPlayback();
+    },
+
+    SONG_LYRICS,
+
+    openSheet,
+
+    closeSheet,
+
+    makeNewMusicData,
+
+    CATALOG,
+    searchInCatalog,
+
+    chartId,
+    buildChartDataset,
+    maxForChart,
+    pointsForPosition,
+    positionFromPoints,
+    hasVotedToday,
+    isSingleVote,
+    recordVote,
+    confirmVoteSheet,
+    moveSong,
+    publishChart,
+    aggregateVotes,
+
+    currentWeekKey,
+    shiftWeekKey,
+    weekKeyToDateRange,
+    getNextResetTime,
+    weekCountdownText,
+    getWeekSubmissions,
+    getSubmissionsForTier,
+    seedCuratedCatalog,
+    seedCatalogTiers,
+    clearChartWeekly,
+    seedWeeklySnapshots,
+    submitSongToChart,
+    getMainPool,
+    ballotLengthFor,
+    pointsForRank,
+    getWeekBallots,
+    hasBallotThisWeek,
+    hasDiscoveryThisWeek,
+    submitBallot,
+    submitDiscoveryBallot,
+    aggregateMainChart,
+    getMovementMap,
+    getSnapshots,
+    getSnapshotFor,
+    publishWeeklySnapshot,
+    executeWeeklyReset,
+
+init: function({
+      activeNav
+    } = {}){
+      bootShell(activeNav);
+    }
+
+  };
+
+  /* =========================================================
+     Immediate shell paint
+     Scripts load at the end of <body>, so the footer host
+     containers already exist here. Paint the bottom nav + player
+     right away — independent of DOMContentLoaded — so they appear
+     even if a later script or boot step fails. The DOMContentLoaded
+     handler below re-invokes init() as a safe idempotent repaint;
+     wiring itself runs only once via shellBooted.
+     ========================================================= */
+
+  if(document.body && !FRAGMENT_MODE){
+    window.TrackHype.init({
+      activeNav: document.body.dataset.activeNav
+    });
+  }
+
+  /* =========================================================
+     Automatic Initialisation
+     ========================================================= */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+      window.TrackHype?.init();
+
+      var savedRegion = null;
+      try { savedRegion = JSON.parse(localStorage.getItem("trackhype.region") || "null"); } catch(e){ savedRegion = null; }
+      var headerFlag = document.getElementById("headerFlag");
+      if(headerFlag){
+        var code = (savedRegion && savedRegion.code) ? savedRegion.code : "ZW";
+        headerFlag.textContent = String(code).toUpperCase();
+        headerFlag.setAttribute("aria-label", (savedRegion && savedRegion.name ? savedRegion.name : "Zimbabwe") + " — select region");
+        if(savedRegion && savedRegion.name){ headerFlag.title = savedRegion.name; }
+      }
+
+    }
+  );
+
+})();

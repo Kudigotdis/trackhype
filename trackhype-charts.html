@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en-ZW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" type="image/webp" href="Assets/logos/TrackHype Logo Design Badge.webp">
+  <title>All Charts — TrackHype</title>
+  <link rel="stylesheet" href="trackhype.css">
+  <style>
+    .tc-kicker{font-size:11px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:var(--th-primary-dark)}
+    .tc-title{font-size:24px;font-weight:900;color:var(--th-text);margin-top:4px}
+    .tc-sub{font-size:13px;color:var(--th-muted);margin-top:6px;line-height:1.6}
+    .tc-wrap{display:flex;align-items:flex-start;gap:6px;margin-top:18px}
+    .tc-groups{flex:1;min-width:0;margin-right:20px}
+    .tc-group-title{font-size:11px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:var(--th-faint);margin:16px 0 10px 2px}
+    .tc-group:first-child .tc-group-title{margin-top:0}
+    .tc-list{display:flex;flex-direction:column;gap:8px}
+    .tc-item{display:flex;align-items:center;gap:12px;width:100%;background:var(--th-bg);border:1px solid var(--th-border);border-radius:var(--th-radius-sm);padding:12px;cursor:pointer;text-align:left;transition:box-shadow .15s ease,transform .05s ease}
+    .tc-item:active{transform:scale(.99)}
+    .tc-item.is-current{border-color:var(--th-primary);box-shadow:0 0 0 1px var(--th-primary)}
+    .tc-art{flex:none;width:44px;height:44px;border-radius:10px;object-fit:cover;background:var(--th-grey-2);border:1px solid var(--th-border-soft)}
+    .tc-meta{flex:1;min-width:0}
+    .tc-name{font-weight:900;font-size:14px;color:var(--th-text)}
+    .tc-sub{font-size:12px;color:var(--th-muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .tc-check{flex:none;width:20px;height:20px;border-radius:50%;border:2px solid var(--th-border);display:grid;place-items:center;font-size:12px;color:#fff}
+    .tc-item.is-current .tc-check{background:var(--th-primary);border-color:var(--th-primary)}
+    .tc-index{position:fixed;right:6px;top:50%;transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;align-items:center;gap:1px;background:rgba(255,255,255,.85);border:1px solid var(--th-border-soft);border-radius:10px;padding:6px 3px}
+    .tc-idx{flex:none;width:18px;height:18px;border:0;background:none;padding:0;font-size:10px;font-weight:800;color:var(--th-muted);cursor:pointer;text-align:center;line-height:18px}
+    .tc-idx.is-active{color:var(--th-primary-dark);font-size:11px}
+  </style>
+</head>
+<body data-active-nav="history.html">
+
+  <header class="th-header" data-app-header>
+    <div class="th-header-inner">
+      <button class="th-btn primary th-header-back" type="button" onclick="history.back()">Back</button>
+      <a class="th-brand" href="index.html">
+        <img class="th-logo-badge" src="Assets/logos/TrackHype Logo Design Badge.webp" alt="TrackHype">
+        <img class="th-logo-text" src="Assets/logos/track-hype-text-logo.webp" alt="TrackHype">
+      </a>
+    </div>
+  </header>
+
+  <main class="th-app">
+    <div class="th-shell">
+
+      <section>
+        <div class="tc-kicker">Charts</div>
+        <h1 class="tc-title">All Charts</h1>
+        <p class="tc-sub">Pick a chart to open its ranking history. Charts are listed A–Z — tap one to switch.</p>
+      </section>
+
+      <div class="tc-wrap">
+        <div class="tc-groups" id="chartGroups"></div>
+        <nav class="tc-index" id="chartIndex" aria-label="Chart index"></nav>
+      </div>
+
+      <section>
+        <button class="th-btn primary block" type="button" onclick="history.back()">Back</button>
+      </section>
+
+    </div>
+  </main>
+
+  <div class="bottom-swipe" data-bottom-swipe>
+    <nav class="bottom-nav" data-bottom>
+      <div class="bottom-nav-inner" data-nav-host></div>
+    </nav>
+
+    <aside class="promo-player" data-player></aside>
+  </div>
+
+  <div class="th-modal-backdrop" data-modal>
+    <div class="th-sheet" role="dialog" aria-modal="true">
+      <div class="th-sheet-handle"></div>
+      <h3 data-modal-title></h3>
+      <div data-modal-body></div>
+      <div class="th-sheet-actions" data-modal-actions></div>
+    </div>
+  </div>
+
+  <script src="demo-playlist.js"></script>
+  <script src="trackhype.js"></script>
+  <script>
+    const CHART_KEY = "trackhype.historyChart";
+    const DEFAULT_CHART = "National Top 100";
+    const PLACEHOLDER_SVG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect width='80' height='80' rx='14' fill='%23eef3f1'/%3E%3Ccircle cx='40' cy='40' r='18' fill='%2301db8b'/%3E%3Cpath d='M34 52V30l14-3v22' fill='none' stroke='%2302925e' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E";
+    const CHARTS = [
+      {name: "Amapiano Top 20",        meta: "Amapiano — South Africa",   art: "Assets/charts/top_20_house/cover.jpg"},
+      {name: "Gospel Top 20",          meta: "Gospel — Zimbabwe",         art: PLACEHOLDER_SVG},
+      {name: "National Top 100",       meta: "All Genres — Zimbabwe",     art: "Assets/charts/top_40_chart/cover.jpg"},
+      {name: "R&B Top 20",             meta: "R&B — Zimbabwe",            art: "Assets/charts/top_20_rnb_chart/cover.jpg"},
+      {name: "Sungura Top 20",         meta: "Sungura — Zimbabwe",        art: PLACEHOLDER_SVG},
+      {name: "Top 25 Local Hip-Hop",   meta: "Zim Hip Hop — Zimbabwe",    art: "Assets/charts/top_25_local_hip_hop/cover.jpg"},
+      {name: "Top 40 Chart",           meta: "All Genres — Zimbabwe",     art: "Assets/charts/top_40_chart/cover.jpg"},
+      {name: "Zim Hip Hop Top 20",     meta: "Zim Hip Hop — Zimbabwe",    art: "Assets/charts/top_25_local_hip_hop/cover.jpg"},
+      {name: "Zimdancehall Top 20",    meta: "Zimdancehall — Zimbabwe",   art: PLACEHOLDER_SVG},
+      {name: "Zimbabwean House Top 20",meta: "House — Zimbabwe",          art: "Assets/charts/top_20_house/cover.jpg"}
+    ];
+
+    function loadChart(){
+      try{ const v = localStorage.getItem(CHART_KEY); if(v){ return v; } }catch(e){}
+      return DEFAULT_CHART;
+    }
+
+    function firstLetter(name){
+      const m = String(name).match(/^[A-Za-z]/);
+      return m ? m[0].toUpperCase() : "#";
+    }
+
+    function itemHtml(c, current){
+      const sel = c.name === current ? " is-current" : "";
+      return `<button type="button" class="tc-item${sel}" data-name="${TrackHype.esc(c.name)}">
+        <img class="tc-art" src="${TrackHype.esc(c.art)}" onerror="this.style.visibility='hidden'" alt="">
+        <span class="tc-meta"><span class="tc-name">${TrackHype.esc(c.name)}</span><span class="tc-sub">${TrackHype.esc(c.meta)}</span></span>
+        <span class="tc-check">✓</span>
+      </button>`;
+    }
+
+    function render(){
+      const sorted = CHARTS.slice().sort((a, b) => String(a.name).localeCompare(String(b.name)));
+      const groups = {};
+      sorted.forEach(c => {
+        const l = firstLetter(c.name);
+        (groups[l] = groups[l] || []).push(c);
+      });
+      const current = loadChart();
+      const letters = Object.keys(groups).sort();
+      const listEl = document.getElementById("chartGroups");
+      listEl.innerHTML = letters.map(l =>
+        `<div class="tc-group" data-letter="${l}"><div class="tc-group-title">${l}</div><div class="tc-list">` +
+        groups[l].map(c => itemHtml(c, current)).join("") +
+        `</div></div>`).join("") || "";
+
+      const indexEl = document.getElementById("chartIndex");
+      indexEl.innerHTML = ["#"].concat("ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("")).map(l =>
+        `<button type="button" class="tc-idx" data-letter="${l}">${l}</button>`).join("");
+      updateActiveLetter();
+    }
+
+    function updateActiveLetter(){
+      const base = 70;
+      let active = "";
+      document.querySelectorAll(".tc-group").forEach(g => {
+        if(g.offsetTop <= window.scrollY + base){ active = g.dataset.letter; }
+      });
+      document.querySelectorAll(".tc-idx").forEach(b => {
+        b.classList.toggle("is-active", b.dataset.letter === active);
+      });
+    }
+
+    document.getElementById("chartGroups").addEventListener("click", function(ev){
+      const btn = ev.target.closest(".tc-item");
+      if(!btn){ return; }
+      const name = btn.dataset.name;
+      try{ localStorage.setItem(CHART_KEY, name); }catch(e){}
+      if(TrackHype && TrackHype.toast){ TrackHype.toast("Chart set to " + name); }
+      if(history.length >= 2){ history.back(); } else { TrackHype.navigate("history.html"); }
+    });
+
+    document.getElementById("chartIndex").addEventListener("click", function(ev){
+      const b = ev.target.closest(".tc-idx");
+      if(!b){ return; }
+      const l = b.dataset.letter;
+      if(l === "#"){ window.scrollTo({ top: 0, behavior: "smooth" }); return; }
+      const g = document.getElementById("chartGroups").querySelector('[data-letter="' + l + '"]');
+      if(g){ g.scrollIntoView({ behavior: "smooth", block: "start" }); }
+    });
+
+    window.addEventListener("scroll", updateActiveLetter, { passive: true });
+
+    render();
+  </script>
+</body>
+</html>

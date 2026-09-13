@@ -1,0 +1,758 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>TrackHype — Bottom Nav + Promo Player</title>
+<style>
+/* ==========================================================================
+   TrackHype bottom surface — navigation + promo player
+   ========================================================================== */
+:root{
+  --th-primary:#e85d04;
+  --th-primary-dark:#c44b00;
+  --th-ink:#17202a;
+  --th-muted:#77808b;
+  --th-line:#e5e7eb;
+  --th-soft:#fff1e8;
+  --th-ease:cubic-bezier(.25,.8,.3,1);
+  --th-dur:.28s;
+  --th-nav-h:64px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:var(--th-ink);
+  background:#f6f7f8;
+  /* clear the tallest panel (player) + the home indicator */
+  padding-bottom:calc(112px + env(safe-area-inset-bottom,0px));
+  -webkit-tap-highlight-color:transparent;
+}
+
+/* --------------------------------------------------------------------------
+   Demo filler — NOT part of the component. Only here so vertical scrolling
+   over the bar can actually be verified.
+   -------------------------------------------------------------------------- */
+.demo-filler{max-width:720px;margin:0 auto;padding:28px 20px 0;font-size:14px}
+.demo-filler h1{font-size:19px;margin:0 0 6px}
+.demo-filler p{margin:0 0 20px;color:var(--th-muted)}
+.demo-card{
+  background:#fff;border:1px solid var(--th-line);border-radius:14px;
+  padding:18px 20px;margin-bottom:12px;
+}
+.demo-card b{display:block;font-size:14px;margin-bottom:4px}
+.demo-card span{font-size:13px;color:var(--th-muted)}
+
+/* ==========================================================================
+   THE COMPONENT
+   ========================================================================== */
+.bottom-swipe{
+  position:fixed;
+  left:0;right:0;bottom:0;
+  height:0;                       /* panels are absolutely anchored, so the
+                                     wrapper itself takes no vertical space   */
+  z-index:50;
+  touch-action:pan-y;             /* browser keeps vertical scroll            */
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-tap-highlight-color:transparent;
+}
+
+/* --- the two panels ------------------------------------------------------- */
+.bottom-nav,
+.promo-player{
+  position:absolute;
+  left:0;right:0;bottom:0;
+  background:#fff;
+  border-top:1px solid var(--th-line);
+  box-shadow:0 -8px 24px rgba(16,24,40,.08);
+  padding-left:env(safe-area-inset-left,0px);
+  padding-right:env(safe-area-inset-right,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  will-change:transform;
+  backface-visibility:hidden;
+  transition:transform var(--th-dur) var(--th-ease);
+  touch-action:pan-y;
+}
+/* while the finger is down the panels must track it 1:1 */
+.bottom-swipe.is-dragging .bottom-nav,
+.bottom-swipe.is-dragging .promo-player{transition:none}
+/* used for silent re-seating after a swipe */
+.bottom-swipe.no-anim .bottom-nav,
+.bottom-swipe.no-anim .promo-player{transition:none}
+
+/* --- bottom navigation ---------------------------------------------------- */
+.bottom-nav-inner{
+  height:var(--th-nav-h);
+  max-width:760px;
+  margin:0 auto;
+  padding:6px 10px;
+  display:flex;
+  align-items:stretch;
+  gap:4px;
+}
+.bottom-nav-item{
+  flex:1 1 0;
+  min-width:44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:12px;
+  color:var(--th-muted);
+  text-decoration:none;
+  transition:color .15s ease,background-color .15s ease,transform .15s ease;
+}
+.bottom-nav-item svg{width:24px;height:24px;display:block;pointer-events:none}
+@media (hover:hover){
+  .bottom-nav-item:hover{color:var(--th-ink);background:#f3f4f6}
+}
+.bottom-nav-item:active{transform:scale(.92)}
+.bottom-nav-item:focus-visible{outline:2px solid var(--th-primary);outline-offset:-2px}
+.bottom-nav-item[aria-current="page"]{color:var(--th-primary);background:var(--th-soft)}
+
+/* --- promo player --------------------------------------------------------- */
+.promo-player-inner{
+  max-width:760px;
+  margin:0 auto;
+  padding:14px 16px 12px;         /* space above the bar + side gaps          */
+  display:flex;
+  flex-direction:column;
+  gap:12px;                       /* progress bar sits on its own line        */
+}
+
+.promo-progress{
+  height:4px;
+  border-radius:999px;
+  background:#eceff1;
+  overflow:hidden;
+}
+.promo-progress-fill{
+  display:block;
+  height:100%;
+  width:100%;
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--th-primary),var(--th-primary-dark));
+  transform:scaleX(0);
+  transform-origin:left center;
+  will-change:transform;
+}
+
+.promo-main{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.promo-link{
+  flex:1 1 auto;
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:2px;
+  margin:-2px;
+  border-radius:12px;
+  color:inherit;
+  text-decoration:none;
+}
+.promo-link:focus-visible{outline:2px solid var(--th-primary);outline-offset:2px}
+
+.promo-art{
+  flex:0 0 auto;
+  width:46px;height:46px;
+  border-radius:10px;
+  overflow:hidden;
+  background:var(--th-ink);
+  display:grid;place-items:center;
+}
+.promo-art img{width:100%;height:100%;object-fit:cover;display:block}
+
+.promo-meta{min-width:0;display:flex;flex-direction:column;gap:2px}
+.promo-artist{
+  font-size:13px;font-weight:800;color:var(--th-ink);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.promo-title{
+  font-size:12px;color:var(--th-muted);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+
+.promo-toggle{
+  flex:0 0 auto;
+  width:44px;height:44px;
+  display:grid;place-items:center;
+  border:0;border-radius:50%;
+  background:var(--th-primary);
+  color:#fff;
+  cursor:pointer;
+  transition:transform .15s ease,filter .15s ease;
+}
+@media (hover:hover){ .promo-toggle:hover{filter:brightness(1.08)} }
+.promo-toggle:active{transform:scale(.93)}
+.promo-toggle:focus-visible{outline:2px solid var(--th-ink);outline-offset:2px}
+.promo-toggle svg{width:20px;height:20px;display:block;pointer-events:none}
+.promo-toggle .icon-pause{display:none}
+.promo-toggle.is-playing .icon-play{display:none}
+.promo-toggle.is-playing .icon-pause{display:block}
+
+@media (prefers-reduced-motion:reduce){
+  .bottom-nav,.promo-player{transition-duration:1ms}
+  .bottom-nav-item,.promo-toggle{transition-duration:1ms}
+}
+</style>
+</head>
+<body>
+
+<!-- ==== filler (delete in production) ==================================== -->
+<div class="demo-filler">
+  <h1>Bottom surface test page</h1>
+  <p>Swipe the bar left / right. Drag it vertically — the page should still scroll.</p>
+  <div class="demo-card"><b>Card one</b><span>Scroll me.</span></div>
+  <div class="demo-card"><b>Card two</b><span>Vertical drags over the bar scroll the page.</span></div>
+  <div class="demo-card"><b>Card three</b><span>Horizontal drags of 48px+ switch panels.</span></div>
+  <div class="demo-card"><b>Card four</b><span>A quick fling switches panels too.</span></div>
+  <div class="demo-card"><b>Card five</b><span>Tapping a nav icon never registers as a swipe.</span></div>
+  <div class="demo-card"><b>Card six</b><span>Play/pause and the promo links stay clickable — dock links navigate on tap-release.</span></div>
+  <div class="demo-card"><b>Card seven</b><span>Keep scrolling…</span></div>
+  <div class="demo-card"><b>Card eight</b><span>…almost there.</span></div>
+  <div class="demo-card"><b>Card nine</b><span>Done.</span></div>
+</div>
+
+<!-- ==== THE COMPONENT ==================================================== -->
+<div class="bottom-swipe" data-bottom-swipe>
+
+  <nav class="bottom-nav" data-bottom aria-label="Primary">
+    <div class="bottom-nav-inner" data-nav-host>
+
+      <a class="bottom-nav-item" href="index.html" aria-current="page" aria-label="Hyped" title="Hyped">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <path d="M3.5 10.6 12 3.9l8.5 6.7V20a1 1 0 0 1-1 1h-4.6v-6H9.1v6H4.5a1 1 0 0 1-1-1z"/>
+        </svg>
+      </a>
+
+      <a class="bottom-nav-item" href="history.html" aria-label="History" title="History">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="8.5"/><path d="M12 7.4V12l3.1 1.9"/>
+        </svg>
+      </a>
+
+      <a class="bottom-nav-item" href="artists.html" aria-label="Artists" title="Artists">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <path d="M9 18V6.2l10-2V16"/>
+          <circle cx="6.4" cy="18" r="2.6"/><circle cx="16.4" cy="16" r="2.6"/>
+        </svg>
+      </a>
+
+      <a class="bottom-nav-item" href="search.html" aria-label="Search" title="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <circle cx="11" cy="11" r="7"/><path d="m20.2 20.2-3.6-3.6"/>
+        </svg>
+      </a>
+
+      <a class="bottom-nav-item" href="menu.html" aria-label="Menu" title="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <path d="M4 7h16M4 12h16M4 17h16"/>
+        </svg>
+      </a>
+
+    </div>
+  </nav>
+
+  <aside class="promo-player" data-player aria-label="Now playing">
+    <div class="promo-player-inner">
+
+      <!-- own line, inset from both edges, space above it -->
+      <div class="promo-progress" role="progressbar"
+           aria-label="Track progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <span class="promo-progress-fill"></span>
+      </div>
+
+      <div class="promo-main">
+
+        <a class="promo-art" href="playlists.html" aria-label="Open playlists">
+            <img alt="" width="46" height="46" decoding="async"
+                 src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23e85d04'/%3E%3Cstop offset='1' stop-color='%23ff9e3d'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='96' height='96' fill='url(%23g)'/%3E%3Cg fill='%23ffffff' opacity='.92'%3E%3Crect x='30' y='46' width='7' height='24' rx='3.5'/%3E%3Crect x='44.5' y='32' width='7' height='38' rx='3.5'/%3E%3Crect x='59' y='40' width='7' height='30' rx='3.5'/%3E%3C/g%3E%3C/svg%3E">
+        </a>
+
+        <a class="promo-meta" href="playlist.html?id=wokeeyes" aria-label="Open Wokeeyes playlist">
+          <span class="promo-artist">Wokeeyes</span>
+          <span class="promo-title">Broken Trophies</span>
+        </a>
+
+        <button class="promo-toggle" type="button" aria-label="Play" aria-pressed="false">
+          <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M8 5.2v13.6L19 12z" fill="currentColor"/>
+          </svg>
+          <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M8 5.2h3.1v13.6H8zM12.9 5.2H16v13.6h-3.1z" fill="currentColor"/>
+          </svg>
+        </button>
+
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+<script>
+/* ==========================================================================
+   TrackHype bottom surface — swipe engine
+   --------------------------------------------------------------------------
+   • 2 panels on an infinite loop; any qualifying horizontal drag moves to
+     the other panel, whichever direction it came from.
+   • Axis lock at 8px, switch at 48px or a fling.
+   • Never preventDefault on pointer-down — taps stay taps.
+   • Pointer capture is DEFERRED until a real drag clears the switch
+     threshold, so taps on the nav / promo links are not retargeted.
+   • Dock links don't even rely on the synthetic click: they navigate on
+     tap-release (full page load), and the single-shot click guard swallows
+     the redundant click that follows.
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  var wrapper     = document.querySelector('[data-bottom-swipe]');
+  if (!wrapper) return;
+
+  var navPanel    = wrapper.querySelector('[data-bottom]');
+  var playerPanel = wrapper.querySelector('[data-player]');
+  if (!navPanel || !playerPanel) return;
+
+  /* ------------------------------------------------------------- constants */
+  var MODE_NAV        = 'navigation';
+  var MODE_PLAYER     = 'player';
+
+  var AXIS_LOCK       = 8;      /* px of horizontal travel before we commit   */
+  var SWIPE_MIN       = 48;     /* px needed to switch panels                 */
+  var FLING_MIN_V     = 0.35;   /* px/ms                                      */
+  var FLING_MIN_D     = 12;     /* px                                         */
+  var TRANSITION_MS   = 280;
+  var CLICK_GUARD_MS  = 500;
+
+  /* ---------------------------------------------------------------- state */
+  var mode            = MODE_NAV;
+
+  var tracking        = false;
+  var axis            = null;   /* null | 'x' | 'y' */
+  var startX          = 0;
+  var startY          = 0;
+  var lastDelta       = 0;
+  var samples         = [];
+
+  var activePointerId = null;
+  var captured        = false;   /* pointer capture taken (deferred)          */
+  var downTarget      = null;    /* element pressed; used for tap navigation  */
+  var clickGuard      = false;
+  var guardTimer      = 0;
+  var settleTimer     = 0;
+  var wheelAcc        = 0;
+  var wheelTimer      = 0;
+  var wheelLockedUntil = 0;
+  var wheelLastEvent  = 0;
+
+  /* -------------------------------------------------------------- helpers */
+  function viewportWidth() {
+    var r = wrapper.getBoundingClientRect();
+    return r.width || wrapper.clientWidth || window.innerWidth;
+  }
+
+  function currentPanel()  { return mode === MODE_PLAYER ? playerPanel : navPanel; }
+  function incomingPanel() { return mode === MODE_PLAYER ? navPanel : playerPanel; }
+
+  function setX(el, x) {
+    el.style.transform = 'translate3d(' + (Math.round(x * 100) / 100) + 'px,0,0)';
+  }
+
+  /* Park both panels at their canonical resting positions, no animation.  */
+  function seat() {
+    var w = viewportWidth();
+    wrapper.classList.add('no-anim');
+    setX(navPanel,    mode === MODE_NAV    ? 0 : -w);
+    setX(playerPanel, mode === MODE_PLAYER ? 0 :  w);
+    void wrapper.offsetWidth;          /* flush the style change */
+    wrapper.classList.remove('no-anim');
+  }
+
+  /* Live drag: current panel follows the finger, the other panel rides in
+     from whichever side the finger is heading toward.                    */
+  function applyDrag(d) {
+    var w = viewportWidth();
+    setX(currentPanel(), d);
+    setX(incomingPanel(), (d < 0 ? w : -w) + d);
+  }
+
+  /* Release. */
+  function settle(shouldSwitch, d) {
+    var w        = viewportWidth();
+    var outgoing = currentPanel();
+    var incoming = incomingPanel();
+
+    wrapper.classList.remove('is-dragging');
+    void wrapper.offsetWidth;          /* re-arm the transition */
+
+    if (shouldSwitch) {
+      mode = (mode === MODE_NAV) ? MODE_PLAYER : MODE_NAV;
+      setX(incoming, 0);                        /* slides into place          */
+      setX(outgoing, d < 0 ? -w : w);           /* keeps travelling outward   */
+    } else {
+      setX(outgoing, 0);                        /* springs back               */
+      setX(incoming, d < 0 ? w : -w);
+    }
+
+    clearTimeout(settleTimer);
+    settleTimer = setTimeout(seat, TRANSITION_MS + 60);
+  }
+
+  /* -------------------------------------------------------- velocity ----- */
+  function recordSample(x) {
+    var t = (window.performance && performance.now) ? performance.now() : Date.now();
+    samples.push({ x: x, t: t });
+    while (samples.length > 2 && t - samples[0].t > 120) samples.shift();
+    if (samples.length > 8) samples.shift();
+  }
+
+  function velocity() {
+    if (samples.length < 2) return 0;
+    var a  = samples[0];
+    var b  = samples[samples.length - 1];
+    var dt = b.t - a.t;
+    if (dt <= 0) return 0;
+    return (b.x - a.x) / dt;
+  }
+
+  /* ------------------------------------------------- click suppression --- */
+  /* Armed the moment we commit to the horizontal axis. The capture-phase
+     listener on the wrapper fires before any child link/button handler.  */
+  function armClickGuard() {
+    clickGuard = true;
+    clearTimeout(guardTimer);
+    guardTimer = setTimeout(function () { clickGuard = false; }, CLICK_GUARD_MS);
+  }
+
+  function clearClickGuard() {
+    clickGuard = false;
+    clearTimeout(guardTimer);
+  }
+
+  wrapper.addEventListener('click', function (e) {
+    if (!clickGuard) return;
+    clickGuard = false;
+    clearTimeout(guardTimer);
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  }, true);
+
+  /* -------------------------------------------------------- gesture core -- */
+  function gestureStart(x, y) {
+    if (tracking) return;
+    tracking  = true;
+    axis      = null;
+    startX    = x;
+    startY    = y;
+    lastDelta = 0;
+    samples   = [];
+    clearTimeout(settleTimer);
+  }
+
+  function gestureMove(x, y) {
+    if (!tracking) return;
+
+    var dx = x - startX;
+    var dy = y - startY;
+
+    if (axis === null) {
+      var adx = Math.abs(dx);
+      var ady = Math.abs(dy);
+
+      if (adx > AXIS_LOCK && adx > ady) {
+        axis = 'x';
+        wrapper.classList.add('is-dragging');
+      } else if (ady > AXIS_LOCK) {
+        axis = 'y';                 /* vertical → hand back to the browser    */
+        return;
+      } else {
+        return;                     /* still inside the 8px dead zone         */
+      }
+    }
+
+    if (axis !== 'x') return;
+
+    lastDelta = dx;
+    recordSample(x);
+    applyDrag(dx);
+  }
+
+  function gestureEnd(cancelled) {
+    if (!tracking) return;
+    tracking = false;
+
+    var switched = false;
+    if (axis === 'x') {
+      var v = velocity();
+      var shouldSwitch =
+        Math.abs(lastDelta) >= SWIPE_MIN ||
+        (Math.abs(v) >= FLING_MIN_V && Math.abs(lastDelta) >= FLING_MIN_D);
+      switched = shouldSwitch;
+      settle(shouldSwitch, lastDelta);
+      if (shouldSwitch) armClickGuard();
+    } else if (wrapper.classList.contains('is-dragging')) {
+      wrapper.classList.remove('is-dragging');
+    }
+
+    /* A tap-release on a dock link navigates directly from the release.
+       Thumb drift can make the browser discard the synthetic click, so the
+       dock never depends on click. A real panel-switching swipe is exempt,
+       and the armed guard swallows any residual click -> one navigation. */
+    if (!cancelled && !switched) {
+      var tapHref = dockTapHref(downTarget);
+      downTarget = null;
+      if (tapHref) {
+        armClickGuard();
+        window.location.href = tapHref;
+      }
+    }
+
+    axis = null;
+  }
+
+  /* Resolves a dock link released without a swipe. Returns an absolute URL
+     string, or null when the pressed element is not a dock link.           */
+  function dockTapHref(node) {
+    var link = (node && node.closest)
+      ? node.closest('.bottom-nav-item, .promo-art, .promo-meta')
+      : null;
+    if (!link || !wrapper.contains(link)) return null;
+    if (link.target && link.target !== '_self' && link.target !== '') return null;
+    if (link.hasAttribute('download')) return null;
+    var href = (link.getAttribute('href') || '').replace(/^\s+/, '');
+    if (!href || /^(#|mailto:|tel:|javascript:|data:|about:)/i.test(href)) return null;
+    try {
+      return new URL(href, document.baseURI).href;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  /* ------------------------------------------------------- Pointer Events */
+  function onPointerDown(e) {
+    if (e.isPrimary === false) return;
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    if (tracking) return;
+    if (e.target && e.target.closest && e.target.closest('[data-seek]')) return;
+    clearClickGuard();
+    activePointerId = e.pointerId;
+    downTarget = e.target;
+    gestureStart(e.clientX, e.clientY);
+  }
+
+  function onPointerMove(e) {
+    if (e.pointerId !== activePointerId) return;
+    gestureMove(e.clientX, e.clientY);
+    /* capture only once a real horizontal drag is underway, so taps on
+       nav/promo links keep targeting the link (immediate capture would
+       retarget the click to the wrapper and kill the navigation)          */
+    if (axis === 'x' && !captured && Math.abs(lastDelta) >= SWIPE_MIN) {
+      try { wrapper.setPointerCapture(e.pointerId); captured = true; } catch (error) {}
+    }
+    if (axis === 'x' && e.cancelable) e.preventDefault();
+  }
+
+  function onPointerUp(e) {
+    if (e.pointerId !== activePointerId) return;
+    activePointerId = null;
+    gestureEnd(false);
+    if (captured) {
+      captured = false;
+      try { wrapper.releasePointerCapture(e.pointerId); } catch (error) {}
+    }
+  }
+
+  function onPointerCancel(e) {
+    if (e.pointerId !== activePointerId) return;
+    activePointerId = null;
+    gestureEnd(true);
+    if (captured) {
+      captured = false;
+      try { wrapper.releasePointerCapture(e.pointerId); } catch (error) {}
+    }
+  }
+
+  /* --------------------------------------------------------- Touch Events */
+  function onTouchStart(e) {
+    if (e.touches.length !== 1 || tracking) return;
+    var t = e.touches[0];
+    if (e.target && e.target.closest && e.target.closest('[data-seek]')) return;
+    clearClickGuard();
+    downTarget = e.target;
+    gestureStart(t.clientX, t.clientY);
+  }
+
+  function onTouchMove(e) {
+    var t = e.touches[0];
+    if (!t) return;
+    gestureMove(t.clientX, t.clientY);
+    /* Only cancel once we've actually committed to the horizontal axis. */
+    if (axis === 'x' && e.cancelable) e.preventDefault();
+  }
+
+  function onTouchEnd()    { gestureEnd(false); }
+  function onTouchCancel() { gestureEnd(true); }
+
+  /* --------------------------------------------------------- Mouse Events */
+  function onMouseDown(e) {
+    if (e.button !== 0 || tracking) return;
+    clearClickGuard();
+    downTarget = e.target;
+    gestureStart(e.clientX, e.clientY);
+  }
+  function onMouseMove(e) { gestureMove(e.clientX, e.clientY); }
+  function onMouseUp()    { gestureEnd(false); }
+
+  /* ------------------------------------------------------------- binding */
+  if (window.PointerEvent) {
+    wrapper.addEventListener('pointerdown', onPointerDown);
+    window.addEventListener('pointermove', onPointerMove, { passive: false });
+    window.addEventListener('pointerup', onPointerUp);
+    window.addEventListener('pointercancel', onPointerCancel);
+    window.addEventListener('pointerdown', clearClickGuard, true);
+  } else {
+    wrapper.addEventListener('touchstart', onTouchStart, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: false });
+    window.addEventListener('touchend', onTouchEnd);
+    window.addEventListener('touchcancel', onTouchCancel);
+    wrapper.addEventListener('mousedown', onMouseDown);
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
+    window.addEventListener('touchstart', clearClickGuard, true);
+    window.addEventListener('mousedown', clearClickGuard, true);
+  }
+
+  wrapper.addEventListener('wheel', function (e) {
+    if (tracking || settleTimer || (e.target && e.target.closest && e.target.closest('[data-seek]'))) return;
+    var ax = Math.abs(e.deltaX);
+    var ay = Math.abs(e.deltaY);
+    if (!(ax > 0 && ax >= ay * 1.05)) return;
+    var now = Date.now();
+    var delta = e.deltaMode === 1 ? e.deltaX * 16 : e.deltaX;
+    var gap = now - wheelLastEvent;
+    if (gap > 260) {
+      wheelAcc = 0;
+    }
+    wheelLastEvent = now;
+    if (now < wheelLockedUntil) {
+      wheelLockedUntil = now + 360;
+      return;
+    }
+    wheelAcc += delta;
+    clearTimeout(wheelTimer);
+    wheelTimer = setTimeout(function () { wheelAcc = 0; }, 280);
+    if (Math.abs(wheelAcc) >= 28) {
+      wheelLockedUntil = now + 600;
+      wheelAcc = 0;
+      settle(true, delta < 0 ? -1 : 1);
+    }
+    if (e.cancelable) e.preventDefault();
+  }, { passive: false });
+
+  /* keep the off-screen panel parked correctly after a resize / rotate */
+  var resizeTimer = 0;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+      if (!tracking) seat();
+    }, 120);
+  });
+
+  /* ---------------------------------------------------- nav active state */
+  navPanel.addEventListener('click', function (e) {
+    var node = e.target;
+    var link = (node && node.closest) ? node.closest('.bottom-nav-item') : null;
+    if (!link || !navPanel.contains(link)) return;
+    var items = navPanel.querySelectorAll('.bottom-nav-item');
+    for (var i = 0; i < items.length; i++) items[i].removeAttribute('aria-current');
+    link.setAttribute('aria-current', 'page');
+  });
+
+  /* -------------------------------------------------- demo player (UI only) */
+  var toggle = playerPanel.querySelector('.promo-toggle');
+  var fill   = playerPanel.querySelector('.promo-progress-fill');
+  var bar    = playerPanel.querySelector('.promo-progress');
+
+  var playing = false;
+  var pos     = 12000;
+  var DUR     = 48000;
+  var lastTs  = 0;
+  var rafId   = 0;
+
+  function paintProgress() {
+    var pct = Math.max(0, Math.min(1, pos / DUR));
+    fill.style.transform = 'scaleX(' + pct.toFixed(4) + ')';
+    bar.setAttribute('aria-valuenow', String(Math.round(pct * 100)));
+  }
+
+  function tick(ts) {
+    if (!playing) return;
+    if (!lastTs) lastTs = ts;
+    pos += ts - lastTs;
+    lastTs = ts;
+    if (pos >= DUR) pos = 0;
+    paintProgress();
+    rafId = requestAnimationFrame(tick);
+  }
+
+  if (toggle && fill && bar) {
+    toggle.addEventListener('click', function () {
+      playing = !playing;
+      toggle.classList.toggle('is-playing', playing);
+      toggle.setAttribute('aria-pressed', playing ? 'true' : 'false');
+      toggle.setAttribute('aria-label', playing ? 'Pause' : 'Play');
+      if (playing) {
+        lastTs = 0;
+        rafId = requestAnimationFrame(tick);
+      } else if (rafId) {
+        cancelAnimationFrame(rafId);
+        rafId = 0;
+      }
+    });
+    paintProgress();
+  }
+
+  /* --------------------------------------------------------------- boot */
+  seat();
+
+  /* optional programmatic control:
+     window.trackhypeBottom.setMode('player' | 'navigation')             */
+  window.trackhypeBottom = {
+    getMode: function () { return mode; },
+    setMode: function (next) {
+      if (next !== MODE_NAV && next !== MODE_PLAYER) return;
+      if (next === mode) return;
+      var w = viewportWidth();
+      var outgoing = currentPanel();
+      var incoming = incomingPanel();
+
+      wrapper.classList.add('no-anim');
+      setX(incoming, w);
+      setX(outgoing, 0);
+      void wrapper.offsetWidth;
+      wrapper.classList.remove('no-anim');
+      void wrapper.offsetWidth;
+
+      mode = next;
+      setX(incoming, 0);
+      setX(outgoing, -w);
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(seat, TRANSITION_MS + 60);
+    },
+    seat: seat
+  };
+})();
+</script>
+</body>
+</html>

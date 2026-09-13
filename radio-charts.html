@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en-ZW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" type="image/webp" href="Assets/logos/TrackHype Logo Design Badge.webp">
+  <title>Radio Charts — TrackHype</title>
+  <link rel="stylesheet" href="trackhype.css">
+</head>
+<body data-active-nav="radio-charts.html">
+
+  <header class="th-header" data-app-header>
+    <div class="th-header-inner">
+      <a class="th-brand" href="index.html">
+        <img class="th-logo-badge" src="Assets/logos/TrackHype Logo Design Badge.webp" alt="TrackHype">
+        <img class="th-logo-text" src="Assets/logos/track-hype-text-logo.webp" alt="TrackHype">
+      </a>
+      <a href="region-selector.html" title="Select region" style="display:inline-flex;margin-left:auto">
+        <span id="headerFlag" class="th-region-badge">ZW</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="th-app">
+    <div class="th-shell">
+
+      <section>
+        <h1 class="th-page-title" id="pageTitle">Radio Charts</h1>
+        <p class="th-page-subtitle" id="pageSub">All radio stations in this region.</p>
+      </section>
+
+      <section>
+        <input class="th-input" id="q" placeholder="Search stations in this region…" style="background:var(--th-bg);margin:14px 0 18px" oninput="onSearch()">
+      </section>
+
+      <section>
+        <div class="radio-grid" id="grid"></div>
+        <div id="empty" class="th-empty" style="display:none"><strong>No stations found</strong>Try a different search.</div>
+        <div id="loader" style="text-align:center;padding:18px;color:var(--th-muted);font-weight:700;display:none">Loading…</div>
+      </section>
+
+    </div>
+  </main>
+
+  <div class="bottom-swipe" data-bottom-swipe>
+    <nav class="bottom-nav" data-bottom>
+      <div class="bottom-nav-inner" data-nav-host></div>
+    </nav>
+
+    <aside class="promo-player" data-player></aside>
+  </div>
+
+  <div class="th-modal-backdrop" data-modal>
+    <div class="th-sheet" role="dialog" aria-modal="true">
+      <div class="th-sheet-handle"></div>
+      <h3 data-modal-title></h3>
+      <div data-modal-body></div>
+      <div class="th-sheet-actions" data-modal-actions></div>
+    </div>
+  </div>
+
+  <script src="demo-playlist.js"></script>
+  <script src="trackhype.js"></script>
+  <script src="radio-data.js"></script>
+  <script>
+    function esc(s){ return String(s == null ? "" : s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+    var PER_BATCH = 12;
+
+    var country = (function(){
+      try{
+        var r = JSON.parse(localStorage.getItem("trackhype.region") || "null");
+        if(r && r.name && /botswana/i.test(r.name)) return "Botswana";
+      }catch(e){}
+      return "Zimbabwe";
+    })();
+
+    var allStations = (window.RADIO_STATIONS || []).filter(function(s){ return s.country === country; });
+    var matched = allStations.slice();
+    var shown = 0;
+
+    function stationTileHtml(s){
+      return '<a href="radio-station.html?station=' + encodeURIComponent(s.id) + '">' +
+        '<img loading="lazy" src="' + s.logo + '" alt="' + esc(s.name) + '" title="' + esc(s.name) + '" onerror="this.style.visibility=\'hidden\'">' +
+      '</a>';
+    }
+
+    function renderBatch(){
+      var grid = document.getElementById("grid");
+      var next = Math.min(shown + PER_BATCH, matched.length);
+      var slice = matched.slice(shown, next);
+      grid.insertAdjacentHTML("beforeend", slice.map(stationTileHtml).join(""));
+      shown = next;
+      document.getElementById("empty").style.display = (matched.length ? "none" : "block");
+      document.getElementById("loader").style.display = (shown < matched.length ? "flex" : "none");
+    }
+
+    function resetList(){
+      shown = 0;
+      document.getElementById("grid").innerHTML = "";
+      renderBatch();
+    }
+
+    function onSearch(){
+      var q = (document.getElementById("q").value || "").trim().toLowerCase();
+      matched = allStations.filter(function(s){
+        if(!q) return true;
+        return (s.name + " " + s.region + " " + s.focus).toLowerCase().indexOf(q) !== -1;
+      });
+      resetList();
+    }
+
+    window.addEventListener("scroll", function(){
+      if(shown >= matched.length) return;
+      if((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200){
+        renderBatch();
+      }
+    }, { passive:true });
+
+    document.getElementById("pageTitle").textContent = country + " Radio Charts";
+    document.getElementById("pageSub").textContent = "All " + country + " radio stations in this region.";
+    resetList();
+  </script>
+</body>
+</html>

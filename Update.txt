@@ -1,0 +1,1 @@
+for 'pl-row' make sure on the far right of each row there is a 'New_Song_Chart_Vote_Icon'(for when a song is not in a chart to vote for it to appear in a chart it has been assigned to and 'New_Song_Chart_Icon' (when the song has already been voted for by the user and is in a chart.)

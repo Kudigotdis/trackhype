@@ -115,11 +115,13 @@
     </div>
   </main>
 
-  <nav class="th-bottom" data-bottom>
-    <div class="th-bottom-inner" data-nav-host></div>
-  </nav>
+  <div class="bottom-swipe" data-bottom-swipe>
+    <nav class="bottom-nav" data-bottom>
+      <div class="bottom-nav-inner" data-nav-host></div>
+    </nav>
 
-  <aside class="promo-player" data-player></aside>
+    <aside class="promo-player" data-player></aside>
+  </div>
 
   <div class="th-modal-backdrop" data-modal>
     <div class="th-sheet" role="dialog" aria-modal="true">
@@ -130,6 +132,7 @@
     </div>
   </div>
 
+  <script src="demo-playlist.js"></script>
   <script src="trackhype.js"></script>
   <script>
     const GENRES = [
@@ -201,13 +204,14 @@ function go(n){
       window.scrollTo({top:0});
     }
 
-    function finish(){
+function finish(){
       try{
         localStorage.setItem("trackhype_onboarding_complete","true");
         localStorage.setItem("trackhype_genres", JSON.stringify([...selected]));
         localStorage.setItem("trackhype_following_artists", JSON.stringify([...followed]));
+        localStorage.setItem("trackhype_user_name", ((document.getElementById("first").value || "") + " " + (document.getElementById("surname").value || "")).trim());
       }catch(error){}
-      window.location.href = "index.html";
+      TrackHype.navigate("index.html");
     }
 
     renderArtists();

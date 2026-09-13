@@ -11,113 +11,128 @@
 <body data-active-nav="menu">
   <header class="th-header" data-app-header>
     <div class="th-header-inner">
-      <a class="th-brand" href="index.html">TrackHype</a>
-      <div class="th-header-context">Artist Dashboard</div>
-      <button class="th-icon-btn" type="button" aria-label="Menu" onclick="location.href='menu.html'">☰</button>
+<a class="th-brand" href="index.html">TrackHype</a>
     </div>
   </header>
 
   <main class="th-app">
     <div class="th-shell">
       <section class="th-card th-dashboard-hero">
-        <img class="th-avatar" id="artistPortrait" src="" alt="Artist portrait">
-        <div>
+        <span class="th-art th-art-72">
+          <img id="artistPortrait" src="" alt="Artist portrait">
+        </span>
+        <div class="th-dashboard-hero-t">
           <h2 id="artistName"></h2>
           <p id="artistMeta"></p>
-          <div style="display:flex;gap:7px;margin-top:8px">
-            <span class="th-status success">Artist Account</span>
-            <span class="th-status">Zimbabwe</span>
+          <div class="th-hero-pills">
+            <span class="th-pill th-pill-ok">Artist Account</span>
+            <span class="th-pill">Zimbabwe</span>
           </div>
         </div>
       </section>
 
-      <section class="th-section">
-        <div class="th-stat-grid">
-          <article class="th-card th-stat">
-            <div class="th-stat-label">My Music</div>
-            <div class="th-stat-value" id="statMusic">0</div>
-          </article>
-          <article class="th-card th-stat">
-            <div class="th-stat-label">New Music</div>
-            <div class="th-stat-value" id="statNewMusic">0</div>
-          </article>
-          <article class="th-card th-stat">
-            <div class="th-stat-label">Chart Eligible</div>
-            <div class="th-stat-value" id="statEligible">0</div>
-          </article>
-          <article class="th-card th-stat">
-            <div class="th-stat-label">Total Plays</div>
-            <div class="th-stat-value" id="statPlays">0</div>
-          </article>
-        </div>
+      <section class="th-stat-grid">
+        <article class="th-stat is-key">
+          <b class="th-stat-value" id="statMusic">0</b>
+          <span class="th-stat-label">My Music</span>
+        </article>
+        <article class="th-stat">
+          <b class="th-stat-value" id="statNewMusic">0</b>
+          <span class="th-stat-label">New Music</span>
+        </article>
+        <article class="th-stat">
+          <b class="th-stat-value" id="statEligible">0</b>
+          <span class="th-stat-label">Chart Eligible</span>
+        </article>
+        <article class="th-stat">
+          <b class="th-stat-value" id="statPlays">0</b>
+          <span class="th-stat-label">Total Plays</span>
+        </article>
       </section>
 
-      <section class="th-section">
-        <div class="th-section-head">
-          <h2>Music pipeline</h2>
-          <p>Current submissions</p>
-        </div>
-        <div class="th-card pad">
+      <details class="th-acc" open>
+        <summary>
+          <span class="th-acc-title">
+            <b>Music pipeline</b>
+            <small id="pipelineSub"></small>
+          </span>
+          <span class="th-acc-mark" aria-hidden="true"></span>
+        </summary>
+        <div class="th-acc-body">
           <div class="th-pipeline" id="pipeline"></div>
         </div>
+      </details>
+
+      <section class="th-section-head th-my-music-head">
+        <h2>My Music</h2>
+        <button class="th-btn secondary" type="button" id="submitMusicBtn">Submit Music</button>
       </section>
 
-      <section class="th-section">
-        <div class="th-section-head">
-          <h2>My Music</h2>
-          <button class="th-btn secondary" type="button" id="submitMusicBtn">Submit Music</button>
-        </div>
-        <div class="th-chip-row" id="statusFilters" style="margin-bottom:10px">
-          <button class="th-chip is-active" data-status="all" type="button">All</button>
-          <button class="th-chip" data-status="Submitted" type="button">Submitted</button>
-          <button class="th-chip" data-status="Under Review" type="button">Under Review</button>
-          <button class="th-chip" data-status="Approved" type="button">Approved</button>
-          <button class="th-chip" data-status="Published in New Music" type="button">New Music</button>
-          <button class="th-chip" data-status="Chart Eligible" type="button">Chart Eligible</button>
-          <button class="th-chip" data-status="Charting" type="button">Charting</button>
-          <button class="th-chip" data-status="Rejected" type="button">Rejected</button>
-        </div>
-        <div class="th-table-list" id="submissionList"></div>
-      </section>
+      <nav class="th-chip-row-scroll" id="statusFilters" aria-label="Filter by status">
+        <button class="th-filter-chip" data-status="all" type="button" aria-pressed="true">All</button>
+        <button class="th-filter-chip" data-status="Submitted" type="button" aria-pressed="false">Submitted</button>
+        <button class="th-filter-chip" data-status="Under Review" type="button" aria-pressed="false">Under Review</button>
+        <button class="th-filter-chip" data-status="Approved" type="button" aria-pressed="false">Approved</button>
+        <button class="th-filter-chip" data-status="Published in New Music" type="button" aria-pressed="false">New Music</button>
+        <button class="th-filter-chip" data-status="Chart Eligible" type="button" aria-pressed="false">Chart Eligible</button>
+        <button class="th-filter-chip" data-status="Charting" type="button" aria-pressed="false">Charting</button>
+        <button class="th-filter-chip" data-status="Rejected" type="button" aria-pressed="false">Rejected</button>
+      </nav>
 
-      <section class="th-section">
-        <div class="th-section-head">
-          <h2>Submission History</h2>
-          <p>TrackHype IDs</p>
-        </div>
-        <div class="th-card pad">
-          <div class="th-table-list" id="historyList"></div>
-        </div>
-      </section>
+      <div class="th-sub-list" id="submissionList"></div>
 
-      <section class="th-section">
-        <div class="th-section-head">
-          <h2>Payments</h2>
-          <p>$10.00 per song</p>
+      <details class="th-acc th-acc-gap">
+        <summary>
+          <span class="th-acc-title">
+            <b>Submission History</b>
+            <small>TrackHype IDs</small>
+          </span>
+          <span class="th-acc-mark" aria-hidden="true"></span>
+        </summary>
+        <div class="th-acc-body">
+          <dl class="th-kv" id="historyList"></dl>
         </div>
-        <div class="th-table-list" id="paymentsList"></div>
-      </section>
+      </details>
 
-      <section class="th-section">
-        <div class="th-section-head">
-          <h2>Chart History</h2>
-          <p>Official charts only</p>
+      <details class="th-acc">
+        <summary>
+          <span class="th-acc-title">
+            <b>Payments</b>
+            <small>$10.00 USD per song</small>
+          </span>
+          <span class="th-acc-mark" aria-hidden="true"></span>
+        </summary>
+        <div class="th-acc-body">
+          <dl class="th-kv" id="paymentsList"></dl>
         </div>
-        <div class="th-card pad">
-          <div class="th-empty" style="padding:12px 4px">
+      </details>
+
+      <details class="th-acc">
+        <summary>
+          <span class="th-acc-title">
+            <b>Chart History</b>
+            <small>Official charts only</small>
+          </span>
+          <span class="th-acc-mark" aria-hidden="true"></span>
+        </summary>
+        <div class="th-acc-body">
+          <div class="th-empty">
             <strong>No published chart positions yet.</strong>
             Chart history appears here after a song enters an official chart.
           </div>
         </div>
-      </section>
+      </details>
 
-      <section class="th-section">
-        <div class="th-section-head">
-          <h2>Edit Artist Profile</h2>
-          <p>Saved locally in this prototype</p>
-        </div>
-        <form class="th-card pad" id="artistForm">
-          <div class="th-form-grid">
+      <details class="th-acc">
+        <summary>
+          <span class="th-acc-title">
+            <b>Edit Artist Profile</b>
+            <small>Saved locally in this prototype</small>
+          </span>
+          <span class="th-acc-mark" aria-hidden="true"></span>
+        </summary>
+        <div class="th-acc-body">
+          <form class="th-form-grid" id="artistForm">
             <div class="th-form-group">
               <label for="profileName">Artist / Group Name</label>
               <input class="th-input" id="profileName" required>
@@ -143,17 +158,19 @@
               <textarea class="th-textarea" id="profileBio"></textarea>
             </div>
             <button class="th-btn primary block" type="submit">Save Artist Profile</button>
-          </div>
-        </form>
-      </section>
+          </form>
+        </div>
+      </details>
     </div>
   </main>
 
-  <nav class="th-bottom" data-bottom>
-    <div class="th-bottom-inner" data-nav-host></div>
-  </nav>
+  <div class="bottom-swipe" data-bottom-swipe>
+    <nav class="bottom-nav" data-bottom>
+      <div class="bottom-nav-inner" data-nav-host></div>
+    </nav>
 
-  <aside class="promo-player" data-player></aside>
+    <aside class="promo-player" data-player></aside>
+  </div>
 
   <div class="th-modal-backdrop" data-modal>
     <div class="th-sheet" role="dialog" aria-modal="true">
@@ -164,6 +181,7 @@
     </div>
   </div>
 
+  <script src="demo-playlist.js"></script>
   <script src="trackhype.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded",()=>{
@@ -181,10 +199,125 @@
 
       const state = () => TrackHype.getState();
 
+      /* Map an artist submission's genre to the official chart that carries
+         it (display title). Approval stamps approvedForChartAt via
+         submitSongToChart() and drops the track into that chart's Newest
+         (tier 3) lane under the same key charts.html reads. */
+      function chartNameForGenre(genre){
+        const g = String(genre || "").toLowerCase();
+        if(/hip ?hop|urban grooves/.test(g)) return "Zim Hip Hop Top 20";
+        if(/house|amapiano|edm/.test(g)) return "Zimbabwean House Top 20";
+        if(/r&b|rnb|soul|trap/.test(g)) return "R&B Top 20";
+        if(/dancehall/.test(g)) return "Zimdancehall Top 20";
+        if(/gospel/.test(g)) return "Gospel Top 20";
+        if(/sungura|mbira/.test(g)) return "Sungura Top 20";
+        return "National Top 100";
+      }
+
+      function approveForChart(x){
+        const chartName = chartNameForGenre(x.genre);
+        const chartKey = TrackHype.chartId(chartName);
+        const sub = TrackHype.submitSongToChart(chartKey, {
+          songId: x.id,
+          title: x.title,
+          artistName: x.artist || "Your Artist Profile",
+          artwork: x.artwork || "",
+          releaseDate: x.dateAdded || null
+        });
+        TrackHype.updateState(s => {
+          s.submissions = (s.submissions || []).map(item =>
+            item.id === x.id
+              ? { ...item, status: "Approved", approvedForChartAt: Date.now() }
+              : item
+          );
+        });
+        TrackHype.toast("Approved — added to " + chartName + " Newest (tier 3).");
+        return sub;
+      }
+
+      function reconcilePendingSubmissions(){
+        try{
+          const pending = JSON.parse(sessionStorage.getItem("trackhype_pending_submission") || "null");
+          const list = (pending && pending.payments) || (pending ? [pending] : []);
+          const mine = (state().submissions || []).map(x => x.id);
+          let changed = false;
+          TrackHype.updateState(s => {
+            list.forEach(p => {
+              if(!p || !p.id || mine.indexOf(p.id) >= 0){ return; }
+              const firstTrack = (p.tracks && p.tracks[0]) || {};
+              const artist = state().artist.name || p.artist || "Your Artist Profile";
+              s.submissions = s.submissions.concat([{
+                id: p.id,
+                title: firstTrack.title || "Untitled Submission",
+                artist,
+                genre: firstTrack.chart || (firstTrack.genres && firstTrack.genres[0]) || "Zim Hip Hop",
+                city: "Harare",
+                language: "English / Shona",
+                dateAdded: new Date().toISOString().slice(0, 10),
+                status: "Under Review",
+                plays: 0,
+                favourites: 0,
+                chartEligible: false,
+                artwork: TrackHype.getArtwork(0)
+              }]);
+              changed = true;
+            });
+          });
+          return changed;
+        }catch(e){ return false; }
+      }
+
+      function pillClass(status){
+        const cls = TrackHype.statusClass(status);
+        if(cls==="success") return "th-pill-ok";
+        if(cls==="warning") return "th-pill-warn";
+        if(cls==="danger") return "th-pill-bad";
+        return "";
+      }
+
+      function submissionRow(x,index,statusVisible){
+        const cls = pillClass(x.status);
+        return `
+          <details class="th-acc" data-submission-id="${TrackHype.esc(x.id)}">
+            <summary>
+              <span class="th-art th-art-44"><img src="${TrackHype.esc(x.artwork || TrackHype.getArtwork(index))}" alt="" loading="lazy"></span>
+              <span class="th-acc-title">
+                <b>${TrackHype.esc(x.title)}</b>
+                <small>${TrackHype.esc(x.genre)} · ${TrackHype.esc(x.city)}</small>
+                ${statusVisible ? `<span class="th-pill ${cls}">${TrackHype.esc(x.status)}</span>` : ""}
+              </span>
+              <span class="th-acc-mark" aria-hidden="true"></span>
+            </summary>
+            <div class="th-acc-body">
+              <dl class="th-kv">
+                <div><dt>Submission ID</dt><dd>${TrackHype.esc(x.id)}</dd></div>
+                <div><dt>Genre</dt><dd>${TrackHype.esc(x.genre)}</dd></div>
+                <div><dt>City</dt><dd>${TrackHype.esc(x.city)}</dd></div>
+                <div><dt>Language</dt><dd>${TrackHype.esc(x.language)}</dd></div>
+                <div><dt>Added</dt><dd>${TrackHype.fmtDate(x.dateAdded)}</dd></div>
+                <div><dt>Plays</dt><dd class="num">${(x.plays||0).toLocaleString()}</dd></div>
+                <div><dt>Favourites</dt><dd class="num">${(x.favourites||0).toLocaleString()}</dd></div>
+                <div><dt>Status</dt><dd><span class="th-pill ${cls}">${TrackHype.esc(x.status)}</span></dd></div>
+              </dl>
+              <div class="th-row-actions">
+                <button class="th-btn secondary" type="button" data-submission="${TrackHype.esc(x.id)}">View details</button>
+                ${x.status === "Approved" || x.status === "Published in New Music" || x.status === "Chart Eligible" || x.status === "Charting"
+                  ? `<button class="th-btn" type="button" disabled>${TrackHype.esc(x.status)}</button>`
+                  : x.status === "Rejected"
+                    ? `<button class="th-btn" type="button" disabled>Rejected</button>`
+                    : `<button class="th-btn primary" type="button" data-approve="${TrackHype.esc(x.id)}">Approve for chart</button>`}
+              </div>
+            </div>
+          </details>`;
+      }
+
       function render(){
         const s = state();
         const submissions = s.submissions || [];
-        document.getElementById("artistPortrait").src = s.artist.portrait || TrackHype.getArtwork(0);
+
+        const portrait = document.getElementById("artistPortrait");
+        const portraitUrl = s.artist.portrait || TrackHype.getArtwork(0);
+        if(portrait.src !== portraitUrl || !portrait.src) portrait.src = portraitUrl;
         document.getElementById("artistName").textContent = s.artist.name || "Your Artist Profile";
         document.getElementById("artistMeta").textContent = `${s.artist.handle || "@artist"} · ${s.artist.genre || "Genre not set"} · ${s.artist.city || "Zimbabwe"}`;
 
@@ -197,16 +330,19 @@
         document.getElementById("statEligible").textContent = eligibleCount;
         document.getElementById("statPlays").textContent = plays.toLocaleString();
 
+        const activeTotal = submissions.filter(x=>x.status!=="Rejected").length;
+        document.getElementById("pipelineSub").textContent = `${activeTotal} active submission${activeTotal===1?"":"s"} · ${PIPELINE.length} stages`;
+
         document.getElementById("pipeline").innerHTML = PIPELINE.map((status,index)=>{
           const count = submissions.filter(x=>x.status===status).length;
           return `
-            <div class="th-pipeline-item">
+            <div class="th-pipeline-item${count?" has":""}">
               <span class="th-pipeline-num">${index+1}</span>
-              <div>
+              <div class="th-pipeline-body">
                 <strong>${TrackHype.esc(status)}</strong>
                 <small>${count} ${count===1 ? "submission":"submissions"}</small>
               </div>
-              <span class="th-status ${TrackHype.statusClass(status)}">${count}</span>
+              <span class="th-pipeline-count">${count}</span>
             </div>`;
         }).join("");
 
@@ -214,37 +350,25 @@
           ? submissions
           : submissions.filter(x=>x.status===activeStatus);
 
+        const allIndexes = new Map(submissions.map((x,i)=>[x.id,i]));
+        const noStatus = activeStatus==="all";
+
         document.getElementById("submissionList").innerHTML = visible.length
-          ? visible.map(x=>`
-            <article class="th-table-row" data-submission-id="${TrackHype.esc(x.id)}" style="grid-template-columns:1.5fr .9fr auto">
-              <div>
-                <strong>${TrackHype.esc(x.title)}</strong>
-                <span style="display:block">${TrackHype.esc(x.genre)} · ${TrackHype.esc(x.city)}</span>
-              </div>
-              <div>
-                <span class="th-status ${TrackHype.statusClass(x.status)}">${TrackHype.esc(x.status)}</span>
-                <span style="display:block;margin-top:4px">${x.plays.toLocaleString()} plays</span>
-              </div>
-              <button class="th-mini-btn" type="button" data-submission="${TrackHype.esc(x.id)}" aria-label="View submission">›</button>
-            </article>
-          `).join("")
+          ? visible.map(x=>submissionRow(x,allIndexes.get(x.id),noStatus)).join("")
           : `<div class="th-empty"><strong>No submissions in this status.</strong>Change the filter to view another stage.</div>`;
 
         document.getElementById("historyList").innerHTML = submissions.map(x=>`
-          <div class="th-table-row" style="grid-template-columns:1.25fr .8fr .8fr">
-            <div><strong>${TrackHype.esc(x.id)}</strong><span style="display:block">${TrackHype.esc(x.title)}</span></div>
-            <span>${TrackHype.fmtDate(x.dateAdded)}</span>
-            <span class="th-status ${TrackHype.statusClass(x.status)}">${TrackHype.esc(x.status)}</span>
-          </div>
+          <div><dt>${TrackHype.esc(x.id)} · ${TrackHype.esc(x.title)}</dt><dd>${TrackHype.fmtDate(x.dateAdded)}</dd></div>
         `).join("");
 
-        document.getElementById("paymentsList").innerHTML = (s.payments||[]).map(p=>`
-          <div class="th-table-row" style="grid-template-columns:1.1fr .7fr .8fr">
-            <div><strong>${TrackHype.esc(p.id)}</strong><span style="display:block">${TrackHype.esc(p.submissionId)}</span></div>
-            <span>${TrackHype.fmtDate(p.date)}</span>
-            <span><strong>${TrackHype.fmtMoney(p.amount)}</strong><small style="display:block;color:var(--th-success)">${TrackHype.esc(p.status)}</small></span>
-          </div>
-        `).join("");
+        document.getElementById("paymentsList").innerHTML = (s.payments||[]).map(p=>{
+          const cls = pillClass(p.status);
+          return `
+            <div>
+              <dt>${TrackHype.esc(p.id)} · ${TrackHype.esc(p.submissionId)} · ${TrackHype.fmtDate(p.date)}</dt>
+              <dd>${TrackHype.fmtMoney(p.amount)} <span class="th-pill ${cls}">${TrackHype.esc(p.status)}</span></dd>
+            </div>`;
+        }).join("");
 
         document.getElementById("profileName").value = s.artist.name || "";
         document.getElementById("profileGenre").value = s.artist.genre || "Zim Hip Hop";
@@ -256,11 +380,19 @@
         const button = event.target.closest("[data-status]");
         if(!button) return;
         activeStatus = button.dataset.status;
-        document.querySelectorAll("#statusFilters [data-status]").forEach(el=>el.classList.toggle("is-active",el===button));
+        document.querySelectorAll("#statusFilters [data-status]").forEach(el=>el.setAttribute("aria-pressed",String(el===button)));
         render();
       });
 
       document.getElementById("submissionList").addEventListener("click",(event)=>{
+        const approve = event.target.closest("[data-approve]");
+        if(approve){
+          const item = state().submissions.find(x=>x.id===approve.dataset.approve);
+          if(!item) return;
+          approveForChart(item);
+          render();
+          return;
+        }
         const btn = event.target.closest("[data-submission]");
         if(!btn) return;
         const item = state().submissions.find(x=>x.id===btn.dataset.submission);
@@ -268,16 +400,16 @@
         TrackHype.openSheet({
           title:item.title,
           html:`
-            <div class="th-table-list">
-              <div class="th-table-row"><strong>Submission ID</strong><span>${TrackHype.esc(item.id)}</span><span></span></div>
-              <div class="th-table-row"><strong>Status</strong><span>${TrackHype.esc(item.status)}</span><span></span></div>
-              <div class="th-table-row"><strong>Genre</strong><span>${TrackHype.esc(item.genre)}</span><span></span></div>
-              <div class="th-table-row"><strong>City</strong><span>${TrackHype.esc(item.city)}</span><span></span></div>
-              <div class="th-table-row"><strong>Language</strong><span>${TrackHype.esc(item.language)}</span><span></span></div>
-              <div class="th-table-row"><strong>Added</strong><span>${TrackHype.fmtDate(item.dateAdded)}</span><span></span></div>
-              <div class="th-table-row"><strong>Plays</strong><span>${item.plays.toLocaleString()}</span><span></span></div>
-              <div class="th-table-row"><strong>Favourites</strong><span>${item.favourites.toLocaleString()}</span><span></span></div>
-            </div>
+            <dl class="th-kv">
+              <div><dt>Status</dt><dd><span class="th-pill ${pillClass(item.status)}">${TrackHype.esc(item.status)}</span></dd></div>
+              <div><dt>Submission ID</dt><dd>${TrackHype.esc(item.id)}</dd></div>
+              <div><dt>Genre</dt><dd>${TrackHype.esc(item.genre)}</dd></div>
+              <div><dt>City</dt><dd>${TrackHype.esc(item.city)}</dd></div>
+              <div><dt>Language</dt><dd>${TrackHype.esc(item.language)}</dd></div>
+              <div><dt>Added</dt><dd>${TrackHype.fmtDate(item.dateAdded)}</dd></div>
+              <div><dt>Plays</dt><dd class="num">${(item.plays||0).toLocaleString()}</dd></div>
+              <div><dt>Favourites</dt><dd class="num">${(item.favourites||0).toLocaleString()}</dd></div>
+            </dl>
           `,
           actions:[{id:"dismiss",label:"Close",primary:true}]
         });
@@ -302,7 +434,7 @@
         });
         const actionHost = document.querySelector("[data-modal-actions]");
         actionHost.onclick = (event)=>{
-          if(event.target.dataset.modalAction==="go-submit") location.href="submit-music.html";
+          if(event.target.dataset.modalAction==="go-submit") TrackHype.navigate("submit-music.html");
           if(event.target.dataset.modalAction==="dismiss") TrackHype.closeSheet();
         };
       });
@@ -326,6 +458,7 @@
       });
 
       window.addEventListener("trackhype:statechange",render);
+      reconcilePendingSubmissions();
       render();
     });
   </script>

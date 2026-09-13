@@ -1,0 +1,2071 @@
+<!doctype html>
+<html lang="en-ZW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>Report a Bug — TrackHype</title>
+
+<!--
+  ============================================================================
+  BUG REPORT — v3
+  ============================================================================
+  New in v3:
+    · Prominent "Your device & OS" section, pre-filled from detection but
+      fully editable — device, OS, browser, and free-form setup notes.
+    · "Edited" pill appears next to the label the moment the user changes a
+      detected value, so they know it's their version that will ship.
+    · Auto-captured meta (build, screen, viewport, user id) still travels
+      silently in the payload — it's shown in the "System info" accordion
+      so users can verify, but they never have to type it.
+    · Everything from v2 kept: draft autosave, drag & drop, live severity
+      cards, arrow-free accordions, swipe dock, semantic severity tones.
+
+  Design system: matches artist-dashboard v2 + new-music v2.
+    · Tokens only — no hardcoded hex outside the semantic values
+    · Square thumbnails (3px corner radius)
+    · Arrow-free accordions (＋ → − + green left rail)
+    · 75%+ white background; green as accent, not fill
+  ============================================================================
+-->
+
+<style>
+/* ==========================================================================
+   TOKENS
+   ========================================================================== */
+:root{
+  --th-primary:        #01db8b;
+  --th-primary-hover:  #02c87f;
+  --th-primary-dark:   #02925e;
+  --th-primary-soft:   rgba(1,219,139,.14);
+
+  --th-bg:             #ffffff;
+  --th-text:           #0b1220;
+  --th-muted:          #6b7280;
+  --th-faint:          #9aa3b0;
+  --th-grey-1:         rgba(15,25,40,.04);
+  --th-grey-2:         rgba(15,25,40,.08);
+  --th-grey-3:         rgba(15,25,40,.14);
+
+  --th-border:         rgba(15,25,40,.14);
+  --th-border-soft:    rgba(15,25,40,.08);
+
+  --th-success:        #02925e;
+  --th-warning:        #a16207;
+  --th-danger:         #b3261e;
+
+  --th-shadow:         0 1px 2px rgba(15,25,40,.05), 0 6px 18px rgba(15,25,40,.06);
+  --th-shadow-soft:    0 1px 2px rgba(15,25,40,.04);
+  --th-radius:         14px;
+  --th-radius-sm:      10px;
+  --th-header-h:       58px;
+  --th-bottom-h:       84px;
+
+  --th-fold:           var(--th-faint);
+  --th-radius-art:     3px;
+  --th-rail:           3px;
+  --th-dock-grip:      16px;
+}
+
+/* ==========================================================================
+   RESET / BASE
+   ========================================================================== */
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  font-family:"Segoe UI",Roboto,-apple-system,system-ui,sans-serif;
+  background:var(--th-bg);
+  color:var(--th-text);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+  padding-bottom:calc(var(--th-bottom-h) + var(--th-dock-grip) + 28px + env(safe-area-inset-bottom,0px));
+}
+img{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{line-height:1.2}
+*{scrollbar-width:none;-ms-overflow-style:none}
+*::-webkit-scrollbar{display:none;width:0;height:0}
+:focus-visible{outline:2px solid var(--th-primary-dark);outline-offset:2px;border-radius:var(--th-radius-art)}
+
+/* ==========================================================================
+   SHELL
+   ========================================================================== */
+.wrap{max-width:480px;margin:0 auto;padding:0 16px}
+
+/* ---- header -------------------------------------------------------------- */
+.hd{
+  position:sticky;top:0;z-index:60;
+  background:var(--th-bg);
+  border-bottom:1px solid var(--th-border-soft);
+}
+.hd-in{
+  max-width:480px;margin:0 auto;
+  height:var(--th-header-h);
+  padding:0 16px;
+  display:flex;align-items:center;gap:10px;
+}
+.back{
+  width:34px;height:34px;flex:none;
+  display:grid;place-items:center;
+  border-radius:var(--th-radius-art);
+  color:var(--th-text);
+  transition:background .16s ease;
+}
+.back:active{background:var(--th-grey-1)}
+.back svg{width:19px;height:19px}
+.hd-title{
+  font-size:15px;font-weight:900;letter-spacing:-.1px;
+  flex:1;min-width:0;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.draft-pill{
+  flex:none;
+  display:inline-flex;align-items:center;gap:5px;
+  height:22px;padding:0 8px;
+  border-radius:999px;
+  background:var(--th-grey-1);
+  border:1px solid var(--th-border-soft);
+  color:var(--th-muted);
+  font-size:10.5px;font-weight:800;letter-spacing:.02em;
+  opacity:0;transform:scale(.9);
+  transition:opacity .2s ease,transform .2s ease;
+}
+.draft-pill.on{opacity:1;transform:scale(1)}
+.draft-pill i{
+  width:5px;height:5px;border-radius:50%;
+  background:var(--th-primary);
+  box-shadow:0 0 0 0 var(--th-primary-soft);
+  animation:pulse 2.4s ease-out infinite;
+}
+@keyframes pulse{
+  0%  {box-shadow:0 0 0 0 var(--th-primary-soft)}
+  70% {box-shadow:0 0 0 6px transparent}
+  100%{box-shadow:0 0 0 0 transparent}
+}
+
+/* ==========================================================================
+   PAGE
+   ========================================================================== */
+main{padding-top:20px}
+.hero{margin-bottom:22px}
+.hero h1{font-size:24px;font-weight:900;letter-spacing:-.5px}
+.hero p{
+  margin-top:8px;font-size:13px;line-height:1.55;color:var(--th-muted);
+  max-width:38ch;
+}
+.hero p b{color:var(--th-text);font-weight:800}
+
+/* ==========================================================================
+   FORM FIELDS
+   ========================================================================== */
+.field{margin-bottom:22px}
+.field-l{
+  display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+  margin-bottom:8px;
+}
+.field-l label{
+  font-size:13px;font-weight:800;letter-spacing:-.05px;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.field-l label .req{color:var(--th-danger);margin-left:2px}
+.field-l .hint{
+  font-size:11px;font-weight:700;color:var(--th-faint);
+}
+
+/* "edited" pill — appears when the user overrides an auto-detected value */
+.edited-pill{
+  display:inline-flex;align-items:center;
+  height:16px;padding:0 6px;
+  border-radius:999px;
+  background:var(--th-primary-soft);
+  color:var(--th-primary-dark);
+  font-size:9.5px;font-weight:900;letter-spacing:.06em;
+  text-transform:uppercase;
+  opacity:0;transform:scale(.85);
+  transition:opacity .2s ease,transform .2s ease;
+}
+.edited-pill.on{opacity:1;transform:scale(1)}
+
+.inp,textarea.inp{
+  width:100%;
+  padding:12px 13px;
+  border:1px solid var(--th-border-soft);
+  border-radius:var(--th-radius-sm);
+  background:var(--th-grey-1);
+  font:inherit;font-size:14px;line-height:1.5;
+  color:var(--th-text);
+  outline:none;
+  transition:border-color .16s ease,background .16s ease;
+  resize:vertical;
+}
+.inp::placeholder{color:var(--th-faint)}
+.inp:focus{border-color:var(--th-primary);background:var(--th-bg)}
+textarea.inp{min-height:88px}
+.field-note{
+  margin-top:6px;
+  font-size:11.5px;color:var(--th-faint);line-height:1.5;
+}
+
+/* ==========================================================================
+   SEVERITY CARDS
+   ========================================================================== */
+.sev{display:flex;flex-direction:column;gap:8px}
+.sev-opt{
+  position:relative;
+  display:flex;align-items:flex-start;gap:12px;
+  padding:13px 14px 13px 16px;
+  border:1px solid var(--th-border-soft);
+  border-radius:var(--th-radius-sm);
+  background:var(--th-bg);
+  cursor:pointer;
+  overflow:hidden;
+  transition:border-color .18s ease,background .18s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+.sev-opt::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:var(--th-rail);
+  background:var(--th-primary);
+  transform:scaleY(0);transform-origin:top center;
+  transition:transform .28s cubic-bezier(.25,.8,.3,1);
+}
+.sev-opt input{position:absolute;opacity:0;pointer-events:none}
+.sev-dot{
+  position:relative;flex:none;
+  width:18px;height:18px;margin-top:1px;
+  border:1.5px solid var(--th-grey-3);
+  border-radius:50%;
+  transition:border-color .18s ease;
+}
+.sev-dot::after{
+  content:"";position:absolute;inset:3px;
+  border-radius:50%;
+  background:var(--th-primary-dark);
+  transform:scale(0);
+  transition:transform .2s cubic-bezier(.25,.8,.3,1);
+}
+.sev-t{flex:1;min-width:0}
+.sev-t b{
+  display:block;font-size:13.5px;font-weight:800;
+  letter-spacing:-.05px;
+}
+.sev-t small{
+  display:block;margin-top:3px;
+  font-size:12px;color:var(--th-muted);line-height:1.45;
+}
+
+.sev-opt[data-tone="danger"]::before{background:var(--th-danger)}
+.sev-opt[data-tone="warning"]::before{background:var(--th-warning)}
+.sev-opt[data-tone="faint"]::before{background:var(--th-faint)}
+
+.sev-opt[data-tone="danger"]  input:checked ~ .sev-dot::after{background:var(--th-danger)}
+.sev-opt[data-tone="warning"] input:checked ~ .sev-dot::after{background:var(--th-warning)}
+.sev-opt[data-tone="faint"]   input:checked ~ .sev-dot::after{background:var(--th-faint)}
+
+.sev-opt input:checked ~ .sev-dot{border-color:transparent}
+.sev-opt input:checked ~ .sev-dot::after{transform:scale(1)}
+.sev-opt:has(input:checked){border-color:var(--th-border);background:var(--th-bg)}
+.sev-opt:has(input:checked)::before{transform:scaleY(1)}
+
+/* ==========================================================================
+   STEPS LIST
+   ========================================================================== */
+.steps{display:flex;flex-direction:column;gap:8px}
+.step{display:flex;align-items:center;gap:10px}
+.step-n{
+  flex:none;
+  width:26px;height:26px;
+  display:grid;place-items:center;
+  border-radius:var(--th-radius-art);
+  background:var(--th-grey-1);
+  border:1px solid var(--th-border-soft);
+  color:var(--th-muted);
+  font-size:11px;font-weight:900;
+  font-variant-numeric:tabular-nums;
+}
+.step-n.filled{background:var(--th-primary-soft);border-color:transparent;color:var(--th-primary-dark)}
+.step .inp{flex:1;min-width:0;padding:10px 12px}
+.step-x{
+  flex:none;
+  width:28px;height:28px;
+  display:grid;place-items:center;
+  border-radius:var(--th-radius-art);
+  color:var(--th-faint);
+  transition:background .16s ease,color .16s ease;
+}
+.step-x:hover{background:var(--th-grey-1);color:var(--th-muted)}
+.step-x svg{width:12px;height:12px}
+
+.steps-add{
+  margin-top:10px;
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 12px 8px 8px;
+  border-radius:var(--th-radius-sm);
+  border:1px dashed var(--th-border);
+  background:var(--th-bg);
+  font-size:12.5px;font-weight:800;color:var(--th-muted);
+  transition:background .16s ease,color .16s ease,border-color .16s ease;
+}
+.steps-add:hover{background:var(--th-grey-1);color:var(--th-text);border-color:var(--th-faint)}
+.steps-add .plus{
+  width:22px;height:22px;
+  display:grid;place-items:center;
+  border-radius:var(--th-radius-art);
+  background:var(--th-primary-soft);
+  color:var(--th-primary-dark);
+  font-size:15px;font-weight:900;line-height:1;
+}
+
+/* ==========================================================================
+   DEVICE & OS SECTION  (new in v3)
+   ========================================================================== */
+.setup-card{
+  border:1px solid var(--th-border-soft);
+  border-radius:var(--th-radius);
+  background:var(--th-bg);
+  padding:14px;
+  transition:border-color .18s ease;
+}
+.setup-card:focus-within{border-color:var(--th-border)}
+.setup-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+}
+.setup-cell{display:flex;flex-direction:column;gap:5px;min-width:0}
+.setup-cell.wide{grid-column:1 / -1}
+.setup-k{
+  font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;
+  color:var(--th-faint);
+  display:inline-flex;align-items:center;gap:5px;
+}
+.setup-inp{padding:10px 12px;font-size:13.5px}
+.setup-foot{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  margin-top:12px;padding-top:12px;
+  border-top:1px solid var(--th-border-soft);
+}
+.setup-foot small{
+  font-size:11px;color:var(--th-faint);line-height:1.45;
+  flex:1;min-width:0;
+}
+.setup-reset{
+  flex:none;
+  padding:6px 10px;
+  border-radius:var(--th-radius-art);
+  border:1px solid var(--th-border-soft);
+  background:var(--th-bg);
+  font-size:11px;font-weight:800;
+  color:var(--th-muted);
+  transition:background .16s ease,color .16s ease,opacity .16s ease;
+}
+.setup-reset:active{background:var(--th-grey-1);color:var(--th-text)}
+.setup-reset[disabled]{opacity:.4;cursor:not-allowed}
+
+/* mini accordion for "extra notes" */
+.mini-acc{
+  margin-top:10px;
+  border:1px solid var(--th-border-soft);
+  border-radius:var(--th-radius-sm);
+  background:var(--th-bg);
+  overflow:hidden;
+  transition:border-color .2s ease;
+}
+.mini-acc[open]{border-color:var(--th-border)}
+.mini-acc > summary{
+  position:relative;
+  list-style:none;cursor:pointer;
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;
+  font-size:12.5px;font-weight:800;color:var(--th-muted);
+  transition:background .18s ease,color .18s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+.mini-acc > summary::-webkit-details-marker{display:none}
+.mini-acc > summary::marker{content:""}
+.mini-acc > summary::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:var(--th-primary);
+  transform:scaleY(0);transform-origin:top center;
+  transition:transform .28s cubic-bezier(.25,.8,.3,1);
+}
+.mini-acc[open] > summary{background:var(--th-primary-soft);color:var(--th-text)}
+.mini-acc[open] > summary::before{transform:scaleY(1)}
+.mini-acc > summary span{flex:1;min-width:0}
+.mini-acc .mark{width:12px;height:12px}
+.mini-acc .mark::before{width:10px;height:2px}
+.mini-acc .mark::after{width:2px;height:10px}
+
+.mini-acc-body{padding:0 12px 12px;animation:accIn .28s cubic-bezier(.25,.8,.3,1) both}
+.mini-acc-body .inp{padding:10px 12px;font-size:13px;min-height:64px}
+
+/* ==========================================================================
+   DROP ZONE
+   ========================================================================== */
+.drop{
+  position:relative;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;
+  padding:24px 18px;
+  border:1.5px dashed var(--th-border);
+  border-radius:var(--th-radius);
+  background:var(--th-grey-1);
+  text-align:center;
+  cursor:pointer;
+  transition:background .18s ease,border-color .18s ease;
+}
+.drop:active,.drop.over{background:var(--th-primary-soft);border-color:var(--th-primary)}
+.drop-ico{
+  width:38px;height:38px;
+  display:grid;place-items:center;
+  border-radius:var(--th-radius-art);
+  background:var(--th-bg);
+  color:var(--th-muted);
+  border:1px solid var(--th-border-soft);
+}
+.drop-ico svg{width:18px;height:18px}
+.drop b{font-size:13px;font-weight:900}
+.drop small{font-size:11.5px;color:var(--th-muted);line-height:1.5}
+.drop input{display:none}
+
+.thumbs{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(76px,1fr));
+  gap:8px;
+  margin-top:10px;
+}
+.thumb{
+  position:relative;
+  aspect-ratio:1;
+  border-radius:var(--th-radius-art);
+  overflow:hidden;
+  background:var(--th-grey-2);
+  border:1px solid var(--th-border-soft);
+}
+.thumb img,.thumb video{width:100%;height:100%;object-fit:cover;display:block}
+.thumb .noart{
+  position:absolute;inset:0;
+  display:grid;place-items:center;
+  color:var(--th-faint);
+  font-size:10px;font-weight:800;
+  text-align:center;padding:6px;
+  text-transform:uppercase;letter-spacing:.04em;
+}
+.thumb-x{
+  position:absolute;top:3px;right:3px;
+  width:20px;height:20px;
+  display:grid;place-items:center;
+  border-radius:var(--th-radius-art);
+  background:rgba(11,18,32,.72);
+  color:#fff;
+  backdrop-filter:blur(4px);
+}
+.thumb-x svg{width:10px;height:10px}
+
+/* ==========================================================================
+   ACCORDION (system info)
+   ========================================================================== */
+.acc{
+  border:1px solid var(--th-border-soft);
+  border-radius:var(--th-radius);
+  background:var(--th-bg);
+  overflow:hidden;
+  transition:border-color .2s ease,box-shadow .2s ease;
+  margin-bottom:20px;
+}
+.acc[open]{border-color:var(--th-border);box-shadow:var(--th-shadow-soft)}
+.acc > summary{
+  position:relative;
+  list-style:none;cursor:pointer;
+  display:flex;align-items:center;gap:12px;
+  padding:13px 16px;
+  -webkit-tap-highlight-color:transparent;
+  transition:background .2s ease;
+}
+.acc > summary::-webkit-details-marker{display:none}
+.acc > summary::marker{content:""}
+.acc > summary::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:var(--th-rail);
+  background:var(--th-primary);
+  transform:scaleY(0);transform-origin:top center;
+  transition:transform .3s cubic-bezier(.25,.8,.3,1);
+}
+.acc[open] > summary::before{transform:scaleY(1)}
+.acc[open] > summary{background:var(--th-primary-soft)}
+
+.acc-t{flex:1;min-width:0}
+.acc-t b{display:block;font-size:13.5px;font-weight:800;letter-spacing:-.05px}
+.acc-t small{
+  display:block;margin-top:3px;
+  font-size:11.5px;color:var(--th-muted);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+
+.mark{position:relative;width:16px;height:16px;flex:none}
+.mark::before,.mark::after{
+  content:"";position:absolute;left:50%;top:50%;
+  background:var(--th-faint);
+  border-radius:2px;
+  transition:transform .3s cubic-bezier(.25,.8,.3,1),background .25s ease;
+}
+.mark::before{width:14px;height:2px;transform:translate(-50%,-50%)}
+.mark::after{width:2px;height:14px;transform:translate(-50%,-50%)}
+.acc[open] .mark::before,
+.acc[open] .mark::after{background:var(--th-primary-dark)}
+.acc[open] .mark::after{transform:translate(-50%,-50%) rotate(90deg)}
+
+.acc-body{padding:0 16px 16px;animation:accIn .28s cubic-bezier(.25,.8,.3,1) both}
+@keyframes accIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  .acc-body,.mini-acc-body{animation-duration:1ms}
+  .acc > summary::before,.mini-acc > summary::before,.mark::before,.mark::after{transition-duration:1ms}
+}
+
+.kv{display:flex;flex-direction:column;margin-top:4px}
+.kv > div{
+  display:flex;align-items:baseline;justify-content:space-between;gap:14px;
+  padding:9px 0;
+  border-top:1px solid var(--th-border-soft);
+}
+.kv > div:first-child{border-top:0}
+.kv dt{font-size:12px;font-weight:700;color:var(--th-muted);flex:none}
+.kv dd{
+  font-size:12.5px;font-weight:800;text-align:right;min-width:0;
+  word-break:break-all;font-variant-numeric:tabular-nums;
+}
+.kv dd.mono{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:11.5px;font-weight:700;
+}
+.kv dd .badge-src{
+  display:inline-block;
+  margin-left:6px;
+  padding:2px 6px;
+  border-radius:var(--th-radius-art);
+  background:var(--th-primary-soft);
+  color:var(--th-primary-dark);
+  font-size:9.5px;font-weight:900;letter-spacing:.06em;
+  text-transform:uppercase;
+  vertical-align:middle;
+  font-family:inherit;
+}
+
+.logs{
+  margin-top:10px;
+  padding:10px 12px;
+  border-radius:var(--th-radius-sm);
+  background:var(--th-grey-1);
+  border:1px solid var(--th-border-soft);
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:10.5px;line-height:1.65;
+  color:var(--th-muted);
+  max-height:130px;overflow-y:auto;
+}
+.logs .ln{display:flex;gap:8px}
+.logs .ln i{
+  flex:none;font-style:normal;font-weight:800;width:34px;
+  color:var(--th-faint);
+}
+.logs .ln.err i{color:var(--th-danger)}
+.logs .ln.wrn i{color:var(--th-warning)}
+.logs .ln.net i{color:var(--th-primary-dark)}
+.logs .ln span{min-width:0;word-break:break-word}
+.logs .empty{padding:6px 0;color:var(--th-faint);font-style:italic}
+
+/* ==========================================================================
+   REASSURANCE NOTE
+   ========================================================================== */
+.note{
+  display:flex;gap:11px;align-items:flex-start;
+  padding:13px 14px;
+  border-radius:var(--th-radius);
+  background:var(--th-primary-soft);
+  border:1px solid transparent;
+  margin-bottom:20px;
+}
+.note-ico{
+  flex:none;width:22px;height:22px;
+  display:grid;place-items:center;
+  border-radius:var(--th-radius-art);
+  background:var(--th-bg);
+  color:var(--th-primary-dark);
+  font-size:12px;font-weight:900;
+}
+.note p{font-size:12px;line-height:1.55;color:var(--th-text)}
+.note p b{font-weight:800}
+
+/* ==========================================================================
+   ACTIONS
+   ========================================================================== */
+.actions{display:flex;gap:10px;margin-bottom:12px}
+.btn{
+  flex:1;
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:14px 16px;
+  border-radius:var(--th-radius-sm);
+  border:1px solid var(--th-border-soft);
+  background:var(--th-bg);
+  font-size:14px;font-weight:800;
+  transition:background .16s ease,transform .06s ease,border-color .16s ease,opacity .16s ease;
+}
+.btn:active{transform:scale(.99)}
+.btn.primary{
+  background:var(--th-primary);
+  border-color:var(--th-primary);
+  color:var(--th-text);
+}
+.btn.primary:active{background:var(--th-primary-hover)}
+.btn.primary:disabled,
+.btn.primary[aria-disabled="true"]{
+  opacity:.42;cursor:not-allowed;
+  background:var(--th-grey-3);border-color:transparent;color:var(--th-faint);
+}
+.btn.ghost{background:var(--th-grey-1)}
+
+/* ==========================================================================
+   BOTTOM DOCK
+   ========================================================================== */
+.dock{
+  position:fixed;left:0;right:0;bottom:0;z-index:70;
+  height:calc(var(--th-bottom-h) + var(--th-dock-grip) + env(safe-area-inset-bottom,0px));
+  touch-action:pan-y;
+  user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;
+}
+.dock-panel{
+  position:absolute;left:0;right:0;bottom:0;
+  height:calc(var(--th-bottom-h) + env(safe-area-inset-bottom,0px));
+  background:var(--th-bg);
+  border-top:1px solid var(--th-border-soft);
+  box-shadow:0 -8px 24px rgba(16,24,40,.07);
+  will-change:transform;
+  backface-visibility:hidden;
+  transition:transform .3s cubic-bezier(.25,.8,.3,1);
+  touch-action:pan-y;
+}
+.dock.dragging .dock-panel{transition:none}
+.dock.no-anim .dock-panel{transition:none}
+
+.grip{
+  position:absolute;top:2px;left:50%;transform:translateX(-50%);
+  width:44px;height:12px;
+  display:grid;place-items:center;z-index:2;
+}
+.grip::after{
+  content:"";width:34px;height:3px;border-radius:999px;
+  background:var(--th-grey-3);
+  transition:background .2s ease,width .2s ease;
+}
+.grip:active::after{background:var(--th-faint);width:40px}
+
+.nav-in{
+  height:100%;max-width:480px;margin:0 auto;
+  padding:8px 10px;
+  display:flex;align-items:stretch;gap:4px;
+}
+.nav-item{
+  flex:1 1 0;min-width:44px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:var(--th-radius-sm);
+  color:var(--th-muted);
+  transition:color .16s ease,background .16s ease,transform .12s ease;
+}
+.nav-item svg{width:23px;height:23px;display:block;pointer-events:none}
+.nav-item:active{transform:scale(.9)}
+.nav-item[aria-current="page"]{
+  color:var(--th-primary-dark);
+  background:var(--th-primary-soft);
+}
+
+.ply{
+  height:100%;max-width:480px;margin:0 auto;
+  padding:16px 16px 12px;
+  display:flex;flex-direction:column;gap:12px;
+}
+.seek{height:4px;border-radius:999px;background:var(--th-grey-2);cursor:pointer;touch-action:none}
+.seek i{
+  display:block;height:100%;width:100%;border-radius:999px;
+  background:linear-gradient(90deg,var(--th-primary),var(--th-primary-dark));
+  transform:scaleX(0);transform-origin:left center;
+  will-change:transform;
+}
+.ply-row{display:flex;align-items:center;gap:12px}
+.ply-art{
+  width:46px;height:46px;flex:none;
+  position:relative;overflow:hidden;
+  border-radius:var(--th-radius-art);
+  background:var(--th-grey-2);
+}
+.ply-art::before{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:46%;
+  background:var(--th-grey-3);
+}
+.ply-art::after{
+  content:"";position:absolute;border-radius:2px;background:var(--th-primary);
+  left:var(--ax,18%);top:var(--ay,18%);
+  width:var(--as,36%);height:var(--as,36%);
+}
+.ply-t{flex:1;min-width:0}
+.ply-t b{
+  display:block;font-size:13.5px;font-weight:800;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.ply-t small{
+  display:block;margin-top:2px;font-size:12px;color:var(--th-muted);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.play{
+  flex:none;width:44px;height:44px;
+  display:grid;place-items:center;
+  border-radius:var(--th-radius-art);
+  background:var(--th-primary);
+  color:var(--th-text);
+  transition:transform .14s ease,background .14s ease;
+}
+.play:active{transform:scale(.93);background:var(--th-primary-hover)}
+.play svg{width:18px;height:18px;pointer-events:none}
+
+/* ==========================================================================
+   MODAL SHEET
+   ========================================================================== */
+.backdrop{
+  position:fixed;inset:0;z-index:120;
+  display:flex;align-items:flex-end;justify-content:center;
+  background:rgba(11,18,32,.42);
+  opacity:0;pointer-events:none;
+  transition:opacity .2s ease;
+}
+.backdrop.is-open{opacity:1;pointer-events:auto}
+.sheet{
+  width:100%;max-width:480px;max-height:82vh;overflow-y:auto;
+  background:var(--th-bg);
+  border-radius:var(--th-radius) var(--th-radius) 0 0;
+  padding:10px 18px calc(22px + env(safe-area-inset-bottom,0px));
+  transform:translateY(14px);
+  transition:transform .24s cubic-bezier(.25,.8,.3,1);
+}
+.backdrop.is-open .sheet{transform:none}
+.sheet-grip{
+  width:44px;height:5px;border-radius:999px;
+  background:var(--th-grey-3);margin:2px auto 16px;
+}
+.sheet h3{font-size:17px;font-weight:900;margin-bottom:10px;letter-spacing:-.2px}
+.sheet p{font-size:13px;line-height:1.6;color:var(--th-muted)}
+.sheet-actions{display:flex;gap:9px;margin-top:18px}
+.sheet-actions .btn{flex:1}
+body.modal-open{overflow:hidden}
+
+.tick{
+  width:52px;height:52px;margin:4px auto 12px;
+  display:grid;place-items:center;
+  border-radius:var(--th-radius-art);
+  background:var(--th-primary-soft);
+  color:var(--th-primary-dark);
+}
+.tick svg{width:26px;height:26px}
+.ticket{
+  margin-top:14px;padding:12px 14px;
+  border-radius:var(--th-radius-sm);
+  background:var(--th-grey-1);
+  border:1px solid var(--th-border-soft);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.ticket small{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--th-muted)}
+.ticket b{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:14px;font-weight:800;letter-spacing:.02em;
+}
+
+/* ==========================================================================
+   TOAST
+   ========================================================================== */
+.toast{
+  position:fixed;left:50%;z-index:130;
+  bottom:calc(var(--th-bottom-h) + var(--th-dock-grip) + 14px + env(safe-area-inset-bottom,0px));
+  transform:translateX(-50%) translateY(calc(100% + 16px));
+  width:calc(100% - 32px);max-width:448px;
+  padding:11px 14px;
+  border-radius:var(--th-radius-sm);
+  background:var(--th-text);
+  color:var(--th-bg);
+  font-size:12.5px;font-weight:800;
+  text-align:center;
+  pointer-events:none;
+  transition:transform .34s cubic-bezier(.4,0,.2,1);
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+
+<body data-active-nav="menu">
+
+<!-- ==========================================================================
+     HEADER
+     ========================================================================== -->
+<header class="hd">
+  <div class="hd-in">
+    <button class="back" id="back" type="button" aria-label="Back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M15 5 8 12l7 7"/>
+      </svg>
+    </button>
+    <span class="hd-title">Report a Bug</span>
+    <span class="draft-pill" id="draftPill"><i></i>Saved</span>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <!-- ===================== HERO ===================== -->
+    <section class="hero">
+      <h1>Something not working?</h1>
+      <p>Tell us what happened. We'll attach the tech details for you —
+         no need to dig through settings.</p>
+    </section>
+
+    <!-- ===================== TITLE ===================== -->
+    <div class="field">
+      <div class="field-l">
+        <label for="fTitle">What went wrong? <span class="req">*</span></label>
+      </div>
+      <input class="inp" id="fTitle" type="text" autocomplete="off"
+             placeholder="e.g. Profile picture upload fails on Android">
+      <p class="field-note">A short sentence. Keep it specific if you can.</p>
+    </div>
+
+    <!-- ===================== SEVERITY ===================== -->
+    <div class="field">
+      <div class="field-l">
+        <label>How severe is it? <span class="req">*</span></label>
+      </div>
+      <div class="sev" id="sev" role="radiogroup" aria-label="Severity">
+        <label class="sev-opt" data-tone="danger">
+          <input type="radio" name="sev" value="blocker">
+          <span class="sev-dot" aria-hidden="true"></span>
+          <span class="sev-t">
+            <b>Blocker</b>
+            <small>App crashes or I can't proceed at all.</small>
+          </span>
+        </label>
+        <label class="sev-opt" data-tone="warning">
+          <input type="radio" name="sev" value="major" checked>
+          <span class="sev-dot" aria-hidden="true"></span>
+          <span class="sev-t">
+            <b>Major</b>
+            <small>A core feature is broken, but the rest of the app works.</small>
+          </span>
+        </label>
+        <label class="sev-opt" data-tone="faint">
+          <input type="radio" name="sev" value="minor">
+          <span class="sev-dot" aria-hidden="true"></span>
+          <span class="sev-t">
+            <b>Minor</b>
+            <small>A visual glitch or a small annoyance.</small>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ===================== STEPS ===================== -->
+    <div class="field">
+      <div class="field-l">
+        <label>Steps to reproduce <span class="req">*</span></label>
+        <span class="hint" id="stepCount">0 / 6</span>
+      </div>
+      <div class="steps" id="steps"></div>
+      <button class="steps-add" id="addStep" type="button">
+        <span class="plus" aria-hidden="true">+</span>
+        Add a step
+      </button>
+    </div>
+
+    <!-- ===================== EXPECTED ===================== -->
+    <div class="field">
+      <div class="field-l">
+        <label for="fExpected">What did you expect?</label>
+      </div>
+      <textarea class="inp" id="fExpected"
+        placeholder="e.g. My profile picture should update right away."></textarea>
+    </div>
+
+    <!-- ===================== ACTUAL ===================== -->
+    <div class="field">
+      <div class="field-l">
+        <label for="fActual">What actually happened?</label>
+      </div>
+      <textarea class="inp" id="fActual"
+        placeholder="e.g. A red &quot;Error 500&quot; popup appeared and the screen froze."></textarea>
+    </div>
+
+    <!-- ==========================================================================
+         DEVICE & OS  (new in v3 — editable, pre-filled from detection)
+         ========================================================================== -->
+    <div class="field">
+      <div class="field-l">
+        <label>
+          Your device &amp; OS
+          <span class="edited-pill" id="editedPill">Edited</span>
+        </label>
+        <span class="hint">Pre-filled — edit if wrong</span>
+      </div>
+
+      <div class="setup-card">
+        <div class="setup-grid">
+          <div class="setup-cell">
+            <span class="setup-k">Device</span>
+            <input class="inp setup-inp" id="fDevice" type="text" autocomplete="off"
+                   placeholder="e.g. Samsung Galaxy S24">
+          </div>
+          <div class="setup-cell">
+            <span class="setup-k">Operating system</span>
+            <input class="inp setup-inp" id="fOs" type="text" autocomplete="off"
+                   placeholder="e.g. Android 14">
+          </div>
+          <div class="setup-cell wide">
+            <span class="setup-k">Browser / App</span>
+            <input class="inp setup-inp" id="fBrowser" type="text" autocomplete="off"
+                   placeholder="e.g. Chrome 121">
+          </div>
+        </div>
+
+        <details class="mini-acc" id="setupNotes">
+          <summary>
+            <span>Add anything else about your setup</span>
+            <span class="mark" aria-hidden="true"></span>
+          </summary>
+          <div class="mini-acc-body">
+            <textarea class="inp" id="fSetupNotes"
+              placeholder="e.g. Only happens on 4G, not Wi-Fi. Using a Bluetooth keyboard."></textarea>
+          </div>
+        </details>
+
+        <div class="setup-foot">
+          <small id="setupHint">Detected from your browser — correct anything that looks off.</small>
+          <button class="setup-reset" id="setupReset" type="button" disabled>Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== ATTACHMENTS ===================== -->
+    <div class="field">
+      <div class="field-l">
+        <label>Add a screenshot or video</label>
+        <span class="hint">Recommended</span>
+      </div>
+      <label class="drop" id="drop">
+        <span class="drop-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+        </span>
+        <b>Tap to upload or drag &amp; drop</b>
+        <small>Images and short clips · up to 4 files</small>
+        <input type="file" id="file" accept="image/*,video/*" multiple>
+      </label>
+      <div class="thumbs" id="thumbs"></div>
+    </div>
+
+    <!-- ===================== SYSTEM INFO ACCORDION ===================== -->
+    <details class="acc" id="sysInfo">
+      <summary>
+        <div class="acc-t">
+          <b>System info we're attaching</b>
+          <small id="sysSummary">Detecting…</small>
+        </div>
+        <span class="mark" aria-hidden="true"></span>
+      </summary>
+      <div class="acc-body">
+        <dl class="kv" id="sysKv"></dl>
+
+        <div style="margin-top:14px">
+          <div class="field-l">
+            <label style="font-size:12px;color:var(--th-muted)">Recent console activity</label>
+            <span class="hint" id="logCount">0 entries</span>
+          </div>
+          <div class="logs" id="logs"></div>
+        </div>
+      </div>
+    </details>
+
+    <!-- ===================== REASSURANCE ===================== -->
+    <div class="note">
+      <span class="note-ico" aria-hidden="true">i</span>
+      <p><b>You don't need to type your device or OS version.</b>
+         We pre-fill them for you — and you can edit them above if anything looks wrong.</p>
+    </div>
+
+    <!-- ===================== ACTIONS ===================== -->
+    <div class="actions">
+      <button class="btn ghost" id="cancel" type="button">Cancel</button>
+      <button class="btn primary" id="submit" type="button" aria-disabled="true">Submit report</button>
+    </div>
+
+  </div>
+</main>
+
+<!-- ==========================================================================
+     BOTTOM DOCK
+     ========================================================================== -->
+<div class="dock" id="dock">
+  <button class="grip" id="grip" type="button" aria-label="Switch between player and navigation"></button>
+
+  <nav class="dock-panel" data-panel="nav" aria-label="Primary">
+    <div class="nav-in" id="nav"></div>
+  </nav>
+
+  <aside class="dock-panel" data-panel="player" aria-label="Now playing">
+    <div class="ply">
+      <div class="seek" role="slider" aria-label="Track progress"
+           aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <i></i>
+      </div>
+      <div class="ply-row">
+        <div class="ply-art" style="--ax:20%;--ay:20%;--as:36%"></div>
+        <div class="ply-t">
+          <b>Midnight in Harare</b>
+          <small>Your Artist Profile</small>
+        </div>
+        <button class="play" type="button" aria-label="Play">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M8.4 5.3a.8.8 0 0 1 1.2-.7l9.4 6a.8.8 0 0 1 0 1.4l-9.4 6a.8.8 0 0 1-1.2-.7z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- ==========================================================================
+     MODAL SHEET + TOAST
+     ========================================================================== -->
+<div class="backdrop" id="backdrop">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <div class="sheet-grip"></div>
+    <h3 id="sheetTitle"></h3>
+    <div id="sheetBody"></div>
+    <div class="sheet-actions" id="sheetActions"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ========================================================================
+     0. CONSTANTS
+     ======================================================================== */
+  var DRAFT_KEY  = "trackhype.bugDraft.v2";
+  var TICKETS_KEY= "trackhype.bugTickets.v1";
+  var APP_BUILD  = "2.4.1 (2026.09.11)";
+  var MAX_STEPS  = 6;
+  var MAX_FILES  = 4;
+  var MAX_LOGS   = 30;
+
+  /* ========================================================================
+     1. CONSOLE / NETWORK CAPTURE
+     ======================================================================== */
+  var LOGS = [];
+
+  function pushLog(level, message){
+    LOGS.push({
+      t: Date.now(),
+      lvl: level,
+      msg: String(message == null ? "" : message).slice(0, 240)
+    });
+    if(LOGS.length > MAX_LOGS) LOGS.shift();
+    renderLogs();
+  }
+
+  (function(){
+    var origError = console.error;
+    var origWarn  = console.warn;
+
+    console.error = function(){
+      pushLog("error", Array.prototype.slice.call(arguments).join(" "));
+      try{ origError.apply(console, arguments); }catch(e){}
+    };
+    console.warn = function(){
+      pushLog("warn", Array.prototype.slice.call(arguments).join(" "));
+      try{ origWarn.apply(console, arguments); }catch(e){}
+    };
+
+    window.addEventListener("error", function(e){
+      pushLog("error",
+        (e.message || "Error") + " @ " +
+        (e.filename ? String(e.filename).split("/").pop() : "?") +
+        ":" + (e.lineno || "?"));
+    });
+    window.addEventListener("unhandledrejection", function(e){
+      var r = e.reason;
+      pushLog("error", "Unhandled: " + (r && r.message ? r.message : String(r)));
+    });
+
+    if(window.fetch){
+      var origFetch = window.fetch;
+      window.fetch = function(){
+        var arg = arguments[0];
+        var url = (typeof arg === "string") ? arg : (arg && arg.url) || "?";
+        return origFetch.apply(this, arguments).then(function(res){
+          if(!res.ok){ pushLog("net", "HTTP " + res.status + " · " + short(url)); }
+          return res;
+        }).catch(function(err){
+          pushLog("net", "FAIL · " + short(url) + " · " + (err && err.message ? err.message : ""));
+          throw err;
+        });
+      };
+    }
+
+    function short(u){
+      try{
+        var x = new URL(u, location.href);
+        return x.pathname + (x.search ? x.search : "");
+      }catch(e){ return String(u).slice(0, 80); }
+    }
+  })();
+
+  pushLog("info", "App booted · shell v" + APP_BUILD.split(" ")[0]);
+  pushLog("warn", "favourites cache miss — refetching");
+
+  /* ========================================================================
+     2. AUTO-CAPTURE METADATA
+     ======================================================================== */
+  function detectPlatform(ua){
+    var m;
+    if(/Android/i.test(ua)){
+      m = ua.match(/Android\s+([\d.]+)/);
+      var d = ua.match(/;\s*([^;)]+?)\s+Build/);
+      return { os: "Android" + (m ? " " + m[1] : ""), device: d ? d[1].trim() : "Android device" };
+    }
+    if(/iPhone|iPad|iPod/i.test(ua)){
+      m = ua.match(/OS\s+(\d+[_\d]+)/);
+      return { os: "iOS" + (m ? " " + m[1].replace(/_/g, ".") : ""), device: /iPad/.test(ua) ? "iPad" : "iPhone" };
+    }
+    if(/Windows/i.test(ua)){
+      m = ua.match(/Windows NT ([\d.]+)/);
+      var map = { "10.0": "10/11", "6.3": "8.1", "6.2": "8", "6.1": "7" };
+      return { os: "Windows " + (map[m && m[1]] || (m && m[1]) || ""), device: "Desktop" };
+    }
+    if(/Mac OS X/i.test(ua)){
+      m = ua.match(/Mac OS X\s+(\d+[_\d]+)/);
+      return { os: "macOS " + (m ? m[1].replace(/_/g, ".") : ""), device: "Mac" };
+    }
+    if(/Linux/i.test(ua)) return { os: "Linux", device: "Desktop" };
+    return { os: "Unknown", device: "Unknown" };
+  }
+
+  function detectBrowser(ua){
+    var m;
+    if(/Edg\//.test(ua))            { m = ua.match(/Edg\/([\d.]+)/);     return "Edge "     + (m ? m[1] : ""); }
+    if(/OPR\//.test(ua))            { m = ua.match(/OPR\/([\d.]+)/);     return "Opera "    + (m ? m[1] : ""); }
+    if(/Chrome\//.test(ua))         { m = ua.match(/Chrome\/([\d.]+)/);  return "Chrome "   + (m ? m[1] : ""); }
+    if(/Firefox\//.test(ua))        { m = ua.match(/Firefox\/([\d.]+)/); return "Firefox "  + (m ? m[1] : ""); }
+    if(/Safari\//.test(ua) && /Version\//.test(ua)){
+      m = ua.match(/Version\/([\d.]+)/);
+      return "Safari " + (m ? m[1] : "");
+    }
+    return "Unknown";
+  }
+
+  function readUser(){
+    try{
+      var u = JSON.parse(localStorage.getItem("trackhype.user") || "null");
+      return (u && u.email) || "guest@trackhype";
+    }catch(e){ return "guest@trackhype"; }
+  }
+
+  function captureMeta(){
+    var nav = window.navigator || {};
+    var ua  = nav.userAgent || "";
+    var plat= detectPlatform(ua);
+    var conn= nav.connection || nav.mozConnection || nav.webkitConnection || {};
+    return {
+      appVersion: APP_BUILD,
+      os:         plat.os || "—",
+      device:     plat.device || "—",
+      browser:    detectBrowser(ua),
+      screen:     location.pathname + location.search + location.hash,
+      viewport:   window.innerWidth + " × " + window.innerHeight,
+      dpr:        (window.devicePixelRatio || 1) + "×",
+      language:   nav.language || "—",
+      timezone:   (function(){
+        try{ return Intl.DateTimeFormat().resolvedOptions().timeZone; }
+        catch(e){ return "—"; }
+      })(),
+      connection: conn.effectiveType ? (conn.effectiveType.toUpperCase() + (conn.downlink ? " · " + conn.downlink + " Mbps" : "")) : "—",
+      memory:     nav.deviceMemory ? nav.deviceMemory + " GB" : "—",
+      userId:     readUser(),
+      userAgent:  ua
+    };
+  }
+
+  var META = captureMeta();
+
+  /* ---- the auto-detected setup snapshot, kept pristine so we can diff ---- */
+  var DETECTED = {
+    device:  META.device,
+    os:      META.os,
+    browser: META.browser
+  };
+
+  function renderMeta(){
+    var rows = [
+      ["App build",    META.appVersion],
+      ["Device",       META.device,   "detected"],
+      ["OS",           META.os,       "detected"],
+      ["Browser",      META.browser,  "detected"],
+      ["Screen",       META.screen],
+      ["Viewport",     META.viewport + " @ " + META.dpr],
+      ["Language",     META.language],
+      ["Timezone",     META.timezone],
+      ["Network",      META.connection],
+      ["Memory",       META.memory],
+      ["Signed in as", META.userId]
+    ];
+    document.getElementById("sysKv").innerHTML = rows.map(function(r){
+      var src = r[2] ? '<span class="badge-src">auto</span>' : '';
+      return '<div><dt>' + esc(r[0]) + '</dt><dd class="mono">' + esc(r[1]) + src + '</dd></div>';
+    }).join("");
+    document.getElementById("sysSummary").textContent =
+      META.device + " · " + META.os + " · build " + META.appVersion.split(" ")[0];
+  }
+
+  function renderLogs(){
+    var host = document.getElementById("logs");
+    if(!host) return;
+    document.getElementById("logCount").textContent =
+      LOGS.length + (LOGS.length === 1 ? " entry" : " entries");
+
+    if(!LOGS.length){
+      host.innerHTML = '<div class="empty">No recent errors captured.</div>';
+      return;
+    }
+    host.innerHTML = LOGS.map(function(l){
+      var cls = l.lvl === "error" ? "err"
+             : l.lvl === "warn"  ? "wrn"
+             : l.lvl === "net"   ? "net" : "";
+      var tag = l.lvl === "error" ? "ERR"
+             : l.lvl === "warn"  ? "WRN"
+             : l.lvl === "net"   ? "NET" : "INF";
+      return '<div class="ln ' + cls + '"><i>' + tag + '</i><span>' + esc(l.msg) + '</span></div>';
+    }).join("");
+    host.scrollTop = host.scrollHeight;
+  }
+
+  /* ========================================================================
+     3. HELPERS
+     ======================================================================== */
+  function esc(v){
+    return String(v == null ? "" : v)
+      .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+  }
+  function uid(n){
+    var out = "";
+    var chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    for(var i = 0; i < n; i++) out += chars[Math.floor(Math.random() * chars.length)];
+    return out;
+  }
+  function newTicketId(){
+    var d = new Date();
+    var y = String(d.getFullYear()).slice(2);
+    var m = String(d.getMonth() + 1).padStart(2, "0");
+    var dd= String(d.getDate()).padStart(2, "0");
+    return "BUG-" + y + m + dd + "-" + uid(3);
+  }
+
+  /* ========================================================================
+     4. NAV RENDER
+     ======================================================================== */
+  var NAV_ITEMS = [
+    { key:"index",   label:"Hyped",   d:'<path d="M3.5 10.6 12 3.9l8.5 6.7V20a1 1 0 0 1-1 1h-4.6v-6H9.1v6H4.5a1 1 0 0 1-1-1z"/>' },
+    { key:"history", label:"History", d:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.4V12l3.1 1.9"/>' },
+    { key:"artists", label:"Artists", d:'<path d="M9 18V6.2l10-2V16"/><circle cx="6.4" cy="18" r="2.6"/><circle cx="16.4" cy="16" r="2.6"/>' },
+    { key:"search",  label:"Search",  d:'<circle cx="11" cy="11" r="7"/><path d="m20.2 20.2-3.6-3.6"/>' },
+    { key:"menu",    label:"Menu",    d:'<path d="M4 7h16M4 12h16M4 17h16"/>' }
+  ];
+  var activeNav = document.body.getAttribute("data-active-nav") || "";
+  document.getElementById("nav").innerHTML = NAV_ITEMS.map(function(it){
+    var active = (it.key === activeNav);
+    return '<a class="nav-item" href="#" data-nav="' + it.key + '"' +
+           (active ? ' aria-current="page"' : '') +
+           ' aria-label="' + esc(it.label) + '">' +
+           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" ' +
+           'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + it.d + '</svg></a>';
+  }).join("");
+
+  /* ========================================================================
+     5. STATE
+     ======================================================================== */
+  var state = {
+    title: "",
+    severity: "major",
+    steps: [""],
+    expected: "",
+    actual: "",
+    device:  DETECTED.device,
+    os:      DETECTED.os,
+    browser: DETECTED.browser,
+    setupNotes: "",
+    attachments: []
+  };
+
+  /* ========================================================================
+     6. DRAFT — auto-save to localStorage
+     ======================================================================== */
+  var draftPill = document.getElementById("draftPill");
+  var saveTimer = 0;
+  var pillTimer = 0;
+
+  function markSaved(){
+    draftPill.classList.add("on");
+    clearTimeout(pillTimer);
+    pillTimer = setTimeout(function(){ draftPill.classList.remove("on"); }, 1400);
+  }
+
+  function saveDraft(){
+    try{
+      var payload = {
+        title: state.title,
+        severity: state.severity,
+        steps: state.steps,
+        expected: state.expected,
+        actual: state.actual,
+        device: state.device,
+        os: state.os,
+        browser: state.browser,
+        setupNotes: state.setupNotes,
+        attachmentNames: state.attachments.map(function(a){ return a.name; }),
+        savedAt: Date.now()
+      };
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(payload));
+      markSaved();
+    }catch(e){ /* quota / private mode */ }
+  }
+
+  function queueSave(){
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveDraft, 500);
+  }
+
+  function loadDraft(){
+    try{
+      var raw = localStorage.getItem(DRAFT_KEY);
+      if(!raw) return null;
+      var d = JSON.parse(raw);
+      if(!d || !d.savedAt) return null;
+      if(Date.now() - d.savedAt > 14 * 86400000){
+        localStorage.removeItem(DRAFT_KEY);
+        return null;
+      }
+      return d;
+    }catch(e){ return null; }
+  }
+
+  function clearDraft(){
+    try{ localStorage.removeItem(DRAFT_KEY); }catch(e){}
+  }
+
+  /* ========================================================================
+     7. STEPS LIST
+     ======================================================================== */
+  var stepsHost = document.getElementById("steps");
+  var stepCount = document.getElementById("stepCount");
+
+  function renderSteps(){
+    stepsHost.innerHTML = state.steps.map(function(val, i){
+      var filled = val.trim().length > 0;
+      var canRemove = state.steps.length > 1;
+      return '' +
+        '<div class="step" data-i="' + i + '">' +
+          '<span class="step-n' + (filled ? " filled" : "") + '">' + (i + 1) + '</span>' +
+          '<input class="inp" type="text" autocomplete="off" ' +
+                 'placeholder="' + esc(stepPlaceholder(i)) + '" ' +
+                 'value="' + esc(val) + '" data-step="' + i + '">' +
+          (canRemove
+            ? '<button class="step-x" type="button" data-remove="' + i + '" aria-label="Remove step">' +
+                '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 2l8 8M10 2l-8 8"/></svg>' +
+              '</button>'
+            : '') +
+        '</div>';
+    }).join("");
+
+    stepCount.textContent = state.steps.filter(function(s){ return s.trim(); }).length +
+                            " / " + MAX_STEPS;
+  }
+
+  function stepPlaceholder(i){
+    var samples = [
+      "Opened the Profile page",
+      'Tapped "Upload Photo"',
+      "Selected a JPEG from my gallery",
+      "Waited for the upload to finish",
+      "Scrolled down on the Home feed",
+      "Switched region and back"
+    ];
+    return "e.g. " + samples[i % samples.length];
+  }
+
+  stepsHost.addEventListener("input", function(e){
+    var input = e.target.closest("[data-step]");
+    if(!input) return;
+    var i = Number(input.getAttribute("data-step"));
+    state.steps[i] = input.value;
+    var row = input.parentNode;
+    var badge = row.querySelector(".step-n");
+    if(badge) badge.classList.toggle("filled", input.value.trim().length > 0);
+    refreshStepCount();
+    refreshSubmit();
+    queueSave();
+  });
+
+  stepsHost.addEventListener("click", function(e){
+    var x = e.target.closest("[data-remove]");
+    if(!x) return;
+    var i = Number(x.getAttribute("data-remove"));
+    state.steps.splice(i, 1);
+    if(!state.steps.length) state.steps = [""];
+    renderSteps();
+    refreshSubmit();
+    queueSave();
+    var prev = stepsHost.querySelector('[data-step="' + Math.max(0, i - 1) + '"]');
+    if(prev) prev.focus();
+  });
+
+  document.getElementById("addStep").addEventListener("click", function(){
+    if(state.steps.length >= MAX_STEPS){
+      toast("You can add up to " + MAX_STEPS + " steps.");
+      return;
+    }
+    state.steps.push("");
+    renderSteps();
+    var rows = stepsHost.querySelectorAll("[data-step]");
+    var last = rows[rows.length - 1];
+    if(last) last.focus();
+    queueSave();
+  });
+
+  function refreshStepCount(){
+    stepCount.textContent = state.steps.filter(function(s){ return s.trim(); }).length +
+                            " / " + MAX_STEPS;
+  }
+
+  /* ========================================================================
+     8. SEVERITY
+     ======================================================================== */
+  document.getElementById("sev").addEventListener("change", function(e){
+    if(e.target.name !== "sev") return;
+    state.severity = e.target.value;
+    refreshSubmit();
+    queueSave();
+  });
+
+  /* ========================================================================
+     9. TITLE / EXPECTED / ACTUAL
+     ======================================================================== */
+  var fTitle    = document.getElementById("fTitle");
+  var fExpected = document.getElementById("fExpected");
+  var fActual   = document.getElementById("fActual");
+
+  fTitle.addEventListener("input", function(){
+    state.title = fTitle.value;
+    refreshSubmit();
+    queueSave();
+  });
+  fExpected.addEventListener("input", function(){
+    state.expected = fExpected.value; queueSave();
+  });
+  fActual.addEventListener("input", function(){
+    state.actual = fActual.value; queueSave();
+  });
+
+  /* ========================================================================
+     10. DEVICE & OS  (new in v3)
+     ======================================================================== */
+  var fDevice  = document.getElementById("fDevice");
+  var fOs      = document.getElementById("fOs");
+  var fBrowser = document.getElementById("fBrowser");
+  var fSetupNotes = document.getElementById("fSetupNotes");
+  var editedPill = document.getElementById("editedPill");
+  var setupReset = document.getElementById("setupReset");
+  var setupHint  = document.getElementById("setupHint");
+
+  /* prime the inputs with detection */
+  fDevice.value  = state.device;
+  fOs.value      = state.os;
+  fBrowser.value = state.browser;
+
+  function isEdited(){
+    return state.device.trim()  !== DETECTED.device  ||
+           state.os.trim()      !== DETECTED.os      ||
+           state.browser.trim() !== DETECTED.browser;
+  }
+
+  function refreshSetupUI(){
+    var edited = isEdited();
+    editedPill.classList.toggle("on", edited);
+    setupReset.disabled = !edited;
+    setupHint.textContent = edited
+      ? "Your edits will be sent instead of the detected values."
+      : "Detected from your browser — correct anything that looks off.";
+  }
+
+  function bindSetupField(el, key){
+    el.addEventListener("input", function(){
+      state[key] = el.value;
+      refreshSetupUI();
+      renderMeta();          /* keeps the accordion in sync as a courtesy */
+      queueSave();
+    });
+  }
+  bindSetupField(fDevice,  "device");
+  bindSetupField(fOs,      "os");
+  bindSetupField(fBrowser, "browser");
+
+  fSetupNotes.addEventListener("input", function(){
+    state.setupNotes = fSetupNotes.value;
+    queueSave();
+  });
+
+  setupReset.addEventListener("click", function(){
+    state.device  = DETECTED.device;
+    state.os      = DETECTED.os;
+    state.browser = DETECTED.browser;
+    fDevice.value  = DETECTED.device;
+    fOs.value      = DETECTED.os;
+    fBrowser.value = DETECTED.browser;
+    refreshSetupUI();
+    renderMeta();
+    queueSave();
+    toast("Reset to detected values");
+  });
+
+  refreshSetupUI();
+
+  /* ========================================================================
+     11. ATTACHMENTS
+     ======================================================================== */
+  var drop   = document.getElementById("drop");
+  var file   = document.getElementById("file");
+  var thumbs = document.getElementById("thumbs");
+
+  ["dragenter","dragover"].forEach(function(ev){
+    drop.addEventListener(ev, function(e){
+      e.preventDefault();
+      drop.classList.add("over");
+    });
+  });
+  ["dragleave","drop"].forEach(function(ev){
+    drop.addEventListener(ev, function(e){
+      e.preventDefault();
+      drop.classList.remove("over");
+    });
+  });
+  drop.addEventListener("drop", function(e){
+    var files = (e.dataTransfer && e.dataTransfer.files) || [];
+    addFiles(files);
+  });
+  file.addEventListener("change", function(){
+    addFiles(file.files);
+    file.value = "";
+  });
+
+  function addFiles(list){
+    var room = MAX_FILES - state.attachments.length;
+    if(room <= 0){
+      toast("Maximum " + MAX_FILES + " attachments reached.");
+      return;
+    }
+    var files = Array.prototype.slice.call(list || []).slice(0, room);
+    if(!files.length) return;
+
+    var added = 0;
+    files.forEach(function(f){
+      if(f.size > 15 * 1024 * 1024){
+        toast("“" + f.name + "” is over 15 MB — skipped.");
+        return;
+      }
+      var item = {
+        id: "att-" + Date.now() + "-" + uid(3),
+        name: f.name,
+        size: f.size,
+        type: f.type || "",
+        url: ""
+      };
+      state.attachments.push(item);
+      added++;
+      if(/^image\//.test(item.type) || /^video\//.test(item.type)){
+        var reader = new FileReader();
+        reader.onload = function(){
+          item.url = reader.result;
+          renderThumbs();
+        };
+        reader.readAsDataURL(f);
+      }
+    });
+    renderThumbs();
+    if(added) toast(added + (added === 1 ? " file attached" : " files attached"));
+  }
+
+  function renderThumbs(){
+    thumbs.innerHTML = state.attachments.map(function(a){
+      var inner;
+      if(a.url && /^image\//.test(a.type)){
+        inner = '<img src="' + a.url + '" alt="">';
+      }else if(a.url && /^video\//.test(a.type)){
+        inner = '<video src="' + a.url + '" muted></video>';
+      }else{
+        inner = '<span class="noart">' + esc(extOf(a.name)) + '</span>';
+      }
+      return '<div class="thumb" data-att="' + esc(a.id) + '" title="' + esc(a.name) + '">' +
+               inner +
+               '<button class="thumb-x" type="button" data-remove-att="' + esc(a.id) + '" aria-label="Remove attachment">' +
+                 '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M2 2l8 8M10 2l-8 8"/></svg>' +
+               '</button>' +
+             '</div>';
+    }).join("");
+  }
+
+  function extOf(name){
+    var i = String(name || "").lastIndexOf(".");
+    return i > -1 ? String(name).slice(i + 1).slice(0, 4) : "file";
+  }
+
+  thumbs.addEventListener("click", function(e){
+    var x = e.target.closest("[data-remove-att]");
+    if(!x) return;
+    var id = x.getAttribute("data-remove-att");
+    state.attachments = state.attachments.filter(function(a){ return a.id !== id; });
+    renderThumbs();
+    toast("Attachment removed");
+  });
+
+  /* ========================================================================
+     12. SUBMIT GATE
+     ======================================================================== */
+  var submitBtn = document.getElementById("submit");
+
+  function isReady(){
+    if(!state.title.trim()) return false;
+    if(!state.steps.some(function(s){ return s.trim(); })) return false;
+    if(!state.severity) return false;
+    return true;
+  }
+  function refreshSubmit(){
+    submitBtn.setAttribute("aria-disabled", String(!isReady()));
+  }
+
+  submitBtn.addEventListener("click", function(){
+    if(!isReady()){
+      if(!state.title.trim()){ fTitle.focus(); toast("Add a short title first."); return; }
+      if(!state.steps.some(function(s){ return s.trim(); })){ toast("Add at least one step."); return; }
+      return;
+    }
+    doSubmit();
+  });
+
+  /* ========================================================================
+     13. SUBMIT
+     ======================================================================== */
+  function doSubmit(){
+    var ticketId = newTicketId();
+    var fresh = captureMeta();
+
+    var payload = {
+      id: ticketId,
+      createdAt: new Date().toISOString(),
+      title: state.title.trim(),
+      severity: state.severity,
+      steps: state.steps.map(function(s){ return s.trim(); }).filter(Boolean),
+      expected: state.expected.trim(),
+      actual: state.actual.trim(),
+
+      /* user-confirmed device context */
+      device: {
+        userDevice:  state.device.trim(),
+        userOs:      state.os.trim(),
+        userBrowser: state.browser.trim(),
+        userNotes:   state.setupNotes.trim(),
+        editedFromDetection: isEdited(),
+        detectedDevice:  DETECTED.device,
+        detectedOs:      DETECTED.os,
+        detectedBrowser: DETECTED.browser
+      },
+
+      attachments: state.attachments.map(function(a){
+        return { name: a.name, size: a.size, type: a.type };
+      }),
+
+      /* silent auto-captured meta */
+      meta: fresh,
+      logs: LOGS.slice(-20)
+    };
+
+    try{
+      var list = JSON.parse(localStorage.getItem(TICKETS_KEY) || "[]");
+      list.unshift(payload);
+      if(list.length > 40) list.length = 40;
+      localStorage.setItem(TICKETS_KEY, JSON.stringify(list));
+    }catch(e){}
+
+    clearDraft();
+
+    var edited = isEdited();
+
+    openSheet({
+      title: "Report submitted",
+      html:
+        '<div class="tick" aria-hidden="true">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" ' +
+               'stroke-linecap="round" stroke-linejoin="round">' +
+            '<path d="M5 12.5 10 17.5 19.5 7"/>' +
+          '</svg>' +
+        '</div>' +
+        '<p style="text-align:center">Thanks — we\'ve logged this and the team can now see it.</p>' +
+        '<div class="ticket">' +
+          '<small>Ticket</small>' +
+          '<b>' + esc(ticketId) + '</b>' +
+        '</div>' +
+        '<dl class="kv" style="margin-top:14px">' +
+          '<div><dt>Severity</dt><dd>' + esc(labelForSeverity(state.severity)) + '</dd></div>' +
+          '<div><dt>Device</dt><dd>' + esc(state.device.trim() || "—") +
+            (edited ? '<span class="badge-src">you</span>' : '') + '</dd></div>' +
+          '<div><dt>Operating system</dt><dd>' + esc(state.os.trim() || "—") +
+            (edited ? '<span class="badge-src">you</span>' : '') + '</dd></div>' +
+          '<div><dt>Browser / App</dt><dd>' + esc(state.browser.trim() || "—") +
+            (edited ? '<span class="badge-src">you</span>' : '') + '</dd></div>' +
+          (state.setupNotes.trim()
+            ? '<div><dt>Setup notes</dt><dd>Included</dd></div>'
+            : '') +
+          '<div><dt>Attached</dt><dd>' +
+            (state.attachments.length || 0) + ' file' + (state.attachments.length === 1 ? '' : 's') +
+          '</dd></div>' +
+          '<div><dt>System info</dt><dd>Auto-attached</dd></div>' +
+          '<div><dt>Console entries</dt><dd>' + LOGS.length + '</dd></div>' +
+        '</dl>' +
+        '<p style="margin-top:14px">You can keep using the app while we investigate. ' +
+        'We\'ll follow up on <b style="color:var(--th-text)">' + esc(fresh.userId) + '</b> if we need more detail.</p>',
+      actions: [
+        { id:"done",    label:"Done",          primary:true },
+        { id:"another", label:"Report another" }
+      ],
+      onAction: function(id){
+        if(id === "done"){ closeSheet(); resetForm(); }
+        if(id === "another"){ closeSheet(); resetForm(); fTitle.focus(); }
+      }
+    });
+  }
+
+  function labelForSeverity(v){
+    return v === "blocker" ? "Blocker"
+         : v === "minor"   ? "Minor"
+         : "Major";
+  }
+
+  function resetForm(){
+    state.title = "";
+    state.severity = "major";
+    state.steps = [""];
+    state.expected = "";
+    state.actual = "";
+    state.device  = DETECTED.device;
+    state.os      = DETECTED.os;
+    state.browser = DETECTED.browser;
+    state.setupNotes = "";
+    state.attachments = [];
+
+    fTitle.value = "";
+    fExpected.value = "";
+    fActual.value = "";
+    fDevice.value  = DETECTED.device;
+    fOs.value      = DETECTED.os;
+    fBrowser.value = DETECTED.browser;
+    fSetupNotes.value = "";
+    document.getElementById("setupNotes").open = false;
+
+    var radios = document.querySelectorAll('#sev input[name="sev"]');
+    Array.prototype.forEach.call(radios, function(r){ r.checked = (r.value === "major"); });
+
+    renderSteps();
+    renderThumbs();
+    refreshSetupUI();
+    refreshSubmit();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  /* ========================================================================
+     14. CANCEL
+     ======================================================================== */
+  document.getElementById("cancel").addEventListener("click", function(){
+    var hasContent =
+      state.title.trim() ||
+      state.expected.trim() ||
+      state.actual.trim() ||
+      state.setupNotes.trim() ||
+      state.steps.some(function(s){ return s.trim(); }) ||
+      state.attachments.length ||
+      isEdited();
+
+    if(!hasContent){
+      if(history.length > 1) history.back();
+      else toast("Nothing to cancel — nothing was typed.");
+      return;
+    }
+
+    openSheet({
+      title: "Discard this report?",
+      html: '<p>Your draft is saved locally, so you can come back to it later — but the ' +
+            'ticket won\'t be submitted until you tap <b style="color:var(--th-text)">Submit</b>.</p>',
+      actions: [
+        { id:"keep",    label:"Keep editing", primary:true },
+        { id:"discard", label:"Discard draft" }
+      ],
+      onAction: function(id){
+        if(id === "keep"){ closeSheet(); return; }
+        if(id === "discard"){
+          clearDraft();
+          resetForm();
+          closeSheet();
+          toast("Draft discarded");
+        }
+      }
+    });
+  });
+
+  /* ========================================================================
+     15. BACK
+     ======================================================================== */
+  document.getElementById("back").addEventListener("click", function(){
+    if(history.length > 1) history.back();
+    else toast("Nothing to go back to.");
+  });
+
+  /* ========================================================================
+     16. MODAL SHEET
+     ======================================================================== */
+  var backdrop = document.getElementById("backdrop");
+  var sheetActions = document.getElementById("sheetActions");
+  var sheetHandler = null;
+
+  function openSheet(opts){
+    document.getElementById("sheetTitle").textContent = opts.title || "";
+    document.getElementById("sheetBody").innerHTML = opts.html || "";
+    sheetActions.innerHTML = (opts.actions || []).map(function(a){
+      return '<button class="btn ' + (a.primary ? "primary" : "ghost") + '" type="button" ' +
+             'data-act="' + esc(a.id) + '">' + esc(a.label) + '</button>';
+    }).join("");
+    sheetHandler = opts.onAction || null;
+    backdrop.classList.add("is-open");
+    document.body.classList.add("modal-open");
+  }
+  function closeSheet(){
+    backdrop.classList.remove("is-open");
+    document.body.classList.remove("modal-open");
+  }
+  backdrop.addEventListener("click", function(e){
+    if(e.target === backdrop){ closeSheet(); return; }
+    var btn = e.target.closest("[data-act]");
+    if(!btn) return;
+    var id = btn.getAttribute("data-act");
+    if(id === "dismiss"){ closeSheet(); return; }
+    if(sheetHandler) sheetHandler(id);
+  });
+
+  /* ========================================================================
+     17. TOAST
+     ======================================================================== */
+  var toastEl = document.getElementById("toast");
+  var toastTimer = 0;
+  function toast(msg){
+    toastEl.textContent = msg;
+    void toastEl.offsetWidth;
+    toastEl.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove("show"); }, 3000);
+  }
+
+  /* ========================================================================
+     18. BOTTOM DOCK
+     ======================================================================== */
+  (function(){
+    var dock = document.getElementById("dock");
+    var grip = document.getElementById("grip");
+    var panels = {
+      nav:    dock.querySelector('[data-panel="nav"]'),
+      player: dock.querySelector('[data-panel="player"]')
+    };
+    var mode = "nav";
+    var width = 0;
+    var tracking = false, axis = null;
+    var startX = 0, startY = 0, dx = 0;
+    var settleTimer = 0;
+    var AXIS_LOCK = 8, SWIPE_MIN = 46;
+
+    function measure(){ width = dock.getBoundingClientRect().width || window.innerWidth; }
+    function setX(el, x){ el.style.transform = "translate3d(" + (Math.round(x * 100) / 100) + "px,0,0)"; }
+    function seat(){
+      measure();
+      setX(panels.nav,    mode === "nav"    ? 0 : -width);
+      setX(panels.player, mode === "player" ? 0 :  width);
+    }
+    function dragTo(d){
+      setX(panels[mode], d);
+      setX(mode === "nav" ? panels.player : panels.nav, (d < 0 ? width : -width) + d);
+    }
+    function settle(go){
+      measure();
+      var out = panels[mode];
+      var inc = mode === "nav" ? panels.player : panels.nav;
+      dock.classList.remove("dragging");
+      if(go){
+        mode = mode === "nav" ? "player" : "nav";
+        setX(inc, 0);
+        setX(out, dx < 0 ? -width : width);
+      }else{
+        setX(out, 0);
+        setX(inc, dx < 0 ? width : -width);
+      }
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(function(){ seat(); }, 340);
+    }
+
+    function down(x, y){
+      if(tracking) return;
+      tracking = true; axis = null;
+      startX = x; startY = y; dx = 0;
+      clearTimeout(settleTimer); settleTimer = 0;
+    }
+    function move(x, y){
+      if(!tracking) return;
+      dx = x - startX;
+      var dy = y - startY;
+      if(axis === null){
+        var adx = Math.abs(dx), ady = Math.abs(dy);
+        if(adx > AXIS_LOCK && adx > ady){ axis = "x"; dock.classList.add("dragging"); }
+        else if(ady > AXIS_LOCK){ axis = "y"; }
+        else return;
+      }
+      if(axis === "x") dragTo(dx);
+    }
+    function up(){
+      if(!tracking) return;
+      tracking = false;
+      if(axis === "x") settle(Math.abs(dx) >= SWIPE_MIN);
+      else if(dock.classList.contains("dragging")) dock.classList.remove("dragging");
+      axis = null;
+    }
+
+    if(window.PointerEvent){
+      dock.addEventListener("pointerdown", function(e){
+        if(e.isPrimary === false) return;
+        if(e.pointerType === "mouse" && e.button !== 0) return;
+        if(e.target.closest(".seek")) return;
+        down(e.clientX, e.clientY);
+      });
+      window.addEventListener("pointermove", function(e){
+        if(!tracking) return;
+        move(e.clientX, e.clientY);
+        if(axis === "x" && e.cancelable) e.preventDefault();
+      }, { passive:false });
+      window.addEventListener("pointerup", up);
+      window.addEventListener("pointercancel", up);
+    }else{
+      dock.addEventListener("touchstart", function(e){
+        if(e.touches.length !== 1 || e.target.closest(".seek")) return;
+        down(e.touches[0].clientX, e.touches[0].clientY);
+      }, { passive:true });
+      window.addEventListener("touchmove", function(e){
+        var t = e.touches[0];
+        if(!t || !tracking) return;
+        move(t.clientX, t.clientY);
+        if(axis === "x" && e.cancelable) e.preventDefault();
+      }, { passive:false });
+      window.addEventListener("touchend", up);
+    }
+
+    grip.addEventListener("click", function(e){
+      e.preventDefault();
+      dx = (mode === "nav") ? -1 : 1;
+      settle(true);
+    });
+
+    window.addEventListener("resize", function(){
+      clearTimeout(settleTimer);
+      if(!tracking) seat();
+    });
+
+    measure();
+    seat();
+  })();
+
+  /* ========================================================================
+     19. NAV STUB
+     ======================================================================== */
+  document.getElementById("nav").addEventListener("click", function(e){
+    var a = e.target.closest("[data-nav]");
+    if(!a) return;
+    e.preventDefault();
+    Array.prototype.forEach.call(this.querySelectorAll(".nav-item"), function(n){
+      n.removeAttribute("aria-current");
+    });
+    a.setAttribute("aria-current", "page");
+    toast("Navigate → " + a.getAttribute("aria-label"));
+  });
+
+  /* ========================================================================
+     20. BOOT
+     ======================================================================== */
+  renderMeta();
+  renderLogs();
+
+  var draft = loadDraft();
+  if(draft){
+    state.title = draft.title || "";
+    state.severity = draft.severity || "major";
+    state.steps = (Array.isArray(draft.steps) && draft.steps.length) ? draft.steps : [""];
+    state.expected = draft.expected || "";
+    state.actual = draft.actual || "";
+    state.device  = draft.device  || DETECTED.device;
+    state.os      = draft.os      || DETECTED.os;
+    state.browser = draft.browser || DETECTED.browser;
+    state.setupNotes = draft.setupNotes || "";
+
+    fTitle.value = state.title;
+    fExpected.value = state.expected;
+    fActual.value = state.actual;
+    fDevice.value  = state.device;
+    fOs.value      = state.os;
+    fBrowser.value = state.browser;
+    fSetupNotes.value = state.setupNotes;
+    if(state.setupNotes) document.getElementById("setupNotes").open = true;
+
+    var radios = document.querySelectorAll('#sev input[name="sev"]');
+    Array.prototype.forEach.call(radios, function(r){
+      r.checked = (r.value === state.severity);
+    });
+
+    if(draft.attachmentNames && draft.attachmentNames.length){
+      toast("Draft restored · " + draft.attachmentNames.length + " file name(s) remembered — please re-attach.");
+    }else{
+      toast("Draft restored");
+    }
+  }
+
+  renderSteps();
+  refreshSetupUI();
+  refreshSubmit();
+
+  window.addEventListener("resize", function(){
+    META = captureMeta();
+    /* do NOT overwrite DETECTED — that's the original snapshot */
+    renderMeta();
+  }, { passive:true });
+
+})();
+</script>
+</body>
+</html>

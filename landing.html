@@ -17,22 +17,9 @@
 .sp-small{margin-top:18px;font-size:12px;color:var(--th-faint)}
     .thumb{display:flex;gap:10px;justify-content:center;margin-top:24px}
     .thumb img{width:52px;height:52px;border-radius:10px;object-fit:cover;border:1px solid var(--th-border-soft)}
-    #splash{position:fixed;inset:0;z-index:9999;background:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity .5s ease;cursor:pointer}
-    #splash.fade{opacity:0;pointer-events:none}
-    .splash-logo{width:180px;height:180px;border-radius:24px;object-fit:contain}
-    .splash-fallback{width:160px;height:160px;border-radius:24px;background:linear-gradient(135deg,var(--th-primary),var(--th-primary-dark));display:none;align-items:center;justify-content:center;font-size:50px;font-weight:900;color:#fff;letter-spacing:-2px}
-    .splash-brand{margin-top:20px;font-size:32px;font-weight:900;letter-spacing:2px;color:var(--th-text)}
-    .splash-tag{font-size:13px;color:var(--th-muted);margin-top:6px}
   </style>
 </head>
 <body>
-
-  <div id="splash" onclick="dismissSplash()">
-    <img class="splash-logo" src="Assets/logos/TrackHype Logo Design Badge.webp" onerror="this.style.display='none';document.getElementById('splashFallback').style.display='flex';" alt="TrackHype">
-    <div id="splashFallback" class="splash-fallback">TH</div>
-    <div class="splash-brand">TRACK<span style="color:var(--th-primary-dark)">HYPE</span></div>
-    <div class="splash-tag">Zimbabwe's Music Pulse</div>
-  </div>
 
   <main class="sp-wrap">
     <img class="sp-logo" src="Assets/logos/TrackHype Logo Design.png" alt="TrackHype">
@@ -54,15 +41,7 @@
     <div class="sp-small">Your gateway to Zimbabwean music &amp; artists</div>
   </main>
 
-<script src="trackhype.js"></script>
-  <script>
-    function dismissSplash(){
-      const s = document.getElementById("splash");
-      if(!s){ return; }
-      s.classList.add("fade");
-      setTimeout(() => { s.style.display = "none"; }, 500);
-    }
-    setTimeout(dismissSplash, 2000);
-  </script>
+<script src="demo-playlist.js"></script>
+  <script src="trackhype.js"></script>
 </body>
 </html>

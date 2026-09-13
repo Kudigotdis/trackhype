@@ -5,79 +5,108 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#ffffff">
   <link rel="icon" type="image/webp" href="Assets/logos/TrackHype Logo Design Badge.webp">
-  <title>Promo-Playlist — TrackHype</title>
+  <title>Playlist — TrackHype</title>
   <link rel="stylesheet" href="trackhype.css">
   <style>
     .pl-row{display:flex;align-items:center;gap:11px;padding:11px 12px;border-bottom:1px solid var(--th-border-soft)}
     .pl-row:last-child{border-bottom:0}
+    .pl-row.is-active{background:var(--th-grey-1)}
     .pl-thumb{flex:none;width:46px;height:46px;border-radius:8px;object-fit:cover;background:var(--th-grey-2)}
-    .pl-fav{width:32px;height:32px;flex:none}
     .pl-meta{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
-    .pl-actions{display:flex;align-items:center;gap:6px;flex:none}
-    .pl-actions .th-icon-btn.is-active{background:var(--th-primary);color:#fff}
+    .pl-chart-cell{flex:none;display:flex;align-items:center}
+    .pl-chart{width:26px;height:26px;object-fit:contain}
+    .pl-chart-btn{background:none;border:0;padding:0;cursor:pointer;display:flex;flex:none}
+    .pl-chart-btn img{width:26px;height:26px;object-fit:contain;display:block}
+
+    .pl-detail-banner{display:block;width:100vw;height:auto;object-fit:contain;background:var(--th-grey-2)}
+    .pl-detail-meta{min-width:0;padding:2px 2px 4px}
+    .pl-detail-title{font-size:18px;font-weight:900;line-height:1.2}
+    .pl-detail-sub{font-size:12px;color:var(--th-muted);margin-top:3px}
 
     .r-rail{display:flex;gap:12px;overflow-x:auto;padding:12px 14px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
     .r-card{flex:0 0 116px;scroll-snap-align:start;text-align:center;cursor:pointer;border:2px solid transparent;border-radius:14px;padding:4px;transition:border-color .15s ease}
     .r-card img{width:116px;height:116px;border-radius:12px;object-fit:cover;display:block;background:var(--th-grey-2)}
     .r-card.is-active{border-color:var(--th-primary)}
+    .r-flag{width:46px;height:46px;border-radius:50%;object-fit:cover;margin:0 auto;display:block;background:var(--th-grey-2)}
     .r-name{font-weight:800;font-size:12.5px;margin-top:7px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     .r-tracks{font-size:11px;color:var(--th-muted);margin-top:2px}
 
-    .genre-list{display:grid;gap:10px;max-height:52vh;overflow:auto;padding:2px}
-    .genre-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 13px;border:1px solid var(--th-border);border-radius:var(--th-radius-sm);background:var(--th-grey-1);font-weight:800;font-size:13px;text-align:left}
-    .genre-item:active{transform:scale(.99)}
-    .genre-mark{color:var(--th-primary)}
+    .cp-hero{display:flex;gap:14px;align-items:center;padding:16px 14px}
+    .cp-art{width:88px;height:88px;border-radius:12px;object-fit:cover;background:var(--th-grey-2);flex:none}
+    .cp-meta{min-width:0}
+    .cp-title{font-size:16px;font-weight:900;line-height:1.2}
+    .cp-sub{font-size:12px;color:var(--th-muted);margin-top:3px}
   </style>
 </head>
 <body data-active-nav="menu.html">
 
   <header class="th-header" data-app-header>
     <div class="th-header-inner">
-      <button class="th-icon-btn" type="button" aria-label="Back" onclick="history.back()">‹</button>
+      <button class="th-btn primary th-header-back" type="button" onclick="history.back()">Back</button>
       <a class="th-brand" href="index.html">
         <img class="th-logo-badge" src="Assets/logos/TrackHype Logo Design Badge.webp" alt="TrackHype">
         <img class="th-logo-text" src="Assets/logos/track-hype-text-logo.webp" alt="TrackHype">
       </a>
-      <div class="th-header-context">Promo-Playlist</div>
     </div>
   </header>
 
   <main class="th-app">
+    <img id="detailArt" class="pl-detail-banner" src="" alt="" hidden>
     <div class="th-shell">
 
-      <section>
-        <h1 class="th-page-title">Promo-Playlists</h1>
-        <p class="th-page-subtitle">Browse promo playlists by genre. Slide the rail left and right or use the Genre button to load a playlist.</p>
+      <section id="titleSection">
+        <h1 class="th-page-title" id="pageTitle">Promo-Playlist</h1>
+        <p class="th-page-subtitle">Listen to real demo tracks from the TrackHype library. Pick a region to browse, then tap ▶ to play.</p>
       </section>
 
-      <section>
-        <button class="th-btn primary block" type="button" onclick="openGenrePicker()">
-          ♫ Genre · <span id="promoGenreLabel">Zim Hip Hop</span> ⌄
-        </button>
-      </section>
-
-      <section>
-        <div class="th-card" id="fullPlaylist" style="padding:0">
-          <div class="r-rail" id="promoRail"></div>
+      <section id="singleSection" hidden>
+        <div class="pl-detail-meta">
+          <div class="pl-detail-title" id="singleTitle"></div>
+          <div class="pl-detail-sub" id="singleSub"></div>
+        </div>
+        <div id="singleSongs"></div>
+        <div class="th-empty" id="singleEmpty" hidden>
+          <strong>This playlist is empty.</strong>
         </div>
       </section>
 
-      <section>
-        <div class="th-card" id="genreSongs"></div>
+      <section id="curatedSection">
+        <div class="th-card" id="curatedCard" style="padding:0">
+          <div class="cp-hero">
+            <img id="curatedArt" class="cp-art" src="" alt="">
+            <div class="cp-meta">
+              <div class="cp-title" id="curatedTitle"></div>
+              <div class="cp-sub" id="curatedSub"></div>
+            </div>
+          </div>
+          <div id="curatedSongs"></div>
+        </div>
+      </section>
+
+      <section id="regionSection">
+        <div class="th-card" id="regionCard" style="padding:0">
+          <div class="r-rail" id="regionRail"></div>
+        </div>
+      </section>
+
+      <section id="regionSongsSection">
+        <div class="th-card" id="regionSongs"></div>
         <div class="th-empty" id="emptyPlaylist" hidden>
-          <strong>No tracks for this genre yet.</strong>
-          Choose another promo playlist from the rail or the Genre button.
+          <strong>No tracks for this region yet.</strong>
+          Choose another region from the rail above.
         </div>
       </section>
 
     </div>
   </main>
 
-  <nav class="th-bottom" data-bottom>
-    <div class="th-bottom-inner" data-nav-host></div>
-  </nav>
+  <div class="bottom-swipe" data-bottom-swipe>
+    <nav class="bottom-nav" data-bottom>
+      <div class="bottom-nav-inner" data-nav-host></div>
+    </nav>
 
-  <aside class="promo-player" data-player></aside>
+    <aside class="promo-player" data-player></aside>
+  </div>
 
   <div class="th-modal-backdrop" data-modal>
     <div class="th-sheet" role="dialog" aria-modal="true">
@@ -88,56 +117,219 @@
     </div>
   </div>
 
+  <script src="demo-playlist.js"></script>
+  <script src="playlists.js"></script>
   <script src="trackhype.js"></script>
   <script>
-    const GENRES = (TrackHype.CATALOG.genres || []).map(g => g.title);
-    const ARTIST_POOL = ["Winky D","Holy Ten","Feli Nandi","Alick Macheso"];
+    const REGIONS = [
+      { name: "Zimbabwe", code: "zw", flag: "Country-Flag-Icons/zw.png" },
+      { name: "Botswana", code: "bw", flag: "Country-Flag-Icons/bw.png" },
+      { name: "International", code: "", flag: "" }
+    ];
 
-    function genreTracks(genre){
-      const found = TrackHype.CATALOG.songs
-        .filter(s => s.genre === genre)
-        .map(s => ({ id: s.id, title: s.title, artist: s.artist, artwork: s.artwork, genre }));
-      if(found.length){
-        return found;
-      }
-      return Array.from({length:8},(_,i)=>({
-        id: "promo-" + genre + "-" + i,
-        title: genre + " Promo Track " + (i + 1),
-        artist: ARTIST_POOL[i % ARTIST_POOL.length],
-        artwork: TrackHype.getArtwork(i),
-        genre
-      }));
+    const ALL_SONGS = (window.DEMO_SONGS_DATA || []).slice();
+    const PLAYLISTS = window.PLAYLISTS || [];
+    const PARAMS = new URLSearchParams(location.search);
+    const requestedId = PARAMS.get("id");
+    const singlePlaylist = requestedId
+      ? PLAYLISTS.find(p => p.id === requestedId)
+      : null;
+
+    if(singlePlaylist){
+      document.title = singlePlaylist.name + " — TrackHype";
     }
 
-    let activeGenre = GENRES.includes("Zim Hip Hop") ? "Zim Hip Hop" : (GENRES[0] || "Zim Hip Hop");
-    let tracks = genreTracks(activeGenre);
-
-    function isFav(id){
-      try{
-        return JSON.parse(localStorage.getItem("trackhype:promo-songs") || "[]").includes(id);
-      }catch(error){
-        return false;
-      }
+    function songsFor(regionName){
+      return ALL_SONGS.filter(s =>
+        (s.region || "") === regionName &&
+        s.artist !== "Wokeeyes"
+      );
     }
 
+    let activeRegion = REGIONS[0].name;
+
+    function songChartKey(s){
+      return TrackHype.chartId(s.chart || "National Top 100");
+    }
+
+    function songChartId(s){
+      return String(s.id || "demo-" + TrackHype.chartId((s.artist || "") + " - " + (s.title || "")));
+    }
+
+    function isSongVotedInChart(s){
+      const key = songChartKey(s);
+      const sid = songChartId(s);
+      const ballots = typeof TrackHype.getWeekBallots === "function"
+        ? TrackHype.getWeekBallots(key, TrackHype.currentWeekKey())
+        : [];
+      if(ballots.some(b => (b.picks || []).some(p => String(p.submissionId) === sid))){ return true; }
+      if(typeof TrackHype.isSingleVote === "function"){
+        const v = TrackHype.isSingleVote(key);
+        if(v && String(v.songId) === sid){ return true; }
+      }
+      return false;
+    }
+
+    function songChartIcon(s, prefix, i){
+      const voted = isSongVotedInChart(s);
+      return voted
+        ? `<img class="pl-chart" src="Assets/icons/New_Song_Chart_Icon.webp" alt="In chart" title="In chart">`
+        : `<button class="pl-chart-btn" type="button" title="Vote to enter ${TrackHype.esc(s.chart || "National Top 100")}" onclick="voteSong('${prefix}', ${i})"><img src="Assets/icons/New_Song_Chart_Vote_Icon.webp" alt="Vote for chart"></button>`;
+    }
+
+    function songChartCell(s, prefix, i){
+      return `<div class="pl-chart-cell" id="${prefix}-chart-cell-${i}">${songChartIcon(s, prefix, i)}</div>`;
+    }
+
+    /* ---- single-playlist view ---- */
+    function renderSinglePlaylist(){
+      const list = singlePlaylist.songs;
+      document.getElementById("detailArt").src = singlePlaylist.cover || TrackHype.getArtwork(0);
+      document.getElementById("detailArt").hidden = false;
+      document.getElementById("singleTitle").textContent = singlePlaylist.name;
+      const sub = list.length + (list.length === 1 ? " track" : " tracks");
+      document.getElementById("singleSub").textContent = sub + (singlePlaylist.description ? " · " + singlePlaylist.description : "");
+      document.getElementById("singleSongs").innerHTML = list.map((s, i) => `
+        <div class="pl-row" id="single-row-${i}" data-title="${TrackHype.esc(s.title)}">
+          <img class="pl-thumb" src="${TrackHype.esc(s.art || TrackHype.getArtwork(i))}" style="cursor:pointer" onclick="openSongInfo('${TrackHype.esc(singlePlaylist.id)}', ${i})" onerror="this.style.visibility='hidden'">
+          <div class="pl-meta" style="cursor:pointer" onclick="toggleRowPlay('${TrackHype.esc(singlePlaylist.id)}', ${i})">
+            <div style="min-width:0;flex:1">
+              <div style="font-weight:800;font-size:13px">${TrackHype.esc(s.artist)}</div>
+              <div style="font-size:12px;color:var(--th-muted)">${TrackHype.esc(s.title)}</div>
+            </div>
+          </div>
+          ${songChartCell(s, "sp", i)}
+        </div>`).join("");
+      document.getElementById("singleEmpty").hidden = list.length !== 0;
+      highlightSingle();
+    }
+
+    function highlightSingle(){
+      const title = String(TrackHype.getState().currentTrack && TrackHype.getState().currentTrack.title || "").toLowerCase();
+      const list = singlePlaylist.songs;
+      list.forEach((s, i) => {
+        const row = document.getElementById("single-row-" + i);
+        if(row){ row.classList.toggle("is-active", String(s.title || "").toLowerCase() === title); }
+      });
+    }
+
+    window.openSongInfo = (id, i) => {
+      const p = PLAYLISTS.find(x => x.id === id);
+      const s = p && p.songs[i];
+      if(!s){ return; }
+      const params = new URLSearchParams();
+      params.set("title", s.title);
+      params.set("artist", s.artist);
+      if(s.art){ params.set("art", s.art); }
+      TrackHype.navigate("song.html?" + params.toString());
+    };
+
+    window.toggleRowPlay = (id, i) => {
+      const p = PLAYLISTS.find(x => x.id === id);
+      const s = p && p.songs[i];
+      if(!s){ return; }
+      const current = TrackHype.getState().currentTrack;
+      const isCurrent = current && String(current.src || "").toLowerCase() === String(s.src || "").toLowerCase();
+      if(isCurrent){
+        TrackHype.togglePlayback();
+      }else{
+        TrackHype.playDemo({ title: s.title, artist: s.artist, src: s.src, art: s.art, fromPlaylist: singlePlaylist.id });
+        TrackHype.toast(s.title);
+      }
+      setTimeout(highlightSingle, 60);
+    };
+
+    window.voteSong = (prefix, i) => {
+      let s;
+      if(prefix === "sp" && singlePlaylist){
+        s = singlePlaylist.songs[i];
+      }else if(prefix === "r"){
+        s = songsFor(activeRegion)[i];
+      }else if(prefix === "c"){
+        s = curatedSongs()[i];
+      }
+      if(!s){ return; }
+      const chart = s.chart || "National Top 100";
+      TrackHype.confirmVoteSheet(chart, { id: songChartId(s), title: s.title, artist: s.artist, rank: 1 }, TrackHype.maxForChart(chart));
+    };
+
+    function refreshSingleChartIcons(){
+      if(!singlePlaylist) return;
+      singlePlaylist.songs.forEach((s, i) => {
+        const c = document.getElementById("sp-chart-cell-" + i);
+        if(c){ c.innerHTML = songChartIcon(s, "sp", i); }
+      });
+    }
+
+    /* ---- browse view (region rail + curated Wokeeyes) ---- */
     function renderRail(){
-      document.getElementById("promoRail").innerHTML = GENRES.map(g => {
-        const list = genreTracks(g);
-        const art = list[0] ? list[0].artwork : TrackHype.getArtwork(0);
-        const active = g === activeGenre;
+      document.getElementById("regionRail").innerHTML = REGIONS.map(r => {
+        const list = songsFor(r.name);
+        const active = r.name === activeRegion;
         return `
-        <div class="r-card${active ? " is-active" : ""}" onclick="selectGenre('${g}')">
-          <img src="${TrackHype.esc(art)}" alt="" onerror="this.style.visibility='hidden'">
-          <div class="r-name">${TrackHype.esc(g)}</div>
-          <div class="r-tracks">${list.length} ${list.length === 1 ? "track" : "tracks"}</div>
-        </div>`;
+          <div class="r-card${active ? " is-active" : ""}" onclick="selectRegion('${r.name}')">
+            ${r.flag
+              ? `<img class="r-flag" src="${TrackHype.esc(r.flag)}" alt="" onerror="this.style.visibility='hidden'">`
+              : `<div class="r-flag" style="background:linear-gradient(135deg,var(--th-primary-soft),var(--th-primary));display:flex;align-items:center;justify-content:center;font-size:22px">🌍</div>`}
+            <div class="r-name">${TrackHype.esc(r.name)}</div>
+            <div class="r-tracks">${list.length} ${list.length === 1 ? "track" : "tracks"}</div>
+          </div>`;
       }).join("");
     }
 
     function renderSongs(){
-      document.getElementById("genreSongs").innerHTML = tracks.map((s,i) => `
-        <div class="pl-row">
-          <img class="pl-thumb" src="${TrackHype.esc(s.artwork)}" onerror="this.style.visibility='hidden'">
+      const list = songsFor(activeRegion);
+      document.getElementById("regionSongs").innerHTML = list.map((s, i) => `
+        <div class="pl-row" id="region-row-${i}">
+          <img class="pl-thumb" src="${TrackHype.esc(s.art || TrackHype.getArtwork(i))}" onerror="this.style.visibility='hidden'">
+          <div class="pl-meta">
+            <div style="min-width:0">
+              <div style="font-weight:800;font-size:13px">${TrackHype.esc(s.artist)}</div>
+              <div style="font-size:12px;color:var(--th-muted)">${TrackHype.esc(s.title)}</div>
+            </div>
+          </div>
+          <span class="pl-badge">${TrackHype.esc(s.region || activeRegion)}</span>
+          <div class="pl-actions">
+            <button class="th-icon-btn" type="button" onclick="playRegion(${i})" aria-label="Play">▶</button>
+          </div>
+          ${songChartCell(s, "r", i)}
+        </div>`).join("") || "";
+      document.getElementById("emptyPlaylist").hidden = list.length !== 0;
+    }
+
+    window.playRegion = (i) => {
+      const list = songsFor(activeRegion);
+      const s = list[i];
+      if(!s) return;
+      const rid = ({ Zimbabwe: "zim-hits", Botswana: "botswana-grooves", International: "international-vibes" })[activeRegion] || "zim-hits";
+      TrackHype.playDemo({ title: s.title, artist: s.artist, src: s.src, art: s.art, fromPlaylist: rid });
+      TrackHype.toast(s.title);
+    };
+
+    window.selectRegion = (name) => {
+      activeRegion = name;
+      renderRail();
+      renderSongs();
+    };
+
+    const CURATED_ARTIST = "Wokeeyes";
+    const CURATED_NAME = "Wokeeyes - Revenge of The Tear Drop Hunter";
+
+    function curatedSongs(){
+      return ALL_SONGS.filter(s => (s.artist || "").toLowerCase() === CURATED_ARTIST.toLowerCase());
+    }
+
+    function renderCurated(){
+      const list = curatedSongs();
+      if(!list.length){ document.getElementById("curatedSection").hidden = true; return; }
+      document.getElementById("curatedSection").hidden = false;
+      const art = list[0].art || TrackHype.getArtwork(0);
+      document.getElementById("curatedArt").src = art;
+      document.getElementById("curatedTitle").textContent = CURATED_NAME;
+      document.getElementById("curatedSub").textContent = list.length + (list.length === 1 ? " track" : " tracks") + " · " + CURATED_ARTIST;
+      document.getElementById("curatedSongs").innerHTML = list.map((s, i) => `
+        <div class="pl-row" id="curated-row-${i}">
+          <img class="pl-thumb" src="${TrackHype.esc(s.art || art)}" onerror="this.style.visibility='hidden'">
           <div class="pl-meta">
             <div style="min-width:0">
               <div style="font-weight:800;font-size:13px">${TrackHype.esc(s.artist)}</div>
@@ -145,73 +337,53 @@
             </div>
           </div>
           <div class="pl-actions">
-            <a class="th-mini-btn pl-fav" style="text-decoration:none" title="Favourite" onclick="toggleFavItem(${i})">
-              <img id="fav-${i}" src="Assets/icons/heart_active_icon.png" alt="" style="opacity:${isFav(s.id) ? 1 : .45}">
-            </a>
-            <button class="th-icon-btn" type="button" onclick="toggleRepeat(this,${i})" aria-label="Repeat" title="Repeat">↻</button>
-            <button class="th-icon-btn" type="button" onclick="playTrack(${i})" aria-label="Play">▶</button>
+            <button class="th-icon-btn" type="button" onclick="playCurated(${i})" aria-label="Play">▶</button>
           </div>
-        </div>`).join("") || "";
-      document.getElementById("emptyPlaylist").hidden = tracks.length !== 0;
+          ${songChartCell(s, "c", i)}
+        </div>`).join("");
     }
 
-    window.toggleFavItem = (i) => {
-      const s = tracks[i];
+    window.playCurated = (i) => {
+      const list = curatedSongs();
+      const s = list[i];
       if(!s) return;
-      const on = fav("promo-songs", s.id);
-      const img = document.getElementById("fav-" + i);
-      if(img){ img.style.opacity = on ? 1 : .45; }
-      TrackHype.toast(on ? "Added to favourites" : "Removed from favourites");
+      TrackHype.playDemo({ title: s.title, artist: s.artist, src: s.src, art: s.art, fromPlaylist: "wokeeyes" });
+      TrackHype.toast(s.title);
     };
 
-    window.playTrack = (i) => {
-      const s = tracks[i];
-      if(!s) return;
-      TrackHype.updateState(st => {
-        st.currentTrack = { id: s.id, title: s.title, artist: s.artist, artwork: s.artwork, genre: s.genre };
-        st.isPlaying = true;
-        st.progress = 0;
+    function refreshBrowseChartIcons(){
+      songsFor(activeRegion).forEach((s, i) => {
+        const c = document.getElementById("r-chart-cell-" + i);
+        if(c){ c.innerHTML = songChartIcon(s, "r", i); }
       });
-      TrackHype.toast("Playing " + s.title);
-    };
-
-    window.toggleRepeat = (btn, i) => {
-      const key = "repeat-" + tracks[i].id;
-      let active;
-      TrackHype.updateState(st => {
-        st.repeatKeys = st.repeatKeys || [];
-        active = !st.repeatKeys.includes(key);
-        if(active){ st.repeatKeys.push(key); }
-        else { st.repeatKeys = st.repeatKeys.filter(k => k !== key); }
+      curatedSongs().forEach((s, i) => {
+        const c = document.getElementById("c-chart-cell-" + i);
+        if(c){ c.innerHTML = songChartIcon(s, "c", i); }
       });
-      btn.classList.toggle("is-active", active);
-      TrackHype.toast(active ? "Repeat on" : "Repeat off");
-    };
+    }
 
-    window.selectGenre = (genre) => {
-      activeGenre = genre;
-      tracks = genreTracks(genre);
-      document.getElementById("promoGenreLabel").textContent = genre;
+    function refreshChartIcons(){
+      refreshSingleChartIcons();
+      refreshBrowseChartIcons();
+    }
+    document.addEventListener("trackhype:chart-update", refreshChartIcons);
+
+    /* ---- initialise ---- */
+    if(singlePlaylist){
+      document.getElementById("titleSection").hidden = true;
+      document.getElementById("curatedSection").hidden = true;
+      document.getElementById("regionSection").hidden = true;
+      document.getElementById("regionSongsSection").hidden = true;
+      document.getElementById("singleSection").hidden = false;
+      renderSinglePlaylist();
+      window.scrollTo(0, 0);
+    }else{
+      document.getElementById("singleSection").hidden = true;
+      document.getElementById("detailArt").hidden = true;
       renderRail();
       renderSongs();
-      TrackHype.closeSheet();
-      TrackHype.toast("Loaded " + genre + " promo playlist");
-    };
-
-    window.openGenrePicker = () => {
-      TrackHype.openSheet({
-        title: "Choose a genre",
-        html: `<div class="genre-list">${GENRES.map(g => `
-          <button class="genre-item" type="button" onclick="selectGenre('${g}')">
-            <span>${TrackHype.esc(g)}</span>
-            ${g === activeGenre ? '<span class="genre-mark">✔</span>' : ""}
-          </button>`).join("")}</div>`
-      });
-    };
-
-    document.getElementById("promoGenreLabel").textContent = activeGenre;
-    renderRail();
-    renderSongs();
+      renderCurated();
+    }
   </script>
 
 </body>
