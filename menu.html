@@ -240,6 +240,9 @@
           if(prof.data.kyc_status === "approved"){
             localStorage.setItem("trackhype_vote_eligible","true");
           }
+          try{
+            if(window.API.syncPendingProfile) await window.API.syncPendingProfile();
+          }catch(e){}
         }
       }catch(e){}
     }

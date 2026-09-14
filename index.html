@@ -378,6 +378,7 @@
           const p = await API.getProfile();
           if(p && p.data){
             name = ((p.data.first_name || "") + " " + (p.data.surname || "")).trim() || p.data.username || user.email || "TrackHype User";
+            try{ localStorage.setItem("trackhype_onboarding_complete", "true"); }catch(e){}
           }else{
             name = user.email || "TrackHype User";
           }

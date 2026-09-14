@@ -12,6 +12,48 @@
   var client = ok ? window.supabase.createClient(cfg.url, cfg.anonKey) : null;
   window.supabaseClient = client;
 
+  /* ---- auth redirect handling -------------------------------------
+     Email-confirmation / OTP / PKCE redirects land back on the SPA with
+     tokens in the URL hash (#access_token=…) or query (?code=…). Capture
+     them deterministically so the session persists before any page script
+     reads it, then strip the tokens from the URL bar. */
+  var authRedirectHandled = false;
+
+  function cleanAuthRedirectUrl() {
+    try {
+      var search = location.search.replace(/[?&]code=[^&#]*/i, "").replace(/[?&]$/, "");
+      history.replaceState(null, "", location.pathname + search);
+    } catch (e) {}
+  }
+
+  async function handleAuthRedirectUrl() {
+    if (authRedirectHandled || !client) return;
+    authRedirectHandled = true;
+
+    var hashParams = new URLSearchParams((location.hash || "").replace(/^#/, ""));
+    var queryParams = new URLSearchParams(location.search || "");
+
+    var accessToken = hashParams.get("access_token");
+    var pkceCode = queryParams.get("code");
+
+    if (!accessToken && !pkceCode) return;
+
+    try {
+      if (accessToken) {
+        await client.auth.setSession({
+          access_token: accessToken,
+          refresh_token: hashParams.get("refresh_token") || undefined
+        });
+        await client.auth.getUser();
+      } else if (typeof client.auth.initialize === "function") {
+        await client.auth.initialize();
+      }
+    } catch (e) {}
+    cleanAuthRedirectUrl();
+  }
+
+  if (ok) handleAuthRedirectUrl();
+
   /* ---- local mirrors ------------------------------------------------- */
   function readLS(key, fallback) {
     try { return localStorage.getItem(key) !== null ? JSON.parse(localStorage.getItem(key)) : fallback; }
@@ -77,6 +119,10 @@
       if (!client) return { error: null };
       return client.auth.signOut();
     },
+    async resendConfirmation(email) {
+      if (!client) return { data: null, error: { message: "Supabase not configured" } };
+      return client.auth.resend({ type: "signup", email: email });
+    },
 
     /* ---- profile -------------------------------------------------- */
     async getProfile() {
@@ -114,6 +160,41 @@
       return client.from("profile_genres")
         .select("genre_id, genres(name)")
         .eq("profile_id", user.id);
+    },
+
+    /* ---- pending-profile sync -----------------------------------------
+       When email confirmation is ON, signup has no session, so saveProfile
+       cannot run. We cache the signed-up profile in localStorage
+       (trackhype_pending_profile). The first time a session exists we
+       upload it (location fields + genre rows) then clear the cache. */
+    async syncPendingProfile() {
+      if (!client) return { data: null, error: { message: "Supabase not configured" } };
+      var user = await API.currentUser();
+      if (!user) return { data: null, error: null };
+      var pending = null;
+      try { pending = JSON.parse(localStorage.getItem("trackhype_pending_profile") || "null"); } catch (e) {}
+      if (!pending || !pending.profile) return { data: null, error: null };
+
+      var idsRes = await API.listGenreIds(pending.preferredGenres || []);
+      var genreIds = ((idsRes && idsRes.data) || []).map(function (g) { return g.id; });
+      var saved = await API.saveProfile(pending.profile, genreIds);
+      if (!saved.error) {
+        try { localStorage.removeItem("trackhype_pending_profile"); } catch (e) {}
+        API.pushLocalAccount({
+          accountType: pending.profile.account_type || "listener",
+          username: pending.profile.username || "",
+          firstName: pending.profile.first_name || "",
+          surname: pending.profile.surname || "",
+          dateOfBirth: pending.profile.date_of_birth || "",
+          email: pending.email || pending.profile.email || "",
+          mobileNumber: pending.profile.mobile_number || "",
+          mobileNetwork: pending.profile.mobile_network || "",
+          mobileMoney: pending.profile.mobile_money || "",
+          kycStatus: pending.profile.kyc_status || "pending",
+          preferredGenres: pending.preferredGenres || []
+        });
+      }
+      return saved;
     },
 
     /* ---- catalog (public reads; wired from Phase 3) -------------- */

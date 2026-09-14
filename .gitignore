@@ -14,5 +14,5 @@ desktop.ini
 node_modules/
 __pycache__/
 
-# Secrets — never commit the real Supabase config (commit the .example instead)
-js/supabase-config.js
+# The anon key is publishable by design (RLS guards the data), so
+# js/supabase-config.js IS committed so GitHub Pages can authenticate.

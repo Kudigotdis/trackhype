@@ -702,6 +702,60 @@
     @media (min-width:600px){
       .ob-page{padding-top:28px}
     }
+  .ob-modal{
+      position:fixed;
+      inset:0;
+      z-index:999;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(10,10,14,.55);
+      padding:18px;
+    }
+    .ob-modal[hidden]{display:none}
+    .ob-modal-card{
+      width:100%;
+      max-width:400px;
+      background:var(--ob-bg);
+      color:var(--ob-text);
+      border:1px solid var(--ob-line);
+      border-radius:18px;
+      padding:22px;
+      box-shadow:0 24px 60px rgba(0,0,0,.35);
+      text-align:center;
+    }
+    .ob-modal-card h3{
+      margin:0 0 8px;
+      font-size:20px;
+      font-weight:900;
+    }
+    .ob-modal-card p{
+      margin:0 0 16px;
+      color:var(--ob-muted);
+      font-size:14px;
+      line-height:1.5;
+    }
+    .ob-modal-mail{
+      color:var(--ob-text);
+      font-weight:800;
+      word-break:break-all;
+    }
+    .ob-modal-actions{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:4px;
+    }
+    .ob-modal-actions .th-link-btn{
+      background:none;
+      border:none;
+      color:var(--ob-primary);
+      font-weight:800;
+      font-size:13px;
+      cursor:pointer;
+      padding:6px;
+    }
+
   </style>
 </head>
 
@@ -801,6 +855,14 @@
               </div>
             </div>
 
+            <div id="mobileMoneyNumberWrap">
+              <label class="ob-label" id="mobileMoneyNumberLabel" hidden>Mobile money number *</label>
+              <div class="ob-dial" id="mobileMoneyNumberRow" hidden>
+                <span class="ob-dial-code" id="mobileMoneyDial">+263</span>
+                <input class="th-input" id="mobileMoneyNumber" type="tel" inputmode="numeric" placeholder="77 000 0000" autocomplete="tel-national">
+              </div>
+            </div>
+
             <div class="ob-note"><b>Private.</b> Phone numbers, network and email are never shown on your public profile.</div>
 
           </div></div>
@@ -856,7 +918,7 @@
             <datalist id="townList"></datalist>
 
             <label class="ob-label">Area / neighbourhood *</label>
-            <input class="th-input" id="areaInput" type="text" placeholder="Type your area or neighbourhood" autocomplete="address-level3" list="areaList">
+            <input class="th-input" id="areaInput" type="text" placeholder="Type your area or neighbourhood" autocomplete="address-level3" list="areaList" oninput="populateAreaList()">
             <datalist id="areaList"></datalist>
 
             <div class="ob-note"><b>Private.</b> Used for account security, KYC review, regional music insights and voting integrity. Never displayed on your public profile.</div>
@@ -1052,6 +1114,20 @@
     </div>
   </div>
 
+  <div class="ob-modal" id="confirmEmailModal" hidden>
+    <div class="ob-modal-card">
+      <h3>Almost there!</h3>
+      <p>We emailed a confirmation link to<br>
+        <span class="ob-modal-mail" id="confirmEmailAddr"></span>.<br><br>
+        Tap the link to verify your account, then return here and log&nbsp;in.</p>
+      <div class="ob-modal-actions">
+        <button class="th-btn primary block" type="button" onclick="resendConfirmation(this)">Resend confirmation email</button>
+        <button class="th-btn block" type="button" onclick="closeEmailConfirm()">Done — I'll check my email</button>
+        <button class="th-link-btn" type="button" onclick="jumpToLogin()">Just verified? Log in →</button>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="js/supabase-config.js"></script>
   <script src="js/api.js"></script>
@@ -1061,6 +1137,8 @@
   <script src="zimbabwe_locations.js"></script>
   <script src="botswana_locations.js"></script>
   <script src="onboarding-data.js"></script>
+  <script src="docs/info/countries_mobile_networks.js"></script>
+  <script src="docs/info/mobile_money_banking_services.js"></script>
 
   <script>
     /* ============================================================
@@ -1094,6 +1172,7 @@
       region:null,
       network:null,
       mobileMoney:null,
+      mobileMoneyNumber:"",
       mobile:"",
       whatsappSame:true,
       whatsapp:"",
@@ -1209,6 +1288,8 @@
     function stepDone(n){
       if(n===1){
         if(!S.region || !S.network || !S.mobileMoney) return false;
+        if(S.mobileMoney!=="None" && S.mobileMoney!=="Unavailable" &&
+           digits(val("mobileMoneyNumber")).length<7) return false;
         if(digits(val("mobile")).length<7) return false;
         if(!document.getElementById("whatsappSame").checked &&
            digits(val("whatsapp")).length<7) return false;
@@ -1332,9 +1413,17 @@
       var dc=REGION_DIAL_CODES[(code||"").toUpperCase()]||"";
       document.getElementById("dialCode").textContent=dc||"+";
       document.getElementById("whatsappDial").textContent=dc||"+";
+      var moneyDial=document.getElementById("mobileMoneyDial");
+      if(moneyDial) moneyDial.textContent=dc||"+";
 
-      var nets=REGION_NETWORKS[(code||"").toUpperCase()]||["Other network"];
+      var nets=(window.COUNTRY_MOBILE_NETWORKS && COUNTRY_MOBILE_NETWORKS[S.region.name])||
+        REGION_NETWORKS[(code||"").toUpperCase()]||["Other network"];
       if(S.network && nets.indexOf(S.network)===-1) S.network=null;
+
+      S.mobileMoney=null;
+      S.mobileMoneyNumber="";
+      var moneyInput=document.getElementById("mobileMoneyNumber");
+      if(moneyInput) moneyInput.value="";
 
       renderGrid("networks",nets,function(net){
         var active=S.network===net;
@@ -1343,6 +1432,7 @@
       });
       document.getElementById("networkSelectedLabel").textContent=S.network||"Choose your mobile network";
 
+      renderMobileMoney();
       resetTownArea();
       populateTownList();
       refresh(1);
@@ -1450,11 +1540,17 @@
 
     window.pickNetwork=function(btn){
       S.network=btn.textContent;
+      S.mobileMoney=null;
+      S.mobileMoneyNumber="";
+      var moneyInput=document.getElementById("mobileMoneyNumber");
+      if(moneyInput) moneyInput.value="";
+
       document.querySelectorAll("#networks .ob-mini-option").forEach(function(b){
         b.classList.toggle("is-active",b===btn);
       });
       document.getElementById("networkSelectedLabel").textContent=S.network;
       document.getElementById("networkAccordion").classList.remove("is-open");
+      renderMobileMoney();
       sync(1);
     };
 
@@ -1470,6 +1566,7 @@
       });
       document.getElementById("mobileMoneyLabel").textContent=S.mobileMoney;
       document.getElementById("mobileMoneyAccordion").classList.remove("is-open");
+      refreshMoneyNumberVisibility();
       sync(1);
     };
 
@@ -1486,6 +1583,89 @@
 
       sync(1);
     };
+
+    /* ============================================================
+       MOBILE MONEY (region- and network-aware)
+       ============================================================ */
+    function moneyServiceTags(){
+      var country=S.region ? S.region.name : "";
+      var net=S.network;
+      if(!country || !net) return [];
+
+      var db=(window.MOBILE_MONEY_BANKING_SERVICES && MOBILE_MONEY_BANKING_SERVICES[country])||null;
+      if(!db) return [];
+
+      if(Array.isArray(db[net])) return db[net].slice();
+
+      var n=net.toLowerCase();
+      var hit=null;
+      Object.keys(db).forEach(function(key){
+        if(hit) return;
+        var k=key.toLowerCase();
+        if(k===n || k.indexOf(n)!==-1 || n.indexOf(k)!==-1) hit=key;
+      });
+
+      return hit && Array.isArray(db[hit]) ? db[hit].slice() : [];
+    }
+
+    function renderMobileMoney(){
+      var host=document.getElementById("mobileMoneyOptions");
+      var label=document.getElementById("mobileMoneyLabel");
+      if(!host || !label) return;
+
+      var services=moneyServiceTags();
+
+      if(!S.region || !S.network){
+        label.textContent="Choose your mobile money provider";
+        host.innerHTML='<p class="ob-hint">Pick a mobile network first.</p>';
+        refreshMoneyNumberVisibility();
+        return;
+      }
+
+      if(!services.length){
+        label.textContent="Unavailable";
+        host.innerHTML=
+          '<p class="ob-hint">No mobile money or banking service is available for '+
+          esc(S.region.name)+' on '+esc(S.network)+'.</p>'+
+          '<button type="button" class="ob-mini-option'+(S.mobileMoney==="None"?" is-active":"")+
+          '" onclick="pickMobileMoney(this)">None</button>';
+      }else{
+        if(S.mobileMoney && S.mobileMoney!=="None" && services.indexOf(S.mobileMoney)===-1){
+          S.mobileMoney=null;
+          S.mobileMoneyNumber="";
+          var mi=document.getElementById("mobileMoneyNumber");
+          if(mi) mi.value="";
+        }
+        label.textContent=S.mobileMoney||"Choose your mobile money provider";
+        host.innerHTML=services.map(function(s){
+          return '<button type="button" class="ob-mini-option'+(S.mobileMoney===s?" is-active":"")+
+            '" onclick="pickMobileMoney(this)">'+esc(s)+'</button>';
+        }).join("")+
+        '<button type="button" class="ob-mini-option'+(S.mobileMoney==="None"?" is-active":"")+
+          '" onclick="pickMobileMoney(this)">None</button>';
+      }
+
+      refreshMoneyNumberVisibility();
+    }
+
+    function refreshMoneyNumberVisibility(){
+      var isReal=S.mobileMoney &&
+        S.mobileMoney!=="None" &&
+        S.mobileMoney!=="Unavailable";
+
+      var lab=document.getElementById("mobileMoneyNumberLabel");
+      var row=document.getElementById("mobileMoneyNumberRow");
+      var input=document.getElementById("mobileMoneyNumber");
+      if(lab) lab.hidden=!isReal;
+      if(row) row.hidden=!isReal;
+      if(input){
+        input.disabled=!isReal;
+        if(!isReal){
+          S.mobileMoneyNumber="";
+          input.value="";
+        }
+      }
+    }
 
     /* ============================================================
        LOCATION LISTS (Zimbabwe / Botswana detail, others free text)
@@ -1544,7 +1724,13 @@
       if(!dl) return;
 
       var data=locDataFor(S.region && S.region.code);
-      var q=val("townInput").trim().toLowerCase();
+      var townQuery=val("townInput").trim().toLowerCase();
+
+      if(!data || !townQuery){
+        if(dl.innerHTML!=="") dl.innerHTML="";
+        return;
+      }
+
       var seen={};
       var options=[];
 
@@ -1556,17 +1742,30 @@
         options.push('<option value="'+esc(name)+'"></option>');
       }
 
-      if(data && q){
+      var exactTownMatch=false;
+      (data.districts||[]).forEach(function(d){
+        (d.towns||[]).forEach(function(t){
+          if(String(t.name||"").trim().toLowerCase()===townQuery){
+            exactTownMatch=true;
+            (t.areas||[]).forEach(add);
+          }
+        });
+      });
+
+      if(!exactTownMatch){
         (data.districts||[]).forEach(function(d){
           (d.towns||[]).forEach(function(t){
-            if(String(t.name||"").toLowerCase().indexOf(q)!==-1){
+            if(String(t.name||"").toLowerCase().indexOf(townQuery)!==-1){
               (t.areas||[]).forEach(add);
             }
           });
         });
       }
 
-      dl.innerHTML=options.join("");
+      var nextHtml=options.join("");
+      if(dl.innerHTML!==nextHtml){
+        dl.innerHTML=nextHtml;
+      }
     }
 
     /* ============================================================
@@ -1977,6 +2176,8 @@
       var town=val("townInput").trim();
       var area=val("areaInput").trim();
 
+      var realMoney=S.mobileMoney && S.mobileMoney!=="None" && S.mobileMoney!=="Unavailable";
+
       var account={
         accountType:S.accountType,
         username:val("username").trim(),
@@ -1987,6 +2188,7 @@
         region:S.region,
         mobileNetwork:S.network,
         mobileMoney:S.mobileMoney,
+        mobileMoneyNumber:realMoney?digits(val("mobileMoneyNumber")):"",
         mobileE164:e164(dial(),digits(val("mobile"))),
         whatsAppE164:document.getElementById("whatsappSame").checked
           ? e164(dial(),digits(val("mobile")))
@@ -2040,6 +2242,10 @@
         whatsappE164:account.whatsAppE164,
         mobileNetwork:account.mobileNetwork,
         mobileMoney:account.mobileMoney,
+        mobileMoneyE164:realMoney ? e164(dial(),account.mobileMoneyNumber) : null,
+        townOrCity:account.location.townOrCity,
+        areaOrNeighbourhood:account.location.areaOrNeighbourhood,
+        bio:account.bio,
         regionCode:S.region ? S.region.code : null,
         regionCountry:S.region ? S.region.name : null
       };
@@ -2063,32 +2269,37 @@
         return;
       }
 
-      /* Persist profile + genres when a session exists (email
-         confirmation is disabled while testing). */
-      if(up && up.data && up.data.session){
+      /* Build the server profile row. Uploaded immediately when a session
+         exists; stashed and uploaded on first login when confirmation was
+         required (so location + genres always reach the database). */
+      var hasSession=!!(up && up.data && up.data.session);
+      var addr=(account.email||"").trim();
+
+      var profile={
+        username:account.username,
+        first_name:account.firstName,
+        surname:account.surname,
+        gender:account.gender,
+        date_of_birth:account.dateOfBirth,
+        mobile_number:account.mobileE164,
+        whatsapp_number:account.whatsAppE164,
+        mobile_network:account.mobileNetwork,
+        mobile_money:account.mobileMoney,
+        mobile_money_number:account.mobileMoneyNumber||null,
+        email:account.email,
+        region_code:S.region ? S.region.code : null,
+        region_country:S.region ? S.region.name : null,
+        town_or_city:account.location.townOrCity,
+        area_or_neighbourhood:account.location.areaOrNeighbourhood,
+        bio:account.bio,
+        kyc_status:account.kycStatus,
+        account_type:account.accountType,
+        artist_profile:meta.artistProfile||null
+      };
+
+      if(hasSession){
         var idsRes=await API.listGenreIds(account.preferredGenres);
         var genreIds=((idsRes && idsRes.data)||[]).map(function(g){return g.id;});
-
-        var profile={
-          username:account.username,
-          first_name:account.firstName,
-          surname:account.surname,
-          gender:account.gender,
-          date_of_birth:account.dateOfBirth,
-          mobile_number:account.mobileE164,
-          whatsapp_number:account.whatsAppE164,
-          mobile_network:account.mobileNetwork,
-          mobile_money:account.mobileMoney,
-          email:account.email,
-          region_code:S.region ? S.region.code : null,
-          region_country:S.region ? S.region.name : null,
-          town_or_city:account.location.townOrCity,
-          area_or_neighbourhood:account.location.areaOrNeighbourhood,
-          bio:account.bio,
-          kyc_status:account.kycStatus,
-          account_type:account.accountType,
-          artist_profile:meta.artistProfile||null
-        };
 
         var saved=await API.saveProfile(profile,genreIds);
         if(saved && saved.error){
@@ -2099,17 +2310,26 @@
 
       API.pushLocalAccount(account);
 
-      if(!(up && up.data && up.data.session)){
-        var addr=(account.email||"").trim();
-        alert("Almost there! Check "+(addr||"your inbox")+" and click the confirmation link, then log in.");
+      if(!hasSession){
+        try{
+          localStorage.setItem("trackhype_pending_profile", JSON.stringify({
+            profile: profile,
+            preferredGenres: Array.from(S.genres),
+            email: addr
+          }));
+        }catch(e){}
       }
 
       restoreBtn();
 
-      if(window.TrackHype && TrackHype.navigate){
-        TrackHype.navigate("index.html");
+      if(hasSession){
+        if(window.TrackHype && TrackHype.navigate){
+          TrackHype.navigate("index.html");
+        }else{
+          window.location.href="index.html";
+        }
       }else{
-        window.location.href="index.html";
+        showEmailConfirm(addr);
       }
     };
 
@@ -2178,12 +2398,69 @@
 
       API.pushLocalAccount(account);
 
+      /* Upload any profile/genres cached from a confirmation-required
+         sign-up so those rows are never left missing. */
+      try{
+        if(window.API.syncPendingProfile) await API.syncPendingProfile();
+      }catch(e){}
+
       if(window.TrackHype && TrackHype.navigate){
         TrackHype.navigate("index.html");
       }else{
         window.location.href="index.html";
       }
     };
+
+    /* ============================================================
+       EMAIL CONFIRMATION OVERLAY (in-app, no browser dialogs)
+       ============================================================ */
+    window.showEmailConfirm=function(addr){
+      var el=document.getElementById("confirmEmailAddr");
+      if(el) el.textContent=(addr||"your inbox");
+      var modal=document.getElementById("confirmEmailModal");
+      if(modal) modal.hidden=false;
+    };
+
+    window.closeEmailConfirm=function(){
+      var modal=document.getElementById("confirmEmailModal");
+      if(modal) modal.hidden=true;
+    };
+
+    window.jumpToLogin=function(){
+      closeEmailConfirm();
+      applyOpen(6);
+      scrollToAcc(6);
+      setTimeout(function(){
+        var pw=document.getElementById("password");
+        if(pw) pw.focus();
+      },260);
+    };
+
+    window.resendConfirmation=function(btn){
+      if(!window.API || !window.API.ready){
+        TrackHypeToast("Supabase is not configured yet.");
+        return;
+      }
+      var addr=document.getElementById("confirmEmailAddr").textContent;
+      var res=window.API.resendConfirmation(addr);
+      Promise.resolve(res).then(function(r){
+        if(r && r.error){
+          TrackHypeToast("Could not resend: "+(r.error.message||"unknown error"));
+        }else{
+          TrackHypeToast("Confirmation email resent to "+addr);
+        }
+      }).catch(function(e){
+        TrackHypeToast("Could not reach the server.");
+      });
+    };
+
+    function TrackHypeToast(msg){
+      if(window.TrackHype && TrackHype.toast){
+        TrackHype.toast(msg);
+      }else{
+        alert(msg);
+      }
+    }
 
     /* ============================================================
        GENERIC RENDER HELPERS
@@ -2252,11 +2529,8 @@
             esc(m)+'</button>';
         }).join("");
 
-      document.getElementById("mobileMoneyOptions").innerHTML=
-        ONBOARDING_MOBILE_MONEY.concat("None").map(function(m){
-          return '<button type="button" class="ob-mini-option" onclick="pickMobileMoney(this)">'+
-            esc(m)+'</button>';
-        }).join("");
+      document.getElementById("mobileMoneyOptions").innerHTML="";
+      renderMobileMoney();
 
       renderGrid("genres",GENRES,function(g){
         return '<button type="button" class="ob-choice" onclick="pickGenre(this)">'+

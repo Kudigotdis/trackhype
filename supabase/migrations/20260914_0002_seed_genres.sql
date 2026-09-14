@@ -12,7 +12,8 @@ insert into public.genres (name, sort_order) values
   ('Urban',                    3),
   ('Hip-Hop & Fusion',         4),
   ('R&B / Soul / Reggae',      5),
-  ('Gospel',                   6);
+  ('Gospel',                   6)
+  on conflict (name) do nothing;
 
 insert into public.genres (name, parent_id, sort_order) values
   -- Traditional & Indigenous
@@ -65,8 +66,8 @@ insert into public.genres (name, parent_id, sort_order) values
   ('Dancehall',              (select id from public.genres where name = 'R&B / Soul / Reggae'), 3),
   ('Reggae',                 (select id from public.genres where name = 'R&B / Soul / Reggae'), 4),
   -- Gospel
-  ('Gospel',                 (select id from public.genres where name = 'Gospel'), 1),
   ('Gospel Hip Hop',         (select id from public.genres where name = 'Gospel'), 2),
   ('Trap Gospel',            (select id from public.genres where name = 'Gospel'), 3),
   ('Afro-Gospel Rap',        (select id from public.genres where name = 'Gospel'), 4),
-  ('Conscious Christian Rap',(select id from public.genres where name = 'Gospel'), 5);
+  ('Conscious Christian Rap',(select id from public.genres where name = 'Gospel'), 5)
+  on conflict (name) do nothing;
