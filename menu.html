@@ -20,7 +20,7 @@
 
     .auth-popup-backdrop{position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;background:rgba(10,10,14,.55);padding:18px}
     .auth-popup-backdrop[hidden]{display:none}
-    .auth-popup-card{position:relative;width:100%;max-width:380px;background:#fff;color:var(--th-text);border:1px solid var(--th-border-soft);border-radius:18px;padding:22px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+    .auth-popup-card{position:relative;width:100%;max-width:380px;background:#fff;color:var(--th-text);border:1px solid var(--th-border-soft);border-radius:18px;padding:22px;box-shadow:0 24px 60px rgba(0,0,0,.35);touch-action:manipulation}
     .auth-popup-close{position:absolute;top:10px;right:12px;background:none;border:0;color:var(--th-faint);font-size:22px;line-height:1;cursor:pointer;padding:4px}
     .auth-popup-card h3{margin:0 0 6px;font-size:20px;font-weight:900}
     .auth-popup-sub{font-size:13px;color:var(--th-muted);line-height:1.5;margin:0 0 16px}
@@ -177,6 +177,7 @@
     // before/without a server profile row (e.g. email-link login on a new origin).
     var uiSignedIn = false;
     var uiSignedInEmail = "";
+    var popupOpenedAt = 0;
 
     function initialsOf(name){
       var parts = String(name).trim().split(/\s+/).filter(Boolean);
@@ -241,7 +242,11 @@
       if(choice) choice.hidden = false;
       if(signin) signin.hidden = true;
       var modal = document.getElementById("authPromptModal");
-      if(modal) modal.hidden = false;
+      if(modal){
+        modal.hidden = false;
+        popupOpenedAt = Date.now();
+      }
+      setAuthError("");
     };
 
     window.closeAuthPopup = function(){
@@ -294,7 +299,10 @@
       }
     }
 
+    var signInBusy = false;
+
     window.authSignIn = async function(){
+      if(signInBusy) return;
       var em = document.getElementById("authEmail");
       var pwEl = document.getElementById("authPassword");
       var email = (em.value || "").trim();
@@ -315,6 +323,7 @@
         return;
       }
 
+      signInBusy = true;
       var btn = document.getElementById("authSignInBtn");
       if(btn){ btn.disabled = true; btn.textContent = "Signing in…"; }
 
@@ -326,6 +335,7 @@
       }
 
       if(btn){ btn.disabled = false; btn.textContent = "Log in"; }
+      signInBusy = false;
 
       if(res && res.error){
         setAuthError(res.error.message || "Sign-in failed.");
@@ -386,7 +396,9 @@
       var modal = document.getElementById("authPromptModal");
       if(modal){
         modal.addEventListener("click", function(e){
-          if(e.target === modal) closeAuthPopup();
+          if(e.target !== modal) return;
+          if(Date.now() - popupOpenedAt < 400) return;
+          closeAuthPopup();
         });
       }
     })();
