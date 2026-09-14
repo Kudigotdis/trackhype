@@ -21,38 +21,62 @@
 
   function cleanAuthRedirectUrl() {
     try {
-      var search = location.search.replace(/[?&]code=[^&#]*/i, "").replace(/[?&]$/, "");
+      var search = location.search
+        .replace(/[?&]code=[^&#]*/i, "")
+        .replace(/[?&]token_hash=[^&#]*/i, "")
+        .replace(/[?&]type=[^&#]*/i, "")
+        .replace(/[?&]access_token=[^&#]*/i, "")
+        .replace(/[?&]refresh_token=[^&#]*/i, "")
+        .replace(/[?&]expires_in=[^&#]*/i, "")
+        .replace(/[?&]token_type=[^&#]*/i, "")
+        .replace(/[?&]error=[^&#]*/i, "")
+        .replace(/[?&]error_description=[^&#]*/i, "")
+        .replace(/[?&]$/, "");
       history.replaceState(null, "", location.pathname + search);
     } catch (e) {}
   }
 
   async function handleAuthRedirectUrl() {
     if (authRedirectHandled || !client) return;
-    authRedirectHandled = true;
 
-    var hashParams = new URLSearchParams((location.hash || "").replace(/^#/, ""));
     var queryParams = new URLSearchParams(location.search || "");
+    var hashParams = new URLSearchParams((location.hash || "").replace(/^#/, ""));
 
-    var accessToken = hashParams.get("access_token");
+    var accessToken = hashParams.get("access_token") || queryParams.get("access_token");
+    var refreshToken = hashParams.get("refresh_token") || queryParams.get("refresh_token");
     var pkceCode = queryParams.get("code");
+    var tokenHash = queryParams.get("token_hash");
 
-    if (!accessToken && !pkceCode) return;
+    if (!(accessToken || refreshToken || pkceCode || tokenHash)) return;
+    authRedirectHandled = true;
 
     try {
       if (accessToken) {
         await client.auth.setSession({
           access_token: accessToken,
-          refresh_token: hashParams.get("refresh_token") || undefined
+          refresh_token: refreshToken || undefined
         });
         await client.auth.getUser();
-      } else if (typeof client.auth.initialize === "function") {
-        await client.auth.initialize();
+      } else if (pkceCode) {
+        if (typeof client.auth.exchangeCodeForSession === "function") {
+          await client.auth.exchangeCodeForSession(pkceCode);
+        } else if (typeof client.auth.initialize === "function") {
+          await client.auth.initialize();
+        }
+      } else if (tokenHash && typeof client.auth.verifyOtp === "function") {
+        await client.auth.verifyOtp({
+          token_hash: tokenHash,
+          type: queryParams.get("type") || "email"
+        });
       }
-    } catch (e) {}
+    } catch (e) {
+      try { console.warn("Auth redirect handling failed:", e); } catch (ignored) {}
+    }
     cleanAuthRedirectUrl();
   }
 
   if (ok) handleAuthRedirectUrl();
+  if (ok) window.addEventListener("pageshow", function () { handleAuthRedirectUrl(); });
 
   /* ---- local mirrors ------------------------------------------------- */
   function readLS(key, fallback) {

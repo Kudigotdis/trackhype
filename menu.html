@@ -16,6 +16,7 @@
     .ps-avatar{flex:none;width:68px;height:68px;border-radius:var(--th-radius);background:var(--th-primary-dark);color:#fff;border:0;cursor:pointer;display:grid;place-items:center;font-weight:900;font-size:20px}
     .Profile-User-Name{flex:1;min-width:0;background:none;border:0;text-align:left;font-size:18px;font-weight:900;color:var(--th-text);cursor:pointer;padding:0}
     .ps-benefit{font-size:13px;color:var(--th-muted);line-height:1.6;margin:12px 0 0}
+    .ps-signedin{font-size:12.5px;color:var(--th-muted);margin:10px 0 12px;word-break:break-all}
 
     .fol-row{display:flex;align-items:center;justify-content:center;padding:6px 12px 14px}
     .fol-btn{flex:none;background:none;border:0;padding:4px 10px;font-family:inherit;font-size:13px;font-weight:800;color:var(--th-text);cursor:pointer}
@@ -139,6 +140,11 @@
       try{ return (localStorage.getItem("trackhype_user_name") || "").trim() || "TrackHype User"; }catch(e){ return "TrackHype User"; }
     }
 
+    // Signed-in state captured by hydrate() so the profile card renders even
+    // before/without a server profile row (e.g. email-link login on a new origin).
+    var uiSignedIn = false;
+    var uiSignedInEmail = "";
+
     function initialsOf(name){
       var parts = String(name).trim().split(/\s+/).filter(Boolean);
       var i = (parts[0] ? parts[0].charAt(0) : "") + (parts.length > 1 ? parts[parts.length - 1].charAt(0) : "");
@@ -148,6 +154,19 @@
     function renderProfile(){
       var host = document.getElementById("Profile-Section");
       if(!host){ return; }
+      if(uiSignedIn){
+        var signedName = loadName();
+        host.innerHTML = '' +
+          '<div class="th-card pad">' +
+            '<div class="ps-row" style="display:flex;align-items:center;gap:14px;padding:2px 0">' +
+              '<button class="ps-avatar" type="button" aria-label="Edit profile" onclick="TrackHype.navigate(\'onboarding.html\')">' + initialsOf(signedName) + '</button>' +
+              '<button class="Profile-User-Name" type="button" onclick="TrackHype.navigate(\'onboarding.html\')">' + TrackHype.esc(signedName) + '</button>' +
+            '</div>' +
+            '<p class="ps-signedin">Logged in as ' + TrackHype.esc(uiSignedInEmail) + '</p>' +
+            '<button class="th-btn block" type="button" onclick="logout()">Log out</button>' +
+          '</div>';
+        return;
+      }
       var complete = false;
       try{ complete = localStorage.getItem("trackhype_onboarding_complete") === "true"; }catch(e){}
       if(!complete){
@@ -165,6 +184,21 @@
           '<button class="Profile-User-Name" type="button" onclick="TrackHype.navigate(\'onboarding.html\')">' + TrackHype.esc(name) + '</button>' +
         '</div>';
     }
+
+    window.logout = async function(){
+      try{
+        if(window.API && window.API.ready){ await window.API.signOut(); }
+      }catch(e){}
+      uiSignedIn = false;
+      uiSignedInEmail = "";
+      try{
+        localStorage.removeItem("trackhype_onboarding_complete");
+        localStorage.removeItem("trackhype_user_name");
+        localStorage.removeItem("trackhype_vote_eligible");
+      }catch(e){}
+      renderProfile();
+      if(window.TrackHype && TrackHype.toast){ TrackHype.toast("Logged out"); }
+    };
 
     function hcRender(){
       var list = document.getElementById("homeChartsList");
@@ -227,11 +261,14 @@
         if(!window.API || !window.API.ready){ return; }
         var user = await API.currentUser();
         if(!user){ return; }
+        uiSignedIn = true;
+        uiSignedInEmail = (user.email || "").trim();
+        renderProfile();
         var prof = await API.getProfile();
         if(prof && prof.data){
           var name = ((prof.data.first_name||"") + " " + (prof.data.surname||"")).trim();
           if(!name){ name = (prof.data.username||"").trim(); }
-          if(!name){ name = user.email || ""; }
+          if(!name){ name = uiSignedInEmail || ""; }
           if(!name){ name = "TrackHype User"; }
           try{
             localStorage.setItem("trackhype_user_name", name.trim());
@@ -240,10 +277,11 @@
           if(prof.data.kyc_status === "approved"){
             localStorage.setItem("trackhype_vote_eligible","true");
           }
-          try{
-            if(window.API.syncPendingProfile) await window.API.syncPendingProfile();
-          }catch(e){}
         }
+        try{
+          if(window.API.syncPendingProfile) await window.API.syncPendingProfile();
+        }catch(e){}
+        renderProfile();
       }catch(e){}
     }
 
