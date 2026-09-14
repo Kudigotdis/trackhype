@@ -153,6 +153,9 @@
     </div>
   </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/api.js"></script>
 <script src="demo-playlist.js"></script>
   <script src="playlists.js"></script>
   <script src="radio-data.js"></script>
@@ -363,6 +366,25 @@
     };
 
     renderAllContent();
+
+    // Hydrate signed-in name from Supabase when a session exists.
+    (async () => {
+      try{
+        if(!window.API || !window.API.ready()){ return; }
+        const user = await API.currentUser();
+        if(!user){ return; }
+        let name = localStorage.getItem("trackhype_user_name") || "";
+        if(!name.trim()){
+          const p = await API.getProfile();
+          if(p && p.data){
+            name = ((p.data.first_name || "") + " " + (p.data.surname || "")).trim() || p.data.username || user.email || "TrackHype User";
+          }else{
+            name = user.email || "TrackHype User";
+          }
+          try{ localStorage.setItem("trackhype_user_name", name.trim()); }catch(e){}
+        }
+      }catch(e){}
+    })();
   </script>
 </body>
 </html>

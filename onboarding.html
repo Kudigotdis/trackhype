@@ -675,6 +675,21 @@
       cursor:pointer;
     }
     .ob-finish:active{transform:translateY(1px)}
+    .ob-finish:disabled{opacity:.6;cursor:progress}
+
+    .ob-login-link{
+      display:block;
+      width:100%;
+      margin-top:10px;
+      border:0;
+      background:none;
+      color:var(--ob-primary);
+      font-size:12px;
+      font-weight:800;
+      text-align:center;
+      cursor:pointer;
+      text-decoration:underline;
+    }
 
     /* ---------- Mobile refinements ---------- */
     @media (max-width:390px){
@@ -711,7 +726,7 @@
     <div class="ob-progress" aria-label="Onboarding progress">
       <div class="ob-progress-top">
         <span class="ob-progress-label">Account setup</span>
-        <span class="ob-progress-count" id="progText">0 of 4</span>
+        <span class="ob-progress-count" id="progText">0 of 5</span>
       </div>
       <div class="ob-progress-track"><span id="progFill"></span></div>
     </div>
@@ -773,6 +788,18 @@
 
             <label class="ob-label">Email address *</label>
             <input class="th-input" id="email" type="email" placeholder="you@example.com" autocomplete="email">
+
+            <label class="ob-label">Mobile money provider</label>
+            <div class="ob-mini-acc" id="mobileMoneyAccordion">
+              <button class="ob-mini-head" type="button" onclick="toggleMobileMoneyAccordion()">
+                <span id="mobileMoneyLabel">Choose your mobile money provider</span>
+              </button>
+              <div class="ob-mini-panel">
+                <div class="ob-mini-clip">
+                  <div class="ob-mini-options" id="mobileMoneyOptions"></div>
+                </div>
+              </div>
+            </div>
 
             <div class="ob-note"><b>Private.</b> Phone numbers, network and email are never shown on your public profile.</div>
 
@@ -886,7 +913,7 @@
         <div class="acc-panel" id="panel-4">
           <div class="acc-clip"><div class="acc-inner">
 
-            <p class="ob-lede">Optional — but it makes your home feed and chart recommendations feel like yours. Pick at least 3 genres to complete the section.</p>
+            <p class="ob-lede">Required — pick at least 8 genres. It makes your home feed and chart recommendations feel like yours.</p>
 
             <div class="ob-taste-list">
               <button class="ob-mt-btn" id="mtBtnGenres" type="button" aria-expanded="false" onclick="toggleTastePanel('genres')">Genre</button>
@@ -998,13 +1025,15 @@
               <b>Private:</b> Your password is validated but never stored on this device.
             </div>
 
+            <button class="ob-login-link" type="button" onclick="login()">Already have an account? Log in</button>
+
           </div></div>
         </div>
       </section>
 
     </div>
 
-    <button class="ob-finish" type="button" onclick="finish()">CREATE ACCOUNT</button>
+    <button class="ob-finish" id="finishBtn" type="button" onclick="finish()">CREATE ACCOUNT</button>
   </main>
 
   <div class="bottom-swipe" data-bottom-swipe>
@@ -1023,6 +1052,9 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/api.js"></script>
   <script src="demo-playlist.js"></script>
   <script src="trackhype.js"></script>
   <script src="countries-data.js"></script>
@@ -1061,6 +1093,7 @@
       accountType:"listener",
       region:null,
       network:null,
+      mobileMoney:null,
       mobile:"",
       whatsappSame:true,
       whatsapp:"",
@@ -1175,7 +1208,7 @@
        ============================================================ */
     function stepDone(n){
       if(n===1){
-        if(!S.region || !S.network) return false;
+        if(!S.region || !S.network || !S.mobileMoney) return false;
         if(digits(val("mobile")).length<7) return false;
         if(!document.getElementById("whatsappSame").checked &&
            digits(val("whatsapp")).length<7) return false;
@@ -1193,7 +1226,7 @@
 
       if(n===3) return !!S.profilePhoto;
 
-      if(n===4) return S.genres.size>=3;
+      if(n===4) return S.genres.size>=8;
 
       if(n===5){
         if(!S.artistMode) return true;
@@ -1210,7 +1243,7 @@
     }
 
     function requiredList(){
-      return [1,2,3,6];
+      return [1,2,3,4,6];
     }
 
     function updateProgress(){
@@ -1422,6 +1455,21 @@
       });
       document.getElementById("networkSelectedLabel").textContent=S.network;
       document.getElementById("networkAccordion").classList.remove("is-open");
+      sync(1);
+    };
+
+    window.toggleMobileMoneyAccordion=function(){
+      var el=document.getElementById("mobileMoneyAccordion");
+      if(el) el.classList.toggle("is-open");
+    };
+
+    window.pickMobileMoney=function(btn){
+      S.mobileMoney=btn.textContent;
+      document.querySelectorAll("#mobileMoneyOptions .ob-mini-option").forEach(function(b){
+        b.classList.toggle("is-active",b===btn);
+      });
+      document.getElementById("mobileMoneyLabel").textContent=S.mobileMoney;
+      document.getElementById("mobileMoneyAccordion").classList.remove("is-open");
       sync(1);
     };
 
@@ -1749,8 +1797,8 @@
       var gc=S.genres.size;
       var g=document.getElementById("gstatus");
       if(g){
-        g.textContent=gc ? (gc+" genre"+(gc>1?"s":"")+" selected") : "0 genres selected";
-        g.className="ob-status"+(gc>=3?" ready":"");
+        g.textContent="8 genres required | "+gc+" selected";
+        g.className="ob-status"+(gc>=8?" ready":"");
       }
 
       var fc=S.followed.size;
@@ -1897,13 +1945,14 @@
        FINISH
        ============================================================ */
     var NEED_MSG={
-      1:"Finish your region, network, number and email.",
+      1:"Finish your region, network, number, mobile money and email.",
       2:"Finish your personal details.",
       3:"Add your profile picture.",
+      4:"Pick at least 8 genres to complete this section.",
       6:"Finish your username and password."
     };
 
-    window.finish=function(){
+    window.finish=async function(){
       var list=requiredList();
       var missing=[];
 
@@ -1937,6 +1986,7 @@
         gender:S.gender,
         region:S.region,
         mobileNetwork:S.network,
+        mobileMoney:S.mobileMoney,
         mobileE164:e164(dial(),digits(val("mobile"))),
         whatsAppE164:document.getElementById("whatsappSame").checked
           ? e164(dial(),digits(val("mobile")))
@@ -1963,23 +2013,170 @@
 
       /* Password deliberately not stored in localStorage. */
 
-      try{
-        localStorage.setItem("trackhype_account",JSON.stringify(account));
-        localStorage.setItem("trackhype_onboarding_complete","true");
-        localStorage.setItem("trackhype_user_name",account.username);
-        localStorage.setItem("trackhype_genres",JSON.stringify(account.preferredGenres));
-        localStorage.setItem("trackhype_following_artists",JSON.stringify(account.followedArtists));
-        localStorage.setItem("trackhype_kyc_status",S.kycStatus);
+      var finishBtn=document.getElementById("finishBtn");
 
-        if(S.kycStatus==="approved"){
-          localStorage.setItem("trackhype_vote_eligible","true");
-        }else{
-          localStorage.removeItem("trackhype_vote_eligible");
+      function restoreBtn(){
+        if(finishBtn){
+          finishBtn.disabled=false;
+          finishBtn.textContent="CREATE ACCOUNT";
         }
+      }
+
+      if(finishBtn){
+        finishBtn.disabled=true;
+        finishBtn.textContent="Creating account…";
+      }
+
+      /* Sign up with email + password. The handle_new_user DB trigger
+         creates the matching profiles row. Fields ride in user_metadata. */
+      var meta={
+        accountType:account.accountType,
+        username:account.username,
+        firstName:account.firstName,
+        surname:account.surname,
+        gender:account.gender,
+        dateOfBirth:account.dateOfBirth,
+        mobileE164:account.mobileE164,
+        whatsappE164:account.whatsAppE164,
+        mobileNetwork:account.mobileNetwork,
+        mobileMoney:account.mobileMoney,
+        regionCode:S.region ? S.region.code : null,
+        regionCountry:S.region ? S.region.name : null
+      };
+      if(S.artistMode && account.artistProfile){
+        meta.artistProfile=Object.assign({},account.artistProfile);
+        delete meta.artistProfile.image; /* photos move to a storage bucket later */
+      }
+
+      var up;
+      try{
+        up=await API.signUp(account.email,val("password"),meta);
       }catch(e){
-        alert("Could not save your account on this device. Please free up storage and try again.");
+        restoreBtn();
+        alert("Could not reach the server. Check your connection and try again.");
         return;
       }
+
+      if(up && up.error){
+        restoreBtn();
+        alert("Sign-up failed: "+(up.error.message||"unknown error"));
+        return;
+      }
+
+      /* Persist profile + genres when a session exists (email
+         confirmation is disabled while testing). */
+      if(up && up.data && up.data.session){
+        var idsRes=await API.listGenreIds(account.preferredGenres);
+        var genreIds=((idsRes && idsRes.data)||[]).map(function(g){return g.id;});
+
+        var profile={
+          username:account.username,
+          first_name:account.firstName,
+          surname:account.surname,
+          gender:account.gender,
+          date_of_birth:account.dateOfBirth,
+          mobile_number:account.mobileE164,
+          whatsapp_number:account.whatsAppE164,
+          mobile_network:account.mobileNetwork,
+          mobile_money:account.mobileMoney,
+          email:account.email,
+          region_code:S.region ? S.region.code : null,
+          region_country:S.region ? S.region.name : null,
+          town_or_city:account.location.townOrCity,
+          area_or_neighbourhood:account.location.areaOrNeighbourhood,
+          bio:account.bio,
+          kyc_status:account.kycStatus,
+          account_type:account.accountType,
+          artist_profile:meta.artistProfile||null
+        };
+
+        var saved=await API.saveProfile(profile,genreIds);
+        if(saved && saved.error){
+          restoreBtn();
+          alert("Your account was created but saving your profile failed: "+(saved.error.message||"unknown error"));
+        }
+      }
+
+      API.pushLocalAccount(account);
+
+      if(!(up && up.data && up.data.session)){
+        var addr=(account.email||"").trim();
+        alert("Almost there! Check "+(addr||"your inbox")+" and click the confirmation link, then log in.");
+      }
+
+      restoreBtn();
+
+      if(window.TrackHype && TrackHype.navigate){
+        TrackHype.navigate("index.html");
+      }else{
+        window.location.href="index.html";
+      }
+    };
+
+    /* ============================================================
+       LOGIN — existing account on this device / another device
+       ============================================================ */
+    window.login=async function(){
+      var email=val("email").trim();
+      var password=val("password");
+
+      if(!emailOk(email)){
+        applyOpen(1);
+        scrollToAcc(1);
+        alert("Enter the email you signed up with (step 1) first.");
+        return;
+      }
+      if(!password){
+        applyOpen(6);
+        scrollToAcc(6);
+        alert("Enter your password.");
+        return;
+      }
+
+      var res;
+      try{
+        res=await API.signIn(email,password);
+      }catch(e){
+        alert("Could not reach the server. Check your connection and try again.");
+        return;
+      }
+
+      if(res && res.error){
+        alert("Login failed: "+(res.error.message||"unknown error"));
+        return;
+      }
+
+      /* Hydrate the local mirrors from the server profile so the app
+         keeps working while pages migrate (Phase 3). */
+      var prof=await API.getProfile();
+      var p=prof && prof.data;
+
+      var account={
+        accountType:(p && p.account_type)||"listener",
+        username:(p && p.username)||"",
+        firstName:(p && p.first_name)||"",
+        surname:(p && p.surname)||"",
+        dateOfBirth:(p && p.date_of_birth)||"",
+        email:(p && p.email)||email,
+        mobileNumber:(p && p.mobile_number)||"",
+        mobileNetwork:(p && p.mobile_network)||"",
+        mobileMoney:(p && p.mobile_money)||"",
+        kycStatus:(p && p.kyc_status)||"pending",
+        preferredGenres:[]
+      };
+
+      try{
+        var gRes=await (window.API.profileGenres
+          ? window.API.profileGenres()
+          : Promise.resolve({data:[]}));
+        if(gRes && gRes.data){
+          account.preferredGenres=gRes.data
+            .map(function(r){return r.genres ? r.genres.name : null;})
+            .filter(Boolean);
+        }
+      }catch(e){}
+
+      API.pushLocalAccount(account);
 
       if(window.TrackHype && TrackHype.navigate){
         TrackHype.navigate("index.html");
@@ -2052,6 +2249,12 @@
       document.getElementById("artistMoney").innerHTML=
         ONBOARDING_MOBILE_MONEY.map(function(m){
           return '<button type="button" class="ob-choice" onclick="pickArtistMoney(this)">'+
+            esc(m)+'</button>';
+        }).join("");
+
+      document.getElementById("mobileMoneyOptions").innerHTML=
+        ONBOARDING_MOBILE_MONEY.concat("None").map(function(m){
+          return '<button type="button" class="ob-mini-option" onclick="pickMobileMoney(this)">'+
             esc(m)+'</button>';
         }).join("");
 

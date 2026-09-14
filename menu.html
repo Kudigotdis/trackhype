@@ -125,6 +125,9 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/api.js"></script>
   <script src="demo-playlist.js"></script>
   <script src="trackhype.js"></script>
   <script>
@@ -217,7 +220,35 @@
       }
     })();
 
-    window.addEventListener("pageshow", renderProfile);
+    // Server-first hydration: if a Supabase session exists, reflect the
+    // account name even before the first localStorage save on this device.
+    async function hydrate(){
+      try{
+        if(!window.API || !window.API.ready){ return; }
+        var user = await API.currentUser();
+        if(!user){ return; }
+        var prof = await API.getProfile();
+        if(prof && prof.data){
+          var name = ((prof.data.first_name||"") + " " + (prof.data.surname||"")).trim();
+          if(!name){ name = (prof.data.username||"").trim(); }
+          if(!name){ name = user.email || ""; }
+          if(!name){ name = "TrackHype User"; }
+          try{
+            localStorage.setItem("trackhype_user_name", name.trim());
+            localStorage.setItem("trackhype_onboarding_complete","true");
+          }catch(e){}
+          if(prof.data.kyc_status === "approved"){
+            localStorage.setItem("trackhype_vote_eligible","true");
+          }
+        }
+      }catch(e){}
+    }
+
+    window.addEventListener("pageshow", function(){
+      renderProfile();
+      hcRender();
+    });
+    hydrate().then(function(){ renderProfile(); });
     renderProfile();
     hcRender();
   </script>
