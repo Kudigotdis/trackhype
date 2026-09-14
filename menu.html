@@ -18,6 +18,17 @@
     .ps-benefit{font-size:13px;color:var(--th-muted);line-height:1.6;margin:12px 0 0}
     .ps-signedin{font-size:12.5px;color:var(--th-muted);margin:10px 0 12px;word-break:break-all}
 
+    .auth-popup-backdrop{position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;background:rgba(10,10,14,.55);padding:18px}
+    .auth-popup-backdrop[hidden]{display:none}
+    .auth-popup-card{position:relative;width:100%;max-width:380px;background:#fff;color:var(--th-text);border:1px solid var(--th-border-soft);border-radius:18px;padding:22px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+    .auth-popup-close{position:absolute;top:10px;right:12px;background:none;border:0;color:var(--th-faint);font-size:22px;line-height:1;cursor:pointer;padding:4px}
+    .auth-popup-card h3{margin:0 0 6px;font-size:20px;font-weight:900}
+    .auth-popup-sub{font-size:13px;color:var(--th-muted);line-height:1.5;margin:0 0 16px}
+    .auth-popup-card .th-btn{width:100%;margin-bottom:10px}
+    .auth-input{width:100%;box-sizing:border-box;padding:13px 14px;border-radius:12px;border:1px solid var(--th-border-soft);background:var(--th-grey-1);font-family:inherit;font-size:15px;color:var(--th-text);margin-bottom:10px}
+    .auth-error{font-size:13px;color:#c62828;line-height:1.5;margin:0 0 10px}
+    .auth-popup-card .th-link-btn{background:none;border:none;color:var(--th-primary);font-weight:800;font-size:13px;cursor:pointer;padding:8px 0;width:100%}
+
     .fol-row{display:flex;align-items:center;justify-content:center;padding:6px 12px 14px}
     .fol-btn{flex:none;background:none;border:0;padding:4px 10px;font-family:inherit;font-size:13px;font-weight:800;color:var(--th-text);cursor:pointer}
     .fol-sep{color:rgba(15,25,40,.15);font-size:14px;font-weight:900}
@@ -126,6 +137,28 @@
     </div>
   </div>
 
+  <div class="auth-popup-backdrop" id="authPromptModal" hidden>
+    <div class="auth-popup-card" role="dialog" aria-modal="true" aria-label="Sign in or sign up">
+      <button class="auth-popup-close" type="button" aria-label="Close" onclick="closeAuthPopup()">×</button>
+
+      <div id="authChoiceView">
+        <h3>Welcome back</h3>
+        <p class="auth-popup-sub">Sign in to pick up your votes, following and favourite genres on this device.</p>
+        <button class="th-btn primary block" type="button" onclick="authShowSignIn()">Sign In</button>
+        <button class="th-btn block" type="button" onclick="authGoSignUp()">Sign Up</button>
+      </div>
+
+      <div id="authSignInView" hidden>
+        <h3>Sign in</h3>
+        <input class="auth-input" id="authEmail" type="email" inputmode="email" autocomplete="email" placeholder="Email address">
+        <input class="auth-input" id="authPassword" type="password" autocomplete="current-password" placeholder="Password">
+        <p class="auth-error" id="authError" hidden></p>
+        <button class="th-btn primary block" id="authSignInBtn" type="button" onclick="authSignIn()">Log in</button>
+        <button class="th-link-btn" type="button" onclick="authBackToChoices()">← Back</button>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="js/supabase-config.js"></script>
   <script src="js/api.js"></script>
@@ -172,8 +205,8 @@
       if(!complete){
         host.innerHTML = '' +
           '<div class="th-card pad">' +
-            '<button class="th-btn primary block" type="button" onclick="TrackHype.navigate(\'onboarding.html\')">Create an Account</button>' +
-            '<p class="ps-benefit">Look up your votes on every chart, follow the genres and artists you love, and keep the music you like saved while you listen.</p>' +
+            '<button class="th-btn primary block" type="button" onclick="openAuthPopup()">Sign In / Sign Up</button>' +
+            '<p class="ps-benefit">Sign in to look up your votes on every chart, follow the genres and artists you love, and keep the music you like saved while you listen.</p>' +
           '</div>';
         return;
       }
@@ -199,6 +232,164 @@
       renderProfile();
       if(window.TrackHype && TrackHype.toast){ TrackHype.toast("Logged out"); }
     };
+
+    /* ---- Sign In / Sign Up floating popup ------------------------ */
+    window.openAuthPopup = function(){
+      setAuthError("");
+      var choice = document.getElementById("authChoiceView");
+      var signin = document.getElementById("authSignInView");
+      if(choice) choice.hidden = false;
+      if(signin) signin.hidden = true;
+      var modal = document.getElementById("authPromptModal");
+      if(modal) modal.hidden = false;
+    };
+
+    window.closeAuthPopup = function(){
+      var modal = document.getElementById("authPromptModal");
+      if(modal){
+        modal.hidden = true;
+        var em = document.getElementById("authEmail");
+        var pw = document.getElementById("authPassword");
+        if(em) em.value = "";
+        if(pw) pw.value = "";
+      }
+      setAuthError("");
+    };
+
+    window.authBackToChoices = function(){
+      setAuthError("");
+      var choice = document.getElementById("authChoiceView");
+      var signin = document.getElementById("authSignInView");
+      if(choice) choice.hidden = false;
+      if(signin) signin.hidden = true;
+    };
+
+    window.authShowSignIn = function(){
+      setAuthError("");
+      var choice = document.getElementById("authChoiceView");
+      var signin = document.getElementById("authSignInView");
+      if(choice) choice.hidden = true;
+      if(signin) signin.hidden = false;
+      var em = document.getElementById("authEmail");
+      if(em) em.focus();
+    };
+
+    window.authGoSignUp = function(){
+      closeAuthPopup();
+      TrackHype.navigate("onboarding.html");
+    };
+
+    function authEmailOk(v){ return /^\S+@\S+\.\S+$/.test(String(v||"").trim()); }
+
+    function setAuthError(msg){
+      var box = document.getElementById("authError");
+      if(box){
+        if(msg){
+          box.textContent = msg;
+          box.hidden = false;
+        }else{
+          box.textContent = "";
+          box.hidden = true;
+        }
+      }
+    }
+
+    window.authSignIn = async function(){
+      var em = document.getElementById("authEmail");
+      var pwEl = document.getElementById("authPassword");
+      var email = (em.value || "").trim();
+      var password = pwEl.value || "";
+
+      if(!authEmailOk(email)){
+        setAuthError("Enter the email address you signed up with.");
+        if(em) em.focus();
+        return;
+      }
+      if(!password){
+        setAuthError("Enter your password.");
+        if(pwEl) pwEl.focus();
+        return;
+      }
+      if(!window.API || !window.API.ready){
+        setAuthError("Sign-in isn't available right now — the app isn't connected to the server.");
+        return;
+      }
+
+      var btn = document.getElementById("authSignInBtn");
+      if(btn){ btn.disabled = true; btn.textContent = "Signing in…"; }
+
+      var res;
+      try{
+        res = await API.signIn(email, password);
+      }catch(e){
+        res = { error: { message: "Could not reach the server. Check your connection and try again." } };
+      }
+
+      if(btn){ btn.disabled = false; btn.textContent = "Log in"; }
+
+      if(res && res.error){
+        setAuthError(res.error.message || "Sign-in failed.");
+        return;
+      }
+
+      /* Mirror the server profile + genres locally (same as onboarding). */
+      try{
+        var prof = await API.getProfile();
+        var p = prof && prof.data;
+        var account = {
+          accountType: (p && p.account_type) || "listener",
+          username: (p && p.username) || "",
+          firstName: (p && p.first_name) || "",
+          surname: (p && p.surname) || "",
+          dateOfBirth: (p && p.date_of_birth) || "",
+          email: (p && p.email) || email,
+          mobileNumber: (p && p.mobile_number) || "",
+          mobileNetwork: (p && p.mobile_network) || "",
+          mobileMoney: (p && p.mobile_money) || "",
+          kycStatus: (p && p.kyc_status) || "pending",
+          preferredGenres: []
+        };
+        if(window.API.profileGenres){
+          var gRes = await window.API.profileGenres();
+          if(gRes && gRes.data){
+            account.preferredGenres = gRes.data
+              .map(function(r){ return r.genres ? r.genres.name : null; })
+              .filter(Boolean);
+          }
+        }
+        API.pushLocalAccount(account);
+      }catch(e){}
+
+      uiSignedIn = true;
+      uiSignedInEmail = email;
+
+      try{
+        if(window.API.syncPendingProfile) await window.API.syncPendingProfile();
+      }catch(e){}
+
+      closeAuthPopup();
+      renderProfile();
+      hydrate();
+      if(window.TrackHype && TrackHype.toast){ TrackHype.toast("Signed in"); }
+    };
+
+    (function(){
+      var pw = document.getElementById("authPassword");
+      if(pw){
+        pw.addEventListener("keydown", function(e){
+          if(e.key === "Enter"){
+            e.preventDefault();
+            authSignIn();
+          }
+        });
+      }
+      var modal = document.getElementById("authPromptModal");
+      if(modal){
+        modal.addEventListener("click", function(e){
+          if(e.target === modal) closeAuthPopup();
+        });
+      }
+    })();
 
     function hcRender(){
       var list = document.getElementById("homeChartsList");
