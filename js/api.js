@@ -18,6 +18,8 @@
      them deterministically so the session persists before any page script
      reads it, then strip the tokens from the URL bar. */
   var authRedirectHandled = false;
+  var authRecoveryCb = null;
+  var authRecoveryDetected = false;
 
   function cleanAuthRedirectUrl() {
     try {
@@ -46,6 +48,8 @@
     var refreshToken = hashParams.get("refresh_token") || queryParams.get("refresh_token");
     var pkceCode = queryParams.get("code");
     var tokenHash = queryParams.get("token_hash");
+    var authType = queryParams.get("type") || hashParams.get("type") || "";
+    var isRecovery = /recovery/i.test(authType);
 
     if (!(accessToken || refreshToken || pkceCode || tokenHash)) return;
     authRedirectHandled = true;
@@ -66,8 +70,12 @@
       } else if (tokenHash && typeof client.auth.verifyOtp === "function") {
         await client.auth.verifyOtp({
           token_hash: tokenHash,
-          type: queryParams.get("type") || "email"
+          type: authType || "email"
         });
+      }
+      if (isRecovery) {
+        authRecoveryDetected = true;
+        if (authRecoveryCb) { try { authRecoveryCb(); } catch (ignored) {} }
       }
     } catch (e) {
       try { console.warn("Auth redirect handling failed:", e); } catch (ignored) {}
@@ -146,6 +154,24 @@
     async resendConfirmation(email) {
       if (!client) return { data: null, error: { message: "Supabase not configured" } };
       return client.auth.resend({ type: "signup", email: email });
+    },
+    async resetPassword(email) {
+      if (!client) return { data: null, error: { message: "Supabase not configured" } };
+      var redirectTo = location.origin + location.pathname;
+      return client.auth.resetPasswordForEmail((email || "").trim(), { redirectTo: redirectTo });
+    },
+    async updatePassword(newPassword) {
+      if (!client) return { data: null, error: { message: "Supabase not configured" } };
+      return client.auth.updateUser({ password: newPassword });
+    },
+    onPasswordRecovery(cb) {
+      authRecoveryCb = cb;
+      if (authRecoveryDetected && cb) {
+        try { cb(); } catch (e) {}
+      }
+      return function () {
+        if (authRecoveryCb === cb) authRecoveryCb = null;
+      };
     },
 
     /* ---- profile -------------------------------------------------- */

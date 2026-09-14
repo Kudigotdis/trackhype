@@ -1088,6 +1088,7 @@
             </div>
 
             <button class="ob-login-link" type="button" onclick="login()">Already have an account? Log in</button>
+            <button class="ob-login-link" type="button" onclick="goForgotPassword()">Forgot your password?</button>
 
           </div></div>
         </div>
@@ -2409,6 +2410,10 @@
       }else{
         window.location.href="index.html";
       }
+    };
+
+    window.goForgotPassword=function(){
+      window.location.href="menu.html#reset";
     };
 
     /* ============================================================

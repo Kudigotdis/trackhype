@@ -27,6 +27,7 @@
     .auth-popup-card .th-btn{width:100%;margin-bottom:10px}
     .auth-input{width:100%;box-sizing:border-box;padding:13px 14px;border-radius:12px;border:1px solid var(--th-border-soft);background:var(--th-grey-1);font-family:inherit;font-size:15px;color:var(--th-text);margin-bottom:10px}
     .auth-error{font-size:13px;color:#c62828;line-height:1.5;margin:0 0 10px}
+    .auth-forgot{background:none;border:none;color:var(--th-primary);font-weight:800;font-size:13px;cursor:pointer;padding:2px 0 12px;width:100%;text-align:right}
     .auth-popup-card .th-link-btn{background:none;border:none;color:var(--th-primary);font-weight:800;font-size:13px;cursor:pointer;padding:8px 0;width:100%}
 
     .fol-row{display:flex;align-items:center;justify-content:center;padding:6px 12px 14px}
@@ -152,9 +153,28 @@
         <h3>Sign in</h3>
         <input class="auth-input" id="authEmail" type="email" inputmode="email" autocomplete="email" placeholder="Email address">
         <input class="auth-input" id="authPassword" type="password" autocomplete="current-password" placeholder="Password">
+        <button class="auth-forgot" type="button" onclick="authShowReset()">Forgot password?</button>
         <p class="auth-error" id="authError" hidden></p>
         <button class="th-btn primary block" id="authSignInBtn" type="button" onclick="authSignIn()">Log in</button>
         <button class="th-link-btn" type="button" onclick="authBackToChoices()">← Back</button>
+      </div>
+
+      <div id="authResetView" hidden>
+        <h3>Reset your password</h3>
+        <p class="auth-popup-sub">Enter the email you signed up with. We'll email you a link to set a new password.</p>
+        <input class="auth-input" id="authResetEmail" type="email" inputmode="email" autocomplete="email" placeholder="Email address">
+        <p class="auth-error" id="authResetError" hidden></p>
+        <button class="th-btn primary block" id="authResetBtn" type="button" onclick="authReset()">Send reset link</button>
+        <button class="th-link-btn" type="button" onclick="authBackToChoices()">← Back</button>
+      </div>
+
+      <div id="authRecoverView" hidden>
+        <h3>Set a new password</h3>
+        <p class="auth-popup-sub">Choose a new password for your TrackHype account.</p>
+        <input class="auth-input" id="authNewPw" type="password" autocomplete="new-password" placeholder="New password (8+ characters)">
+        <input class="auth-input" id="authConfirmPw" type="password" autocomplete="new-password" placeholder="Confirm new password">
+        <p class="auth-error" id="authRecoverError" hidden></p>
+        <button class="th-btn primary block" id="authRecoverBtn" type="button" onclick="authSetNewPassword()">Update password</button>
       </div>
     </div>
   </div>
@@ -383,6 +403,138 @@
       if(window.TrackHype && TrackHype.toast){ TrackHype.toast("Signed in"); }
     };
 
+    function setAuthErrorFor(boxId, msg){
+      var box = document.getElementById(boxId);
+      if(box){
+        box.textContent = msg || "";
+        box.hidden = !msg;
+      }
+    }
+
+    window.authShowReset = function(){
+      setAuthErrorFor("authError", "");
+      setAuthErrorFor("authResetError", "");
+      setAuthErrorFor("authRecoverError", "");
+      var views = ["authChoiceView","authSignInView","authRecoverView"];
+      for(var i = 0; i < views.length; i++){
+        var v = document.getElementById(views[i]);
+        if(v) v.hidden = true;
+      }
+      var reset = document.getElementById("authResetView");
+      if(reset) reset.hidden = false;
+      var em = document.getElementById("authResetEmail");
+      if(em) em.focus();
+    };
+
+    window.authReset = async function(){
+      var em = document.getElementById("authResetEmail");
+      var email = (em.value || "").trim();
+      if(!authEmailOk(email)){
+        setAuthErrorFor("authResetError", "Enter the email address you signed up with.");
+        return;
+      }
+      if(!window.API || !window.API.ready){
+        setAuthErrorFor("authResetError", "This isn't available right now — the app isn't connected to the server.");
+        return;
+      }
+      var btn = document.getElementById("authResetBtn");
+      if(btn){ btn.disabled = true; btn.textContent = "Sending…"; }
+      var res;
+      try{
+        res = await API.resetPassword(email);
+      }catch(e){
+        res = { error: { message: "Could not reach the server. Check your connection and try again." } };
+      }
+      if(btn){ btn.disabled = false; btn.textContent = "Send reset link"; }
+      if(res && res.error){
+        setAuthErrorFor("authResetError", res.error.message || "Something went wrong.");
+        return;
+      }
+      setAuthErrorFor("authResetError", "");
+      if(em) em.value = "";
+      authBackToChoices();
+      TrackHype.toast("Reset link sent — check your inbox.");
+    };
+
+    function showRecoveryView(){
+      setAuthErrorFor("authError", "");
+      setAuthErrorFor("authResetError", "");
+      setAuthErrorFor("authRecoverError", "");
+      var views = ["authChoiceView","authSignInView","authResetView"];
+      for(var i = 0; i < views.length; i++){
+        var v = document.getElementById(views[i]);
+        if(v) v.hidden = true;
+      }
+      var rec = document.getElementById("authRecoverView");
+      if(rec) rec.hidden = false;
+      var modal = document.getElementById("authPromptModal");
+      if(modal){
+        modal.hidden = false;
+        popupOpenedAt = Date.now();
+      }
+      var np = document.getElementById("authNewPw");
+      if(np) np.focus();
+    }
+
+    window.authSetNewPassword = async function(){
+      var np = document.getElementById("authNewPw");
+      var cp = document.getElementById("authConfirmPw");
+      var pw = np.value || "";
+      var confirm = cp.value || "";
+      if(pw.length < 8){
+        setAuthErrorFor("authRecoverError", "Password must be at least 8 characters.");
+        return;
+      }
+      if(pw !== confirm){
+        setAuthErrorFor("authRecoverError", "Passwords don't match.");
+        return;
+      }
+      if(!window.API || !window.API.ready){
+        setAuthErrorFor("authRecoverError", "This isn't available right now — the app isn't connected to the server.");
+        return;
+      }
+      var btn = document.getElementById("authRecoverBtn");
+      if(btn){ btn.disabled = true; btn.textContent = "Updating…"; }
+      var res;
+      try{
+        res = await API.updatePassword(pw);
+      }catch(e){
+        res = { error: { message: "Could not reach the server. Check your connection and try again." } };
+      }
+      if(btn){ btn.disabled = false; btn.textContent = "Update password"; }
+      if(res && res.error){
+        setAuthErrorFor("authRecoverError", res.error.message || "Could not update the password. Try the reset link again.");
+        return;
+      }
+      np.value = "";
+      cp.value = "";
+      closeAuthPopup();
+      TrackHype.toast("Password updated — you're signed in.");
+      renderProfile();
+      hydrate();
+    };
+
+    (function(){
+      if(window.API && window.API.onPasswordRecovery){
+        window.API.onPasswordRecovery(function(){
+          showRecoveryView();
+        });
+      }
+    })();
+
+    (function(){
+      try{
+        if(location.hash === "#reset"){
+          var modal = document.getElementById("authPromptModal");
+          if(modal){
+            modal.hidden = false;
+            popupOpenedAt = Date.now();
+          }
+          authShowReset();
+        }
+      }catch(e){}
+    })();
+
     (function(){
       var pw = document.getElementById("authPassword");
       if(pw){
@@ -390,6 +542,24 @@
           if(e.key === "Enter"){
             e.preventDefault();
             authSignIn();
+          }
+        });
+      }
+      var re = document.getElementById("authResetEmail");
+      if(re){
+        re.addEventListener("keydown", function(e){
+          if(e.key === "Enter"){
+            e.preventDefault();
+            authReset();
+          }
+        });
+      }
+      var cpf = document.getElementById("authConfirmPw");
+      if(cpf){
+        cpf.addEventListener("keydown", function(e){
+          if(e.key === "Enter"){
+            e.preventDefault();
+            authSetNewPassword();
           }
         });
       }
