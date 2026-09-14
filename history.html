@@ -12,7 +12,6 @@
     .tab{flex:none;background:none;border:0;border-radius:0;padding:10px 0 2px;font-size:14px;font-weight:800;color:rgba(15,25,40,.4);cursor:pointer;white-space:nowrap}
     .tab.is-active{color:#1f2937;box-shadow:inset 0 -2px 0 var(--th-primary)}
     button.th-input,button.th-select{font:inherit;cursor:pointer;text-align:center;width:100%;color:var(--th-text)}
-    button.th-select::after{content:"▾";margin-left:8px;color:var(--th-muted)}
     .history-row{display:flex;align-items:center;gap:11px;padding:11px 12px;border-bottom:1px solid var(--th-border-soft)}
     .history-row:last-child{border-bottom:0}
     .history-rank{flex:none;width:34px;height:34px;display:grid;place-items:center;background:var(--th-primary);color:#fff;border-radius:9px;font-weight:900}
@@ -132,6 +131,7 @@
       gospel:    { charts: ["Gospel"], genres: [], poolMax: 20 },
       sungura:   { charts: ["Sungura"], genres: [], poolMax: 20 }
     };
+    const TH_SEED_REV = 4;
     const genreArtists = {
       "Zim Hip Hop": ["Holy Ten","Saintfloew","T Gonzi","Tashinga Panda","Voltz JT"],
       "House": ["DJ Tamuka","Judgement Yard","Tashinga","Blaq Halo"],
@@ -283,7 +283,19 @@
       return TrackHype.getSnapshots(TrackHype.chartId(current.title));
     }
 
+    function maybeResetSeeds(){
+      let rev = 0;
+      try{ rev = Number(localStorage.getItem("trackhype.seedRev") || 0); }catch(e){}
+      if(rev === TH_SEED_REV){ return; }
+      CHARTS.forEach(ch => {
+        try{ TrackHype.clearChartWeekly(TrackHype.chartId(ch.title)); }catch(e){}
+      });
+      try{ localStorage.setItem("trackhype.seedRev", String(TH_SEED_REV)); }catch(e){}
+    }
+
     function ensureSeed(){
+      if(!window.CHART_HISTORY){ return; }
+      maybeResetSeeds();
       const c = TrackHype.chartId(current.title);
       const subs = TrackHype.getWeekSubmissions(c);
       const hasAny = Object.keys(subs).some(k => subs[k].length);

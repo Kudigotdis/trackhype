@@ -12,14 +12,34 @@
     .hy-strip{display:flex;gap:10px;overflow-x:auto;padding:2px 1px 8px;-webkit-overflow-scrolling:touch}
     .hy-strip::-webkit-scrollbar{display:none}
     .hy-tile{flex:none;width:132px;cursor:pointer;text-decoration:none}
-    .hy-tile-art{width:132px;height:132px;border-radius:var(--th-radius-sm);object-fit:cover;background:var(--th-grey-2);border:1px solid var(--th-border-soft)}
+    .hy-tile-art{width:132px;height:132px;border-radius:var(--th-radius-sm);object-fit:cover;background:#fff}
     .hy-tile-rank{position:relative;width:132px;height:132px;border-radius:var(--th-radius-sm);background:var(--th-grey-3);display:grid;place-items:center;font-size:22px;font-weight:900;color:var(--th-primary-dark)}
     .hy-view-link{font-size:12px;font-weight:900;color:var(--th-muted)}
+
+    #radioShows{display:flex;flex-wrap:nowrap;overflow-x:auto;scroll-snap-type:x mandatory;gap:5px;scrollbar-width:none;-ms-overflow-style:none}
+    #radioShows::-webkit-scrollbar{display:none}
+    #radioShows a.hy-tile{flex:0 0 calc((100% - 10px)/3);aspect-ratio:1/1;scroll-snap-align:start}
+    #radioShows img.hy-tile-art.radio-logo{width:100%;height:100%;object-fit:cover;border-radius:4px;padding:0;background:#fff;border:1px solid rgba(0,0,0,.1);box-sizing:border-box}
+    #radioShows .radio-logo-fallback{width:100%;height:100%;border-radius:4px}
+
+    #acc-radio{
+      width:100vw;
+      margin:-18px calc(50% - 50vw) 0;
+      padding:18px 0 0;
+      gap:0;
+      background:color-mix(in srgb,var(--th-muted) 15%,transparent);
+    }
+    #acc-radio > .acc-head,
+    #acc-radio > .acc-body{max-width:760px;margin-left:auto;margin-right:auto;padding-left:16px;padding-right:16px}
+    #acc-radio > .acc-head{margin-bottom:12px}
+    #acc-radio .acc-advert{margin:0}
+    #acc-radio .hy-strip{padding:2px 1px 6px}
+    #acc-recent,#acc-national{margin-bottom:-20px}
 
     .th-advert{border:0;background:none;min-height:0;padding:0}
     .th-advert img{display:block;width:100%;height:auto}
 
-    .filter-row{position:relative;display:flex;align-items:center;height:42px;margin:0 -16px 4px;border-radius:0;background:var(--th-grey-3);background:color-mix(in srgb,var(--th-muted) 15%,transparent);overflow:hidden;-webkit-user-select:none;user-select:none}
+    .filter-row{position:relative;display:flex;align-items:center;height:42px;margin:-20px -16px 4px;border-radius:0;background:var(--th-grey-3);background:color-mix(in srgb,var(--th-muted) 15%,transparent);overflow:hidden;-webkit-user-select:none;user-select:none}
     .filter-row::before{content:"";position:absolute;top:0;bottom:0;left:0;width:50%;background:var(--th-primary);transition:transform .25s ease}
     .filter-row[data-active="spiritual"]::before{transform:translateX(100%)}
     .filter-btn{position:relative;flex:1;height:100%;border:0;background:none;font-size:13px;font-weight:800;text-align:center;color:var(--th-muted);transition:color .2s ease}
@@ -89,7 +109,7 @@
         <div class="acc-head" role="button" tabindex="0" aria-expanded="true" onclick="toggleAcc('acc-recent')">
           <div class="th-section-head">
             <h2>Recent Charts</h2>
-            <a class="hy-view-link" href="history.html" onclick="event.stopPropagation()">View All</a>
+            <a class="hy-view-link" href="history.html" onclick="event.stopPropagation()">All</a>
           </div>
         </div>
         <div class="acc-body"><div class="acc-body-inner">
@@ -136,6 +156,7 @@
 <script src="demo-playlist.js"></script>
   <script src="playlists.js"></script>
   <script src="radio-data.js"></script>
+  <script src="docs/Demo Charts/chart_history-data.js"></script>
   <script src="trackhype.js"></script>
   <script>
     const GENRE_ONE = {
@@ -314,6 +335,7 @@
               <span style="font-size:17px;font-weight:900">${g}</span>
               <span style="display:flex;gap:10px">
                 <a class="hy-view-link" href="charts.html?chart=${encodeURIComponent(g)}">Chart</a>
+                <span class="hy-dot-separator">·</span>
                 <a class="hy-view-link" href="artists.html?genre=${encodeURIComponent(g)}">Artists</a>
               </span>
             </div>

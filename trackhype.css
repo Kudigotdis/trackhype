@@ -195,6 +195,8 @@ h1,h2,h3,h4{line-height:1.2}
   color:var(--th-muted);
 }
 
+.hy-dot-separator{color:rgba(0,0,0,.2);margin:0 4px}
+
 /* =========================================================
    Cards & Adverts
    ========================================================= */
@@ -768,11 +770,13 @@ h1,h2,h3,h4{line-height:1.2}
   border:0;border-radius:50%;
   background:var(--th-primary);
   color:#fff;
-  cursor:pointer;
+cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
   transition:transform .15s ease,filter .15s ease;
 }
 @media (hover:hover){ .promo-toggle:hover{filter:brightness(1.08)} }
 .promo-toggle:active{transform:scale(.93)}
+.promo-toggle:focus{outline:none;box-shadow:none}
 .promo-toggle:focus-visible{outline:2px solid var(--th-text);outline-offset:2px}
 .promo-toggle img{width:22px;height:22px;display:block;pointer-events:none;object-fit:contain}
 
@@ -895,7 +899,7 @@ h1,h2,h3,h4{line-height:1.2}
   border-radius:50%;
   object-fit:contain;
   background:#fff;
-  border:1px solid var(--th-border-soft);
+  border:1px solid rgba(0,0,0,.1);
   box-sizing:border-box;
   padding:6px;
 }
@@ -904,8 +908,8 @@ h1,h2,h3,h4{line-height:1.2}
   width:132px;
   height:132px;
   border-radius:50%;
-  background:var(--th-grey-3);
-  border:1px solid var(--th-border-soft);
+  background:#fff;
+  border:1px solid rgba(0,0,0,.1);
   place-items:center;
   font-size:44px;
   font-weight:900;

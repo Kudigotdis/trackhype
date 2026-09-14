@@ -11,7 +11,7 @@
   <style>
     /* ============================================================
        TRACKHYPE ONBOARDING — MOBILE ACCORDION REDESIGN
-       One page • 7 sections • one open at a time • no chevrons
+       One page • 6 sections • one open at a time • no chevrons
        Colours are aliased to the shared design tokens in
        trackhype.css so this page always matches the app theme.
        ============================================================ */
@@ -122,6 +122,10 @@
     .acc.is-done{
       border-color:rgba(1,219,139,.30);
     }
+    .acc.is-error{
+      border-color:var(--ob-danger);
+      box-shadow:0 0 0 3px rgba(220,53,69,.10);
+    }
 
     /* ---------- Accordion header: deliberately NO chevron ---------- */
     .acc-head{
@@ -166,6 +170,10 @@
       background:var(--ob-primary);
       color:#fff;
     }
+    .acc.is-error .acc-num{
+      background:var(--ob-danger);
+      color:#fff;
+    }
 
     .acc-titles{
       min-width:0;
@@ -188,21 +196,6 @@
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-    }
-    .acc-summary{
-      max-width:105px;
-      flex:0 1 auto;
-      text-align:center;
-      color:var(--ob-faint);
-      font-size:10px;
-      font-weight:800;
-      line-height:1.3;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-    }
-    .acc.is-done .acc-summary{
-      color:var(--ob-primary-dark);
     }
 
     /* ---------- Animated panel ---------- */
@@ -298,21 +291,14 @@
       line-height:1.45;
     }
 
-    /* ---------- Date of birth (no select menus — chips + numeric) ---------- */
-    .dob-months{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:6px;
+    /* ---------- Date of birth (Year · Month · Day on one row) ---------- */
+    .dob-wrap{
+      position:relative;
     }
-    .dob-months .ob-choice{
-      min-height:40px;
-      font-size:11.5px;
-    }
-    .dob-grid-2{
+    .dob-row{
       display:grid;
-      grid-template-columns:1fr 1fr;
+      grid-template-columns:1fr 1fr 1fr;
       gap:7px;
-      margin-top:7px;
     }
     .dob-field small{
       display:block;
@@ -322,6 +308,51 @@
       font-weight:800;
       text-transform:uppercase;
       letter-spacing:.45px;
+    }
+    .dob-month-btn{
+      width:100%;
+      min-height:44px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      padding:0 8px;
+      border:1px solid var(--ob-line-strong);
+      border-radius:var(--ob-small-radius);
+      background:var(--ob-surface);
+      color:var(--ob-text);
+      font:inherit;
+      font-size:13px;
+      font-weight:800;
+      text-align:center;
+      cursor:pointer;
+      transition:background .16s ease,border-color .16s ease,color .16s ease;
+      -webkit-tap-highlight-color:transparent;
+    }
+    .dob-month-btn.is-active{
+      border-color:var(--ob-primary);
+      background:var(--ob-primary);
+      color:#fff;
+    }
+    .dob-drop{
+      display:none;
+      position:absolute;
+      left:0;
+      right:0;
+      top:calc(100% + 6px);
+      z-index:5;
+      grid-template-columns:repeat(4,1fr);
+      gap:6px;
+      padding:8px;
+      border:1px solid var(--ob-line-strong);
+      border-radius:var(--ob-small-radius);
+      background:#fff;
+      box-shadow:var(--ob-shadow);
+    }
+    .dob-drop.is-open{display:grid}
+    .dob-drop .ob-choice{
+      min-height:40px;
+      font-size:11.5px;
     }
 
     /* ---------- Phone ---------- */
@@ -365,28 +396,24 @@
       width:100%;
       display:flex;
       align-items:center;
+      justify-content:center;
       gap:10px;
       padding:9px;
       border:1px solid var(--ob-primary);
       border-radius:var(--ob-small-radius);
       background:#fff;
       cursor:pointer;
-      text-align:left;
-    }
-    .ob-flag{
-      width:45px;
-      height:30px;
-      flex:0 0 45px;
-      object-fit:cover;
-      border:1px solid var(--ob-line-strong);
+      text-align:center;
     }
     .ob-region-name{
       min-width:0;
       flex:1;
       font-size:13px;
       font-weight:850;
-      color:var(--ob-text);
+      color:var(--ob-muted);
+      text-align:center;
     }
+    .ob-region-name.has-region{color:var(--ob-text)}
     .ob-region-cta{
       color:var(--ob-primary-dark);
       font-size:10px;
@@ -403,6 +430,11 @@
       background:#fff;
     }
     .ob-regions.is-open{display:block}
+    .ob-regions-list{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:7px;
+    }
     .ob-search{
       width:100%;
       min-height:42px;
@@ -437,29 +469,38 @@
       text-align:center;
     }
     .ob-photo-btn{
-      width:78px;
-      height:78px;
-      flex:0 0 78px;
-      display:grid;
-      place-items:center;
+      width:234px;
+      height:234px;
+      flex:0 0 234px;
+      position:relative;
+      display:block;
+      padding:0;
       overflow:hidden;
       border:1px dashed var(--ob-primary);
-      border-radius:var(--ob-radius);
+      border-radius:18px;
       background:var(--ob-surface);
       color:var(--ob-primary-dark);
       cursor:pointer;
-      font-size:10px;
-      font-weight:900;
       text-align:center;
+      -webkit-tap-highlight-color:transparent;
     }
-    .ob-photo-btn:empty::after{
-      content:"ADD PHOTO";
+    .ob-photo-btn .ob-photo-icon{
+      position:absolute;
+      top:50%;
+      left:50%;
+      width:85%;
+      height:85%;
+      transform:translate(-50%,-50%);
+      object-fit:contain;
+      opacity:0.15;
     }
-    .ob-photo-btn img{
+    .ob-photo-btn .ob-photo-preview{
+      position:absolute;
+      inset:0;
       width:100%;
       height:100%;
       object-fit:cover;
-      display:block;
+      display:none;
     }
     .ob-photo-meta{
       max-width:250px;
@@ -543,6 +584,47 @@
       font-weight:950;
       cursor:pointer;
     }
+
+    /* ---------- Music taste toggle buttons ---------- */
+    .ob-taste-list{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .ob-mt-btn{
+      width:100%;
+      min-height:54px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:10px 12px;
+      border:1px solid var(--ob-line-strong);
+      border-radius:var(--ob-small-radius);
+      background:var(--ob-surface);
+      color:var(--ob-text);
+      font:inherit;
+      font-size:13.5px;
+      font-weight:900;
+      text-align:center;
+      cursor:pointer;
+      transition:background .16s ease,border-color .16s ease,color .16s ease;
+      -webkit-tap-highlight-color:transparent;
+    }
+    .ob-mt-btn:hover{
+      border-color:rgba(1,219,139,.45);
+    }
+    .ob-mt-btn.is-active{
+      border-color:var(--ob-primary);
+      background:var(--ob-primary);
+      color:#fff;
+    }
+    .ob-taste-panel{
+      display:none;
+      padding-top:10px;
+    }
+    .ob-taste-panel.is-open{display:block}
+    .ob-taste-panel .ob-status{margin-top:8px}
     /* ---------- Status / notes ---------- */
     .ob-status{
       margin:0 0 9px;
@@ -599,9 +681,7 @@
       .ob-page{padding-left:11px;padding-right:11px}
       .acc-head{padding-left:11px;padding-right:11px}
       .acc-inner{padding-left:11px;padding-right:11px}
-      .acc-summary{max-width:78px}
       .ob-choice{font-size:11.5px}
-      .dob-months{grid-template-columns:repeat(4,1fr)}
     }
 
     @media (min-width:600px){
@@ -631,7 +711,7 @@
     <div class="ob-progress" aria-label="Onboarding progress">
       <div class="ob-progress-top">
         <span class="ob-progress-label">Account setup</span>
-        <span class="ob-progress-count" id="progText">0 of 5 required</span>
+        <span class="ob-progress-count" id="progText">0 of 4</span>
       </div>
       <div class="ob-progress-track"><span id="progFill"></span></div>
     </div>
@@ -639,49 +719,23 @@
     <div class="ob-acc" id="accRoot">
 
       <!-- ========================================================
-           1 — ACCOUNT PATH
+           1 — REGION & CONTACT
            ======================================================== -->
       <section class="acc is-open" id="acc-1">
         <button class="acc-head" type="button" aria-expanded="true" aria-controls="panel-1" onclick="toggleAcc(1)">
           <span class="acc-num">1</span>
           <span class="acc-titles">
-            <span class="acc-title">Your Path</span>
-            <span class="acc-sub">Listener or artist account</span>
+            <span class="acc-title">Region &amp; Contact</span>
+            <span class="acc-sub">Country, network, mobile &amp; email</span>
           </span>
-          <span class="acc-summary" id="summary-1">Choose one</span>
         </button>
 
         <div class="acc-panel" id="panel-1">
           <div class="acc-clip"><div class="acc-inner">
-            <p class="ob-lede">Both paths create a TrackHype account. Choosing artist simply adds an artist-profile section later.</p>
-            <div class="ob-grid-2">
-              <button class="ob-choice" type="button" onclick="pickAccount(this)">Discover &amp; vote</button>
-              <button class="ob-choice" type="button" onclick="pickAccount(this)">Artist / represent an artist</button>
-            </div>
-          </div></div>
-        </div>
-      </section>
-
-      <!-- ========================================================
-           2 — REGION & CONTACT
-           ======================================================== -->
-      <section class="acc" id="acc-2">
-        <button class="acc-head" type="button" aria-expanded="false" aria-controls="panel-2" onclick="toggleAcc(2)">
-          <span class="acc-num">2</span>
-          <span class="acc-titles">
-            <span class="acc-title">Region &amp; Contact</span>
-            <span class="acc-sub">Country, network, mobile &amp; email</span>
-          </span>
-          <span class="acc-summary" id="summary-2">Not complete</span>
-        </button>
-
-        <div class="acc-panel" id="panel-2">
-          <div class="acc-clip"><div class="acc-inner">
 
             <label class="ob-label">Region / country *</label>
             <button class="ob-region-row" type="button" onclick="toggleRegions(true)">
-              <img class="ob-flag" id="regionFlag" src="Country-Flag-Icons/zw.png" alt="">
-              <span class="ob-region-name" id="regionName">Choose your region</span>
+              <span class="ob-region-name" id="regionName">Select Region</span>
             </button>
 
             <div class="ob-regions" id="regionsPanel">
@@ -727,19 +781,18 @@
       </section>
 
       <!-- ========================================================
-           3 — LEGAL DETAILS
+           2 — PERSONAL DETAILS
            ======================================================== -->
-      <section class="acc" id="acc-3">
-        <button class="acc-head" type="button" aria-expanded="false" aria-controls="panel-3" onclick="toggleAcc(3)">
-          <span class="acc-num">3</span>
+      <section class="acc" id="acc-2">
+        <button class="acc-head" type="button" aria-expanded="false" aria-controls="panel-2" onclick="toggleAcc(2)">
+          <span class="acc-num">2</span>
           <span class="acc-titles">
-            <span class="acc-title">Legal Details</span>
+            <span class="acc-title">Personal Details</span>
             <span class="acc-sub">Name, date of birth, gender &amp; location</span>
           </span>
-          <span class="acc-summary" id="summary-3">Not complete</span>
         </button>
 
-        <div class="acc-panel" id="panel-3">
+        <div class="acc-panel" id="panel-2">
           <div class="acc-clip"><div class="acc-inner">
 
             <label class="ob-label">First name *</label>
@@ -749,15 +802,21 @@
             <input class="th-input" id="surname" placeholder="e.g. Moyo" autocomplete="family-name">
 
             <label class="ob-label">Date of birth *</label>
-            <div class="dob-months" id="dobMonths"></div>
-            <div class="dob-grid-2">
-              <div class="dob-field">
-                <input class="th-input" id="dobDay" type="text" inputmode="numeric" maxlength="2" placeholder="Day (1–31)" aria-label="Birth day" autocomplete="off" oninput="onDobField()">
-                <small>Day</small>
-              </div>
-              <div class="dob-field">
-                <input class="th-input" id="dobYear" type="text" inputmode="numeric" maxlength="4" placeholder="Year (e.g. 1999)" aria-label="Birth year" autocomplete="off" oninput="onDobField()">
-                <small>Year</small>
+            <div class="dob-wrap">
+              <div class="dob-row">
+                <div class="dob-field">
+                  <input class="th-input" id="dobYear" type="text" inputmode="numeric" maxlength="4" placeholder="Year" aria-label="Birth year" autocomplete="off" oninput="onDobField()">
+                  <small>Year</small>
+                </div>
+                <div class="dob-field">
+                  <button class="dob-month-btn" id="dobMonthBtn" type="button" aria-haspopup="true" aria-expanded="false" onclick="toggleDobMonths()">Month</button>
+                  <small>Month</small>
+                  <div class="dob-drop" id="dobMonths"></div>
+                </div>
+                <div class="dob-field">
+                  <input class="th-input" id="dobDay" type="text" inputmode="numeric" maxlength="2" placeholder="1–31" aria-label="Birth day" autocomplete="off" oninput="onDobField()">
+                  <small>Day</small>
+                </div>
               </div>
             </div>
             <div class="ob-avail" id="dobStatus"></div>
@@ -780,24 +839,24 @@
       </section>
 
       <!-- ========================================================
-           4 — PUBLIC PROFILE
+           3 — PUBLIC PROFILE
            ======================================================== -->
-      <section class="acc" id="acc-4">
-        <button class="acc-head" type="button" aria-expanded="false" aria-controls="panel-4" onclick="toggleAcc(4)">
-          <span class="acc-num">4</span>
+      <section class="acc" id="acc-3">
+        <button class="acc-head" type="button" aria-expanded="false" aria-controls="panel-3" onclick="toggleAcc(3)">
+          <span class="acc-num">3</span>
           <span class="acc-titles">
             <span class="acc-title">Public Profile</span>
             <span class="acc-sub">Photo and short bio</span>
           </span>
-          <span class="acc-summary" id="summary-4">Not complete</span>
         </button>
 
-        <div class="acc-panel" id="panel-4">
+        <div class="acc-panel" id="panel-3">
           <div class="acc-clip"><div class="acc-inner">
 
             <div class="ob-photo">
               <button class="ob-photo-btn" id="photoBtn" type="button" onclick="document.getElementById('photoInput').click()">
-                <img id="photoPreview" alt="" style="display:none">
+                <img class="ob-photo-icon" src="Assets/icons/profile_icon.png" alt="">
+                <img class="ob-photo-preview" id="photoPreview" alt="">
               </button>
               <div class="ob-photo-meta" id="photoMeta">Required.<br>JPEG, PNG or WebP up to 2 MB.<br>Stored as a square 512 × 512 WebP.</div>
               <input type="file" id="photoInput" accept="image/jpeg,image/png,image/webp" hidden onchange="handlePhoto(this.files[0])">
@@ -813,51 +872,54 @@
       </section>
 
       <!-- ========================================================
-           5 — MUSIC TASTE
+           4 — MUSIC TASTE
            ======================================================== -->
-      <section class="acc" id="acc-5">
-        <button class="acc-head" type="button" aria-expanded="false" aria-controls="panel-5" onclick="toggleAcc(5)">
-          <span class="acc-num">5</span>
+      <section class="acc" id="acc-4">
+        <button class="acc-head" type="button" aria-expanded="false" aria-controls="panel-4" onclick="toggleAcc(4)">
+          <span class="acc-num">4</span>
           <span class="acc-titles">
-            <span class="acc-title">What You Listen To</span>
+            <span class="acc-title">Music Taste</span>
             <span class="acc-sub">Genres and artists you follow</span>
           </span>
-          <span class="acc-summary" id="summary-5">Choose later</span>
         </button>
 
-        <div class="acc-panel" id="panel-5">
+        <div class="acc-panel" id="panel-4">
           <div class="acc-clip"><div class="acc-inner">
 
             <p class="ob-lede">Optional — but it makes your home feed and chart recommendations feel like yours. Pick at least 3 genres to complete the section.</p>
 
-            <label class="ob-label">Genres you listen to</label>
-            <div class="ob-chips" id="genres"></div>
-            <div class="ob-status" id="gstatus">0 genres selected</div>
+            <div class="ob-taste-list">
+              <button class="ob-mt-btn" id="mtBtnGenres" type="button" aria-expanded="false" onclick="toggleTastePanel('genres')">Genre</button>
+              <div class="ob-taste-panel" id="tastePanel-genres">
+                <div class="ob-chips" id="genres"></div>
+                <div class="ob-status" id="gstatus">0 genres selected</div>
+              </div>
 
-            <label class="ob-label">Artists to follow</label>
-            <div class="ob-chips" id="follows"></div>
-            <div class="ob-status" id="fstatus">Not following anyone yet</div>
+              <button class="ob-mt-btn" id="mtBtnFollows" type="button" aria-expanded="false" onclick="toggleTastePanel('follows')">Artists</button>
+              <div class="ob-taste-panel" id="tastePanel-follows">
+                <div class="ob-chips" id="follows"></div>
+                <div class="ob-status" id="fstatus">Not following anyone yet</div>
+              </div>
+            </div>
 
           </div></div>
         </div>
       </section>
 
       <!-- ========================================================
-           6 — ARTIST PROFILE
-           Always present as an accordion; content changes based
-           on the path chosen in step 1.
+           5 — ARTIST PROFILE
+           Optional — users clarify if they are an artist later.
            ======================================================== -->
-      <section class="acc" id="acc-6">
-        <button class="acc-head" type="button" aria-expanded="false" aria-controls="panel-6" onclick="toggleAcc(6)">
-          <span class="acc-num">6</span>
+      <section class="acc" id="acc-5">
+        <button class="acc-head" type="button" aria-expanded="false" aria-controls="panel-5" onclick="toggleAcc(5)">
+          <span class="acc-num">5</span>
           <span class="acc-titles">
             <span class="acc-title">Artist Profile</span>
-            <span class="acc-sub" id="artistSub">Only needed for artist accounts</span>
+            <span class="acc-sub" id="artistSub">Optional — tell us if you're an artist</span>
           </span>
-          <span class="acc-summary" id="summary-6">Not needed</span>
         </button>
 
-        <div class="acc-panel" id="panel-6">
+        <div class="acc-panel" id="panel-5">
           <div class="acc-clip"><div class="acc-inner">
 
             <button class="ob-artist-toggle" id="artistToggle" type="button" onclick="toggleArtistProfile()">Are You An Artist</button>
@@ -888,7 +950,8 @@
               <label class="ob-label">Artist image</label>
               <div class="ob-photo">
                 <button class="ob-photo-btn" id="artistPhotoBtn" type="button" onclick="document.getElementById('artistPhotoInput').click()">
-                  <img id="artistPhotoPreview" alt="" style="display:none">
+                  <img class="ob-photo-icon" src="Assets/icons/profile_icon.png" alt="">
+                  <img class="ob-photo-preview" id="artistPhotoPreview" alt="">
                 </button>
                 <div class="ob-photo-meta" id="artistPhotoMeta">Optional.<br>JPEG, PNG or WebP up to 5 MB.<br>Stored as compressed WebP.</div>
                 <input type="file" id="artistPhotoInput" accept="image/jpeg,image/png,image/webp" hidden onchange="handleArtistPhoto(this.files[0])">
@@ -902,19 +965,18 @@
       </section>
 
       <!-- ========================================================
-           7 — LOGIN CREDENTIALS  (kept last on purpose)
+           6 — LOGIN CREDENTIALS  (kept last on purpose)
            ======================================================== -->
-      <section class="acc" id="acc-7">
-        <button class="acc-head" type="button" aria-expanded="false" aria-controls="panel-7" onclick="toggleAcc(7)">
-          <span class="acc-num">7</span>
+      <section class="acc" id="acc-6">
+        <button class="acc-head" type="button" aria-expanded="false" aria-controls="panel-6" onclick="toggleAcc(6)">
+          <span class="acc-num">6</span>
           <span class="acc-titles">
             <span class="acc-title">Login Credentials</span>
             <span class="acc-sub">Username and password</span>
           </span>
-          <span class="acc-summary" id="summary-7">Not complete</span>
         </button>
 
-        <div class="acc-panel" id="panel-7">
+        <div class="acc-panel" id="panel-6">
           <div class="acc-clip"><div class="acc-inner">
 
             <label class="ob-label">Username *</label>
@@ -996,7 +1058,7 @@
     var ARTIST_TYPES = ["Solo artist","Group","Band","DJ","Producer","Manager / representative"];
 
     var S = {
-      accountType:null,
+      accountType:"listener",
       region:null,
       network:null,
       mobile:"",
@@ -1108,13 +1170,11 @@
     /* ============================================================
        COMPLETION
        Step numbers follow the page order:
-       1 path · 2 region · 3 legal · 4 profile · 5 music ·
-       6 artist · 7 login (last).
+       1 region · 2 personal · 3 profile · 4 music ·
+       5 artist · 6 login (last).
        ============================================================ */
     function stepDone(n){
-      if(n===1) return !!S.accountType;
-
-      if(n===2){
+      if(n===1){
         if(!S.region || !S.network) return false;
         if(digits(val("mobile")).length<7) return false;
         if(!document.getElementById("whatsappSame").checked &&
@@ -1122,7 +1182,7 @@
         return emailOk(val("email"));
       }
 
-      if(n===3){
+      if(n===2){
         if(!val("firstName").trim() || !val("surname").trim()) return false;
         if(!S.dobMonth || !val("dobDay") || !val("dobYear")) return false;
         if(!S.gender) return false;
@@ -1131,16 +1191,16 @@
         return true;
       }
 
-      if(n===4) return !!S.profilePhoto;
+      if(n===3) return !!S.profilePhoto;
 
-      if(n===5) return S.genres.size>=3;
+      if(n===4) return S.genres.size>=3;
 
-      if(n===6){
+      if(n===5){
         if(!S.artistMode) return true;
         return !!(val("artistName").trim() && S.artistType && S.artistMoney);
       }
 
-      if(n===7){
+      if(n===6){
         return userOk(val("username")) &&
           val("password").length>=8 &&
           val("password")===val("confirm");
@@ -1150,9 +1210,7 @@
     }
 
     function requiredList(){
-      return S.accountType==="artist"
-        ? [1,2,3,4,6,7]
-        : [1,2,3,4,7];
+      return [1,2,3,6];
     }
 
     function updateProgress(){
@@ -1161,21 +1219,7 @@
       var fill=document.getElementById("progFill");
       var txt=document.getElementById("progText");
       if(fill) fill.style.width=Math.round(done/list.length*100)+"%";
-      if(txt) txt.textContent=done+" of "+list.length+" required";
-    }
-
-    function summaryText(n){
-      if(n===1) return S.accountType==="artist" ? "Artist path" : S.accountType==="listener" ? "Listener path" : "Choose one";
-      if(n===2) return stepDone(2) ? (S.region ? S.region.name : "Complete") : "Not complete";
-      if(n===3) return stepDone(3) ? "Details complete" : "Not complete";
-      if(n===4) return S.profilePhoto ? "Photo added" : "Not complete";
-      if(n===5){
-        var gc=S.genres.size;
-        return gc>=3 ? "Ready" : (gc>0 ? gc+" genre" : "Choose later");
-      }
-      if(n===6) return S.artistMode ? (stepDone(6) ? "Ready" : "Not complete") : "Not needed";
-      if(n===7) return stepDone(7) ? "@"+val("username").trim() : "Not complete";
-      return "";
+      if(txt) txt.textContent=done+" of "+list.length;
     }
 
     function refresh(n){
@@ -1184,15 +1228,13 @@
 
       var done=stepDone(n);
       el.classList.toggle("is-done",done);
-
-      var st=el.querySelector(".acc-summary");
-      if(st) st.textContent=summaryText(n);
+      if(done) el.classList.remove("is-error");
 
       updateProgress();
     }
 
     function refreshAll(){
-      for(var i=1;i<=7;i++) refresh(i);
+      for(var i=1;i<=6;i++) refresh(i);
     }
 
     function sync(n){
@@ -1200,18 +1242,8 @@
     }
 
     /* ============================================================
-       STEP 1 — PATH
+       ARTIST VISIBILITY
        ============================================================ */
-    window.pickAccount=function(btn){
-      S.accountType=btn.textContent.indexOf("Artist")!==-1 ? "artist" : "listener";
-
-      Array.prototype.forEach.call(btn.parentElement.children,function(b){
-        b.classList.toggle("is-active",b===btn);
-      });
-
-      applyVisibility();
-      refreshAll();
-    };
 
     function applyVisibility(){
       var artistFields=document.getElementById("artistFields");
@@ -1231,7 +1263,7 @@
     }
 
     /* ============================================================
-       STEP 2 — REGION / CONTACT
+       STEP 1 — REGION / CONTACT
        ============================================================ */
     function loadStoredRegion(){
       try{
@@ -1244,20 +1276,19 @@
 
       S.region={
         name:c.name,
-        code:(c.code||"").toUpperCase(),
-        flag:c.code+".png"
+        code:(c.code||"").toUpperCase()
       };
 
       try{
         localStorage.setItem("trackhype.region",JSON.stringify({
           name:S.region.name,
-          code:S.region.code,
-          flag:S.region.flag
+          code:S.region.code
         }));
       }catch(e){}
 
-      document.getElementById("regionFlag").src="Country-Flag-Icons/"+S.region.flag;
-      document.getElementById("regionName").textContent=c.name;
+      var nameEl=document.getElementById("regionName");
+      nameEl.textContent=c.name;
+      nameEl.classList.add("has-region");
 
       toggleRegions(false);
       renderRegionDependents();
@@ -1281,7 +1312,7 @@
 
       resetTownArea();
       populateTownList();
-      refresh(2);
+      refresh(1);
     }
 
     var REGION_PREFER_SET=(function(){
@@ -1292,6 +1323,8 @@
       return s;
     })();
 
+    var REGION_TOP=["ZW","BW"];
+
     window.renderRegions=function(q){
       var t=String(q||"").trim().toLowerCase();
 
@@ -1301,19 +1334,39 @@
           c.code.toLowerCase().indexOf(t)!==-1;
       });
 
-      var featured=list.filter(function(c){return REGION_PREFER_SET[c.code.toUpperCase()];});
-      var rest=list.filter(function(c){return !REGION_PREFER_SET[c.code.toUpperCase()];});
+      var byCode={};
+      list.forEach(function(c){byCode[(c.code||"").toUpperCase()]=c;});
+
+      var top=[];
+      REGION_TOP.forEach(function(code){
+        if(byCode[code]) top.push(byCode[code]);
+      });
+
+      var featured=list.filter(function(c){
+        return REGION_PREFER_SET[c.code.toUpperCase()] &&
+          REGION_TOP.indexOf(c.code.toUpperCase())===-1;
+      });
+
+      var rest=list.filter(function(c){
+        return !REGION_PREFER_SET[c.code.toUpperCase()] &&
+          REGION_TOP.indexOf(c.code.toUpperCase())===-1;
+      });
 
       var html="";
 
+      if(top.length){
+        html+='<div class="ob-kicker">Most popular</div>'+
+          '<div class="ob-regions-list">'+top.map(countryChip).join("")+'</div>';
+      }
+
       if(featured.length){
         html+='<div class="ob-kicker">Popular</div>'+
-          '<div class="ob-grid-2">'+featured.map(countryChip).join("")+'</div>';
+          '<div class="ob-regions-list">'+featured.map(countryChip).join("")+'</div>';
       }
 
       if(rest.length){
         html+='<div class="ob-kicker">All countries</div>'+
-          '<div class="ob-grid-2">'+rest.map(countryChip).join("")+'</div>';
+          '<div class="ob-regions-list">'+rest.map(countryChip).join("")+'</div>';
       }
 
       document.getElementById("regionsList").innerHTML=html||
@@ -1369,7 +1422,7 @@
       });
       document.getElementById("networkSelectedLabel").textContent=S.network;
       document.getElementById("networkAccordion").classList.remove("is-open");
-      sync(2);
+      sync(1);
     };
 
     window.toggleWhatsapp=function(){
@@ -1383,7 +1436,7 @@
         S.whatsapp="";
       }
 
-      sync(2);
+      sync(1);
     };
 
     /* ============================================================
@@ -1469,7 +1522,7 @@
     }
 
     /* ============================================================
-       STEP 3 — LEGAL DETAILS
+       STEP 2 — PERSONAL DETAILS
        ============================================================ */
     function populateDob(){
       var host=document.getElementById("dobMonths");
@@ -1481,20 +1534,63 @@
       }).join("");
     }
 
+    window.toggleDobMonths=function(){
+      var drop=document.getElementById("dobMonths");
+      var btn=document.getElementById("dobMonthBtn");
+      if(!drop) return;
+      var open=!drop.classList.contains("is-open");
+      drop.classList.toggle("is-open",open);
+      if(btn) btn.setAttribute("aria-expanded",open?"true":"false");
+    };
+
+    function daysInMonth(m,y){
+      m=Number(m)||1;
+      y=Number(y)||new Date().getFullYear();
+      return new Date(y,m,0).getDate();
+    }
+
+    function syncDayLimit(){
+      var day=document.getElementById("dobDay");
+      if(!day) return;
+
+      if(S.dobMonth){
+        var limit=daysInMonth(S.dobMonth,val("dobYear")||new Date().getFullYear());
+        day.placeholder="1–"+limit;
+        var dv=Number(val("dobDay"));
+        if(dv>limit){
+          day.value="";
+          S.dobDay="";
+        }
+      }else{
+        day.placeholder="1–31";
+      }
+    }
+
     window.pickMonth=function(btn){
       S.dobMonth=String(btn.dataset.m||"");
       Array.prototype.forEach.call(document.getElementById("dobMonths").children,function(b){
         b.classList.toggle("is-active",b===btn);
       });
+
+      var mBtn=document.getElementById("dobMonthBtn");
+      mBtn.textContent=MONTHS[Number(S.dobMonth)-1]
+        ? MONTHS[Number(S.dobMonth)-1].slice(0,3)
+        : "Month";
+      mBtn.classList.add("is-active");
+      document.getElementById("dobMonths").classList.remove("is-open");
+      mBtn.setAttribute("aria-expanded","false");
+
+      syncDayLimit();
       validateDob();
-      sync(3);
+      sync(2);
     };
 
     window.onDobField=function(){
       S.dobDay=val("dobDay");
       S.dobYear=val("dobYear");
+      syncDayLimit();
       validateDob();
-      sync(3);
+      sync(2);
     };
 
     function validateDob(){
@@ -1550,11 +1646,11 @@
     window.pickGender=function(btn){
       S.gender=btn.textContent;
       single("gender",S,"gender");
-      sync(3);
+      sync(2);
     };
 
     /* ============================================================
-       STEP 4 — PUBLIC PROFILE
+       STEP 3 — PUBLIC PROFILE
        ============================================================ */
     function processImage(file,targetSize,cb,maxBytes){
       if(!file) return;
@@ -1601,30 +1697,46 @@
     window.handlePhoto=function(file){
       processImage(file,512,function(data){
         S.profilePhoto=data;
+        var btn=document.getElementById("photoBtn");
         var img=document.getElementById("photoPreview");
         img.src=data;
         img.style.display="block";
+        btn.querySelector(".ob-photo-icon").style.display="none";
         document.getElementById("photoMeta").textContent=
           "Square photo ready (512 × 512 WebP). Location metadata removed.";
-        sync(4);
+        sync(3);
       },2*1024*1024);
     };
 
     window.handleArtistPhoto=function(file){
       processImage(file,1024,function(data){
         S.artistImage=data;
+        var btn=document.getElementById("artistPhotoBtn");
         var img=document.getElementById("artistPhotoPreview");
         img.src=data;
         img.style.display="block";
+        btn.querySelector(".ob-photo-icon").style.display="none";
         document.getElementById("artistPhotoMeta").textContent=
           "Artist image ready. Location metadata removed.";
-        sync(6);
+        sync(5);
       });
     };
 
     /* ============================================================
-       STEP 5 — MUSIC TASTE
+       STEP 4 — MUSIC TASTE
        ============================================================ */
+    window.toggleTastePanel=function(key){
+      var panel=document.getElementById("tastePanel-"+key);
+      if(!panel) return;
+
+      var btn=document.getElementById(key==="genres" ? "mtBtnGenres" : "mtBtnFollows");
+      var open=!panel.classList.contains("is-open");
+      panel.classList.toggle("is-open",open);
+      if(btn){
+        btn.classList.toggle("is-active",open);
+        btn.setAttribute("aria-expanded",open?"true":"false");
+      }
+    };
     function activeChips(hostId,set){
       var host=document.getElementById(hostId);
       if(!host) return;
@@ -1657,7 +1769,7 @@
       }
       activeChips("genres",S.genres);
       updateTaste();
-      sync(5);
+      sync(4);
     };
 
     window.toggleFollow=function(btn){
@@ -1669,33 +1781,33 @@
       }
       activeChips("follows",S.followed);
       updateTaste();
-      sync(5);
+      sync(4);
     };
 
     /* ============================================================
-       STEP 6 — ARTIST
+       STEP 5 — ARTIST
        ============================================================ */
     window.toggleArtistProfile=function(){
       S.artistMode=!S.artistMode;
       document.getElementById("artistToggle").textContent=S.artistMode ? "Hide Artist Profile" : "Are You An Artist";
       applyVisibility();
-      refresh(6);
+      refresh(5);
     };
 
     window.pickArtistType=function(btn){
       S.artistType=btn.textContent;
       single("artistType",S,"artistType");
-      sync(6);
+      sync(5);
     };
 
     window.pickArtistMoney=function(btn){
       S.artistMoney=btn.textContent;
       single("artistMoney",S,"artistMoney");
-      sync(6);
+      sync(5);
     };
 
     /* ============================================================
-       STEP 7 — LOGIN
+       STEP 6 — LOGIN
        ============================================================ */
     window.checkUsername=function(v){
       var st=document.getElementById("usernameStatus");
@@ -1704,14 +1816,14 @@
       if(!t){
         st.textContent="";
         st.className="ob-avail";
-        sync(7);
+        sync(6);
         return;
       }
 
       if(!userOk(t)){
         st.textContent="3–20 characters: letters, numbers, underscore only.";
         st.className="ob-avail bad";
-        sync(7);
+        sync(6);
         return;
       }
 
@@ -1727,7 +1839,7 @@
 
       st.textContent=taken ? "Username already taken." : "Username available.";
       st.className="ob-avail "+(taken?"bad":"ok");
-      sync(7);
+      sync(6);
     };
 
     function passwordScore(p){
@@ -1746,7 +1858,7 @@
       if(!p){
         st.textContent="";
         st.className="ob-avail";
-        sync(7);
+        sync(6);
         return;
       }
 
@@ -1759,7 +1871,7 @@
       st.className="ob-avail "+(s>=3?"ok":"bad");
 
       checkConfirm();
-      sync(7);
+      sync(6);
     };
 
     window.checkConfirm=function(){
@@ -1770,7 +1882,7 @@
       if(!c){
         st.textContent="";
         st.className="ob-avail";
-        sync(7);
+        sync(6);
         return;
       }
 
@@ -1778,33 +1890,39 @@
 
       st.textContent=match ? "Passwords match." : "Passwords don't match yet.";
       st.className="ob-avail "+(match?"ok":"bad");
-      sync(7);
+      sync(6);
     };
 
     /* ============================================================
        FINISH
        ============================================================ */
     var NEED_MSG={
-      1:"Choose your path first.",
-      2:"Finish your region, network, number and email.",
-      3:"Finish your legal details.",
-      4:"Add your profile picture.",
-      6:"Finish your artist profile details.",
-      7:"Finish your username and password."
+      1:"Finish your region, network, number and email.",
+      2:"Finish your personal details.",
+      3:"Add your profile picture.",
+      6:"Finish your username and password."
     };
 
     window.finish=function(){
       var list=requiredList();
+      var missing=[];
 
       for(var i=0;i<list.length;i++){
         var n=list[i];
+        if(!stepDone(n)) missing.push(n);
+      }
 
-        if(!stepDone(n)){
-          applyOpen(n);
-          scrollToAcc(n);
-          alert(NEED_MSG[n]||"Please complete this section.");
-          return;
+      if(missing.length){
+        for(var j=0;j<missing.length;j++){
+          var el=accEl(missing[j]);
+          if(el) el.classList.add("is-error");
         }
+
+        var first=missing[0];
+        applyOpen(first);
+        scrollToAcc(first);
+        alert(NEED_MSG[first]||"Please complete this section.");
+        return;
       }
 
       var town=val("townInput").trim();
@@ -1964,16 +2082,9 @@
         }else{
           setRegion({
             name:stored.name,
-            code:stored.code,
-            flag:stored.flag
+            code:stored.code
           });
         }
-      }else{
-        var zw=COUNTRIES.filter(function(c){
-          return (c.code||"").toUpperCase()==="ZW";
-        })[0];
-
-        if(zw) setRegion(zw);
       }
 
       applyVisibility();

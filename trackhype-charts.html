@@ -5,36 +5,34 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#ffffff">
   <link rel="icon" type="image/webp" href="Assets/logos/TrackHype Logo Design Badge.webp">
-  <title>All Charts — TrackHype</title>
+  <title>Listed Charts — TrackHype</title>
   <link rel="stylesheet" href="trackhype.css">
   <style>
     .tc-kicker{font-size:11px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:var(--th-primary-dark)}
     .tc-title{font-size:24px;font-weight:900;color:var(--th-text);margin-top:4px}
     .tc-sub{font-size:13px;color:var(--th-muted);margin-top:6px;line-height:1.6}
-    .tc-wrap{display:flex;align-items:flex-start;gap:6px;margin-top:18px}
-    .tc-groups{flex:1;min-width:0;margin-right:20px}
-    .tc-group-title{font-size:11px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:var(--th-faint);margin:16px 0 10px 2px}
-    .tc-group:first-child .tc-group-title{margin-top:0}
+    .tc-wrap{display:flex;align-items:flex-start;gap:6px;margin-top:6px;width:100%}
+    .tc-groups{flex:1;min-width:0;width:100%}
     .tc-list{display:flex;flex-direction:column;gap:8px}
-    .tc-item{display:flex;align-items:center;gap:12px;width:100%;background:var(--th-bg);border:1px solid var(--th-border);border-radius:var(--th-radius-sm);padding:12px;cursor:pointer;text-align:left;transition:box-shadow .15s ease,transform .05s ease}
+    .tc-item{display:flex;align-items:center;gap:12px;width:100%;background:var(--th-bg);border:none;border-bottom:1px solid #eeeeee;border-radius:var(--th-radius-sm);padding:12px;cursor:pointer;text-align:left;outline:none;box-shadow:none;transition:transform .05s ease}
     .tc-item:active{transform:scale(.99)}
-    .tc-item.is-current{border-color:var(--th-primary);box-shadow:0 0 0 1px var(--th-primary)}
+    .tc-item.is-current .tc-name{color:var(--th-primary-dark)}
+    .tc-group:has(.tc-item.is-current){border-bottom:5px solid #f0f0f0;margin-bottom:10px}
     .tc-art{flex:none;width:44px;height:44px;border-radius:10px;object-fit:cover;background:var(--th-grey-2);border:1px solid var(--th-border-soft)}
-    .tc-meta{flex:1;min-width:0}
-    .tc-name{font-weight:900;font-size:14px;color:var(--th-text)}
-    .tc-sub{font-size:12px;color:var(--th-muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .tc-check{flex:none;width:20px;height:20px;border-radius:50%;border:2px solid var(--th-border);display:grid;place-items:center;font-size:12px;color:#fff}
-    .tc-item.is-current .tc-check{background:var(--th-primary);border-color:var(--th-primary)}
-    .tc-index{position:fixed;right:6px;top:50%;transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;align-items:center;gap:1px;background:rgba(255,255,255,.85);border:1px solid var(--th-border-soft);border-radius:10px;padding:6px 3px}
-    .tc-idx{flex:none;width:18px;height:18px;border:0;background:none;padding:0;font-size:10px;font-weight:800;color:var(--th-muted);cursor:pointer;text-align:center;line-height:18px}
-    .tc-idx.is-active{color:var(--th-primary-dark);font-size:11px}
+    .tc-meta{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start}
+    .tc-meta .tc-name{display:block;font-weight:900;font-size:14px;color:var(--th-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+    .tc-meta .tc-sub{display:block;font-size:12px;color:var(--th-muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+    .tc-search-btn{margin-top:14px;padding-top:12px;padding-bottom:12px;font-size:14px}
+    .sc-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+    .sc-row{display:flex;align-items:center;gap:12px;width:100%;background:none;border:none;border-bottom:1px solid #eeeeee;padding:12px 0;cursor:pointer;text-align:left;outline:none;box-shadow:none}
+    .sc-row.is-current .tc-name{color:var(--th-primary-dark)}
+    .sc-empty{font-size:13px;color:var(--th-muted);text-align:center;padding:18px 0}
   </style>
 </head>
 <body data-active-nav="history.html">
 
   <header class="th-header" data-app-header>
     <div class="th-header-inner">
-      <button class="th-btn primary th-header-back" type="button" onclick="history.back()">Back</button>
       <a class="th-brand" href="index.html">
         <img class="th-logo-badge" src="Assets/logos/TrackHype Logo Design Badge.webp" alt="TrackHype">
         <img class="th-logo-text" src="Assets/logos/track-hype-text-logo.webp" alt="TrackHype">
@@ -47,13 +45,13 @@
 
       <section>
         <div class="tc-kicker">Charts</div>
-        <h1 class="tc-title">All Charts</h1>
+        <h1 class="tc-title">Listed Charts</h1>
         <p class="tc-sub">Pick a chart to open its ranking history. Charts are listed A–Z — tap one to switch.</p>
+        <button class="th-btn primary block tc-search-btn" id="searchChartsBtn" type="button">Search Charts</button>
       </section>
 
       <div class="tc-wrap">
         <div class="tc-groups" id="chartGroups"></div>
-        <nav class="tc-index" id="chartIndex" aria-label="Chart index"></nav>
       </div>
 
       <section>
@@ -114,7 +112,6 @@
       return `<button type="button" class="tc-item${sel}" data-name="${TrackHype.esc(c.name)}">
         <img class="tc-art" src="${TrackHype.esc(c.art)}" onerror="this.style.visibility='hidden'" alt="">
         <span class="tc-meta"><span class="tc-name">${TrackHype.esc(c.name)}</span><span class="tc-sub">${TrackHype.esc(c.meta)}</span></span>
-        <span class="tc-check">✓</span>
       </button>`;
     }
 
@@ -126,28 +123,13 @@
         (groups[l] = groups[l] || []).push(c);
       });
       const current = loadChart();
-      const letters = Object.keys(groups).sort();
+      const curLetter = firstLetter(current);
+      const letters = Object.keys(groups).sort((a, b) => (a === curLetter ? -1 : b === curLetter ? 1 : a < b ? -1 : 1));
       const listEl = document.getElementById("chartGroups");
       listEl.innerHTML = letters.map(l =>
-        `<div class="tc-group" data-letter="${l}"><div class="tc-group-title">${l}</div><div class="tc-list">` +
+        `<div class="tc-group" data-letter="${l}"><div class="tc-list">` +
         groups[l].map(c => itemHtml(c, current)).join("") +
         `</div></div>`).join("") || "";
-
-      const indexEl = document.getElementById("chartIndex");
-      indexEl.innerHTML = ["#"].concat("ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("")).map(l =>
-        `<button type="button" class="tc-idx" data-letter="${l}">${l}</button>`).join("");
-      updateActiveLetter();
-    }
-
-    function updateActiveLetter(){
-      const base = 70;
-      let active = "";
-      document.querySelectorAll(".tc-group").forEach(g => {
-        if(g.offsetTop <= window.scrollY + base){ active = g.dataset.letter; }
-      });
-      document.querySelectorAll(".tc-idx").forEach(b => {
-        b.classList.toggle("is-active", b.dataset.letter === active);
-      });
     }
 
     document.getElementById("chartGroups").addEventListener("click", function(ev){
@@ -159,16 +141,56 @@
       if(history.length >= 2){ history.back(); } else { TrackHype.navigate("history.html"); }
     });
 
-    document.getElementById("chartIndex").addEventListener("click", function(ev){
-      const b = ev.target.closest(".tc-idx");
-      if(!b){ return; }
-      const l = b.dataset.letter;
-      if(l === "#"){ window.scrollTo({ top: 0, behavior: "smooth" }); return; }
-      const g = document.getElementById("chartGroups").querySelector('[data-letter="' + l + '"]');
-      if(g){ g.scrollIntoView({ behavior: "smooth", block: "start" }); }
-    });
+    document.getElementById("searchChartsBtn").addEventListener("click", openChartSearch);
 
-    window.addEventListener("scroll", updateActiveLetter, { passive: true });
+    function openChartSearch(){
+      if(!TrackHype || !TrackHype.openSheet){ return; }
+      TrackHype.openSheet({
+        title: "Search Charts",
+        html:
+          '<div class="th-search" data-sc>' +
+            '<svg class="th-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"/><path d="m20.2 20.2-3.6-3.6"/></svg>' +
+            '<input type="search" placeholder="Search charts…" aria-label="Search charts" data-sc-input>' +
+          '</div>' +
+          '<div class="sc-list" data-sc-results></div>',
+        actions: [{ id: "dismiss", label: "Close", primary: true }]
+      });
+      const input = document.querySelector("[data-sc-input]");
+      const results = document.querySelector("[data-sc-results]");
+      renderScResults(input.value, results);
+      input.addEventListener("input", function(){
+        renderScResults(this.value, results);
+      });
+      input.focus();
+    }
+
+    function renderScResults(q, el){
+      const needle = String(q || "").trim().toLowerCase();
+      const matches = CHARTS
+        .filter(c => !needle || String(c.name).toLowerCase().indexOf(needle) >= 0 || String(c.meta).toLowerCase().indexOf(needle) >= 0)
+        .sort((a, b) => String(a.name).localeCompare(String(b.name)));
+      const current = loadChart();
+      el.innerHTML = matches.length
+        ? matches.map(c => {
+            const sel = c.name === current ? " is-current" : "";
+            return '<button type="button" class="sc-row' + sel + '" data-name="' + TrackHype.esc(c.name) + '">' +
+              '<span class="tc-meta"><span class="tc-name">' + TrackHype.esc(c.name) + '</span><span class="tc-sub">' + TrackHype.esc(c.meta) + '</span></span>' +
+              '</button>';
+          }).join("")
+        : '<div class="sc-empty">No charts match "' + TrackHype.esc(q.trim()) + '".</div>';
+    }
+
+    const modalBody = document.querySelector("[data-modal-body]");
+    if(modalBody){
+      modalBody.addEventListener("click", function(ev){
+        const row = ev.target.closest(".sc-row");
+        if(!row){ return; }
+        const name = row.dataset.name;
+        try{ localStorage.setItem(CHART_KEY, name); }catch(e){}
+        if(TrackHype && TrackHype.closeSheet){ TrackHype.closeSheet(); }
+        if(history.length >= 2){ history.back(); } else { TrackHype.navigate("history.html"); }
+      });
+    }
 
     render();
   </script>

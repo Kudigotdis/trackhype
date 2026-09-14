@@ -233,6 +233,7 @@
         const items = [];
         CHART_NAMES.forEach(ch => {
           const key = TrackHype.chartId(ch.title);
+          const newestWeeks = Math.max(1, Number(TrackHype.chartConfigFor(key).newestWindowWeeks) || 2);
           TrackHype.aggregateNewest(key, wk).forEach(s => {
             if(!s || !s.submissionId){ return; }
             const entered = s.newestEnteredWeekKey || s.weekKey || wk;
@@ -255,7 +256,8 @@
               favourites: Number(s.voteCount) || 0,
               artwork: s.artwork || TrackHype.getArtwork(items.length % 6),
               chart: ch.title,
-              newWeek: Math.min(2, cycles),
+              newWeek: Math.min(newestWeeks, cycles),
+              newestWeeks,
               approved: true
             });
           });
@@ -346,7 +348,7 @@
                   <span class="th-track-meta">
                     <span class="th-tag">${TrackHype.esc(item.genre)}</span>
                     ${item.chart ? `<span class="th-tag">${TrackHype.esc(item.chart)}</span>` : ""}
-                    ${item.newWeek ? `<span class="th-tag">Newest · week ${item.newWeek} of 2</span>` : ""}
+                    ${item.newWeek ? `<span class="th-tag">Newest · week ${item.newWeek} of ${item.newestWeeks}</span>` : ""}
                     <span class="th-tag">${TrackHype.esc(relTime(item.dateAdded))}</span>
                   </span>
                 </span>
@@ -436,14 +438,14 @@
             <p><strong>${TrackHype.esc(item.artist)}</strong> · ${TrackHype.esc(item.genre)}</p>
             <dl class="th-kv">
               ${item.chart ? `<div><dt>Target chart</dt><dd>${TrackHype.esc(item.chart)}</dd></div>` : ""}
-              ${item.newWeek ? `<div><dt>Newest window</dt><dd>Week ${item.newWeek} of 2</dd></div>` : ""}
+              ${item.newWeek ? `<div><dt>Newest window</dt><dd>Week ${item.newWeek} of ${item.newestWeeks}</dd></div>` : ""}
               <div><dt>City</dt><dd>${TrackHype.esc(item.city)}</dd></div>
               <div><dt>Language</dt><dd>${TrackHype.esc(item.language)}</dd></div>
               <div><dt>Date approved</dt><dd>${TrackHype.fmtDate(item.dateAdded)}</dd></div>
               <div><dt>Newest points</dt><dd class="num">${item.plays.toLocaleString()}</dd></div>
               <div><dt>Ballot votes</dt><dd class="num">${item.favourites.toLocaleString()}</dd></div>
             </dl>
-            <p style="margin-top:14px">This approved release is ranked in the ${TrackHype.esc(item.chart || "chart")} Newest lane. Newest points decide promotion after two chart cycles; it cannot jump straight into On Top.</p>
+            <p style="margin-top:14px">This approved release is ranked in the ${TrackHype.esc(item.chart || "chart")} Newest lane. It carries a one-month Newest presence (four chart cycles): points decide promotion after the window; it cannot jump straight into On Top.</p>
           `,
           actions:[{id:"dismiss",label:"Close",primary:true}]
         });

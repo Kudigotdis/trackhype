@@ -2784,7 +2784,7 @@
     return {
       size: chartSizeFor(chartKey),
       contenderSlots: 10,
-      newestWindowWeeks: 2,
+      newestWindowWeeks: 4,
       closeWeekday: 0,
       closeTime: "23:59",
       timezone: DEFAULT_TIMEZONE,
@@ -3386,7 +3386,8 @@
             if either group has <half, remaining slots go to the other group
        3. Contenders get ONE chance — any contender not reaching On Top exits.
        4. Newest promotes by ranking points only; non-kind, non-promoted
-          songs retire after two chart cycles (can stay on New Music).
+          songs retire after a one-month presence — four chart cycles
+          (can stay on New Music).
        5. publish an immutable snapshot for the week. */
   function finalizeChartCycle(chartKey, weekKey, config){
     const cfg = config || chartConfigFor(chartKey);
@@ -3728,6 +3729,7 @@ Web Router — gapless in-app navigation (SPA)
     }, 8000);
 
     var opts = controller ? { signal: controller.signal } : {};
+    opts.cache = "no-store";
     fetch(targetUrl, opts)
       .then(function(response){
         if(!response.ok){

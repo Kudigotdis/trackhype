@@ -274,7 +274,7 @@
       return "Assets/charts/" + current.folder + "/" + seq + "." + (map[seq] || "jpg");
     }
 
-    const TH_SEED_REV = 2;
+    const TH_SEED_REV = 4;
 
     const CHART_SOURCES = {
       top40:     { charts: ["Top 100 Chart List", "Top 40 Chart"], genres: [], poolMax: 100 },
@@ -529,7 +529,7 @@
         cta.onclick = openBallotSheet;
       } else {
         modeEl.textContent = "Newest";
-        descEl.textContent = "Two-week discovery lane for approved releases. Rank Newest in your Top 10 — points only decide Newest promotion; no direct jump into On Top.";
+        descEl.textContent = "One-month discovery lane for approved releases — a new song gets four weekly cycles before promotion or retirement. Rank Newest in your Top 10 — points only decide Newest promotion; no direct jump into On Top.";
         cta.style.display = "block";
         cta.textContent = voted ? "Edit ballot" : "Vote";
         cta.onclick = openBallotSheet;
@@ -564,7 +564,8 @@
       if(s.isSeed){ return "Newest"; }
       const entered = s.newestEnteredWeekKey || s.weekKey;
       const cycles = TrackHype.weeksBetween ? (TrackHype.weeksBetween(entered, now) + 1) : 1;
-      return "Newest · week " + Math.min(2, cycles) + " of 2";
+      const windowWeeks = Math.max(1, Number(TrackHype.chartConfigFor(ck()).newestWindowWeeks) || 2);
+      return "Newest · week " + Math.min(windowWeeks, cycles) + " of " + windowWeeks;
     }
 
     function subToSong(sub){

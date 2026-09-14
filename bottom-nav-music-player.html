@@ -186,10 +186,12 @@ body{
   background:var(--th-primary);
   color:#fff;
   cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
   transition:transform .15s ease,filter .15s ease;
 }
 @media (hover:hover){ .promo-toggle:hover{filter:brightness(1.08)} }
 .promo-toggle:active{transform:scale(.93)}
+.promo-toggle:focus{outline:none;box-shadow:none}
 .promo-toggle:focus-visible{outline:2px solid var(--th-ink);outline-offset:2px}
 .promo-toggle svg{width:20px;height:20px;display:block;pointer-events:none}
 .promo-toggle .icon-pause{display:none}

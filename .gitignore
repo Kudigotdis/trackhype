@@ -12,3 +12,7 @@ desktop.ini
 # Logs & temp
 *.log
 node_modules/
+__pycache__/
+
+# Secrets — never commit the real Supabase config (commit the .example instead)
+js/supabase-config.js

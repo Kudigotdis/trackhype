@@ -32,10 +32,21 @@ class AppHTTPServer(http.server.ThreadingHTTPServer):
     allow_reuse_address = False  # so a busy port fails and we can roll over
 
 
+class NoCacheHandler(http.server.SimpleHTTPRequestHandler):
+    """Serve every response with Cache-Control: no-store so the browser and
+    the SPA router always get the current files (no stale HTML/JS/CSS)."""
+
+    def end_headers(self):
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("Pragma", "no-cache")
+        self.send_header("Expires", "0")
+        super().end_headers()
+
+
 def bind_http_server(port):
     for candidate in range(port, port + 6):
         try:
-            return AppHTTPServer(("0.0.0.0", candidate), http.server.SimpleHTTPRequestHandler)
+            return AppHTTPServer(("0.0.0.0", candidate), NoCacheHandler)
         except OSError:
             continue
     return None
