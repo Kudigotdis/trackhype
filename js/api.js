@@ -9,7 +9,7 @@
 (function () {
   var cfg = window.SUPABASE_CONFIG || null;
   var ok = !!(cfg && cfg.url && cfg.anonKey && window.supabase);
-  var client = ok ? window.supabase.createClient(cfg.url, cfg.anonKey) : null;
+  var client = ok ? window.supabase.createClient(cfg.url, cfg.anonKey, { auth: { flowType: "pkce" } }) : null;
   window.supabaseClient = client;
 
   /* ---- auth redirect handling -------------------------------------
@@ -42,7 +42,7 @@
 
   function goRecoveryUi() {
     if (authRecoveryNavDone) return;
-    if (/(menu\.html)([?#]|$)/.test(location.pathname) || location.pathname === "/trackhype/") return;
+    if (/(menu\.html)([?#]|$)/.test(location.pathname)) return;
     authRecoveryNavDone = true;
     var base = location.pathname.replace(/[^\/]*$/, "");
     window.location.href = location.origin + base + "menu.html?reset=1";

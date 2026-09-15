@@ -213,6 +213,9 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/api.js"></script>
   <script src="demo-playlist.js"></script>
   <script src="docs/Demo Charts/chart_history-data.js"></script>
   <script src="trackhype.js"></script>
@@ -274,7 +277,7 @@
       return "Assets/charts/" + current.folder + "/" + seq + "." + (map[seq] || "jpg");
     }
 
-    const TH_SEED_REV = 4;
+    const TH_SEED_REV = 5;
 
     const CHART_SOURCES = {
       top40:     { charts: ["Top 100 Chart List", "Top 40 Chart"], genres: [], poolMax: 100 },
@@ -811,7 +814,9 @@
        Latest saved ballot wins until Monday 00:00 Harare.
        ========================================================= */
 
-    function openBallotSheet(){
+    async function openBallotSheet(){
+      const profile = await TrackHype.requireProfile("vote");
+      if(!profile){ return; }
       const c = ck();
       const wk = TrackHype.currentWeekKey();
       const mainPool = TrackHype.getMainPool(c);

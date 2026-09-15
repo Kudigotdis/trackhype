@@ -131,7 +131,7 @@
       gospel:    { charts: ["Gospel"], genres: [], poolMax: 20 },
       sungura:   { charts: ["Sungura"], genres: [], poolMax: 20 }
     };
-    const TH_SEED_REV = 4;
+    const TH_SEED_REV = 5;
     const genreArtists = {
       "Zim Hip Hop": ["Holy Ten","Saintfloew","T Gonzi","Tashinga Panda","Voltz JT"],
       "House": ["DJ Tamuka","Judgement Yard","Tashinga","Blaq Halo"],
@@ -297,9 +297,8 @@
       if(!window.CHART_HISTORY){ return; }
       maybeResetSeeds();
       const c = TrackHype.chartId(current.title);
-      const subs = TrackHype.getWeekSubmissions(c);
-      const hasAny = Object.keys(subs).some(k => subs[k].length);
-      if(hasAny){ return; }
+      const snaps = TrackHype.getSnapshots(c);
+      if(snaps && snaps.length > 0){ return; }
       seedChart(c, CHART_SOURCES[current.key] || CHART_SOURCES.top40);
     }
 
@@ -461,12 +460,15 @@
       });
     }
 
-    window.addEventListener("pageshow", function(){
+    function initHistoryPage(){
       const picked = loadChart();
       const next = CHARTS.find(c => c.title === picked) || CHARTS.find(c => c.title === DEFAULT_CHART);
       current = next;
+      ensureSeed();
       render();
-    });
+    }
+
+    window.addEventListener("pageshow", initHistoryPage);
 
     document.getElementById("weekBtn").addEventListener("click", openWeekModal);
     document.getElementById("chartBtn").addEventListener("click", function(){
@@ -474,7 +476,7 @@
     });
 
     bindModal();
-    render();
+    initHistoryPage();
   </script>
 </body>
 </html>

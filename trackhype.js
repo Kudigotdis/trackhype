@@ -3982,6 +3982,38 @@ Web Router — gapless in-app navigation (SPA)
       }
     }catch(error){ /* file:// may reject history updates — stay in-page */ }
 
+    /* --- load missing external <script src> dependencies ---------- */
+    try{
+      var liveLoaded = {};
+      var liveScripts = document.scripts || document.getElementsByTagName("script");
+      for(var si = 0; si < liveScripts.length; si++){
+        var liveSrc = liveScripts[si].getAttribute && liveScripts[si].getAttribute("src");
+        if(liveSrc){
+          try{ liveLoaded[new URL(liveSrc, location.href).href] = true; }catch(ex){}
+        }
+      }
+      var extDeps = doc.querySelectorAll("script[src]");
+      for(var di = 0; di < extDeps.length; di++){
+        var extSrc = extDeps[di].getAttribute("src");
+        if(!extSrc){ continue; }
+        var resolved;
+        try{ resolved = new URL(extSrc, fullUrl).href; }catch(ex){ continue; }
+        if(liveLoaded[resolved]){ continue; }
+        try{
+          var xhr = new XMLHttpRequest();
+          xhr.open("GET", resolved, false);
+          xhr.send(null);
+          if(xhr.status >= 200 && xhr.status < 300){
+            var sc = document.createElement("script");
+            sc.textContent = xhr.responseText;
+            (document.head || document.documentElement).appendChild(sc);
+            if(sc.parentNode) sc.parentNode.removeChild(sc);
+            liveLoaded[resolved] = true;
+          }
+        }catch(ex){}
+      }
+    }catch(error){}
+
     /* --- run the target page's inline scripts -------------------- */
     var blocks = doc.querySelectorAll("script:not([src])");
     withTrackedTimers(function(){
@@ -4149,7 +4181,7 @@ Web Router — gapless in-app navigation (SPA)
       );
       run(box, code);
       for(var key in box){
-        if(!(key in window)){
+        if(!(key in window) || (key in box && !(key in TrackHype))){
           window[key] = box[key];
         }
       }
@@ -4341,6 +4373,294 @@ Web Router — gapless in-app navigation (SPA)
   }
 
   /* =========================================================
+     Auth Gate — TrackHype.requireProfile()
+     Every interactive feature that needs a real signed-in
+     profile guards itself with requireProfile(featureName).
+     It returns a profile row (or a { local: true } fallback
+     when the API is offline) or null — callers bail on null.
+     Sign-in happens in place via the shared bottom sheet, so
+     the audio player and any page state (e.g. a ballot draft)
+     are never disturbed.
+     ========================================================= */
+
+  function promptAuth(label){
+    return new Promise(function(resolve){
+      var backdrop = document.querySelector("[data-modal]");
+      if(!backdrop){
+        resolve(null);
+        return;
+      }
+
+      openSheet({
+        title: "Sign in to " + label,
+        actions: []
+      });
+
+      var done = false;
+      var lastEmail = "";
+
+      function cleanup(){
+        if(backdrop){ backdrop.removeEventListener("click", onBackdrop, true); }
+        if(document.querySelector("[data-modal-body]")){
+          document.querySelector("[data-modal-body]").classList.remove("ballot-body");
+        }
+      }
+
+      function finish(profile){
+        if(done){ return; }
+        done = true;
+        cleanup();
+        closeSheet();
+        resolve(profile);
+      }
+
+      function onBackdrop(e){
+        if(e.target === backdrop){ finish(null); }
+      }
+
+      function renderSignInView(){
+        var body = backdrop.querySelector("[data-modal-body]");
+        var actions = backdrop.querySelector("[data-modal-actions]");
+        if(!body || !actions){ finish(null); return; }
+        var titleEl = backdrop.querySelector("[data-modal-title]");
+        if(titleEl){ titleEl.textContent = "Sign in to " + label; }
+        body.classList.add("ballot-body");
+        body.innerHTML = `
+          <p style="margin:0 0 10px;color:var(--th-muted);font-size:12px;line-height:1.5">Sign in with your TrackHype account to ${esc(label)}. Your ballot draft stays saved for when you return.</p>
+          <label style="display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--th-muted);margin-bottom:6px">Email address</label>
+          <input class="th-input" id="reqauth-email" type="email" inputmode="email" autocomplete="email" placeholder="Email address">
+          <div style="height:10px"></div>
+          <label style="display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--th-muted);margin-bottom:6px">Password</label>
+          <input class="th-input" id="reqauth-password" type="password" autocomplete="current-password" placeholder="Password">
+          <div style="display:flex;justify-content:flex-end">
+            <button type="button" data-reqauth-forgot style="background:transparent;border:0;padding:8px 0 2px;margin-left:auto;color:var(--th-primary-dark);font-size:12px;font-weight:800;cursor:pointer">Forgot password?</button>
+          </div>
+          <p id="reqauth-error" style="display:none;color:#b91c1c;font-size:12px;line-height:1.4;margin:8px 0 0"></p>
+        `;
+
+        actions.innerHTML = `
+          <button class="th-btn secondary" type="button" data-reqauth-menu>Open menu</button>
+          <button class="th-btn secondary" type="button" data-reqauth-cancel>Cancel</button>
+          <button class="th-btn primary" type="button" data-reqauth-go style="flex:1">Log in</button>
+        `;
+
+        var emailInput = body.querySelector("#reqauth-email");
+        var pwInput = body.querySelector("#reqauth-password");
+        var errorEl = body.querySelector("#reqauth-error");
+        var busy = false;
+
+        function showError(msg){
+          errorEl.textContent = msg;
+          errorEl.style.display = "block";
+        }
+
+        function setBusy(b){
+          busy = b;
+          var go = actions.querySelector("[data-reqauth-go]");
+          if(go){
+            go.disabled = b;
+            go.textContent = b ? "Signing in…" : "Log in";
+          }
+        }
+
+        function submit(){
+          if(busy){ return; }
+          var email = (emailInput.value || "").trim();
+          var pw = pwInput.value || "";
+          if(!email || !pw){
+            showError("Enter your email and password.");
+            return;
+          }
+          if(!window.API || typeof window.API.signIn !== "function"){
+            showError("Sign-in isn't available right now — reconnect and try again.");
+            return;
+          }
+          setBusy(true);
+          window.API.signIn(email, pw)
+            .then(async function(res){
+              if(res && res.error){
+                setBusy(false);
+                var msg = res.error.message || "Sign in failed.";
+                if(/invalid login credentials/i.test(msg)){
+                  msg = "Incorrect email or password.";
+                }
+                showError(msg);
+                return;
+              }
+              var profile = null;
+              try{
+                var pr = await window.API.getProfile();
+                if(pr && pr.data && !pr.error){ profile = pr.data; }
+              }catch(err){ profile = null; }
+              try{
+                var name = "";
+                if(profile){
+                  name = ((profile.first_name || "") + " " + (profile.surname || "")).trim();
+                  if(!name){ name = (profile.username || "").trim(); }
+                }
+                if(!name){ name = email; }
+                localStorage.setItem("trackhype_user_name", name);
+                localStorage.setItem("trackhype_onboarding_complete", "true");
+                if(profile && profile.kyc_status === "approved"){
+                  localStorage.setItem("trackhype_vote_eligible", "true");
+                }else{
+                  localStorage.removeItem("trackhype_vote_eligible");
+                }
+              }catch(err){}
+              finish(profile || { local: true });
+            })
+            .catch(function(err){
+              setBusy(false);
+              showError((err && err.message) || "Sign in failed.");
+            });
+        }
+
+        emailInput.addEventListener("keydown", function(e){
+          if(e.key === "Enter"){ pwInput.focus(); }
+        });
+        pwInput.addEventListener("keydown", function(e){
+          if(e.key === "Enter"){ submit(); }
+        });
+        actions.querySelector("[data-reqauth-go]").addEventListener("click", submit);
+        actions.querySelector("[data-reqauth-cancel]").addEventListener("click", function(){ finish(null); });
+        actions.querySelector("[data-reqauth-menu]").addEventListener("click", function(){
+          finish(null);
+          window.location.href = "menu.html";
+        });
+        body.querySelector("[data-reqauth-forgot]").addEventListener("click", function(){
+          lastEmail = (emailInput.value || "").trim();
+          renderResetView();
+        });
+      }
+
+      function renderResetView(){
+        var body = backdrop.querySelector("[data-modal-body]");
+        var actions = backdrop.querySelector("[data-modal-actions]");
+        if(!body || !actions){ finish(null); return; }
+        var titleEl = backdrop.querySelector("[data-modal-title]");
+        if(titleEl){ titleEl.textContent = "Reset your password"; }
+        body.classList.add("ballot-body");
+        body.innerHTML = `
+          <p style="margin:0 0 10px;color:var(--th-muted);font-size:12px;line-height:1.5">Enter your account email and we'll send you a link to reset your password.</p>
+          <label style="display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--th-muted);margin-bottom:6px">Email address</label>
+          <input class="th-input" id="reqauth-reset-email" type="email" inputmode="email" autocomplete="email" placeholder="Email address" value="${esc(lastEmail)}">
+          <p id="reqauth-reset-error" style="display:none;color:#b91c1c;font-size:12px;line-height:1.4;margin:8px 0 0"></p>
+        `;
+
+        actions.innerHTML = `
+          <button class="th-btn secondary" type="button" data-reqauth-reset-back>Back</button>
+          <button class="th-btn primary" type="button" data-reqauth-reset-go style="flex:1">Send reset link</button>
+        `;
+
+        var em = body.querySelector("#reqauth-reset-email");
+        var err = body.querySelector("#reqauth-reset-error");
+        var busy = false;
+
+        function showError(msg){
+          err.textContent = msg;
+          err.style.display = "block";
+        }
+
+        function send(){
+          if(busy){ return; }
+          var email = (em.value || "").trim();
+          if(!email || !/\S+@\S+\.\S+/.test(email)){
+            showError("Enter the email address you signed up with.");
+            return;
+          }
+          if(!window.API || typeof window.API.resetPassword !== "function"){
+            showError("This isn't available right now — reconnect and try again.");
+            return;
+          }
+          busy = true;
+          var go = actions.querySelector("[data-reqauth-reset-go]");
+          if(go){ go.disabled = true; go.textContent = "Sending…"; }
+          window.API.resetPassword(email)
+            .then(function(res){
+              busy = false;
+              if(go){ go.disabled = false; go.textContent = "Send reset link"; }
+              if(res && res.error){
+                showError(res.error.message || "Could not send the reset link.");
+                return;
+              }
+              renderSentView(email);
+            })
+            .catch(function(e){
+              busy = false;
+              if(go){ go.disabled = false; go.textContent = "Send reset link"; }
+              showError((e && e.message) || "Could not send the reset link.");
+            });
+        }
+
+        em.focus();
+        em.addEventListener("keydown", function(e){
+          if(e.key === "Enter"){ send(); }
+        });
+        actions.querySelector("[data-reqauth-reset-go]").addEventListener("click", send);
+        actions.querySelector("[data-reqauth-reset-back]").addEventListener("click", renderSignInView);
+      }
+
+      function renderSentView(email){
+        var body = backdrop.querySelector("[data-modal-body]");
+        var actions = backdrop.querySelector("[data-modal-actions]");
+        if(!body || !actions){ finish(null); return; }
+        var titleEl = backdrop.querySelector("[data-modal-title]");
+        if(titleEl){ titleEl.textContent = "Check your inbox"; }
+        body.classList.add("ballot-body");
+        body.innerHTML = `
+          <p style="margin:0 0 10px;color:var(--th-muted);font-size:12px;line-height:1.5">Check <strong>${esc(email)}</strong> for a reset link. Set a new password there, then come back and sign in.</p>
+        `;
+
+        actions.innerHTML = `
+          <button class="th-btn secondary" type="button" data-reqauth-sent-back>Back to sign in</button>
+          <button class="th-btn primary" type="button" data-reqauth-sent-done style="flex:1">Done</button>
+        `;
+
+        actions.querySelector("[data-reqauth-sent-back]").addEventListener("click", renderSignInView);
+        actions.querySelector("[data-reqauth-sent-done]").addEventListener("click", function(){ finish(null); });
+      }
+
+      renderSignInView();
+      backdrop.addEventListener("click", onBackdrop, true);
+    });
+  }
+
+  async function requireProfile(featureName){
+    var label = featureName || "use this feature";
+    var api = window.API;
+    var apiUsable = !!(api && typeof api.ready === "function" && api.ready() &&
+      typeof api.currentUser === "function" && typeof api.getProfile === "function");
+
+    if(apiUsable){
+      var user = null;
+      try{ user = await api.currentUser(); }catch(e){ user = null; }
+      if(user){
+        var profile = null;
+        try{
+          var pr = await api.getProfile();
+          if(pr && pr.data && !pr.error){ profile = pr.data; }
+        }catch(e){ profile = null; }
+        if(!profile){
+          toast("Finish setting up your profile to " + label + ".");
+          setTimeout(function(){ TrackHype.navigate("onboarding.html"); }, 1200);
+          return null;
+        }
+        return profile;
+      }
+      return await promptAuth(label);
+    }
+
+    var onboarded = false;
+    try{ onboarded = localStorage.getItem("trackhype_onboarding_complete") === "true"; }catch(e){}
+    if(onboarded){
+      return { local: true };
+    }
+    toast("Sign in to " + label + ".");
+    setTimeout(function(){ TrackHype.navigate("menu.html?auth=1"); }, 1200);
+    return null;
+  }
+
+  /* =========================================================
      Public TrackHype API
      ==========================================================*/
 
@@ -4355,6 +4675,8 @@ setState,
     esc,
 
     navigate,
+
+    requireProfile,
 
     fmtMoney,
 
