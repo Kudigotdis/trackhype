@@ -59,7 +59,7 @@ Music discovery/voting web app. Static frontend (HTML/CSS/JS, no build step), ho
 `a188fde` voting auth gate (`requireProfile`) + PKCE email-link flow
 
 ## Current status — needs a final check
-1. **Reset end-to-end (PKCE):** built and pushed. **`resetPassword` redirect bug fixed** (`charts.html&reset=1` malformed URL — search params were dropped; email links now always target `menu.html?reset=1`). Testing needs a **fresh** reset link (the last one also showed `otp_expired`). Reset links redirect to `origin + path + menu.html?reset=1&code=…`.
+1. **Reset end-to-end (PKCE):** built and pushed. `resetPassword` redirect is now **bare `menu.html`** (no `?reset=1`) so it exactly matches the Supabase allow-list entries. **Dashboard confirmed** (Site URL `https://kudigotdis.github.io/trackhype/`, Redirect URLs = exact `https://kudigotdis.github.io/trackhype/menu.html` + `http://localhost:8080/menu.html` — wildcard `**` entries were dropped since hosted Supabase ignores them and falls back to Site URL). Testing needs a **fresh** hosted reset link generated after the next rebuild (old/expired links fail with `otp_expired` and land on the bare root with no code).
 2. **Supabase Dashboard → Authentication → URL Configuration** (owner action):
    - **Site URL:** `https://kudigotdis.github.io/trackhype`
    - **Redirect URLs:** add `http://localhost:8080/**` and `https://kudigotdis.github.io/trackhype/**`
@@ -94,7 +94,7 @@ Music discovery/voting web app. Static frontend (HTML/CSS/JS, no build step), ho
 - **Never commit without checking `git status`**: untracked files right now are `PROGRESS.md` and `TrackHype_Market_Launch_And_Advertising_Roadmap.md`; all code is committed.
 - GitHub Pages deploys root of `main`; verify each auth change on the hosted origin (hard refresh Ctrl+Shift+R).
 - Validate scripts with `node --check` on extracted inline scripts + `js/api.js` before pushing.
-- Reset links are PKCE: fresh link required (old/expired clicks fail with `otp_expired`). `resetPassword` builds `origin + dirname(pathname) + "menu.html?reset=1"` deterministically — this avoids the old bug where a non-empty `location.search` produced a malformed `pathname&reset=1` redirect.
+- Reset links are PKCE: fresh link required (old/expired clicks fail with `otp_expired`). `resetPassword` redirects to `origin + dirname(pathname) + "menu.html"` (no query string) so it exactly matches the Supabase Redirect URL allow-list entry. Hosted Supabase ignores `**` wildcards when validating `redirect_to` — use **exact** URLs (e.g. `…/menu.html`), never rely on wildcards.
 
 ## Test checklist (release-ready)
 - [ ] Reset email → link (fresh, PKCE `?code=`) → "Set a new password" popup → save → signed in card updates.
