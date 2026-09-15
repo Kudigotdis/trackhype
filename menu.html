@@ -524,13 +524,18 @@
 
     (function(){
       try{
-        if(location.hash === "#reset"){
+        var resetParam = new URLSearchParams(location.search || "").has("reset");
+        if(location.hash === "#reset" || resetParam){
           var modal = document.getElementById("authPromptModal");
           if(modal){
             modal.hidden = false;
             popupOpenedAt = Date.now();
           }
-          authShowReset();
+          if(resetParam){
+            showRecoveryView();
+          } else {
+            authShowReset();
+          }
         }
       }catch(e){}
     })();

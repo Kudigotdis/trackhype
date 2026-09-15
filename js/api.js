@@ -20,6 +20,7 @@
   var authRedirectHandled = false;
   var authRecoveryCb = null;
   var authRecoveryDetected = false;
+  var authRecoveryNavDone = false;
 
   function cleanAuthRedirectUrl() {
     try {
@@ -33,9 +34,18 @@
         .replace(/[?&]token_type=[^&#]*/i, "")
         .replace(/[?&]error=[^&#]*/i, "")
         .replace(/[?&]error_description=[^&#]*/i, "")
+        .replace(/[?&]reset=1/gi, "")
         .replace(/[?&]$/, "");
       history.replaceState(null, "", location.pathname + search);
     } catch (e) {}
+  }
+
+  function goRecoveryUi() {
+    if (authRecoveryNavDone) return;
+    if (/(menu\.html)([?#]|$)/.test(location.pathname) || location.pathname === "/trackhype/") return;
+    authRecoveryNavDone = true;
+    var base = location.pathname.replace(/[^\/]*$/, "");
+    window.location.href = location.origin + base + "menu.html?reset=1";
   }
 
   async function handleAuthRedirectUrl() {
@@ -49,9 +59,12 @@
     var pkceCode = queryParams.get("code");
     var tokenHash = queryParams.get("token_hash");
     var authType = queryParams.get("type") || hashParams.get("type") || "";
-    var isRecovery = /recovery/i.test(authType);
+    var isRecovery = /recovery/i.test(authType) || queryParams.has("reset") || hashParams.has("reset");
 
-    if (!(accessToken || refreshToken || pkceCode || tokenHash)) return;
+    if (!(accessToken || refreshToken || pkceCode || tokenHash)) {
+      if (isRecovery) { goRecoveryUi(); }
+      return;
+    }
     authRedirectHandled = true;
 
     try {
@@ -75,6 +88,7 @@
       }
       if (isRecovery) {
         authRecoveryDetected = true;
+        goRecoveryUi();
         if (authRecoveryCb) { try { authRecoveryCb(); } catch (ignored) {} }
       }
     } catch (e) {
@@ -157,7 +171,7 @@
     },
     async resetPassword(email) {
       if (!client) return { data: null, error: { message: "Supabase not configured" } };
-      var redirectTo = location.origin + location.pathname;
+      var redirectTo = location.origin + location.pathname + (location.search ? "&" : "?") + "reset=1";
       return client.auth.resetPasswordForEmail((email || "").trim(), { redirectTo: redirectTo });
     },
     async updatePassword(newPassword) {
