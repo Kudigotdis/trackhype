@@ -172,7 +172,7 @@
     async resetPassword(email) {
       if (!client) return { data: null, error: { message: "Supabase not configured" } };
       var base = location.pathname.replace(/[^\/]*$/, "");
-      var redirectTo = location.origin + base + "menu.html";
+      var redirectTo = location.origin + base + "menu.html?reset=1";
       return client.auth.resetPasswordForEmail((email || "").trim(), { redirectTo: redirectTo });
     },
     async updatePassword(newPassword) {

@@ -176,6 +176,13 @@
         <p class="auth-error" id="authRecoverError" hidden></p>
         <button class="th-btn primary block" id="authRecoverBtn" type="button" onclick="authSetNewPassword()">Update password</button>
       </div>
+
+      <div id="authSentView" hidden>
+        <h3>Check your inbox</h3>
+        <p class="auth-popup-sub">We've emailed a reset link to <strong id="authSentEmail"></strong>. Tap it and choose a new password.</p>
+        <button class="th-btn primary block" type="button" onclick="authShowSignIn()">Back to sign in</button>
+        <button class="th-link-btn" type="button" onclick="closeAuthPopup()">Done</button>
+      </div>
     </div>
   </div>
 
@@ -257,10 +264,7 @@
     /* ---- Sign In / Sign Up floating popup ------------------------ */
     window.openAuthPopup = function(){
       setAuthError("");
-      var choice = document.getElementById("authChoiceView");
-      var signin = document.getElementById("authSignInView");
-      if(choice) choice.hidden = false;
-      if(signin) signin.hidden = true;
+      hideAuthViews("authChoiceView");
       var modal = document.getElementById("authPromptModal");
       if(modal){
         modal.hidden = false;
@@ -279,22 +283,17 @@
         if(pw) pw.value = "";
       }
       setAuthError("");
+      hideAuthViews("authChoiceView");
     };
 
     window.authBackToChoices = function(){
       setAuthError("");
-      var choice = document.getElementById("authChoiceView");
-      var signin = document.getElementById("authSignInView");
-      if(choice) choice.hidden = false;
-      if(signin) signin.hidden = true;
+      hideAuthViews("authChoiceView");
     };
 
     window.authShowSignIn = function(){
       setAuthError("");
-      var choice = document.getElementById("authChoiceView");
-      var signin = document.getElementById("authSignInView");
-      if(choice) choice.hidden = true;
-      if(signin) signin.hidden = false;
+      hideAuthViews("authSignInView");
       var em = document.getElementById("authEmail");
       if(em) em.focus();
     };
@@ -411,17 +410,38 @@
       }
     }
 
+    function hideAuthViews(except){
+      var views = ["authChoiceView","authSignInView","authResetView","authRecoverView","authSentView"];
+      for(var i = 0; i < views.length; i++){
+        var v = document.getElementById(views[i]);
+        if(v) v.hidden = (views[i] !== except);
+      }
+    }
+
+    window.authShowSent = function(email){
+      setAuthErrorFor("authError", "");
+      setAuthErrorFor("authResetError", "");
+      setAuthErrorFor("authRecoverError", "");
+      var emEl = document.getElementById("authSentEmail");
+      if(emEl) emEl.textContent = email || "you";
+      hideAuthViews("authSentView");
+      var modal = document.getElementById("authPromptModal");
+      if(modal){
+        modal.hidden = false;
+        popupOpenedAt = Date.now();
+      }
+    };
+
+    window.showRecoveryExpired = function(msg){
+      authShowReset();
+      setAuthErrorFor("authResetError", msg || "This reset link has expired or already been used. Request a new one below.");
+    };
+
     window.authShowReset = function(){
       setAuthErrorFor("authError", "");
       setAuthErrorFor("authResetError", "");
       setAuthErrorFor("authRecoverError", "");
-      var views = ["authChoiceView","authSignInView","authRecoverView"];
-      for(var i = 0; i < views.length; i++){
-        var v = document.getElementById(views[i]);
-        if(v) v.hidden = true;
-      }
-      var reset = document.getElementById("authResetView");
-      if(reset) reset.hidden = false;
+      hideAuthViews("authResetView");
       var em = document.getElementById("authResetEmail");
       if(em) em.focus();
     };
@@ -451,22 +471,16 @@
         return;
       }
       setAuthErrorFor("authResetError", "");
+      var sentEmail = email;
       if(em) em.value = "";
-      authBackToChoices();
-      TrackHype.toast("Reset link sent — check your inbox.");
+      authShowSent(sentEmail);
     };
 
     function showRecoveryView(){
       setAuthErrorFor("authError", "");
       setAuthErrorFor("authResetError", "");
       setAuthErrorFor("authRecoverError", "");
-      var views = ["authChoiceView","authSignInView","authResetView"];
-      for(var i = 0; i < views.length; i++){
-        var v = document.getElementById(views[i]);
-        if(v) v.hidden = true;
-      }
-      var rec = document.getElementById("authRecoverView");
-      if(rec) rec.hidden = false;
+      hideAuthViews("authRecoverView");
       var modal = document.getElementById("authPromptModal");
       if(modal){
         modal.hidden = false;
@@ -491,6 +505,22 @@
       }
       if(!window.API || !window.API.ready){
         setAuthErrorFor("authRecoverError", "This isn't available right now — the app isn't connected to the server.");
+        return;
+      }
+      var sessionUser = null;
+      for(var tries = 0; tries < 10; tries++){
+        try{
+          sessionUser = await window.API.currentUser();
+        }catch(e){ sessionUser = null; }
+        if(sessionUser) break;
+        await new Promise(function(res){ setTimeout(res, 300); });
+      }
+      if(!sessionUser){
+        if(tries >= 1){
+          setAuthErrorFor("authRecoverError", "Sign-in from the reset link hasn't finished yet — wait a moment and tap Update password again.");
+        }else{
+          setAuthErrorFor("authRecoverError", "This reset link isn't connected to a sign-in. Tap it fresh from your email, or request a new one below.");
+        }
         return;
       }
       var btn = document.getElementById("authRecoverBtn");
@@ -524,18 +554,22 @@
 
     (function(){
       try{
-        var resetParam = new URLSearchParams(location.search || "").has("reset");
-        if(location.hash === "#reset" || resetParam){
-          var modal = document.getElementById("authPromptModal");
-          if(modal){
-            modal.hidden = false;
-            popupOpenedAt = Date.now();
-          }
-          if(resetParam){
-            showRecoveryView();
-          } else {
-            authShowReset();
-          }
+        var q = new URLSearchParams(location.search || "");
+        var errorCode = q.get("error_code") || "";
+        var authError = q.get("error") || "";
+        var resetParam = q.has("reset");
+        var expired = resetParam && (location.hash === "#reset" || /expired|denied|invalid/i.test(errorCode) || /otp_expired|access_denied|invalid/i.test(authError));
+        var modal = document.getElementById("authPromptModal");
+        if(modal){
+          modal.hidden = false;
+          popupOpenedAt = Date.now();
+        }
+        if(expired){
+          showRecoveryExpired();
+        }else if(resetParam){
+          showRecoveryView();
+        }else if(location.hash === "#reset"){
+          authShowReset();
         }
       }catch(e){}
     })();

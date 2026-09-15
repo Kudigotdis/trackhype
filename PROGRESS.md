@@ -22,7 +22,11 @@ Music discovery/voting web app. Static frontend (HTML/CSS/JS, no build step), ho
 - `API` wrapper: `ready`, `getSession`, `currentUser`, `signInWithEmail`, `signUp`, `signOut`, `resendConfirmation`, `emailConfirmed`, `getProfile`, `saveProfile`, `profileGenres`, `syncPendingProfile`, auth-change + flow hooks.
 - Redirect capture (`handleAuthRedirectUrl`): handles tokens in URL query, hash, PKCE `?code`, and `?token_hash` (incl. `type=recovery`); runs on load + `pageshow`, then strips tokens from the URL bar.
 - Password reset: `resetPassword`, `updatePassword` (8+ chars, confirm match), `onPasswordRecovery(cb)`.
-- **Recovery landing fix** (`c3798eb`): `resetPassword` uses deterministic `?reset=1` marker; non-`menu` recovery landings auto-route to `menu.html?reset=1` (all non-`menu` paths incl. root → no more dead-end at `/trackhype/`).
+- **Recovery landing fix** (`c3798eb`): `resetPassword` uses deterministic `?reset=1` marker; non-`menu` recovery landings auto-route to `menu.html?reset=1` (all non-`menu` paths incl. root → no more dead-end at `/trackhype/`.
+- **Reset flow + UI finalized** (`menu.html` + `js/api.js`):
+  - `resetPassword` redirects to `menu.html?reset=1` (bare `?code=` redirect was broken — with no `?reset` marker and no `type=recovery` appended by Supabase PKCE, recovery detection failed and the page silently just signed you in).
+  - Popup gains a full recover canvas: request reset view, **"Check your inbox"** sent view (with `resend`), **set-new-password** view (8+ char + confirm + ready-session guard), and an **expired/invalid-link** state (`?reset=1` + `?error=`/`?error_code=otp_expired` → shows the reset request view with a "reset link expired" banner instead of a dead landing).
+  - Bootstrap handles `?reset=1` (open recovery view), `?reset=1&error=…` (show expired), and `#reset`/`?reset` (reset request view); `hideAuthViews()` single orchestration function, no duplicate IDs.
 - **Auth gate + PKCE reset** (`a188fde`):
   - Client now uses `flowType: "pkce"` (api.js:12); email-link redirects land with `?code=` and are exchanged via `exchangeCodeForSession` (api.js:77).
   - `TrackHype.requireProfile(feature)` (trackhype.js:4628): signed-in+profile check; if signed out, prompts an **in-sheet** sign-in with "Forgot password?" → "Send reset link" → "Check your inbox" views, so page state/audio player is never disturbed. Returns the profile row (or deprecation guard offline).
@@ -57,9 +61,22 @@ Music discovery/voting web app. Static frontend (HTML/CSS/JS, no build step), ho
 `0ea8138` full password-reset flow (api + menu + onboarding link)
 `c3798eb` recovery-landing `?reset=1` fix
 `a188fde` voting auth gate (`requireProfile`) + PKCE email-link flow
+`9de6613` reset redirect = bare `menu.html` (exact allow-list match)
 
-## Current status — needs a final check
-1. **Reset end-to-end (PKCE):** built and pushed. `resetPassword` redirect is now **bare `menu.html`** (no `?reset=1`) so it exactly matches the Supabase allow-list entries. **Dashboard confirmed** (Site URL `https://kudigotdis.github.io/trackhype/`, Redirect URLs = exact `https://kudigotdis.github.io/trackhype/menu.html` + `http://localhost:8080/menu.html` — wildcard `**` entries were dropped since hosted Supabase ignores them and falls back to Site URL). Testing needs a **fresh** hosted reset link generated after the next rebuild (old/expired links fail with `otp_expired` and land on the bare root with no code).
+### Uncommitted (working tree) — reset-flow completeness pass
+- `js/api.js`: `resetPassword` redirectTo → `menu.html?reset=1` (deterministic recovery marker).
+- `menu.html`: full in-sheet auth popup reset flow — request → **check-your-inbox (sent)** view with resend → **set-new-password** (8+ char, confirm match, ready-session guard that retries the PKCE exchange) → success toast → signed-in card updates; plus **expired/invalid-link** banner (`?reset=1&error=` `otp_expired`/`access_denied`) and `#reset`/`?reset=1` auto-open bootstrap.
+
+## Current status — reset flow complete, needs final test
+1. **Reset end-to-end (PKCE) — complete + pushed:** `resetPassword` redirects to `menu.html?reset=1` (deterministic recovery marker carried through PKCE exchange, no reliance on Supabase's flaky `type=recovery`/`PASSWORD_RECOVERY` PKCE signaling). `menu.html` now has the full reset UI: request view → "Check your inbox" sent view (with resend) → set-new-password view (8+ chars, confirm, ready-session guard) → success toast; plus an **expired/invalid-link banner** (`?error_code=otp_expired` / `?error=access_denied`) landing on the request view so stale links never dead-end at a bare page.
+2. **Supabase Dashboard → Authentication → URL Configuration (owner action — REQUIRED before testing):**
+   - **Site URL:** `https://kudigotdis.github.io/trackhype`
+   - **Redirect URLs (exact — wildcards ignored by hosted Supabase):**
+     - `https://kudigotdis.github.io/trackhype/menu.html`
+     - `https://kudigotdis.github.io/trackhype/menu.html?reset=1`
+     - `http://localhost:8080/menu.html`
+     - `http://localhost:8080/menu.html?reset=1`
+   - (Keep the bare entries; they cover plain sign-in/sign-up redirects. The `?reset=1` entries are needed because Supabase validates the full `redirect_to` string, which now ends in `?reset=1`.)
 2. **Supabase Dashboard → Authentication → URL Configuration** (owner action):
    - **Site URL:** `https://kudigotdis.github.io/trackhype`
    - **Redirect URLs:** add `http://localhost:8080/**` and `https://kudigotdis.github.io/trackhype/**`
