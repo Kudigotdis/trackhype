@@ -63,6 +63,13 @@ Music discovery/voting web app. Static frontend (HTML/CSS/JS, no build step), ho
 `a188fde` voting auth gate (`requireProfile`) + PKCE email-link flow
 `9de6613` reset redirect = bare `menu.html` (exact allow-list match)
 
+### ✅ 2026-09-16 — artist info collection + storage (```
+**Committed + pushed** — migration `0008_artist_photos_socials` + onboarding rehydrate + photo upload.
+- **Migration `20260914_0008_artist_photos_socials.sql`**: `profiles` gains `whatsapp_same` (bool, default true), `photo_url`, `artist_photo_url`, `socials` (jsonb). Bucket `trackhype-media` created in dashboard (public). Storage RLS: owner write + public read via `storage.objects` policies keyed on `bucket_id='trackhype-media'` and `(storage.foldername(name))[1] = auth.uid()`.
+- **`js/api.js`**: `uploadProfilePhoto(file, kind)` (bucket `trackhype-media`, path `<user-id>/<kind>.webp`, upsert, public URL only — never stores the blob). `saveProfile` passes arbitrary `fields` through the UPSERT (whatsapp_same, socials, photo URLs ride in). Fixed latent `kindsBuckets` ReferenceError (whitelist inlined).
+- **`onboarding.html`**: `finish()` uploads pending profile/artist photos (data-URL stash → Storage → public URL) before `saveProfile`, includes `whatsapp_same`/`socials`/`photoURL`/`artistPhotoUrl` in the payload; rehydrate IIFE on BOOT prefills all inputs + genre/follow chips + region + mobile-money controls + photo preview from `API.localAccount()` mirror + `API.getProfile()`/`profileGenres()`.
+- **Verify**: `node --check` PASS (api.js + onboarding inline script); all rehydrate helper names resolve (no undefined call).
+
 ### Uncommitted (working tree) — reset-flow completeness pass
 - `js/api.js`: `resetPassword` redirectTo → `menu.html?reset=1` (deterministic recovery marker).
 - `menu.html`: full in-sheet auth popup reset flow — request → **check-your-inbox (sent)** view with resend → **set-new-password** (8+ char, confirm match, ready-session guard that retries the PKCE exchange) → success toast → signed-in card updates; plus **expired/invalid-link** banner (`?reset=1&error=` `otp_expired`/`access_denied`) and `#reset`/`?reset=1` auto-open bootstrap.

@@ -201,7 +201,11 @@
       if (!client) return { data: null, error: { message: "Supabase not configured" } };
       if (!user) return { data: null, error: { message: "not signed in" } };
       var r = await client.from("profiles").upsert(
-        Object.assign({ id: user.id }, fields || {}), { onConflict: "id" }
+        Object.assign(
+          { id: user.id, whatsapp_same: true },
+          fields || {}
+        ),
+        { onConflict: "id" }
       );
       if (r.error) return r;
       if (genreIds && genreIds.length) {
@@ -213,6 +217,25 @@
         if (ins.error) return ins;
       }
       return { data: { profile: r.data }, error: null };
+    },
+    async uploadProfilePhoto(file, kind) {
+      /* kind: "profile" | "artist"
+         Uploads to storage.trackhype-media/<user-id>/<kind>.webp,
+         then returns the PUBLIC URL (we never store the blob). */
+      var user = await API.currentUser();
+      if (!client) return { data: null, error: { message: "Supabase not configured" } };
+      if (!user) return { data: null, error: { message: "not signed in" } };
+      if (kind !== "profile" && kind !== "artist") {
+        return { data: null, error: { message: "unknown kind" } };
+      }
+      var path = user.id + "/" + kind + ".webp";
+      var up = await client.storage.from("trackhype-media").upload(
+        path, file,
+        { contentType: "image/webp", upsert: true }
+      );
+      if (up.error) return up;
+      var pub = await client.storage.from("trackhype-media").getPublicUrl(path);
+      return { data: { url: pub.data && pub.data.publicUrl }, error: null };
     },
     async listGenreIds(names) {
       if (!client) return { data: [], error: null };

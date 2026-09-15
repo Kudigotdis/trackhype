@@ -2252,7 +2252,35 @@
       };
       if(S.artistMode && account.artistProfile){
         meta.artistProfile=Object.assign({},account.artistProfile);
-        delete meta.artistProfile.image; /* photos move to a storage bucket later */
+        /* photos travel as data-URLs in S until we have a session; at the
+           upload point below they are pushed to the storage bucket and only
+           the PUBLIC URL is written into artist_profile (never the blob). */
+      }
+
+      /* ---- upload any photo we only have as a local data URL -----
+         Supabase Storage turns the bytes into a public URL; the profile
+         row stores ONLY that URL (schema rule: URL, never base64 blobs).
+         Uploaded when a session exists (normal sign-in). In the
+         pending/confirmation path the data-URL is stashed and uploaded
+         by API.syncPendingProfile on first login. */
+      if(hasPhotoPending(true)){
+        var upProfilePhoto=await uploadPendingPhoto("profile");
+        if(upProfilePhoto && upProfilePhoto.url){
+          meta.profilePhotoUrl=upProfilePhoto.url;
+        }else if(upProfilePhoto && upProfilePhoto.error){
+          if(S.profilePhoto && S.profilePhoto.indexOf("data:")===0){
+            /* keep it: we can retry the upload after a real session is
+               confirmed; never lose the artist's photo. */
+          }
+        }
+      }
+      if(hasPhotoPending(false)){
+        var upArtistPhoto=await uploadPendingPhoto("artist");
+        if(upArtistPhoto && upArtistPhoto.url){
+          meta.artistPhotoUrl=upArtistPhoto.url;
+        }else if(upArtistPhoto && upArtistPhoto.error){
+          /* keep local data-URL for retry via pending path */
+        }
       }
 
       var up;
@@ -2284,6 +2312,7 @@
         date_of_birth:account.dateOfBirth,
         mobile_number:account.mobileE164,
         whatsapp_number:account.whatsAppE164,
+        whatsapp_same:(account.whatsappSame===false) ? false : true,
         mobile_network:account.mobileNetwork,
         mobile_money:account.mobileMoney,
         mobile_money_number:account.mobileMoneyNumber||null,
@@ -2295,6 +2324,9 @@
         bio:account.bio,
         kyc_status:account.kycStatus,
         account_type:account.accountType,
+        socials:account.socials||null,
+        photo_url:meta.profilePhotoUrl||null,
+        artist_photo_url:meta.artistPhotoUrl||null,
         artist_profile:meta.artistProfile||null
       };
 
@@ -2572,6 +2604,108 @@
       applyVisibility();
       applyOpen(1);
       refreshAll();
+
+      /* ============================================================
+         REHYDRATE — there is no BOOT-region restore beyond the region
+         dropdown today.getValue() >> every text input / chip grid / photo
+         preview opens EMPTY even when a finalized profile exists.
+         Prefill from the nearest source of truth:
+           1) API.localAccount()  → offline mirror, instant (no session)
+           2) API.getProfile()    → server row (whatsapp_same, socials,
+              photo/artist photo URL)  when signed in
+           3) API.profileGenres() → genre rows for chip prefill
+         then replay BOOT tail (single/activeChips/updateTaste/renderMobileMoney/
+         setRegion/refreshAll) so each section re-renders from prefilled S. */
+      (function rehydrateOnboarding(){
+        if(!window.API || !API.localAccount) return guarded();
+        API.localAccount().then(function(local){
+          if(!local) return;
+          var acc=local.account||local;
+          prefillFromMirror(acc);
+          var upRes=API.getProfile && API.getProfile();
+          if(upRes && upRes.then){
+            upRes.then(function(up){
+              if(up && up.data){
+                applyServerProfile(up.data);
+              }
+              if(window.API.profileGenres){
+                API.profileGenres().then(function(g){
+                  if(g && g.data){
+                    applyGenres(g.data);
+                  }
+                  replayTail();
+                });
+              }else{
+                replayTail();
+              }
+            });
+          }else{
+            replayTail();
+          }
+        }).catch(function(){ replayTail(); });
+        function guarded(){ /* never break BOOT */ }
+        function replayTail(){
+          if(typeof renderMobileMoney==="function") renderMobileMoney();
+          if(typeof setRegion==="function") setRegion(S.region||null);
+          ["gender","artistType","artistMoney"].forEach(function(id){
+            if(typeof single==="function") single(id,S,S[id]!==undefined&&S[id]!==null?S[id]:null);
+          });
+          if(typeof updateTaste==="function") updateTaste();
+          if(typeof refreshAll==="function") refreshAll();
+        }
+        function prefillFromMirror(acc){
+          if(!acc || !S) return;
+          S.firstName=acc.firstName||acc.first_name||S.firstName;
+          S.surname=acc.surname||S.surname;
+          S.username=acc.username||S.username;
+          S.email=acc.email||S.email;
+          S.mobile=acc.mobile||acc.mobileNumber||S.mobile;
+          S.network=acc.network||acc.mobileNetwork||S.network;
+          S.mobileMoney=acc.mobileMoney||acc.mobile_money||S.mobileMoney;
+          S.mobileMoneyNumber=acc.mobileMoneyNumber||acc.mobile_money_number||S.mobileMoneyNumber;
+          S.whatsappSame=acc.whatsappSame!==false; /* default TRUE = same as mobile */
+          S.whatsapp=acc.whatsapp||acc.whatsappNumber||S.whatsapp;
+          S.email=acc.email||S.email;
+          S.bio=acc.bio||S.bio;
+          S.gender=acc.gender||S.gender;
+          S.region=acc.region||S.region;
+          if(acc.dateOfBirth){ /* 1981-01-01 */
+            var dob=String(acc.dateOfBirth||"");
+            if(dob.indexOf("-")>=0){
+              var pr=dob.split("-");
+              S.dobYear=pr[0]||""; S.dobMonth=pr[1]||""; S.dobDay=pr[2]||"";
+            }
+          }
+          if(acc.accountType) S.accountType=acc.accountType;
+          if(acc.artistProfile){ /* artist mirror */
+            var ap=acc.artistProfile;
+            S.artistMode=true;
+            S.artistName=ap.name||S.artistName;
+            S.artistEmail=ap.email||S.artistEmail;
+            S.artistType=ap.type||S.artistType;
+            S.artistMoney=ap.money||S.artistMoney;
+            S.artistBio=ap.bio||S.artistBio;
+            if(ap.image) S.artistImage=ap.image;
+          }
+        }
+        function applyServerProfile(p){
+          if(!p) return;
+          S.firstName=p.first_name||S.firstName;
+          S.surname=p.surname||S.surname;
+          S.username=p.username||S.username;
+          S.email=p.email||S.email;
+          S.whatsappSame=p.whatsapp_same!==false;
+          S.whatsapp=p.whatsapp_number||S.whatsapp;
+          if(p.socials) S.socials=p.socials;
+          if(p.photo_url) S.socials=S.socials||{};
+        }
+        function applyGenres(rows){
+          rows.forEach(function(row){
+            var name=(row.genres && row.genres.name)||null;
+            if(name && S.genres) S.genres.add(name);
+          });
+        }
+      })();
     })();
   </script>
 </body>
