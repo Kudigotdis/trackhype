@@ -50,6 +50,18 @@
     .hc-switch[aria-pressed="true"]::after{transform:translateX(18px)}
     .hc-head{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:var(--th-primary);border:0;border-radius:14px;padding:13px 14px;font-family:inherit;font-size:15px;font-weight:900;color:#fff;cursor:pointer}
     #homeChartsSection{gap:4px}
+    .th-pin-logout{display:none}
+    .th-pin-logout[hidden]{display:none}
+    .th-pin-logout:not([hidden]){
+      display:block;
+      position:fixed;
+      left:12px;
+      right:12px;
+      bottom:calc(var(--th-bottom-h) + 10px);
+      z-index:132;
+      font-size:13.5px;
+      padding:11px 14px;
+    }
     .fol-head{display:flex;justify-content:center;padding:16px 16px 0}
     .th-btn-orange{background:#ff8b1f;border-color:#ff8b1f;color:#fff}
     .th-btn-orange:active{background:#e06e00}
@@ -122,6 +134,7 @@
   </main>
 
   <div class="bottom-swipe" data-bottom-swipe>
+    <button class="th-btn block th-pin-logout" id="pinLogout" type="button" onclick="window.logout()" hidden>Logout</button>
     <nav class="bottom-nav" data-bottom>
       <div class="bottom-nav-inner" data-nav-host></div>
     </nav>
@@ -213,6 +226,8 @@
     }
 
     function renderProfile(){
+      var pin = document.getElementById("pinLogout");
+      if(pin){ pin.hidden = !uiSignedIn; }
       var host = document.getElementById("Profile-Section");
       if(!host){ return; }
       if(uiSignedIn){
