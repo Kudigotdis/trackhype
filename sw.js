@@ -11,7 +11,9 @@ self.addEventListener("install", (event) => {
         "manifest.json",
         "Assets/logos/TrackHype Logo Design Badge.webp",
         "Assets/logos/TrackHype Logo Design.png",
-        "Assets/logos/track-hype-text-logo.webp"
+        "Assets/logos/track-hype-text-logo.webp",
+        "Assets/logos/TrackHype-Logo-192.png",
+        "Assets/logos/TrackHype-Logo-512.png"
       ]).catch(() => {})
     )
   );

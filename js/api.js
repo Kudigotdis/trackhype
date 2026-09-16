@@ -313,7 +313,10 @@
        admin create/pause via AdminUI.listAdverts/updateAdvert. */
     async adverts(placement) {
       if (!client) return { data: [], error: null };
+      var now = new Date().toISOString();
       var q = client.from("adverts").select("*").eq("is_active", true);
+      q = q.or("start_date.is.null,start_date.lte." + now);
+      q = q.or("end_date.is.null,end_date.gte." + now);
       if (placement) q = q.eq("placement", placement);
       return q.order("created_at", { ascending: true });
     },

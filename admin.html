@@ -100,6 +100,15 @@
 
 .ia-row-actions{display:flex;gap:6px}
 .ia-row-actions .th-btn{font-size:11px;padding:6px 10px}
+
+.ia-form{background:#fff;border:1px solid var(--th-border);border-radius:12px;padding:14px;box-shadow:var(--th-shadow-soft)}
+.ia-form-grid{display:grid;grid-template-columns:1fr;gap:12px}
+@media (min-width:560px){.ia-form-grid{grid-template-columns:repeat(2,1fr)}}
+.ia-form-grid label{display:flex;flex-direction:column;gap:5px;font-size:11px;font-weight:800;color:var(--th-muted)}
+.ia-form-grid .th-input,.ia-form-grid .th-select{width:100%;box-sizing:border-box}
+.ia-form-actions{display:flex;gap:8px;margin-top:14px}
+.ia-form-actions .th-btn{flex:none}
+.ia-check{flex-direction:row !important;align-items:center;gap:8px !important;font-weight:900 !important;color:var(--th-text) !important}
 </style>
 </head>
 <body data-active-nav="menu">
@@ -354,41 +363,95 @@
         <div id="kyc-empty" class="ia-empty" hidden><strong>No pending KYC</strong><span>Artist profiles awaiting verification appear here.</span></div>
       </div>
 
-      <!-- AD CAMPAIGNS pane -->
+<!-- AD CAMPAIGNS pane -->
       <div class="ia-pane" id="pane-ads">
         <div class="ia-header-row">
           <h2 class="ia-title">Ad campaigns</h2>
           <button class="th-btn secondary" type="button" id="btn-ads-refresh">Refresh</button>
+          <button class="th-btn primary" type="button" id="btn-ads-new">New campaign</button>
+        </div>
+        <div class="ia-form" id="ads-form" hidden>
+          <div class="ia-form-grid">
+            <label>Title<input class="th-input" id="ad-title" type="text" placeholder="e.g. DemoMedia — Summer Tour"></label>
+            <label>Placement
+              <select class="th-select" id="ad-placement">
+                <option value="home-radio">home-radio (Home — Radio)</option>
+                <option value="home-recent">home-recent (Home — Recent)</option>
+                <option value="home-national">home-national (Home — National)</option>
+                <option value="home-feed" selected>home-feed (Home — Feed)</option>
+                <option value="chart-feed">chart-feed (Charts in-feed)</option>
+                <option value="radio-sponsor">radio-sponsor (Radio)</option>
+                <option value="menu-showcase">menu-showcase (Menu)</option>
+              </select>
+            </label>
+            <label>Banner image<input class="th-input" id="ad-image" type="url" placeholder="https://… (leave empty to upload)"></label>
+            <label>Upload image<input class="th-input" id="ad-file" type="file" accept="image/*"></label>
+            <label>Target URL<input class="th-input" id="ad-link" type="url" placeholder="https://…"></label>
+            <label>Start date<input class="th-input" id="ad-start" type="date"></label>
+            <label>End date<input class="th-input" id="ad-end" type="date"></label>
+            <label class="ia-check"><input id="ad-active" type="checkbox" checked> Active immediately</label>
+          </div>
+          <div class="ia-form-actions">
+            <button class="th-btn primary" type="button" id="btn-ads-create">Create campaign</button>
+            <button class="th-btn secondary" type="button" id="btn-ads-cancel">Cancel</button>
+          </div>
         </div>
         <div class="ia-table-wrap">
           <table class="ia-data-table">
-            <thead><tr><th>Title</th><th>Placement</th><th>Status</th><th>Action</th></tr></thead>
+            <thead><tr><th>Title</th><th>Placement</th><th>Window</th><th>Status</th><th>Action</th></tr></thead>
             <tbody id="ads-table"></tbody>
           </table>
         </div>
-        <div id="ads-empty" class="ia-empty" hidden><strong>No adverts yet</strong><span>Create adverts in the Supabase adverts table.</span></div>
+        <div id="ads-empty" class="ia-empty" hidden><strong>No adverts yet</strong><span>Create a campaign above or in the Supabase adverts table.</span></div>
       </div>
 
-      <!-- CHART MANAGER pane -->
+<!-- CHART MANAGER pane -->
       <div class="ia-pane" id="pane-charts">
         <div class="ia-header-row">
           <h2 class="ia-title">Chart manager</h2>
           <button class="th-btn secondary" type="button" id="btn-charts-refresh">Refresh</button>
         </div>
-        <select class="th-select" id="chart-picker" aria-label="Chart"></select>
+        <div class="ia-filter-card">
+          <div class="ia-filter-row">
+            <select class="th-select" id="chart-picker" aria-label="Chart"></select>
+            <input class="th-input" id="ce-week" type="text" placeholder="Week key e.g. 2026-W38" style="flex:1;min-width:150px">
+            <button class="th-btn secondary" type="button" id="btn-ce-load">Load</button>
+          </div>
+        </div>
         <div class="ia-table-wrap">
           <table class="ia-data-table">
             <thead><tr><th>Week</th><th>Votes</th><th>Ballots</th><th>Edits</th><th>Impressions</th></tr></thead>
             <tbody id="chart-week-table"></tbody>
           </table>
         </div>
+        <div class="ia-form" id="ce-add-form">
+          <div class="ia-form-grid">
+            <label>Song
+              <select class="th-select" id="ce-song-picker"><option value="">Select a song…</option></select>
+            </label>
+            <label>Rank<input class="th-input" id="ce-rank" type="number" min="1" value="1"></label>
+            <label>Points<input class="th-input" id="ce-points" type="number" min="0" value="0"></label>
+            <label>Tier
+              <select class="th-select" id="ce-tier">
+                <option value="on_top">On Top</option>
+                <option value="contenders">Contenders</option>
+                <option value="newest">Newest</option>
+              </select>
+            </label>
+          </div>
+          <div class="ia-form-actions">
+            <button class="th-btn primary" type="button" id="btn-ce-add">Add entry</button>
+            <input class="th-input" id="ce-publish-week" type="text" placeholder="New week key e.g. 2026-W39" style="flex:1;min-width:160px">
+            <button class="th-btn secondary" type="button" id="btn-ce-publish">Publish as new week</button>
+          </div>
+        </div>
         <div class="ia-table-wrap">
           <table class="ia-data-table">
-            <thead><tr><th>Rank</th><th>Song</th><th>Tier</th><th>Points</th></tr></thead>
+            <thead><tr><th>Rank</th><th>Song</th><th>Tier</th><th>Points</th><th>Actions</th></tr></thead>
             <tbody id="chart-entry-table"></tbody>
           </table>
         </div>
-        <div id="charts-empty" class="ia-empty" hidden><strong>No chart data yet</strong><span>Charts and entries from Supabase appear here.</span></div>
+        <div id="charts-empty" class="ia-empty" hidden><strong>No chart data yet</strong><span>Pick a chart + week key and load entries above.</span></div>
       </div>
 
       <!-- RADIO pane -->
@@ -799,13 +862,19 @@
     });
   }
 
-  async function act(id, verdict) {
-    var res = await AdminUI.setStatus(id, verdict);
+async function act(id, verdict) {
+    var target = document.querySelector('[data-act="' + verdict + '"][data-id="' + id + '"]');
+    var oldLabel = target ? target.textContent : "";
+    if (target) { target.disabled = true; target.textContent = "..."; }
+    var res = verdict === "approve"
+      ? await AdminUI.promoteSubmission(id)
+      : await AdminUI.setStatus(id, verdict);
     if (res && res.error) {
       var e = document.createElement("div");
       e.className = "th-empty";
       e.innerHTML = '<strong>Action failed</strong><span>' + esc(res.error.message || "unknown error") + '</span>';
       el("pending-list").appendChild(e);
+      if (target) { target.disabled = false; target.textContent = oldLabel; }
       return;
     }
     renderPending();
@@ -845,7 +914,7 @@
     renderKyc();
   }
 
-  async function renderAds() {
+async function renderAds() {
     var body = el("ads-table");
     var empty = el("ads-empty");
     if (!body) return;
@@ -854,14 +923,56 @@
     var rows = (res && res.data) || [];
     if (empty) empty.hidden = rows.length > 0;
     rows.forEach(function (a) {
+      var win = [a.start_date, a.end_date].filter(Boolean).map(function (d) { return String(d).slice(0, 10); }).join(" to ");
       var tr = document.createElement("tr");
       tr.innerHTML =
         '<td>' + esc(a.title || "Untitled") + '</td>' +
         '<td>' + esc(a.placement || "-") + '</td>' +
+        '<td>' + esc(win || "Always") + '</td>' +
         '<td>' + (a.is_active ? '<span class="th-pill th-pill-ok">Active</span>' : '<span class="th-pill">Paused</span>') + '</td>' +
         '<td><button class="th-btn secondary" type="button" data-ad="' + (a.is_active ? "pause" : "resume") + '" data-id="' + esc(a.id) + '">' + (a.is_active ? "Pause" : "Resume") + '</button></td>';
       body.appendChild(tr);
     });
+  }
+
+  function toggleAdsForm(show) {
+    var form = el("ads-form");
+    if (!form) return;
+    form.hidden = !show;
+    if (!show) return;
+    el("ad-title").value = "";
+    el("ad-image").value = "";
+    el("ad-file").value = "";
+    el("ad-link").value = "";
+    el("ad-start").value = "";
+    el("ad-end").value = "";
+    el("ad-active").checked = true;
+  }
+
+  async function createAd() {
+    var title = (el("ad-title").value || "").trim();
+    if (!title) { return; }
+    var image = el("ad-image").value.trim();
+    var fileInput = el("ad-file");
+    if (fileInput && fileInput.files && fileInput.files[0]) {
+      var up = await AdminUI.uploadAdvertBanner(fileInput.files[0]);
+      if (up && up.data && up.data.url) image = up.data.url;
+    }
+    var start = el("ad-start").value;
+    var end = el("ad-end").value;
+    var payload = {
+      title: title,
+      placement: el("ad-placement").value,
+      image: image || null,
+      link: el("ad-link").value.trim() || null,
+      is_active: el("ad-active").checked,
+      start_date: start ? new Date(start + "T00:00:00").toISOString() : null,
+      end_date: end ? new Date(end + "T23:59:59").toISOString() : null
+    };
+    var res = await AdminUI.createAdvert(payload);
+    if (res && res.error) { return; }
+    toggleAdsForm(false);
+    renderAds();
   }
 
   async function actAd(id, action) {
@@ -902,18 +1013,97 @@
     }).join("") : '<tr><td colspan="5" style="text-align:center;color:var(--th-muted)">No chart-week events yet.</td></tr>';
   }
 
-  async function renderChartEntries() {
+async function renderChartEntries() {
     var body = el("chart-entry-table");
     if (!body) return;
     var picker = el("chart-picker");
     var chartId = picker ? picker.value : null;
+    var weekKey = (el("ce-week") && el("ce-week").value.trim()) || null;
     body.innerHTML = "";
-    if (!chartId) { body.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--th-muted)">Pick a chart above to view its entries.</td></tr>'; return; }
-    var res = await AdminUI.listChartEntries(chartId, null, { page: 1, pageSize: 100 });
+    if (!chartId) { body.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--th-muted)">Pick a chart + week key above to load its entries.</td></tr>'; return; }
+    var res = await AdminUI.listChartEntries(chartId, weekKey, { page: 1, pageSize: 500 });
     var rows = (res && res.data) || [];
     body.innerHTML = rows.length ? rows.map(function (e) {
-      return '<tr><td>' + num(e.rank) + '</td><td>' + esc(e.song_id) + '</td><td>' + esc(e.tier) + '</td><td>' + num(e.points) + '</td></tr>';
-    }).join("") : '<tr><td colspan="4" style="text-align:center;color:var(--th-muted)">No entries for this chart yet.</td></tr>';
+      var songTitle = (e.songs && e.songs.title) ? e.songs.title : (e.song_id ? "song " + String(e.song_id).slice(0, 8) : "?");
+      return '<tr>' +
+        '<td><input class="th-input" type="number" min="1" value="' + num(e.rank) + '" data-edcep="rank" data-id="' + esc(e.id) + '" style="width:70px;padding:5px 8px"></td>' +
+        '<td>' + esc(songTitle) + '</td>' +
+        '<td><select class="th-select" data-edcep="tier" data-id="' + esc(e.id) + '" style="padding:5px 8px">' +
+          '<option value="on_top"' + (e.tier === "on_top" ? " selected" : "") + '>On Top</option>' +
+          '<option value="contenders"' + (e.tier === "contenders" ? " selected" : "") + '>Contenders</option>' +
+          '<option value="newest"' + (e.tier === "newest" ? " selected" : "") + '>Newest</option></select></td>' +
+        '<td><input class="th-input" type="number" min="0" value="' + num(e.points) + '" data-edcep="points" data-id="' + esc(e.id) + '" style="width:80px;padding:5px 8px"></td>' +
+        '<td><button class="th-btn secondary" type="button" data-ce-save data-id="' + esc(e.id) + '">Save</button> ' +
+            '<button class="th-btn secondary" type="button" data-ce-del data-id="' + esc(e.id) + '">Delete</button></td>' +
+      '</tr>';
+    }).join("") : '<tr><td colspan="5" style="text-align:center;color:var(--th-muted)">No entries for this chart' + (weekKey ? " / week " + esc(weekKey) : "") + ' yet. Add one below.</td></tr>';
+  }
+
+  async function loadSongPicker() {
+    var picker = el("ce-song-picker");
+    if (!picker) return;
+    var res = await AdminUI.listSongsForPicker();
+    var songs = (res && res.data) || [];
+    picker.innerHTML = '<option value="">Select a song…</option>' + songs.map(function (s) {
+      var label = s.title;
+      var sa = (s.song_artists && s.song_artists[0] && s.song_artists[0].artists && s.song_artists[0].artists.name) || "";
+      if (sa) label += " - " + sa;
+      return '<option value="' + esc(s.id) + '">' + esc(label) + '</option>';
+    }).join("");
+  }
+
+  async function addChartEntry() {
+    var chartId = el("chart-picker").value;
+    var weekKey = el("ce-week").value.trim();
+    var songId = el("ce-song-picker").value;
+    if (!chartId || !weekKey || !songId) { return; }
+    var res = await AdminUI.createChartEntry({
+      chart_id: chartId, song_id: songId, week_key: weekKey,
+      tier: el("ce-tier").value,
+      rank: parseInt(el("ce-rank").value, 10) || 1,
+      points: parseFloat(el("ce-points").value) || 0
+    });
+    if (res && res.error) { return; }
+    renderChartEntries();
+  }
+
+  async function saveChartEntry(id) {
+    var patch = {};
+    var rank = document.querySelector('[data-edcep="rank"][data-id="' + id + '"]');
+    var tier = document.querySelector('[data-edcep="tier"][data-id="' + id + '"]');
+    var points = document.querySelector('[data-edcep="points"][data-id="' + id + '"]');
+    if (rank) patch.rank = parseInt(rank.value, 10) || 1;
+    if (tier) patch.tier = tier.value;
+    if (points) patch.points = parseFloat(points.value) || 0;
+    var res = await AdminUI.updateChartEntry(id, patch);
+    if (res && res.error) { return; }
+    renderChartEntries();
+  }
+
+  async function deleteChartEntry(id) {
+    var res = await AdminUI.deleteChartEntry(id);
+    if (res && res.error) { return; }
+    renderChartEntries();
+  }
+
+  async function publishWeek() {
+    var chartId = el("chart-picker").value;
+    if (!chartId) { return; }
+    var target = (el("ce-publish-week") && el("ce-publish-week").value.trim()) || null;
+    var sourceWeek = (el("ce-week") && el("ce-week").value.trim()) || null;
+    if (!target || target === sourceWeek) { return; }
+    var src = await AdminUI.listChartEntries(chartId, sourceWeek, { page: 1, pageSize: 500 });
+    var rows = (src && src.data) || [];
+    if (!rows.length) { return; }
+    for (var i = 0; i < rows.length; i++) {
+      var r = rows[i];
+      await AdminUI.createChartEntry({
+        chart_id: chartId, song_id: r.song_id, week_key: target,
+        tier: r.tier, rank: r.rank, points: r.points
+      });
+    }
+    el("ce-week").value = target;
+    renderChartEntries();
   }
 
   async function renderRadio() {
@@ -968,7 +1158,14 @@
     if (el("btn-refresh")) el("btn-refresh").addEventListener("click", renderPending);
     if (el("btn-kyc-refresh")) el("btn-kyc-refresh").addEventListener("click", renderKyc);
     if (el("btn-ads-refresh")) el("btn-ads-refresh").addEventListener("click", renderAds);
+    if (el("btn-ads-new")) el("btn-ads-new").addEventListener("click", function () { toggleAdsForm(true); });
+    if (el("btn-ads-create")) el("btn-ads-create").addEventListener("click", createAd);
+    if (el("btn-ads-cancel")) el("btn-ads-cancel").addEventListener("click", function () { toggleAdsForm(false); });
     if (el("btn-charts-refresh")) el("btn-charts-refresh").addEventListener("click", function () { weekCache = null; populateChartPicker(); renderChartWeeks(); renderChartEntries(); });
+    if (el("btn-ce-load")) el("btn-ce-load").addEventListener("click", renderChartEntries);
+    if (el("btn-ce-add")) el("btn-ce-add").addEventListener("click", addChartEntry);
+    if (el("btn-ce-publish")) el("btn-ce-publish").addEventListener("click", publishWeek);
+    if (el("ce-song-picker")) loadSongPicker();
     if (el("btn-radio-refresh")) el("btn-radio-refresh").addEventListener("click", renderRadio);
 
     document.addEventListener("click", function (e) {
@@ -976,8 +1173,12 @@
       if (sub) { act(sub.getAttribute("data-id"), sub.getAttribute("data-act")); return; }
       var kyc = e.target.closest ? e.target.closest("[data-kyc]") : null;
       if (kyc) { actKyc(kyc.getAttribute("data-id"), kyc.getAttribute("data-kyc")); return; }
-      var ad = e.target.closest ? e.target.closest("[data-ad]") : null;
+var ad = e.target.closest ? e.target.closest("[data-ad]") : null;
       if (ad) { actAd(ad.getAttribute("data-id"), ad.getAttribute("data-ad")); }
+      var ceSave = e.target.closest ? e.target.closest("[data-ce-save]") : null;
+      if (ceSave) { saveChartEntry(ceSave.getAttribute("data-id")); return; }
+      var ceDel = e.target.closest ? e.target.closest("[data-ce-del]") : null;
+      if (ceDel) { deleteChartEntry(ceDel.getAttribute("data-id")); }
     });
 
     bindPagers();

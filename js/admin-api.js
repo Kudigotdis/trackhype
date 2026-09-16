@@ -52,6 +52,22 @@
       }
       return client.from("submissions").update(patch).eq("id", id);
     },
+    /* Promote a submission into the catalog via the atomic RPC from
+       migration 0014. Falls back to setStatus("approved") if the
+       function is not installed yet so approve keeps working. */
+    async promoteSubmission(id) {
+      if (!client) return { data: null, error: { message: "Supabase not configured" } };
+      var adm = await AdminAPI.isAdmin();
+      if (!adm) return { data: null, error: { message: "forbidden" } };
+      try {
+        var res = await client.rpc("admin_promote_submission", { p_submission_id: id });
+        if (res && res.error && !/(P0002|PGRST202|undefined function|could not find function)/i.test(res.error.message || "")) {
+          return res;
+        }
+        if (!res.error) return res;
+      } catch (e) { /* fall through to status-only approval */ }
+      return AdminAPI.setStatus(id, "approved");
+    },
 
     /* ---- analytics (migration 0011: views + raw events) ------------- */
     /* Every method gates on isAdmin() first; the underlying RLS is a
@@ -185,7 +201,32 @@
       if (!client) return { data: null, error: { message: "Supabase not configured" } };
       var adm = await AdminAPI.requireAdmin();
       if (!adm) return { data: null, error: { message: "forbidden" } };
-      return client.from("adverts").update(patch).eq("id", id);
+      var p = Object.assign({}, patch);
+      if (p.start_date === "") p.start_date = null;
+      if (p.end_date === "") p.end_date = null;
+      return client.from("adverts").update(p).eq("id", id);
+    },
+    async createAdvert(payload) {
+      if (!client) return { data: null, error: { message: "Supabase not configured" } };
+      var adm = await AdminAPI.requireAdmin();
+      if (!adm) return { data: null, error: { message: "forbidden" } };
+      var row = Object.assign({
+        title: "", image: null, link: null, placement: "home-feed",
+        is_active: true, start_date: null, end_date: null
+      }, payload || {});
+      if (row.start_date === "") row.start_date = null;
+      if (row.end_date === "") row.end_date = null;
+      return client.from("adverts").insert(row).select().single();
+    },
+    async uploadAdvertBanner(file) {
+      if (!client) return { data: null, error: { message: "Supabase not configured" } };
+      var adm = await AdminAPI.requireAdmin();
+      if (!adm) return { data: null, error: { message: "forbidden" } };
+      var path = "adverts/" + Date.now() + "-" + (file.name || "banner").replace(/[^a-zA-Z0-9._-]/g, "") ;
+      var up = await client.storage.from("trackhype-media").upload(path, file, { upsert: true });
+      if (up.error) return up;
+      var pub = await client.storage.from("trackhype-media").getPublicUrl(path);
+      return { data: { url: pub.data && pub.data.publicUrl }, error: null };
     },
 
     /* ---- Radio stations (public read from 0001) ---------------------- */
@@ -208,11 +249,47 @@
       var pageSize = Math.min(500, Math.max(1, parseInt(opts.pageSize, 10) || 100));
       var fromIdx = (page - 1) * pageSize;
       var toIdx = fromIdx + pageSize - 1;
-      var q = client.from("chart_entries").select("*").order("rank", { ascending: true });
+      var q = client.from("chart_entries")
+        .select("*, songs(title, artwork)")
+        .order("rank", { ascending: true });
       if (chartId) q = q.eq("chart_id", chartId);
       if (weekKey) q = q.eq("week_key", weekKey);
       var r = await q.range(fromIdx, toIdx);
       return { data: r.data || [], error: r.error || null };
+    },
+    async listSongsForPicker() {
+      if (!client) return { data: [], error: { message: "Supabase not configured" } };
+      var r = await client.from("songs")
+        .select("id, title, artwork, song_artists(artists(name))")
+        .order("title", { ascending: true }).limit(2000);
+      return { data: r.data || [], error: r.error || null };
+    },
+    async createChartEntry(payload) {
+      if (!client) return { data: null, error: { message: "Supabase not configured" } };
+      var adm = await AdminAPI.requireAdmin();
+      if (!adm) return { data: null, error: { message: "forbidden" } };
+      var row = Object.assign({
+        chart_id: null, song_id: null, week_key: null, tier: "on_top", rank: 1, points: 0
+      }, payload || {});
+      return client.from("chart_entries").insert(row).select().single();
+    },
+    async updateChartEntry(id, patch) {
+      if (!client) return { data: null, error: { message: "Supabase not configured" } };
+      var adm = await AdminAPI.requireAdmin();
+      if (!adm) return { data: null, error: { message: "forbidden" } };
+      return client.from("chart_entries").update(patch).eq("id", id);
+    },
+    async deleteChartEntry(id) {
+      if (!client) return { data: null, error: { message: "Supabase not configured" } };
+      var adm = await AdminAPI.requireAdmin();
+      if (!adm) return { data: null, error: { message: "forbidden" } };
+      return client.from("chart_entries").delete().eq("id", id);
+    },
+    async updateSong(id, patch) {
+      if (!client) return { data: null, error: { message: "Supabase not configured" } };
+      var adm = await AdminAPI.requireAdmin();
+      if (!adm) return { data: null, error: { message: "forbidden" } };
+      return client.from("songs").update(patch).eq("id", id);
     }
   };
 })();

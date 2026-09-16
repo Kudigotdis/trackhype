@@ -10,16 +10,22 @@
   "theme_color": "#01db8b",
   "icons": [
     {
-      "src": "Assets/logos/TrackHype Logo Design Badge.webp",
-      "sizes": "any",
-      "type": "image/webp",
+      "src": "Assets/logos/TrackHype-Logo-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "Assets/logos/TrackHype Logo Design.png",
-      "sizes": "any",
+      "src": "Assets/logos/TrackHype-Logo-512.png",
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
+    },
+    {
+      "src": "Assets/logos/TrackHype-Logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }

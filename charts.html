@@ -166,6 +166,7 @@
         <img id="chartFav" class="chart-fav" src="Assets/icons/heart_inactive_icon.png" alt="Favourite" title="Favourite chart">
         <div class="cf-btns" id="filterRow"></div>
         <button class="th-btn secondary" type="button" onclick="TrackHype.navigate('voting-rules.html')">Rules</button>
+        <button class="th-btn secondary" type="button" onclick="shareChart()">Share</button>
       </section>
 
       <div class="chart-below">
@@ -293,6 +294,40 @@
       const count = Math.max(1, Object.keys(map).length);
       const seq = i > count ? ((i - 1) % count) + 1 : i;
       return "Assets/charts/" + current.folder + "/" + seq + "." + (map[seq] || "jpg");
+    }
+
+    function shareChart(){
+      var chart = current || CHARTS[0];
+      var url = location.href.split("#")[0];
+      var text = "I just voted on TrackHype! Check out the " + (chart.label || chart.title) + ": " + url;
+      var done = function(platform){
+        try{ if(window.TRACK && window.TRACK.chartShare){ window.TRACK.chartShare(chart.key || "charts", { title: chart.title, url: url, platform: platform }); } }catch(e){}
+      };
+      if(navigator.share){
+        navigator.share({ title: chart.title, text: text, url: url })
+          .then(function(){ done("web_share"); })
+          .catch(function(){ /* user dismissed */ });
+        return;
+      }
+      var copy = function(){
+        try{
+          var ta = document.createElement("textarea");
+          ta.value = text;
+          ta.style.position = "fixed";
+          ta.style.opacity = "0";
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+        }catch(e){}
+      };
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(copy, copy);
+      } else {
+        copy();
+      }
+      done("clipboard");
+      if(TrackHype && TrackHype.toast){ TrackHype.toast("Chart link copied"); }
     }
 
     const TH_SEED_REV = 5;
@@ -667,6 +702,9 @@
 
     function renderList(){
       const list = document.getElementById("chartList");
+      const inFeedAd = (i) => i === 3
+        ? '<div class="th-advert th-advert--full" data-ad-slot="chart-feed"><img src="Assets/Demo Media/DemoMedia - Paid Promo.webp" alt="DemoMedia - Paid Promo"></div>'
+        : "";
       if(filter === 0){
         list.innerHTML = aboutPane();
         return;
@@ -675,7 +713,7 @@
         const snap = TrackHype.getSnapshotFor(ck(), week);
         const rows = snap ? snap.rankings : [];
         order = rows.map(r => ({ id: r.submissionId, songId: r.submissionId, title: r.title, artist: r.artistName, artwork: r.artwork }));
-        list.innerHTML = rows.map((r, i) => rowHtml(r, i, true)).join("")
+        list.innerHTML = rows.map((r, i) => rowHtml(r, i, true) + (i === 2 ? inFeedAd(i + 1) : "")).join("")
           || '<p style="padding:18px;text-align:center;color:var(--th-muted);font-size:13px">No snapshot for this week yet.</p>';
         return;
       }
@@ -688,7 +726,7 @@
         }
         const rows = snap.rankings || [];
         order = rows.map(r => subToSong(r));
-        list.innerHTML = rows.map((item, i) => rowHtml(item, i, false)).join("")
+        list.innerHTML = rows.map((item, i) => rowHtml(item, i, false) + (i === 2 ? inFeedAd(i + 1) : "")).join("")
           || '<p style="padding:18px;text-align:center;color:var(--th-muted);font-size:13px">No songs on this chart yet.</p>';
       } else if(tier === 2){
         const t2 = TrackHype.getSubmissionsForTier(c, TrackHype.currentWeekKey(), 2);

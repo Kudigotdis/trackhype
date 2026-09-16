@@ -219,6 +219,11 @@
       m.platform = platform || null;
       event("share", "song", songId, m);
     },
+    chartShare: function (chartKey, meta) {
+      var m = meta || {};
+      m.platform = (navigator.share ? "web_share" : "clipboard") || null;
+      event("share", "chart", chartKey, m);
+    },
     socialClick: function (songId, platform, meta) {
       var m = meta || {};
       m.platform = platform || null;
