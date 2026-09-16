@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TrackHype - Advertiser Media Kit (2-Page Pitch)</title>
+<style>
+  :root {
+    --brand: #01db8b;
+    --brand-dark: #02925e;
+    --bg: #ffffff;
+    --ink: #0b1220;
+    --muted: #6b7280;
+    --faint: #9aa3b0;
+    --line: #e2e6e6;
+    --soft: #e8fff5;
+    --warn: #d64545;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.45;
+    font-size: 11pt;
+  }
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 14mm 16mm;
+    position: relative;
+    page-break-after: always;
+  }
+  .page:last-child { page-break-after: auto; }
+  .brandbar {
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 3px solid var(--brand); padding-bottom: 4mm; margin-bottom: 6mm;
+  }
+  .logo { font-size: 20pt; font-weight: 900; letter-spacing: .5px; }
+  .logo b { color: var(--brand-dark); }
+  .tag { font-size: 9pt; color: var(--muted); }
+  h1 { font-size: 21pt; margin: 0 0 2mm; }
+  h2 { font-size: 13pt; margin: 0 0 3mm; color: var(--brand-dark); }
+  .lede { font-size: 11pt; color: #333; margin-bottom: 5mm; }
+  .badge { display: inline-block; background: var(--soft); color: var(--brand-dark); border-radius: 999px; padding: 1mm 4mm; font-size: 8.5pt; font-weight: 800; margin-right: 2mm; }
+  .grid { display: flex; gap: 6mm; margin-bottom: 6mm; }
+  .col { flex: 1; }
+  .card {
+    border: 1px solid var(--line); border-radius: 3mm; padding: 4mm 5mm;
+    background: #fbfcfc; margin-bottom: 4mm;
+  }
+  .card h3 { font-size: 10pt; margin: 0 0 2mm; }
+  .card p, .card ul { font-size: 9pt; color: #374151; margin: 0 0 2mm; }
+  .card ul { padding-left: 4mm; margin-bottom: 0; }
+  .slot {
+    border: 1.5px dashed var(--brand); border-radius: 2mm; padding: 3mm 4mm;
+    background: var(--soft); margin-bottom: 3mm; font-size: 9.5pt;
+  }
+  .slot b { color: var(--brand-dark); }
+  table { width: 100%; border-collapse: collapse; font-size: 9pt; margin-top: 2mm; }
+  th, td { text-align: left; padding: 2.2mm 3mm; border-bottom: 1px solid var(--line); }
+  th { background: var(--soft); color: var(--brand-dark); font-weight: 800; }
+  .right { text-align: right; }
+  .foot {
+    position: absolute; bottom: 8mm; left: 16mm; right: 16mm;
+    border-top: 1px solid var(--line); padding-top: 2mm;
+    display: flex; justify-content: space-between;
+    font-size: 8pt; color: var(--faint);
+  }
+  .flag { background: #fff4f4; border: 1px solid #f5cccc; color: var(--warn); border-radius: 2mm; padding: 2mm 3mm; font-size: 8.5pt; margin-top: 4mm; }
+  .pt { page-break-inside: avoid; }
+  @page { size: A4; margin: 0; }
+  @media print {
+    html, body { background: #fff; }
+    .page { box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ PAGE 1 : Story + Audience + Placements ============ -->
+<div class="page">
+  <div class="brandbar">
+    <div class="logo">Track<b>Hype</b></div>
+    <div class="tag">The SADC Music Charts Platform &middot; Zimbabwe &middot; Botswana</div>
+  </div>
+
+  <h1>Advertise with TrackHype.</h1>
+  <div class="lede">
+    TrackHype is the region&rsquo;s official home of weekly music charts, powered by real listener votes
+    and audited ballots. Every chart position is earned &mdash; and every impression is measurably seen.
+    Reach the youth, the urban music scene, and regional listeners exactly where they are already
+    discovering, voting, and streaming SADC music.
+  </div>
+
+  <h2>Your audience</h2>
+  <div class="grid">
+    <div class="card pt">
+      <h3>Who we reach</h3>
+      <ul>
+        <li>Music fans aged 16&ndash;34, mobile-first</li>
+        <li>Urban &amp; regional listeners in Zimbabwe + Botswana</li>
+        <li>Artists, labels, promoters, radio &amp; event communities</li>
+        <li>Chart voters who return every single week</li>
+      </ul>
+    </div>
+    <div class="card pt">
+      <h3>Why it works</h3>
+      <ul>
+        <li>Official weekly charts with auditable ballot history</li>
+        <li>Anti-fraud voting limits (1 ballot/account/chart/week)</li>
+        <li>KYC-verified artist profiles and badges</li>
+        <li>Privacy-first analytics &mdash; proof of impressions per placement</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Ad placements (live today)</h2>
+  <div class="slot pt">
+    <b>Home feed hero</b> &mdash; sticky top banner on the primary feed.<br>
+    <b>In-feed chart slot</b> &mdash; sponsored card between chart positions #3 and #4 on all charts.
+    (A test campaign is running there now &mdash; ask us to walk you through it live.)
+  </div>
+  <div class="slot pt">
+    <b>Radio station sponsor</b> &mdash; &ldquo;Powered by [Brand]&rdquo; card on live radio pages.
+    <br><b>Menu showcase</b> &mdash; always-on promotional banner in the app menu/profile.
+  </div>
+</div>
+
+<!-- ============ PAGE 2 : Pricing + CPM + Compliance ============ -->
+<div class="page">
+  <div class="brandbar">
+    <div class="logo">Track<b>Hype</b></div>
+    <div class="tag">Advertiser Media Kit &middot; Pricing &amp; Proof of Performance</div>
+  </div>
+
+  <h2>Sponsorship &amp; CPM pricing</h2>
+  <table class="pt">
+    <thead>
+      <tr><th>Placement</th><th>Cadence</th><th class="right">Investment (USD)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Home feed hero banner</td><td>Per week</td><td class="right">$50</td></tr>
+      <tr><td>In-feed chart slot</td><td>Per week</td><td class="right">$100</td></tr>
+      <tr><td>Radio station sponsor</td><td>Per week</td><td class="right">$75</td></tr>
+      <tr><td>Menu / profile showcase</td><td>Per week</td><td class="right">$50</td></tr>
+      <tr><td>Full-week takeover (all 4 slots)</td><td>Per week</td><td class="right">$200</td></tr>
+      <tr><td>Flat CPM (any placement)</td><td>Per 1,000 impressions</td><td class="right">$3.00</td></tr>
+    </tbody>
+  </table>
+  <div class="card pt" style="margin-top:4mm">
+    <h3>Proof of performance</h3>
+    <p>
+      Every banner impression and tap is logged to the platform analytics layer (impression events
+      per placement) and surfaced in the advertiser-ready admin dashboard. You get real numbers,
+      not estimates &mdash; a weekly report groups impressions, taps, and click-through per placement.
+    </p>
+  </div>
+
+  <h2>Launch-ready checklist</h2>
+  <div class="grid">
+    <div class="card pt">
+      <h3>Done</h3>
+      <ul>
+        <li>Live ad engine with start/end-dated campaigns</li>
+        <li>4 banner placements across feed, charts, radio, menu</li>
+        <li>Impression &amp; click tracking (analytics layer)</li>
+        <li>Chart content manager for weekly chart snapshots</li>
+        <li>KYC &amp; auditable voting &mdash; rankings advertisers trust</li>
+        <li>Privacy Policy + Terms of Use published</li>
+      </ul>
+    </div>
+    <div class="card pt">
+      <h3>Coming next</h3>
+      <ul>
+        <li>Custom domain + SSL once a domain is registered</li>
+        <li>Self-serve campaign booking &amp; payments (pending merchant account)</li>
+        <li>Larger ad units &amp; sponsorship bundles</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="flag pt">
+    Note: payment collection for bookings is not yet wired (a merchant/bank account is required first).
+    To start a campaign now, contact the TrackHype team and we will run it on an agreed invoice basis.
+  </div>
+
+  <div class="foot">
+    <span>TrackHype &mdash; Advertiser Media Kit</span>
+    <span>Metrics current as of Sep 2026 &middot; trackhype.github.io/trackhype</span>
+  </div>
+</div>
+
+</body>
+</html>

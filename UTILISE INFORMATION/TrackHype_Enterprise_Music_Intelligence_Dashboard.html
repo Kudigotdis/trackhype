@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#01db8b">
+<title>TrackHype — Enterprise Music Intelligence Dashboard</title>
+<style>
+:root{
+  --brand-primary:#01db8b;
+  --brand-hover:#02c87f;
+  --brand-dark:#02925e;
+  --brand-soft:#e8fff5;
+  --page-bg:#f7f8f8;
+  --grey-1:#f1f3f3;
+  --grey-2:#e5e8e8;
+  --grey-3:#cbd1d1;
+  --border:#e2e6e6;
+  --text:#0b1220;
+  --muted:#6b7280;
+  --faint:#9aa3b0;
+  --success:#0b9f67;
+  --warning:#b7791f;
+  --danger:#d64545;
+  --hero-gradient:linear-gradient(135deg,#01db8b 0%,#55e9ad 100%);
+  --shadow-soft:0 8px 22px rgba(15,23,42,.06);
+  --modal-backdrop:rgba(11,18,32,.46);
+  --radius-card:14px;
+  --radius-control:10px;
+  --radius-pill:999px;
+  --radius-thumb:3px;
+  --radius-sheet:20px;
+  --font:"Segoe UI",Roboto,-apple-system,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--page-bg);color:var(--text);font-family:var(--font);
+  font-size:14px;line-height:1.45;padding-bottom:112px;overflow-x:hidden;
+  scrollbar-width:none;
+}
+body::-webkit-scrollbar,*::-webkit-scrollbar{display:none}
+button,input,select{font:inherit}
+button{cursor:pointer}
+a{color:inherit}
+.th-shell{width:min(100%,760px);margin:auto;padding:0 14px}
+.th-header{
+  position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);
+  border-bottom:1px solid var(--border);backdrop-filter:blur(14px)
+}
+.th-header-inner{height:58px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand-lockup{display:flex;align-items:center;gap:9px;min-width:0}
+.brand-mark{width:30px;height:30px;border-radius:9px;background:var(--brand-primary);display:grid;place-items:center;font-weight:900;color:#062b1e}
+.brand-copy{min-width:0}.brand-copy strong{display:block;font-size:14px;font-weight:900;letter-spacing:-.2px}.brand-copy span{display:block;font-size:10px;font-weight:700;color:var(--muted)}
+.header-actions{display:flex;gap:6px}
+.th-mini-btn{width:38px;height:38px;border:1px solid var(--border);border-radius:10px;background:#fff;display:grid;place-items:center;font-weight:900}
+.page{padding-top:18px}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--muted)}
+h1{font-size:30px;line-height:1.05;font-weight:900;letter-spacing:-.4px;margin:4px 0 8px}
+.page-lead{color:var(--muted);margin:0 0 14px;font-size:13px}
+.filter-card,.th-card{
+  background:#fff;border:1px solid var(--border);border-radius:var(--radius-card);
+  box-shadow:var(--shadow-soft)
+}
+.filter-card{padding:12px;margin-bottom:12px}
+.filter-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.filter-grid .wide{grid-column:1/-1}
+.control{display:flex;flex-direction:column;gap:5px}
+.control label,.micro-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+select,input{
+  width:100%;height:42px;border:1px solid var(--border);border-radius:var(--radius-control);
+  background:#fff;color:var(--text);padding:0 11px;outline:none;font-weight:700
+}
+select:focus,input:focus{border-color:var(--brand-primary);box-shadow:0 0 0 3px rgba(1,219,139,.12)}
+.segment{display:flex;background:var(--grey-1);padding:3px;border-radius:10px}
+.segment button{flex:1;height:36px;border:0;background:transparent;border-radius:8px;font-weight:900;color:var(--muted)}
+.segment button.active{background:#fff;color:var(--brand-dark);box-shadow:0 2px 6px rgba(15,23,42,.06)}
+.chip-row{display:flex;gap:7px;overflow:auto;scroll-snap-type:x mandatory;padding:2px 0}
+.chip{flex:0 0 auto;scroll-snap-align:start;border:1px solid var(--border);background:#fff;color:var(--muted);border-radius:var(--radius-pill);padding:8px 11px;font-size:11px;font-weight:800}
+.chip.active{background:var(--brand-soft);border-color:#b8f3da;color:var(--brand-dark)}
+.filter-summary{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.th-pill{display:inline-flex;align-items:center;gap:6px;border-radius:var(--radius-pill);padding:5px 8px;font-size:10px;font-weight:800;white-space:nowrap}
+.th-pill-ok{background:#e9faf3;color:var(--success)}.th-pill-warn{background:#fff6df;color:var(--warning)}.th-pill-bad{background:#ffebeb;color:var(--danger)}
+.th-btn{min-height:40px;padding:0 13px;border:1px solid var(--border);border-radius:var(--radius-control);background:#fff;color:var(--text);font-weight:900}
+.th-btn.primary{background:var(--brand-primary);border-color:var(--brand-primary);color:#062b1e}
+.th-btn.secondary{background:var(--grey-1)}
+.th-btn.danger{color:var(--danger)}
+.hero{
+  background:var(--hero-gradient);border-radius:var(--radius-card);padding:14px;color:#07261b;margin-bottom:12px;
+  box-shadow:var(--shadow-soft)
+}
+.hero-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.hero h2{margin:2px 0 2px;font-size:21px;font-weight:900}
+.hero p{margin:0;font-size:12px;opacity:.82}
+.hero-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:13px}
+.hero-stat{background:rgba(255,255,255,.33);border-radius:10px;padding:9px}
+.hero-stat b{display:block;font-size:18px;font-weight:900;letter-spacing:-.5px}.hero-stat span{display:block;font-size:9px;text-transform:uppercase;font-weight:800}
+.section{margin:16px 0}.section-head{display:flex;justify-content:space-between;align-items:end;gap:8px;margin-bottom:8px}
+.section-head h2{margin:0;font-size:17px;font-weight:900}
+.section-head p{margin:0;color:var(--muted);font-size:11px}
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.stat{padding:11px}.stat .label{font-size:10px;font-weight:800;text-transform:uppercase;color:var(--muted);letter-spacing:.3px}.stat .value{font-size:22px;font-weight:900;line-height:1.1;letter-spacing:-.6px;margin-top:4px}.stat .delta{font-size:10px;font-weight:800;margin-top:4px}.up{color:var(--success)}.down{color:var(--danger)}.flat{color:var(--muted)}
+.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:12px}
+.data-table{width:100%;border-collapse:collapse;min-width:620px;background:#fff}
+.data-table th,.data-table td{padding:9px 10px;border-bottom:1px solid var(--border);text-align:left;font-size:11px;vertical-align:middle}
+.data-table th{font-size:10px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:900;background:#fbfcfc;position:sticky;top:0;z-index:1}
+.data-table tr:last-child td{border-bottom:0}
+.entity-cell{display:flex;align-items:center;gap:8px;min-width:170px}.thumb{width:30px;height:30px;border-radius:var(--radius-thumb);background:var(--grey-2);display:grid;place-items:center;font-size:10px;font-weight:900;overflow:hidden}.thumb img{width:100%;height:100%;object-fit:cover}
+.entity-name b{display:block;font-size:11px;font-weight:900}.entity-name span{display:block;color:var(--muted);font-size:10px}
+.progress{height:7px;border-radius:99px;background:var(--grey-1);overflow:hidden;min-width:86px}.progress i{display:block;height:100%;background:var(--brand-primary);border-radius:99px}
+.th-acc{border:1px solid var(--border);border-radius:12px;background:#fff;margin-bottom:8px;overflow:hidden;border-left:3px solid var(--brand-primary)}
+.th-acc summary{list-style:none;padding:12px;cursor:pointer;font-weight:900;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.th-acc summary::-webkit-details-marker{display:none}
+.th-acc summary:after{content:"+";font-size:18px;color:var(--brand-dark);font-weight:400}
+.th-acc[open] summary{background:var(--brand-soft)}.th-acc[open] summary:after{content:"−"}
+.acc-body{padding:0 12px 12px}
+.kpi-card{padding:12px}
+.kpi-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)}.kpi-row:last-child{border-bottom:0}
+.kpi-row .kpi-name{font-size:11px;font-weight:800}.kpi-row .kpi-desc{font-size:10px;color:var(--muted);margin-top:1px}.kpi-val{font-size:12px;font-weight:900}
+.bar-list{display:flex;flex-direction:column;gap:9px}.bar-item{display:grid;grid-template-columns:110px 1fr 38px;gap:7px;align-items:center}.bar-item .name{font-size:10px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.bar-item b{font-size:10px;text-align:right}
+.sparkline{height:74px;width:100%;display:flex;align-items:flex-end;gap:4px;padding:7px 0}.sparkline i{flex:1;background:var(--brand-primary);border-radius:4px 4px 1px 1px;min-height:4px;opacity:.9}
+.insight{padding:12px;border:1px solid #d8f6e9;background:var(--brand-soft);border-radius:12px}
+.insight b{display:block;font-size:12px;font-weight:900}.insight span{display:block;font-size:11px;color:var(--muted);margin-top:3px}
+.empty{padding:26px 14px;border:1px dashed var(--grey-3);background:var(--grey-1);border-radius:12px;text-align:center;color:var(--muted);font-size:12px}
+.meta-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.meta-box{padding:9px;background:var(--grey-1);border-radius:10px}.meta-box b{display:block;font-size:13px;font-weight:900}.meta-box span{font-size:10px;color:var(--muted);display:block;margin-top:2px}
+.search-row{display:flex;gap:7px}.search-row input{flex:1}.hide{display:none!important}
+.th-footer{padding:18px 0 8px;color:var(--faint);font-size:10px;text-align:center}
+@media(min-width:400px){.stat-grid{grid-template-columns:repeat(4,1fr)}.filter-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:560px){.th-shell{padding:0 18px}.stat-grid{grid-template-columns:repeat(4,1fr)}.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.hero-metrics{grid-template-columns:repeat(6,1fr)}}
+</style>
+</head>
+<body>
+<header class="th-header">
+  <div class="th-header-inner th-shell">
+    <div class="brand-lockup">
+      <div class="brand-mark">TH</div>
+      <div class="brand-copy"><strong>TrackHype</strong><span>Music Intelligence • Admin</span></div>
+    </div>
+    <div class="header-actions">
+      <button class="th-mini-btn" title="Refresh dashboard" onclick="refreshDashboard()">↻</button>
+      <button class="th-mini-btn" title="Open help" onclick="openHelp()">?</button>
+    </div>
+  </div>
+</header>
+
+<main class="th-shell page">
+  <div class="eyebrow">Enterprise analytics</div>
+  <h1>Music Intelligence</h1>
+  <p class="page-lead">A mobile-first command centre for artists, labels, A&amp;R teams, radio programmers, managers and promoters.</p>
+
+  <section class="filter-card">
+    <div class="segment" role="tablist" aria-label="Dashboard mode">
+      <button id="artistModeBtn" class="active" onclick="setMode('artist')">Artist</button>
+      <button id="labelModeBtn" onclick="setMode('label')">Music Label</button>
+    </div>
+
+    <div class="filter-grid" style="margin-top:10px">
+      <div class="control">
+        <label for="weekSelect">Chart Week</label>
+        <select id="weekSelect" onchange="renderDashboard()"></select>
+      </div>
+      <div class="control">
+        <label for="periodSelect">Compare</label>
+        <select id="periodSelect" onchange="renderDashboard()">
+          <option value="previous">Previous week</option>
+          <option value="4week">4-week average</option>
+          <option value="release">Since release</option>
+        </select>
+      </div>
+      <div class="control wide">
+        <label id="entityLabel">Artist</label>
+        <select id="entitySelect" onchange="renderDashboard()"></select>
+      </div>
+    </div>
+
+    <div class="chip-row" id="quickChips" style="margin-top:10px">
+      <button class="chip active" data-filter="overview">Overview</button>
+      <button class="chip" data-filter="chart">Chart</button>
+      <button class="chip" data-filter="audience">Audience</button>
+      <button class="chip" data-filter="listening">Listening</button>
+      <button class="chip" data-filter="conversion">Conversion</button>
+      <button class="chip" data-filter="geography">Geography</button>
+      <button class="chip" data-filter="integrity">Integrity</button>
+    </div>
+
+    <div class="filter-summary">
+      <span id="filterSummary" class="th-pill th-pill-ok">W38 • Artist • WoKeeyes</span>
+      <button class="th-btn secondary" onclick="resetFilters()">Reset</button>
+    </div>
+  </section>
+
+  <div id="dashboard"></div>
+
+  <section class="section">
+    <details class="th-acc">
+      <summary>TrackHype data architecture</summary>
+      <div class="acc-body">
+        <div class="meta-grid">
+          <div class="meta-box"><b>Raw Events</b><span>impressions, views, player events, votes, follows, likes, searches, shares, social and DSP clicks</span></div>
+          <div class="meta-box"><b>Session Metrics</b><span>watch time, retention, replay, skip, pause, seek and conversion behaviour</span></div>
+          <div class="meta-box"><b>Song Metrics</b><span>chart performance, audience response, momentum, release lifecycle</span></div>
+          <div class="meta-box"><b>Artist / Label Metrics</b><span>catalogue intelligence, audience overlap, geography and growth</span></div>
+        </div>
+        <div class="insight" style="margin-top:9px">
+          <b>Implementation principle</b>
+          <span>Store event-level activity first. Derive dashboard metrics from events so new intelligence can be added later without redesigning the underlying tracking model.</span>
+        </div>
+      </div>
+    </details>
+    <details class="th-acc">
+      <summary>YouTube measurement note</summary>
+      <div class="acc-body">
+        <p style="font-size:11px;color:var(--muted);margin:0">TrackHype should treat YouTube embed activity as observed TrackHype player interaction. Use YouTube IFrame Player API state changes plus periodic current-time sampling while playback is active. Do not label the data as proof of human attention or as complete YouTube channel analytics.</p>
+      </div>
+    </details>
+  </section>
+
+  <div class="th-footer">TrackHype Enterprise Music Intelligence • Demo dashboard • All figures are illustrative production-ready demo data.</div>
+</main>
+
+<script>
+const artists = {
+  "wokeeyes": {
+    name:"WoKeeyes", origin:"Zimbabwe", genres:"EDM / Hip-Hop / Indie / Rap", label:"Independent",
+    position:7, prev:11, peak:4, weeks:9, votes:8420, points:56310, listeners:21840, followers:4120,
+    momentum:88, momentumChange:14, completion:74, retention30:89, replay:1.8, voteConversion:38,
+    fanRetention:67, uniqueSupporters:5210, superfan:31, suspicious:2.1,
+    song:"No Signal", releaseAge:41, daysToPeak:18, chartShare:9.8,
+    locations:[["Harare","38%"],["Bulawayo","19%"],["Gweru","11%"],["Gaborone","8%"],["Johannesburg","7%"]],
+    dsp:[["Spotify",42],["YouTube Music",24],["Apple Music / iTunes",16],["Amazon Music",9],["Other",9]],
+    socials:[["TikTok",37],["Instagram",29],["YouTube",18],["X",9],["Facebook",7]],
+    genresAudience:[["Hip-Hop",31],["EDM",25],["Rap",18],["Indie",13],["Afrobeats",7],["Other",6]],
+    funnel:[["Chart impression → Song page",61],["Song page → Play",72],["Play → 30s",89],["30s → Vote",43],["Vote → Like",54],["Like → Follow",39],["Follow → DSP",24]]
+  },
+  "zee": {
+    name:"Zee Nxumalo", origin:"South Africa", genres:"Amapiano / House", label:"Independent",
+    position:3, prev:5, peak:2, weeks:14, votes:12860, points:81340, listeners:35120, followers:8290,
+    momentum:94, momentumChange:19, completion:81, retention30:93, replay:2.4, voteConversion:36,
+    fanRetention:73, uniqueSupporters:9040, superfan:24, suspicious:1.2,
+    song:"Thula Moya", releaseAge:52, daysToPeak:24, chartShare:14.2,
+    locations:[["Johannesburg","34%"],["Pretoria","16%"],["Durban","12%"],["Gaborone","9%"],["Harare","6%"]],
+    dsp:[["Spotify",48],["YouTube Music",21],["Apple Music / iTunes",15],["Amazon Music",8],["Other",8]],
+    socials:[["TikTok",44],["Instagram",28],["YouTube",15],["X",7],["Facebook",6]],
+    genresAudience:[["Amapiano",43],["House",21],["Afropop",12],["Hip-Hop",9],["R&B",8],["Other",7]],
+    funnel:[["Chart impression → Song page",67],["Song page → Play",79],["Play → 30s",93],["30s → Vote",47],["Vote → Like",61],["Like → Follow",45],["Follow → DSP",31]]
+  },
+  "natasha": {
+    name:"Natasha Jansen", origin:"South Africa", genres:"R&B / Gospel", label:"Independent",
+    position:9, prev:8, peak:6, weeks:7, votes:6730, points:41920, listeners:18490, followers:3680,
+    momentum:71, momentumChange:-7, completion:77, retention30:91, replay:1.5, voteConversion:36,
+    fanRetention:70, uniqueSupporters:4390, superfan:28, suspicious:0.9,
+    song:"Grace Again", releaseAge:37, daysToPeak:21, chartShare:7.4,
+    locations:[["Johannesburg","31%"],["Cape Town","18%"],["Pretoria","14%"],["Gaborone","7%"],["Harare","5%"]],
+    dsp:[["Spotify",39],["YouTube Music",26],["Apple Music / iTunes",21],["Amazon Music",5],["Other",9]],
+    socials:[["Instagram",38],["YouTube",24],["TikTok",20],["Facebook",12],["X",6]],
+    genresAudience:[["R&B",32],["Gospel",29],["Soul",15],["Afropop",10],["House",6],["Other",8]],
+    funnel:[["Chart impression → Song page",58],["Song page → Play",74],["Play → 30s",91],["30s → Vote",41],["Vote → Like",57],["Like → Follow",42],["Follow → DSP",27]]
+  },
+  "kabza": {
+    name:"Kabza De Small", origin:"South Africa", genres:"Amapiano / Afro-House", label:"Piano Hub",
+    position:1, prev:2, peak:1, weeks:18, votes:18420, points:116770, listeners:50310, followers:14820,
+    momentum:98, momentumChange:23, completion:86, retention30:95, replay:2.9, voteConversion:37,
+    fanRetention:79, uniqueSupporters:15520, superfan:19, suspicious:1.0,
+    song:"Siyathandana", releaseAge:68, daysToPeak:17, chartShare:20.4,
+    locations:[["Johannesburg","29%"],["Pretoria","17%"],["Durban","13%"],["Gaborone","8%"],["Harare","5%"]],
+    dsp:[["Spotify",51],["YouTube Music",19],["Apple Music / iTunes",15],["Amazon Music",7],["Other",8]],
+    socials:[["TikTok",46],["Instagram",27],["YouTube",14],["X",7],["Facebook",6]],
+    genresAudience:[["Amapiano",52],["House",18],["Afro-House",11],["Kwaito",8],["Afropop",6],["Other",5]],
+    funnel:[["Chart impression → Song page",76],["Song page → Play",83],["Play → 30s",95],["30s → Vote",51],["Vote → Like",67],["Like → Follow",49],["Follow → DSP",34]]
+  },
+  "nasty": {
+    name:"Nasty C", origin:"South Africa", genres:"Hip-Hop / Trap", label:"Tall Racks Records",
+    position:4, prev:4, peak:3, weeks:12, votes:10530, points:68240, listeners:31220, followers:11240,
+    momentum:84, momentumChange:5, completion:78, retention30:92, replay:2.1, voteConversion:34,
+    fanRetention:74, uniqueSupporters:10610, superfan:22, suspicious:1.7,
+    song:"Trap King", releaseAge:46, daysToPeak:29, chartShare:11.9,
+    locations:[["Johannesburg","28%"],["Cape Town","15%"],["Durban","11%"],["London","9%"],["Gaborone","6%"]],
+    dsp:[["Spotify",55],["Apple Music / iTunes",18],["YouTube Music",14],["Amazon Music",6],["Other",7]],
+    socials:[["YouTube",31],["Instagram",29],["TikTok",24],["X",10],["Facebook",6]],
+    genresAudience:[["Hip-Hop",44],["Trap",19],["R&B",12],["Rap",11],["Afrobeats",7],["Other",7]],
+    funnel:[["Chart impression → Song page",64],["Song page → Play",77],["Play → 30s",92],["30s → Vote",44],["Vote → Like",58],["Like → Follow",46],["Follow → DSP",29]]
+  },
+  "makhadzi": {
+    name:"Makhadzi", origin:"South Africa", genres:"Afro-Pop / Dance", label:"Open Mic Productions",
+    position:2, prev:3, peak:1, weeks:16, votes:14970, points:97840, listeners:42100, followers:13100,
+    momentum:96, momentumChange:17, completion:84, retention30:94, replay:2.6, voteConversion:36,
+    fanRetention:76, uniqueSupporters:13740, superfan:21, suspicious:1.4,
+    song:"Ghanama Nights", releaseAge:60, daysToPeak:14, chartShare:17.1,
+    locations:[["Polokwane","22%"],["Johannesburg","19%"],["Pretoria","13%"],["Durban","9%"],["Gaborone","7%"]],
+    dsp:[["Spotify",44],["YouTube Music",27],["Apple Music / iTunes",14],["Amazon Music",7],["Other",8]],
+    socials:[["TikTok",49],["Instagram",25],["YouTube",16],["Facebook",6],["X",4]],
+    genresAudience:[["Afro-Pop",38],["Amapiano",23],["Bolo House",14],["Dance",12],["House",7],["Other",6]],
+    funnel:[["Chart impression → Song page",71],["Song page → Play",81],["Play → 30s",94],["30s → Vote",49],["Vote → Like",63],["Like → Follow",48],["Follow → DSP",33]]
+  }
+};
+
+const labels = {
+  "piano": {name:"Piano Hub", owner:"Kabza De Small", primary:"Amapiano", subs:"Deep House • Private School Amapiano • Tech-Piano", artists:["kabza","zee"], focus:"Dance / Amapiano", position:1, momentum:97, votes:36280, listeners:91310, followers:27910},
+  "tall": {name:"Tall Racks Records", owner:"Nasty C", primary:"South African Hip-Hop", subs:"Trap • Melodic Rap • Alternative R&B", artists:["nasty"], focus:"Hip-Hop / Trap", position:4, momentum:84, votes:10530, listeners:31220, followers:11240},
+  "openmic": {name:"Open Mic Productions", owner:"Demo Label Profile", primary:"Afro-Pop", subs:"Dance-Pop • Afro-House • Bolo House", artists:["makhadzi"], focus:"Afro-Dance / Limpopo Sound", position:2, momentum:96, votes:14970, listeners:42100, followers:13100}
+};
+
+let mode="artist", activeQuick="overview";
+
+function populateWeeks(){
+  const s=document.getElementById("weekSelect");
+  for(let i=52;i>=1;i--){
+    const o=document.createElement("option"); o.value=i; o.textContent=`W${i} • 2026`; if(i===38)o.selected=true; s.appendChild(o);
+  }
+}
+function populateEntities(){
+  const s=document.getElementById("entitySelect");
+  s.innerHTML="";
+  if(mode==="artist"){
+    Object.entries(artists).forEach(([id,a])=>{
+      const o=document.createElement("option");o.value=id;o.textContent=`${a.name} • ${a.origin}`;s.appendChild(o)
+    });
+    s.value=s.dataset.lastArtist||"wokeeyes";
+    document.getElementById("entityLabel").textContent="Artist";
+  }else{
+    Object.entries(labels).forEach(([id,l])=>{
+      const o=document.createElement("option");o.value=id;o.textContent=`${l.name} • ${l.primary}`;s.appendChild(o)
+    });
+    s.value=s.dataset.lastLabel||"piano";
+    document.getElementById("entityLabel").textContent="Music label";
+  }
+}
+function setMode(m){
+  mode=m;
+  document.getElementById("artistModeBtn").classList.toggle("active",m==="artist");
+  document.getElementById("labelModeBtn").classList.toggle("active",m==="label");
+  populateEntities(); renderDashboard();
+}
+function currentEntity(){
+  const id=document.getElementById("entitySelect").value;
+  return mode==="artist"?artists[id]:labels[id];
+}
+function pct(v){return `${v}%`}
+function num(n){return new Intl.NumberFormat().format(n)}
+function metric(label,value,delta=""){
+  return `<div class="th-card stat"><div class="label">${label}</div><div class="value">${value}</div><div class="delta ${delta.startsWith("-")?"down":delta.includes("+")?"up":"flat"}">${delta}</div></div>`;
+}
+function table(headers,rows){
+  return `<div class="table-wrap"><table class="data-table"><thead><tr>${headers.map(h=>`<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.join("")}</tbody></table></div>`
+}
+function renderArtist(a){
+  const rankMove=a.prev-a.position;
+  const data={
+    week:document.getElementById("weekSelect").value,
+    compare:document.getElementById("periodSelect").value
+  };
+  document.getElementById("filterSummary").textContent=`W${data.week} • Artist • ${a.name}`;
+  const rankDelta=rankMove>0?`+${rankMove}`:rankMove<0?`${rankMove}`:"0";
+  const trendHeights=[38,46,44,57,63,58,71,78,86,Math.min(98,a.momentum)];
+  const locationRows=a.locations.map((x,i)=>`<tr><td>${i+1}</td><td><b>${x[0]}</b></td><td>${x[1]}</td><td><div class="progress"><i style="width:${parseInt(x[1])||5}%"></i></div></td></tr>`);
+  const dspRows=a.dsp.map((x,i)=>`<tr><td>${x[0]}</td><td>${x[1]}%</td><td><div class="progress"><i style="width:${x[1]}%"></i></div></td><td>${num(Math.round(a.listeners*x[1]/100))}</td></tr>`);
+  const socialRows=a.socials.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}%</td><td><div class="progress"><i style="width:${x[1]}%"></i></div></td></tr>`);
+  const genreRows=a.genresAudience.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}%</td><td><div class="progress"><i style="width:${x[1]}%"></i></div></td></tr>`);
+  const funnelRows=a.funnel.map((x,i)=>`<tr><td>${i+1}</td><td>${x[0]}</td><td>${x[1]}%</td><td><div class="progress"><i style="width:${x[1]}%"></i></div></td></tr>`);
+  const allChartRows=[
+    [a.position,a.name,a.song,a.votes,a.points,a.completion],
+    [Math.max(1,a.position-2),"Kabza De Small","Siyathandana",18420,116770,86],
+    [Math.min(20,a.position+2),"Makhadzi","Ghanama Nights",14970,97840,84],
+    [10,"Natasha Jansen","Grace Again",6730,41920,77],
+    [12,"Nasty C","Trap King",10530,68240,78]
+  ].map(r=>`<tr><td><b>#${r[0]}</b></td><td><div class="entity-cell"><div class="thumb">${r[1].slice(0,2).toUpperCase()}</div><div class="entity-name"><b>${r[1]}</b><span>${r[2]}</span></div></div></td><td>${num(r[3])}</td><td>${num(r[4])}</td><td>${r[5]}%</td></tr>`);
+  return `
+  <section class="hero">
+    <div class="hero-top"><div><div class="eyebrow">Artist intelligence</div><h2>${a.name}</h2><p>${a.origin} • ${a.genres} • ${a.label}</p></div><span class="th-pill th-pill-ok">W${data.week}</span></div>
+    <div class="hero-metrics">
+      <div class="hero-stat"><b>#${a.position}</b><span>Chart Position</span></div>
+      <div class="hero-stat"><b>${rankDelta}</b><span>Rank Move</span></div>
+      <div class="hero-stat"><b>${a.momentum}</b><span>Momentum</span></div>
+      <div class="hero-stat"><b>${num(a.votes)}</b><span>Votes</span></div>
+      <div class="hero-stat"><b>${num(a.listeners)}</b><span>Listeners</span></div>
+      <div class="hero-stat"><b>${num(a.followers)}</b><span>Followers</span></div>
+    </div>
+  </section>
+
+  <section class="section" data-section="overview">
+    <div class="section-head"><h2>Executive overview</h2><p>Week ${data.week} vs ${data.compare}</p></div>
+    <div class="stat-grid">
+      ${metric("Peak position","#"+a.peak,`${a.weeks} weeks on chart`)}
+      ${metric("Chart points",num(a.points),"+8.6%")}
+      ${metric("Vote share",a.chartShare+"%","+1.9%")}
+      ${metric("Completion",a.completion+"%","+3.4%")}
+      ${metric("30s retention",a.retention30+"%","+2.1%")}
+      ${metric("Replay / user",a.replay+"x","+0.2x")}
+      ${metric("Vote conversion",a.voteConversion+"%","+1.6%")}
+      ${metric("Fan retention",a.fanRetention+"%","+4.0%")}
+    </div>
+  </section>
+
+  <section class="section" data-section="chart">
+    <div class="section-head"><h2>Chart performance</h2><p>Position, points & momentum</p></div>
+    <div class="th-card kpi-card">
+      <div class="micro-label">Momentum history</div>
+      <div class="sparkline">${trendHeights.map(h=>`<i style="height:${h}%"></i>`).join("")}</div>
+      <div class="meta-grid"><div class="meta-box"><b>+${a.momentumChange} pts</b><span>Momentum change</span></div><div class="meta-box"><b>${a.chartShare}%</b><span>Vote share</span></div></div>
+    </div>
+    <div style="height:8px"></div>
+    ${table(["Rank","Track / Artist","Votes","Points","Completion"],allChartRows)}
+    <div style="height:8px"></div>
+    <div class="grid-2">
+      <div class="th-card kpi-card">
+        <div class="micro-label">Chart lifecycle</div>
+        <div class="kpi-row"><div><div class="kpi-name">Debut position</div><div class="kpi-desc">First chart appearance</div></div><div class="kpi-val">#${Math.min(15,a.peak+7)}</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">Days since debut</div><div class="kpi-desc">Release-to-chart age</div></div><div class="kpi-val">${a.releaseAge}</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">Days to peak</div><div class="kpi-desc">Debut → peak</div></div><div class="kpi-val">${a.daysToPeak}</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">Re-entry count</div><div class="kpi-desc">Returned after exit</div></div><div class="kpi-val">1</div></div>
+      </div>
+      <div class="th-card kpi-card">
+        <div class="micro-label">Ballot intelligence</div>
+        <div class="kpi-row"><div><div class="kpi-name">Average ballot rank</div><div class="kpi-desc">Final submitted ballots</div></div><div class="kpi-val">3.8</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">First-choice rate</div><div class="kpi-desc">Placed #1</div></div><div class="kpi-val">29%</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">Top-3 choice rate</div><div class="kpi-desc">Placed #1–#3</div></div><div class="kpi-val">61%</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">Point density</div><div class="kpi-desc">Points per containing ballot</div></div><div class="kpi-val">7.1</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-section="listening">
+    <div class="section-head"><h2>Listening & playback intelligence</h2><p>TrackHype YouTube player</p></div>
+    <div class="stat-grid">
+      ${metric("Player starts",num(29640),"+9.4%")}
+      ${metric("Avg watch time","2:41","+12s")}
+      ${metric("Median watch time","2:19","+8s")}
+      ${metric("25% retention","87%","+2.5%")}
+      ${metric("50% retention","79%","+3.1%")}
+      ${metric("75% retention","71%","+4.6%")}
+      ${metric("90% retention","64%","+5.0%")}
+      ${metric("Completion",a.completion+"%","+3.4%")}
+    </div>
+    <div style="height:8px"></div>
+    <div class="grid-2">
+      <div class="th-card kpi-card"><div class="micro-label">Behaviour</div>
+        <div class="kpi-row"><div><div class="kpi-name">Replay rate</div><div class="kpi-desc">Sessions containing replay</div></div><div class="kpi-val">${a.replay}x</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">Skip rate</div><div class="kpi-desc">Early playback exit</div></div><div class="kpi-val">16%</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">Pause rate</div><div class="kpi-desc">Sessions with pause</div></div><div class="kpi-val">18%</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">Seek rate</div><div class="kpi-desc">Sessions with seek</div></div><div class="kpi-val">12%</div></div>
+      </div>
+      <div class="th-card kpi-card"><div class="micro-label">Hook & structure</div>
+        <div class="kpi-row"><div><div class="kpi-name">5s retention</div></div><div class="kpi-val">97%</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">15s retention</div></div><div class="kpi-val">93%</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">First chorus reach</div></div><div class="kpi-val">84%</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">Most replayed section</div></div><div class="kpi-val">Chorus</div></div>
+      </div>
+    </div>
+    <div style="height:8px"></div>
+    <details class="th-acc"><summary>Audience retention checkpoints</summary><div class="acc-body">
+      ${table(["Checkpoint","Reached","Exit rate"],["5 seconds","97%","3%"],["10 seconds","95%","2%"],["15 seconds","93%","2%"],["30 seconds",a.retention30+"%","4%"],["60 seconds","84%","7%"],["First chorus","84%","—"],["End",""+a.completion+"%","—"].map((r,i)=>`<tr><td>${r[0]}</td><td><b>${r[1]}</b></td><td>${r[2]}</td></tr>`))}
+    </div></details>
+  </section>
+
+  <section class="section" data-section="audience">
+    <div class="section-head"><h2>Audience & fanbase quality</h2><p>Depth, loyalty & concentration</p></div>
+    <div class="stat-grid">
+      ${metric("Unique listeners",num(a.listeners),"+11.2%")}
+      ${metric("Unique voters",num(Math.round(a.listeners*a.voteConversion/100)),"+8.3%")}
+      ${metric("Supporters",num(a.uniqueSupporters),"+10.1%")}
+      ${metric("New supporters",num(1420),"+18.4%")}
+      ${metric("Returning fans","67%","+4.0%")}
+      ${metric("Superfan share",a.superfan+"%","Lower is broader")}
+      ${metric("Support frequency","4.2x","+0.6x")}
+      ${metric("Songs / supporter","1.7","+0.1")}
+    </div>
+    <div style="height:8px"></div>
+    <div class="th-card kpi-card">
+      <div class="micro-label">Fanbase concentration</div>
+      <div class="bar-list">
+        ${[["Top 10 users","31%"],["Top 100 users","27%"],["Next 1,000","24%"],["Remaining supporters","18%"]].map(x=>`<div class="bar-item"><div class="name">${x[0]}</div><div class="progress"><i style="width:${parseInt(x[1])}%"></i></div><b>${x[1]}</b></div>`).join("")}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-section="conversion">
+    <div class="section-head"><h2>Discovery & conversion funnel</h2><p>From chart impression to DSP intent</p></div>
+    ${table(["Stage","Conversion","Visual","Signal"],funnelRows)}
+    <div style="height:8px"></div>
+    <div class="grid-2">
+      <div class="th-card kpi-card"><div class="micro-label">External intent</div>
+        <div class="kpi-row"><div><div class="kpi-name">Outbound clicks</div></div><div class="kpi-val">6,420</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">Unique clickers</div></div><div class="kpi-val">4,870</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">Outbound CTR</div></div><div class="kpi-val">21.7%</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">Repeat clicker rate</div></div><div class="kpi-val">34%</div></div>
+      </div>
+      <div class="th-card kpi-card"><div class="micro-label">Campaign lift</div>
+        <div class="kpi-row"><div><div class="kpi-name">Votes</div><div class="kpi-desc">Campaign vs baseline</div></div><div class="kpi-val up">+22%</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">Listeners</div></div><div class="kpi-val up">+18%</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">Followers</div></div><div class="kpi-val up">+31%</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">DSP clicks</div></div><div class="kpi-val up">+27%</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-section="geography">
+    <div class="section-head"><h2>Geographic intelligence</h2><p>Where the audience is forming</p></div>
+    ${table(["#","Location","Audience share","Relative signal"],locationRows)}
+    <div style="height:8px"></div>
+    <div class="grid-2">
+      <div class="th-card kpi-card"><div class="micro-label">Territory signals</div>
+        <div class="kpi-row"><div><div class="kpi-name">Fastest-growing territory</div></div><div class="kpi-val">Gaborone</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">Growth vs baseline</div></div><div class="kpi-val up">+87%</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">Geographic diversity</div></div><div class="kpi-val">74 / 100</div></div>
+      </div>
+      <div class="th-card kpi-card"><div class="micro-label">City intelligence</div>
+        <div class="kpi-row"><div><div class="kpi-name">Top city</div></div><div class="kpi-val">${a.locations[0][0]}</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">Top-city share</div></div><div class="kpi-val">${a.locations[0][1]}</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">Breakout city</div></div><div class="kpi-val">Gaborone</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><h2>Social & DSP ecosystem</h2><p>TrackHype outbound intent</p></div>
+    <div class="grid-2">
+      <div class="th-card kpi-card"><div class="micro-label">DSP redirection share</div>${table(["Platform","Share","Intent clicks",""],dspRows)}</div>
+      <div class="th-card kpi-card"><div class="micro-label">Social alignment</div>${table(["Platform","Share",""],socialRows)}</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <details class="th-acc" open><summary>Audience affinity / artist network</summary><div class="acc-body">
+      ${table(["Audience genre","Share","Signal"],genreRows)}
+      <div style="height:8px"></div><div class="insight"><b>Cross-artist support</b><span>Users supporting this artist also show measurable engagement with Amapiano, Afrobeats, Hip-Hop and R&amp;B artists. Keep the underlying user data aggregated and privacy-safe.</span></div>
+    </div></details>
+    <details class="th-acc"><summary>Release intelligence</summary><div class="acc-body">
+      ${table(["Lifecycle metric","Value","Meaning"],[
+        `<tr><td>Days to first vote</td><td>2</td><td>Initial discovery speed</td></tr>`,
+        `<tr><td>Votes in first 24h</td><td>842</td><td>Early demand</td></tr>`,
+        `<tr><td>Votes in first 7 days</td><td>3,982</td><td>Launch performance</td></tr>`,
+        `<tr><td>Peak momentum date</td><td>W35</td><td>Acceleration point</td></tr>`,
+        `<tr><td>Post-peak retention</td><td>81%</td><td>Demand persistence</td></tr>`,
+        `<tr><td>Catalogue revival</td><td>+14%</td><td>Older-track resurgence</td></tr>`
+      ])}
+    </div></details>
+    <details class="th-acc"><summary>Radio audience signals</summary><div class="acc-body">
+      ${table(["Signal","TrackHype observation","Why it matters"],[
+        `<tr><td>30s retention</td><td>89%</td><td>Early audience hold</td></tr>`,
+        `<tr><td>Completion</td><td>74%</td><td>Full-track engagement</td></tr>`,
+        `<tr><td>Repeat listening</td><td>1.8x</td><td>Return behaviour</td></tr>`,
+        `<tr><td>Audience breadth</td><td>69%</td><td>Support beyond core users</td></tr>`,
+        `<tr><td>Geographic breadth</td><td>74 / 100</td><td>Territory spread</td></tr>`,
+        `<tr><td>Chart longevity</td><td>${a.weeks} weeks</td><td>Persistence</td></tr>`
+      ])}
+    </div></details>
+    <details class="th-acc" data-section="integrity"><summary>Trust, quality & anti-manipulation</summary><div class="acc-body">
+      <div class="stat-grid">
+        ${metric("Vote integrity",97.9+"%","Normal")}
+        ${metric("Suspicious share",a.suspicious+"%","Review threshold 5%")}
+        ${metric("Burst anomaly","Low","Normal")}
+        ${metric("Vote/play mismatch","6.3%","Monitor")}
+      </div>
+      <div style="height:8px"></div>
+      <div class="kpi-card th-card">
+        <div class="kpi-row"><div><div class="kpi-name">Account concentration</div><div class="kpi-desc">Votes from small user cohorts</div></div><span class="th-pill th-pill-ok">Normal</span></div>
+        <div class="kpi-row"><div><div class="kpi-name">Device concentration</div><div class="kpi-desc">Repeated device patterns</div></div><span class="th-pill th-pill-ok">Normal</span></div>
+        <div class="kpi-row"><div><div class="kpi-name">Geographic anomaly</div><div class="kpi-desc">Unexpected territory spike</div></div><span class="th-pill th-pill-warn">Review</span></div>
+        <div class="kpi-row"><div><div class="kpi-name">Mass account similarity</div><div class="kpi-desc">Pattern overlap</div></div><span class="th-pill th-pill-ok">Normal</span></div>
+      </div>
+    </div></details>
+  </section>
+
+  <section class="section" data-section="overview">
+    <div class="section-head"><h2>Raw event model</h2><p>What TrackHype should capture</p></div>
+    <div class="th-card kpi-card">
+      <div class="bar-list">
+        ${["impressions","profile_views","song_views","player_opens","player_starts","player_pauses","player_seeks","player_completions","player_replays","votes","ballot_submissions","ballot_edits","likes","follows","searches","shares","social_clicks","dsp_clicks","chart_entries","chart_movements","campaign_interactions","referrals"].map((x,i)=>`<div class="kpi-row"><div><div class="kpi-name">${x}</div><div class="kpi-desc">Event ${String(i+1).padStart(2,"0")} • timestamped</div></div><div class="kpi-val">Tracked</div></div>`).join("")}
+      </div>
+    </div>
+  </section>`;
+}
+function renderLabel(l){
+  document.getElementById("filterSummary").textContent=`W${document.getElementById("weekSelect").value} • Label • ${l.name}`;
+  const roster=l.artists.map(id=>artists[id]);
+  const totalVotes=roster.reduce((s,a)=>s+a.votes,0);
+  const totalListeners=roster.reduce((s,a)=>s+a.listeners,0);
+  const totalFollowers=roster.reduce((s,a)=>s+a.followers,0);
+  const rosterRows=roster.map((a,i)=>`<tr><td>#${i+1}</td><td><div class="entity-cell"><div class="thumb">${a.name.slice(0,2).toUpperCase()}</div><div class="entity-name"><b>${a.name}</b><span>${a.genres}</span></div></div></td><td>#${a.position}</td><td>${num(a.votes)}</td><td>${num(a.listeners)}</td><td>${a.momentum}</td></tr>`);
+  return `
+  <section class="hero">
+    <div class="hero-top"><div><div class="eyebrow">Label intelligence</div><h2>${l.name}</h2><p>Primary: ${l.primary} • ${l.subs}</p></div><span class="th-pill th-pill-ok">W${document.getElementById("weekSelect").value}</span></div>
+    <div class="hero-metrics">
+      <div class="hero-stat"><b>${roster.length}</b><span>Artists shown</span></div>
+      <div class="hero-stat"><b>${num(totalVotes)}</b><span>Votes</span></div>
+      <div class="hero-stat"><b>${num(totalListeners)}</b><span>Listeners</span></div>
+      <div class="hero-stat"><b>${num(totalFollowers)}</b><span>Followers</span></div>
+      <div class="hero-stat"><b>${l.momentum}</b><span>Label momentum</span></div>
+      <div class="hero-stat"><b>#${l.position}</b><span>Best chart</span></div>
+    </div>
+  </section>
+  <section class="section"><div class="section-head"><h2>Label executive overview</h2><p>Roster-level intelligence</p></div>
+    <div class="stat-grid">
+      ${metric("Roster votes",num(totalVotes),"+13.2%")}
+      ${metric("Roster listeners",num(totalListeners),"+11.7%")}
+      ${metric("Roster followers",num(totalFollowers),"+16.1%")}
+      ${metric("Top artist momentum",String(Math.max(...roster.map(a=>a.momentum))),"+5.0")}
+      ${metric("Avg completion",Math.round(roster.reduce((s,a)=>s+a.completion,0)/roster.length)+"%","+2.7%")}
+      ${metric("Avg replay", (roster.reduce((s,a)=>s+a.replay,0)/roster.length).toFixed(1)+"x","+0.2x")}
+      ${metric("DSP intent","27.4%","+4.3%")}
+      ${metric("Audience breadth","78 / 100","+6")}
+    </div>
+  </section>
+  <section class="section"><div class="section-head"><h2>Roster performance</h2><p>Artist / track portfolio</p></div>${table(["#","Artist","Chart","Votes","Listeners","Momentum"],rosterRows)}</section>
+  <section class="section"><div class="section-head"><h2>Label intelligence systems</h2><p>Portfolio-level detail</p></div>
+    <details class="th-acc" open><summary>Catalogue performance</summary><div class="acc-body">
+      ${table(["Metric","Label value","Interpretation"],[
+        `<tr><td>Catalogue engagement</td><td>184,220</td><td>Total chart + player interaction events</td></tr>`,
+        `<tr><td>Catalogue watch time</td><td>11,284 hrs</td><td>Observed embedded playback</td></tr>`,
+        `<tr><td>Most converted song</td><td>${roster[0].song}</td><td>Highest listener → follower journey</td></tr>`,
+        `<tr><td>Fastest-growing territory</td><td>Gaborone</td><td>Recent audience expansion</td></tr>`,
+        `<tr><td>Audience overlap</td><td>43%</td><td>Shared support across roster</td></tr>`
+      ])}
+    </div></details>
+    <details class="th-acc"><summary>A&amp;R breakout indicators</summary><div class="acc-body">
+      ${table(["Indicator","Status","Observed signal"],[
+        `<tr><td>Rapid vote growth</td><td><span class="th-pill th-pill-ok">High</span></td><td>Positive week-over-week acceleration</td></tr>`,
+        `<tr><td>Listener growth</td><td><span class="th-pill th-pill-ok">High</span></td><td>Double-digit expansion</td></tr>`,
+        `<tr><td>Geographic expansion</td><td><span class="th-pill th-pill-ok">High</span></td><td>New city clusters appearing</td></tr>`,
+        `<tr><td>Low fan concentration</td><td><span class="th-pill th-pill-ok">Broad</span></td><td>Engagement is not dominated by a tiny cohort</td></tr>`,
+        `<tr><td>Cross-artist discovery</td><td><span class="th-pill th-pill-ok">Strong</span></td><td>Roster listeners move between artists</td></tr>`
+      ])}
+    </div></details>
+    <details class="th-acc"><summary>Label campaign intelligence</summary><div class="acc-body">${table(["Campaign metric","Before","During","Lift"],[
+      `<tr><td>Votes</td><td>24,180</td><td>30,560</td><td>+26%</td></tr>`,
+      `<tr><td>Listeners</td><td>69,200</td><td>83,900</td><td>+21%</td></tr>`,
+      `<tr><td>Followers</td><td>19,400</td><td>25,100</td><td>+29%</td></tr>`,
+      `<tr><td>DSP clicks</td><td>6,480</td><td>8,330</td><td>+29%</td></tr>`
+    ])}</div></details>
+  </section>
+  <section class="section">
+    <div class="insight"><b>Label use case</b><span>TrackHype can show not only which roster artist is charting, but how each artist converts attention into listening, voting, following, social activity and DSP intent—and where that audience is geographically concentrated.</span></div>
+  </section>`;
+}
+function renderDashboard(){
+  const container=document.getElementById("dashboard");
+  const entity=currentEntity();
+  container.innerHTML=mode==="artist"?renderArtist(entity):renderLabel(entity);
+  applyQuick();
+}
+function applyQuick(){
+  document.querySelectorAll(".chip").forEach(ch=>ch.classList.toggle("active",ch.dataset.filter===activeQuick));
+  if(activeQuick==="overview")return;
+  const target=document.querySelector(`[data-section="${activeQuick}"]`);
+  if(target) setTimeout(()=>target.scrollIntoView({behavior:"smooth",block:"start"}),20);
+}
+function resetFilters(){
+  document.getElementById("weekSelect").value="38";
+  document.getElementById("periodSelect").value="previous";
+  mode="artist";
+  activeQuick="overview";
+  document.getElementById("artistModeBtn").classList.add("active");
+  document.getElementById("labelModeBtn").classList.remove("active");
+  populateEntities(); renderDashboard();
+}
+function refreshDashboard(){
+  const btn=document.querySelector('.header-actions .th-mini-btn');
+  btn.textContent="✓"; setTimeout(()=>btn.textContent="↻",800);
+  renderDashboard();
+}
+function openHelp(){
+  alert("TrackHype demo dashboard: use Chart Week, Artist/Label mode and the entity selector. Horizontal chips jump to major intelligence systems.");
+}
+document.addEventListener("click",e=>{
+  const chip=e.target.closest(".chip"); if(!chip)return;
+  activeQuick=chip.dataset.filter; applyQuick();
+});
+populateWeeks();populateEntities();renderDashboard();
+</script>
+</body>
+</html>
