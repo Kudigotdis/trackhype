@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TrackHype - Admin</title>
+<link rel="stylesheet" href="trackhype.css">
+</head>
+<body>
+<div id="app-shell">
+  <header class="app-header">
+    <div class="header-inner">
+      <button class="icon-btn" id="btn-back" type="button" aria-label="Back">&#8592;</button>
+      <h1 class="app-title">Admin</h1>
+      <button class="icon-btn" id="btn-signout" type="button" aria-label="Sign out">&#8617;</button>
+    </div>
+  </header>
+
+  <main class="page-content">
+    <!-- signed-out gate -->
+    <section id="view-signin" hidden>
+      <div class="card">
+        <h2>Admin sign in</h2>
+        <p class="muted">This area is for TrackHype staff only.</p>
+        <label for="in-email">Email</label>
+        <input id="in-email" type="email" autocomplete="email" placeholder="you@trackhype.co.zw">
+        <label for="in-password">Password</label>
+        <input id="in-password" type="password" autocomplete="current-password" placeholder="Password">
+        <p id="auth-error" class="error-text" hidden></p>
+        <button id="btn-login" class="btn btn-primary" type="button">Sign in</button>
+      </div>
+    </section>
+
+    <!-- not-an-admin gate -->
+    <section id="view-denied" hidden>
+      <div class="card">
+        <h2>Access denied</h2>
+        <p class="muted">This account is not registered as an admin. If you believe this is a mistake, contact the TrackHype team.</p>
+      </div>
+    </section>
+
+    <!-- pending submissions -->
+    <section id="view-pending" hidden>
+      <div class="card">
+        <div class="row space-between">
+          <h2>Pending submissions</h2>
+          <button id="btn-refresh" class="btn btn-ghost" type="button">Refresh</button>
+        </div>
+        <p id="pending-empty" class="muted" hidden>No pending submissions right now.</p>
+        <div id="pending-list"></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/admin-api.js"></script>
+<script src="trackhype.js"></script>
+<script>
+(function () {
+  var AdminUI = window.AdminAPI;
+
+  function el(id) { return document.getElementById(id); }
+
+  function show(id) {
+    var ids = ["view-signin", "view-denied", "view-pending"];
+    ids.forEach(function (v) { el(v).hidden = (v !== id); });
+  }
+
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+
+  async function boot() {
+    if (!(AdminUI && AdminUI.hasSession)) { el("auth-error").textContent = "Admin services not configured."; show("view-signin"); return; }
+    var has = await AdminAPI.hasSession();
+    if (has && !AdminAPI.isAdmin) { show("view-denied"); return; }
+    if (!has) { show("view-signin"); return; }
+    var admin = await AdminAPI.isAdmin();
+    if (!admin) { show("view-denied"); return; }
+    show("view-pending");
+    renderPending();
+  }
+
+  function renderPendingItem(p) {
+    var div = document.createElement("div");
+    div.className = "list-item";
+    var title = p.song_title || "Untitled";
+    var artist = p.artist_name || "Unknown artist";
+    var by = p.submitter_email || "unknown";
+    div.innerHTML =
+      '<div class="row space-between"><div>' +
+        '<div class="strong">' + esc(title) + '</div>' +
+        '<div class="muted">by ' + esc(artist) + '</div>' +
+        '<div class="muted small">submitted by ' + esc(by) + '</div>' +
+      '</div></div>' +
+      '<div class="row gap">' +
+        '<button class="btn btn-primary" data-act="approve" data-id="' + esc(p.submission_id) + '">Approve</button>' +
+        '<button class="btn btn-danger" data-act="reject" data-id="' + esc(p.submission_id) + '">Reject</button>' +
+      '</div>';
+    return div;
+  }
+
+  async function renderPending() {
+    var out = el("pending-list");
+    out.innerHTML = "";
+    var res = await AdminAPI.listPending();
+    if (res && res.error) { el("auth-error").textContent = res.error.message || "Could not load submissions."; show("view-signin"); return; }
+    var rows = (res && res.data) || [];
+    el("pending-empty").hidden = rows.length > 0;
+    rows.forEach(function (p) { out.appendChild(renderPendingItem(p)); });
+  }
+
+  async function act(id, verdict) {
+    var res = await AdminAPI.setStatus(id, verdict);
+    if (res && res.error) { el("pending-empty").textContent = res.error.message || "Action failed."; return; }
+    renderPending();
+  }
+
+  el("btn-login").addEventListener("click", async function () {
+    el("auth-error").hidden = true;
+    var email = el("in-email").value.trim();
+    var password = el("in-password").value;
+    var res = await `API.signIn(email, password)`;
+    if (res && res.error) { el("auth-error").textContent = "Sign in failed: " + (res.error.message || "unknown error"); el("auth-error").hidden = false; return; }
+    boot();
+  });
+
+  el("btn-signout").addEventListener("click", async function () {
+    if (API.signOut) { await API.signOut(); }
+    show("view-signin");
+  });
+
+  el("btn-back").addEventListener("click", function () {
+    if (TrackHype && TrackHype.navigate) TrackHype.navigate("menu.html"); else location.href = "menu.html";
+  });
+
+  el("btn-refresh").addEventListener("click", renderPending);
+
+  document.addEventListener("click", function (e) {
+    var btn = e.target.closest ? e.target.closest("[data-act]") : null;
+    if (!btn) return;
+    act(btn.getAttribute("data-id"), btn.getAttribute("data-act"));
+  });
+
+  boot();
+})();
+</script>
+</body>
+</html>
