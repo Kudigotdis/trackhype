@@ -1,6 +1,56 @@
 
 ---
 
+## SESSION END — 2025-09-16 (launch-readiness slice batch: 21-24 + 26 committed)
+
+**Scope: closure of critical funnels gate production-launch gaps.** 5 commits on top of the SADC expansion.
+
+### Commits (in order)
+| Commit | Slice |
+|--------|-------|
+| `960f259` | Phase 21 submission write path: metadata JSONB + API.saveSubmission + confirmAndPay async wiring |
+| `f5e3a7f` | Phase 22 PWA: manifest.json + service worker cache-first (th-v1) + registration on 23 app pages |
+| `1f5937e` | Phase 23 Open Graph + twitter:card meta on all 25 pages |
+| `a921767` | Phase 24 onboarding: 11 alert() → TrackHypeToast() + 'Return home' on email-confirm modal |
+| `7d655e3` | Phase 26 phone E.164 validation: e164Ok() 8-15 digits + inline .ob-error per number field |
+
+### Files changed
+- `supabase/migrations/20260914_0010_submission_metadata.sql` (NEW) — `ALTER TABLE submissions ADD COLUMN metadata JSONB DEFAULT '{}'`; admin_pending_submissions view now COALESCEs artist/song FKs with metadata->>'artist' / ->>'song_title' so entries show pre-moderation. **SQL Editor ledger: OPEN — run 0010.**
+- `js/api.js` — `API.saveSubmission(submission)`: insert user_id + status 'Submission Received' + payment_status 'not_paid' + metadata. Offline/absent-supabase → {data:null,error} like the rest.
+- `submit-music.html` — `confirmAndPay()` async; adds territory{code,name} to payload; when signed in persists via API.saveSubmission and sheet shows Server line 'Received by TrackHype.'; else 'Sign in to sync...' fallback keeps sessionStorage path.
+- `manifest.json` (NEW) — standalone/portrait, theme #01db8b, bg #ffffff, badge + logo icons (sizes 'any').
+- `sw.js` — install pre-caches app shell; activate cleans old caches; fetch = network-first navigate (index.html offline fallback), cache-first static, skips cross-origin/non-GET.
+- 23 app pages (all except bottom-nav-music-player.html + bug-reporter.html) — head gained `<link rel=manifest>` + apple-touch metas + SW registration (pure +6 insertion each, numstat 6/0).
+- All 25 pages — OG title/description/image/url + twitter:card after <title> (page-map titles; pure +6 insertion each, numstat 6/0).
+- `onboarding.html` — 11 alert() → TrackHypeToast (image validation gateway, finish/login gates, network/signup/profile errors); email-confirm modal + 'Return home'; e164Digits/e164Ok + onPhoneInput + 3 .ob-error elements (mobile/WhatsApp/mobile-money + own dial codes); stepDone(1) switched from raw <7-digit to e164Ok.
+
+### Verification (byte-truth this session)
+- api.js node --check PASS (high-bytes = 9, all pre-existing header lines L2/L17, none in new block).
+- submit-music.html inline node --check PASS. Harness proved: signed-in → saveSubmission called with submission payload; guest → saveSubmission not called, sessionStorage fallback preserved, sheet Server line flips 'Received by TrackHype.' / local-hint.
+- onboarding.html main inline block (57,057 chars) node --check PASS; zero `**` artifacts; diff = 11 line-swaps + 1 inserted button (24) + 50/6 (26: 3 .ob-error elements + helpers + stepDone rewrite + CSS).
+- E.164 harness: ZW 770000000→true, ZW 77→false, ZW 19-digit→false, BW 71000000→true, 8-digit edge→true, empty→false.
+- sw.js node --check PASS (0 high-bytes); manifest.json ConvertFrom-Json parses.
+- All page diffs verified pure-addition (numstat 6/0 per page for PWA and OG passes); inserted lines 0 high-bytes.
+
+### Roadmap checkoffs (TrackHype_Market_Launch_And_Advertising_Roadmap.md, still untracked)
+Auth §2 all four items [x] (redirect token handling was ALREADY done in api.js L51-101; profile hydration ALREADY in menu hydrate(); location sync ALREADY in 0007 trigger). §3 KYC phone validation [x]. §5 PWA both items [x]. §6 OG [x].
+
+### SQL Editor ledger: OPEN (migration 0010).
+```sql
+-- paste supabase/migrations/20260914_0010_submission_metadata.sql and RUN (idempotent)
+alter table public.submissions add column if not exists metadata jsonb default '{}'::jsonb;
+```
+
+### Still open (roadmap, untouched this session)
+- §1 ad engine: API.adverts() + banner placements + impressions/clicks (adverts table exists from 0004; api.js has no query fn).
+- §3 strict limit: ballots RLS is owner-only, index (user_id, week_key); 1-vote-per-24h is enforced client-side in trackhype.js — no DB unique constraint.
+- §4 admin: KYC verification queue, ad campaign manager, chart content manager (only pending-submissions queue ships today).
+- §7 legal (privacy.html/terms.html), custom domain, analytics (GA/Plausible).
+- §8 pitch kit + advertiser demo account.
+- PWA icon sizing: badge/logo used with sizes 'any' — real 192/512 PNG icons still to be supplied.
+
+---
+
 ## SESSION END — 2025-09-16 (SADC multi-territory expansion: all slices committed)
 
 **Scope completed: SADC-first multi-territory enablement (15 territories, world later).** Doctrine flipped: CHECKLIST.md L6 is now SADC 15-territory + world-later. Four build slices committed.
