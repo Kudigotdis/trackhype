@@ -11,6 +11,7 @@
     if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
   </script>
   <link rel="icon" type="image/webp" href="Assets/logos/TrackHype Logo Design Badge.webp">
+  <link rel="apple-touch-icon" href="Assets/logos/TrackHype-Logo-192.png">
   <title>Artist — TrackHype</title>
 
   <meta property="og:title" content="Artist - TrackHype">
@@ -211,6 +212,11 @@ document.getElementById("genres").innerHTML = [genre, "Zimbabwe", "Officially Ch
       return `<div class="ar-vote" data-vote-cell data-vote-list="${list}" data-vote-i="${i}"><button type="button" title="Vote to enter ${TrackHype.esc(s.chart || "National Top 100")}" onclick="voteArtistSong('${list}', ${i})"><img src="Assets/icons/New_Song_Chart_Vote_Icon.webp" alt="Vote for chart"></button></div>`;
     }
     window.voteArtistSong = (list, i) => {
+      const vote = (typeof TrackHype.canVote === "function") ? TrackHype.canVote() : null;
+      if(vote && !vote.ok){
+        TrackHype.toast(vote.reason);
+        return;
+      }
       const s = SONG_LISTS[list] && SONG_LISTS[list][i];
       if(!s){ return; }
       const chart = s.chart || "National Top 100";

@@ -11,6 +11,7 @@
     if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
   </script>
   <link rel="icon" type="image/webp" href="Assets/logos/TrackHype Logo Design Badge.webp">
+  <link rel="apple-touch-icon" href="Assets/logos/TrackHype-Logo-192.png">
   <title>Search — TrackHype</title>
 
   <meta property="og:title" content="Search - TrackHype">
@@ -101,8 +102,18 @@
 
 function runSearch(){
       const q = (document.getElementById("q").value || "").trim();
-      const items = TrackHype.searchInCatalog(q, currentType);
-      const head = items.slice(0, currentType === "all" ? 40 : 50);
+      const demoMode = (typeof TrackHype.currentMode === "function") && TrackHype.currentMode() === "demo";
+      const emptyRegion = !demoMode;
+      let head = [];
+      if(!emptyRegion){
+        const items = TrackHype.searchInCatalog(q, currentType);
+        head = items.slice(0, currentType === "all" ? 40 : 50);
+      }
+      if(emptyRegion){
+        const rName = (typeof TrackHype.currentView === "function" && TrackHype.currentView().name) || "This region";
+        document.getElementById("results").innerHTML = '<div class="th-card" style="margin-top:6px"><div class="th-empty"><strong>' + rName + ' has nothing to search yet.</strong><span>Search is powered by published releases. Switch back to Browser mode for the demo while you wait.</span><button class="th-btn" type="button" onclick="TrackHype.navigate(\'region-selector.html\')">Choose a mode</button></div></div>';
+        return;
+      }
       try{
         if(window.TRACK && window.TRACK.search && q.length >= 2){
           window.TRACK.search(q, head.length, { type: currentType });

@@ -11,6 +11,7 @@
     if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
   </script>
   <link rel="icon" type="image/webp" href="Assets/logos/TrackHype Logo Design Badge.webp">
+  <link rel="apple-touch-icon" href="Assets/logos/TrackHype-Logo-192.png">
   <title>Promo-Playlist-Songs — TrackHype</title>
 
   <meta property="og:title" content="Playlists - TrackHype">
@@ -150,6 +151,13 @@
 
     function renderMore(){
       const grid = document.getElementById("playlistGrid");
+      if(!(typeof TrackHype.currentMode === "function") || TrackHype.currentMode() !== "demo"){
+        const name = (typeof TrackHype.currentView === "function" && TrackHype.currentView().name) || "This region";
+        grid.innerHTML = '<div class="th-card" style="grid-column:1/-1"><div class="th-empty"><strong>' + name + ' has no playlists yet.</strong><span>Curated playlists are added once real releases are published. Switch back to Browser mode for the demo while you wait.</span><button class="th-btn" type="button" onclick="TrackHype.navigate(\'region-selector.html\')">Choose a mode</button></div></div>';
+        const load = document.getElementById("gridLoading");
+        load.style.display = "none";
+        return;
+      }
       const next = Math.min(shown + PER_PAGE, PLAYLISTS.length);
       let html = "";
       for(let i = shown; i < next; i++){
@@ -215,6 +223,11 @@
     };
 
     window.voteSongIntoChart = (id, i) => {
+      const vote = (typeof TrackHype.canVote === "function") ? TrackHype.canVote() : null;
+      if(vote && !vote.ok){
+        TrackHype.toast(vote.reason);
+        return;
+      }
       const p = PLAYLISTS.find(x => x.id === id);
       const s = p && p.songs[i];
       if(!s){ return; }

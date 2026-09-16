@@ -11,6 +11,7 @@
     if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
   </script>
   <link rel="icon" type="image/webp" href="Assets/logos/TrackHype Logo Design Badge.webp">
+  <link rel="apple-touch-icon" href="Assets/logos/TrackHype-Logo-192.png">
   <title>Menu — TrackHype</title>
 
   <meta property="og:title" content="Menu - TrackHype">
@@ -256,6 +257,7 @@
               '<button class="Profile-User-Name" type="button" onclick="TrackHype.navigate(\'onboarding.html\')">' + TrackHype.esc(signedName) + '</button>' +
             '</div>' +
             '<p class="ps-signedin">Logged in as ' + TrackHype.esc(uiSignedInEmail) + '</p>' +
+            '<p class="ps-benefit" style="margin-top:10px">' + modeLine() + '</p>' +
             '<button class="th-btn block" type="button" onclick="logout()">Log out</button>' +
           '</div>';
         return;
@@ -267,6 +269,7 @@
           '<div class="th-card pad">' +
             '<button class="th-btn primary block" type="button" onclick="openAuthPopup()">Sign In / Sign Up</button>' +
             '<p class="ps-benefit">Sign in to look up your votes on every chart, follow the genres and artists you love, and keep the music you like saved while you listen.</p>' +
+            '<p class="ps-benefit">' + modeLine() + '</p>' +
           '</div>';
         return;
       }
@@ -274,8 +277,31 @@
       host.innerHTML = '' +
         '<div class="th-card" style="display:flex;align-items:center;gap:14px;padding:16px">' +
           '<button class="ps-avatar" type="button" aria-label="Edit profile" onclick="TrackHype.navigate(\'onboarding.html\')">' + initialsOf(name) + '</button>' +
-          '<button class="Profile-User-Name" type="button" onclick="TrackHype.navigate(\'onboarding.html\')">' + TrackHype.esc(name) + '</button>' +
+          '<div style="min-width:0">' +
+            '<button class="Profile-User-Name" type="button" onclick="TrackHype.navigate(\'onboarding.html\')">' + TrackHype.esc(name) + '</button>' +
+            '<div class="ps-signedin">' + modeLine() + '</div>' +
+          '</div>' +
         '</div>';
+    }
+
+    function modeLine(){
+      try{
+        if(typeof TrackHype.currentMode !== "function"){ return ""; }
+        var isDemo = TrackHype.currentMode() === "demo";
+        if(isDemo){
+          return "Browser mode - exploring the TrackHype demo";
+        }
+        var view = typeof TrackHype.currentView === "function" ? TrackHype.currentView() : null;
+        var viewName = (view && view.name) ? view.name : null;
+        var idName = (function(){
+          try{
+            var r = JSON.parse(localStorage.getItem("trackhype.region") || "null");
+            return (r && r.name) ? r.name : null;
+          }catch(e){ return null; }
+        })();
+        if(idName && viewName && idName !== viewName){ return "Viewing " + viewName + " - your region is " + idName; }
+        return (viewName || idName || "Region") + " mode";
+      }catch(e){ return ""; }
     }
 
     window.logout = async function(){

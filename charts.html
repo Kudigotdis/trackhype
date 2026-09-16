@@ -11,6 +11,7 @@
     if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
   </script>
   <link rel="icon" type="image/webp" href="Assets/logos/TrackHype Logo Design Badge.webp">
+  <link rel="apple-touch-icon" href="Assets/logos/TrackHype-Logo-192.png">
   <title>Charts — TrackHype</title>
 
   <meta property="og:title" content="Charts - TrackHype">
@@ -236,12 +237,16 @@
   <script src="trackhype.js"></script>
   <script src="js/territories.js"></script>
   <script>
-    const CHART_TITLE_REGION = (typeof TrackHype.regionDefault === "function")
-      ? (TrackHype.regionDefault() || {name:"Zimbabwe"}).name
-      : "Zimbabwe";
+    const DEMO_MODE = (typeof TrackHype.currentMode === "function")
+      ? TrackHype.currentMode() === "demo"
+      : true;
+    const REGION_NAME = (!DEMO_MODE && typeof TrackHype.currentView === "function")
+      ? (TrackHype.currentView().name || "This region")
+      : "";
+    const REGION_SUFFIX = DEMO_MODE ? "" : (" - " + REGION_NAME);
     const CHARTS = [
-      {key:"top40",     title:("National Top 100 — " + CHART_TITLE_REGION), genre:("All Genres — " + CHART_TITLE_REGION), folder:"top_40_chart",
-        label:CHART_TITLE_REGION + " Top 100", genreFilter:"",      mapped:true},
+      {key:"top40",     title:("National Top 100" + REGION_SUFFIX), genre:("All Genres" + REGION_SUFFIX), folder:"top_40_chart",
+        label:(DEMO_MODE ? "National Top 100" : REGION_NAME + " Top 100"), genreFilter:"",      mapped:true},
       {key:"hiphop",    title:"Zim Hip Hop Top 20",  genre:"Zim Hip Hop",          folder:"top_25_local_hip_hop",
         label:"Zim Hip Hop",       genreFilter:"Zim Hip Hop", mapped:true},
       {key:"house",     title:"Zimbabwean House Top 20", genre:"House",            folder:"top_20_house",
@@ -462,8 +467,14 @@
     const isArchived = () => week !== "current";
     const MAX = TrackHype.getMaxRankedPicks();
 
+    function regionEmpty(){
+      if(DEMO_MODE){ return false; }
+      return !(typeof TrackHype.anyRealContent === "function" && TrackHype.anyRealContent());
+    }
+
     function ensureSeed(){
       if(isArchived()){ return; }
+      if(!DEMO_MODE){ return; }
       maybeResetSeeds();
       const c = ck();
       const subs = TrackHype.getWeekSubmissions(c);
@@ -549,6 +560,15 @@
       const note = document.getElementById("votedNote");
       const modeEl = document.getElementById("chartModeTitle");
       const pill = document.getElementById("chartStatusPill");
+      if(regionEmpty()){
+        modeEl.textContent = "Coming soon";
+        descEl.textContent = REGION_NAME + " does not have published charts yet. Artists from " + REGION_NAME + " can submit their music - approved releases appear here once they are moderated and published.";
+        cta.style.display = "none";
+        note.style.display = "none";
+        pill.className = "ch-status-pill pub";
+        pill.textContent = "No data";
+        return;
+      }
       if(isArchived()){
         modeEl.textContent = (FILTERS[filter] || FILTERS[1]).label;
         descEl.textContent = "Read-only published snapshot for week " + week + ".";
@@ -702,6 +722,11 @@
 
     function renderList(){
       const list = document.getElementById("chartList");
+      if(regionEmpty()){
+        order = [];
+        list.innerHTML = '<div class="th-card"><div class="th-empty"><strong>' + REGION_NAME + ' has no songs yet.</strong><span>' + REGION_NAME + ' charts open once artists submit and moderators approve real releases. Check back soon - or switch back to the Browser mode demo in the meantime.</span><button class="th-btn" type="button" onclick="TrackHype.navigate(\'region-selector.html\')">Choose a mode</button></div></div>';
+        return;
+      }
       const inFeedAd = (i) => i === 3
         ? '<div class="th-advert th-advert--full" data-ad-slot="chart-feed"><img src="Assets/Demo Media/DemoMedia - Paid Promo.webp" alt="DemoMedia - Paid Promo"></div>'
         : "";
@@ -905,6 +930,11 @@
        ========================================================= */
 
     async function openBallotSheet(){
+      const vote = (typeof TrackHype.canVote === "function") ? TrackHype.canVote() : null;
+      if(vote && !vote.ok){
+        TrackHype.toast(vote.reason);
+        return;
+      }
       const profile = await TrackHype.requireProfile("vote");
       if(!profile){ return; }
       const c = ck();
@@ -1390,6 +1420,12 @@
     renderAll();
     runAutoResetIfDue();
     document.getElementById("chartFoot").innerHTML += '<button class="th-btn" type="button" onclick="testReset()">Test weekly reset</button>';
+
+    if(!DEMO_MODE && typeof TrackHype.loadPublishedChart === "function" && regionEmpty()){
+      TrackHype.loadPublishedChart(ck(), TrackHype.currentWeekKey()).then(function(res){
+        if(res && res.ok){ renderAll(); }
+      });
+    }
   </script>
 </body>
 </html>

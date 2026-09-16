@@ -11,6 +11,7 @@
     if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
   </script>
   <link rel="icon" type="image/webp" href="Assets/logos/TrackHype Logo Design Badge.webp">
+  <link rel="apple-touch-icon" href="Assets/logos/TrackHype-Logo-192.png">
   <title>New Music — TrackHype</title>
 
   <meta property="og:title" content="New Music - TrackHype">
@@ -281,8 +282,11 @@
 
       const demoMusic = () => TrackHype.makeNewMusicData();
       const all = () => {
+        const demoMode = (typeof TrackHype.currentMode === "function") && TrackHype.currentMode() === "demo";
         const engine = newestFromEngine();
-        return engine.length ? engine : demoMusic();
+        if(engine.length){ return engine; }
+        if(!demoMode){ return []; }
+        return demoMusic();
       };
       let music = all();
 
@@ -348,6 +352,30 @@
 
         countEl.textContent = `${list.length} ${list.length===1 ? "release":"releases"}`;
         emptyEl.hidden = list.length !== 0;
+        if(list.length === 0 && !((typeof TrackHype.currentMode === "function") && TrackHype.currentMode() === "demo")){
+          const rName = (typeof TrackHype.currentView === "function" && TrackHype.currentView().name) || "This region";
+          const s = emptyEl.querySelector("strong");
+          const p = emptyEl.querySelector("p");
+          const btn = document.getElementById("emptyClear");
+          if(s){ s.textContent = rName + " has no new music yet."; }
+          if(p){ p.textContent = "Newly approved releases appear here once real music is published. Switch back to Browser mode for the demo while you wait."; }
+          if(btn){
+            btn.onclick = () => TrackHype.navigate("region-selector.html");
+            btn.textContent = "Choose a mode";
+            btn.classList.remove("primary");
+          }
+        } else {
+          const s = emptyEl.querySelector("strong");
+          const p = emptyEl.querySelector("p");
+          const btn = document.getElementById("emptyClear");
+          if(s){ s.textContent = "Nothing matches these filters yet."; }
+          if(p){ p.textContent = "Try widening the date range, or clear the filters to see every new release."; }
+          if(btn){
+            btn.onclick = () => clearAll();
+            btn.textContent = "Clear all filters";
+            btn.classList.add("primary");
+          }
+        }
 
         tracks.innerHTML = list.map(item => {
           const isFav = favs.includes(item.id);

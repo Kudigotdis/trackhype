@@ -11,6 +11,7 @@
     if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
   </script>
   <link rel="icon" type="image/webp" href="Assets/logos/TrackHype Logo Design Badge.webp">
+  <link rel="apple-touch-icon" href="Assets/logos/TrackHype-Logo-192.png">
   <title>History — TrackHype</title>
 
   <meta property="og:title" content="Chart History - TrackHype">
@@ -308,8 +309,14 @@
       try{ localStorage.setItem("trackhype.seedRev", String(TH_SEED_REV)); }catch(e){}
     }
 
+    function regionEmpty(){
+      if(typeof TrackHype.currentMode === "function" && TrackHype.currentMode() === "demo"){ return false; }
+      return !(typeof TrackHype.anyRealContent === "function" && TrackHype.anyRealContent());
+    }
+
     function ensureSeed(){
       if(!window.CHART_HISTORY){ return; }
+      if((typeof TrackHype.currentMode === "function") && TrackHype.currentMode() !== "demo"){ return; }
       maybeResetSeeds();
       const c = TrackHype.chartId(current.title);
       const snaps = TrackHype.getSnapshots(c);
@@ -356,6 +363,12 @@
 
     function renderChart(){
       ensureSeed();
+      if(regionEmpty()){
+        const name = (typeof TrackHype.currentView === "function" && TrackHype.currentView().name) || "This region";
+        document.getElementById("historyResults").innerHTML =
+          '<section class="th-section"><div class="th-card"><div class="th-empty"><strong>' + name + ' has no published chart history yet.</strong><span>Official chart archives appear here once ' + name + ' charts are published. Switch back to Browser mode for the demo while you wait.</span><button class="th-btn" type="button" onclick="TrackHype.navigate(\'region-selector.html\')">Choose a mode</button></div></div><div class="hn-foot">' + TrackHype.esc(current.title) + '</div></section>';
+        return;
+      }
       const snap = currentSnapshot();
       const rows = snapshotRows(snap);
       const html = rows.map(e => `
@@ -428,6 +441,10 @@
 
     function render(){
       updateControls();
+      if(regionEmpty()){
+        renderChart();
+        return;
+      }
       if(activeTab === "chart") renderChart();
       if(activeTab === "stats") renderStats();
       if(activeTab === "artists") renderArtists();
@@ -481,6 +498,11 @@
       current = next;
       ensureSeed();
       render();
+      if(regionEmpty() && typeof TrackHype.loadPublishedChart === "function"){
+        TrackHype.loadPublishedChart(TrackHype.chartId(current.title), TrackHype.currentWeekKey()).then(function(res){
+          if(res && res.ok){ render(); }
+        });
+      }
     }
 
     window.addEventListener("pageshow", initHistoryPage);

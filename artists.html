@@ -11,6 +11,7 @@
     if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
   </script>
   <link rel="icon" type="image/webp" href="Assets/logos/TrackHype Logo Design Badge.webp">
+  <link rel="apple-touch-icon" href="Assets/logos/TrackHype-Logo-192.png">
   <title>Artists — TrackHype</title>
 
   <meta property="og:title" content="Artists - TrackHype">
@@ -183,12 +184,22 @@
       const year = document.getElementById("year").value;
       const sort = document.getElementById("az").value;
 
-      let data = ARTISTS.filter(a =>
+      const demoMode = (typeof TrackHype.currentMode === "function") && TrackHype.currentMode() === "demo";
+      const catalog = demoMode ? ARTISTS : [];
+
+      let data = catalog.filter(a =>
         (genre === "All Genres" || a.genre === genre) &&
         (status === "All Status" || (status === "Following" ? isFollowing(a.name) : a.status.includes(status))) &&
         (year === "Any Year" || String(a.year) === year) &&
         (selectedLetter === "ALL" || a.name.toUpperCase().startsWith(selectedLetter))
       );
+
+      if(!catalog.length && !demoMode){
+        const rName = (typeof TrackHype.currentView === "function" && TrackHype.currentView().name) || "This region";
+        document.getElementById("resultCount").textContent = "Found 0 artists.";
+        document.getElementById("artistList").innerHTML = '<div class="th-card"><div class="th-empty"><strong>' + rName + ' has no artists yet.</strong><span>Artists from ' + rName + ' appear here once their releases are published. Switch back to Browser mode for the demo while you wait.</span><button class="th-btn" type="button" onclick="TrackHype.navigate(\'region-selector.html\')">Choose a mode</button></div></div>';
+        return;
+      }
 
       if(sort === "successful") data = [...data].sort((a,b)=>(b.chart - a.chart) || a.name.localeCompare(b.name));
       if(sort === "active") data = [...data].sort((a,b)=>Math.max(...b.status.map(s=>s==="Recently Active"?2:1)) - Math.max(...a.status.map(s=>s==="Recently Active"?2:1)));

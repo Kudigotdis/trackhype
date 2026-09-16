@@ -11,6 +11,7 @@
     if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
   </script>
   <link rel="icon" type="image/webp" href="Assets/logos/TrackHype Logo Design Badge.webp">
+  <link rel="apple-touch-icon" href="Assets/logos/TrackHype-Logo-192.png">
   <title>Radio Charts — TrackHype</title>
 
   <meta property="og:title" content="Radio Charts - TrackHype">
@@ -88,14 +89,23 @@
     var PER_BATCH = 12;
 
     var country = (function(){
+      var demoMode = (typeof window.TrackHype.currentMode === "function") ? window.TrackHype.currentMode() === "demo" : true;
+      if(demoMode){
+        var view = (typeof window.TrackHype.currentView === "function") ? window.TrackHype.currentView() : null;
+        if(view && view.mode === "region" && view.region && view.region.name){
+          return String(view.region.name);
+        }
+        return "";
+      }
       try{
         var r = JSON.parse(localStorage.getItem("trackhype.region") || "null");
         if(r && r.name && /botswana/i.test(r.name)) return "Botswana";
+        if(r && r.name) return r.name;
       }catch(e){}
       return "Zimbabwe";
     })();
 
-    var allStations = (window.RADIO_STATIONS || []).filter(function(s){ return s.country === country; });
+    var allStations = (window.RADIO_STATIONS || []).filter(function(s){ return !country || s.country === country; });
     var matched = allStations.slice();
     var shown = 0;
 
@@ -137,8 +147,11 @@
       }
     }, { passive:true });
 
-    document.getElementById("pageTitle").textContent = country + " Radio Charts";
-    document.getElementById("pageSub").textContent = "All " + country + " radio stations in this region.";
+    var titleCountry = country || "All Regions";
+    document.getElementById("pageTitle").textContent = titleCountry + " Radio Charts";
+    document.getElementById("pageSub").textContent = country
+      ? ("All " + country + " radio stations in this region.")
+      : "Radio stations from every supported region.";
     resetList();
   </script>
 </body>

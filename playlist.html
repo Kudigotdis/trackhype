@@ -11,6 +11,7 @@
     if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
   </script>
   <link rel="icon" type="image/webp" href="Assets/logos/TrackHype Logo Design Badge.webp">
+  <link rel="apple-touch-icon" href="Assets/logos/TrackHype-Logo-192.png">
   <title>Playlist — TrackHype</title>
 
   <meta property="og:title" content="Playlist - TrackHype">
@@ -255,6 +256,11 @@
     };
 
     window.voteSong = (prefix, i) => {
+      const vote = (typeof TrackHype.canVote === "function") ? TrackHype.canVote() : null;
+      if(vote && !vote.ok){
+        TrackHype.toast(vote.reason);
+        return;
+      }
       let s;
       if(prefix === "sp" && singlePlaylist){
         s = singlePlaylist.songs[i];

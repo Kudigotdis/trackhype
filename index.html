@@ -11,6 +11,7 @@
     if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
   </script>
   <link rel="icon" type="image/webp" href="Assets/logos/TrackHype Logo Design Badge.webp">
+  <link rel="apple-touch-icon" href="Assets/logos/TrackHype-Logo-192.png">
   <title>Hyped — TrackHype</title>
 
   <meta property="og:title" content="Hyped - TrackHype">
@@ -269,16 +270,31 @@
 
     function art(index){ return "Assets/charts/top_40_chart/" + ((index % 40) + 1) + ".jpg"; }
 
+    function demoMode(){
+      return !(typeof TrackHype.currentMode === "function") || TrackHype.currentMode() === "demo";
+    }
     function currentRegionCountry(){
+      if(demoMode()){
+        const view = (typeof TrackHype.currentView === "function") ? TrackHype.currentView() : null;
+        if(view && view.mode === "region" && view.region && view.region.name){
+          const n = String(view.region.name);
+          if(/botswana/i.test(n)) return "Botswana";
+        }
+        return "";
+      }
       try{
         const r = JSON.parse(localStorage.getItem("trackhype.region") || "null");
         if(r && r.name && /botswana/i.test(r.name)) return "Botswana";
       }catch(e){}
       return "Zimbabwe";
     }
+    function regionEmpty(){
+      return !demoMode();
+    }
     (function(){
       const country = currentRegionCountry();
-      const stations = (window.RADIO_STATIONS || []).filter(s => s.country === country);
+      let stations = window.RADIO_STATIONS || [];
+      if(country){ stations = stations.filter(s => s.country === country); }
       document.getElementById("radioShows").innerHTML = stations.map(s =>
         `<a class="hy-tile" href="radio-station.html?station=${encodeURIComponent(s.id)}">
           <img class="hy-tile-art radio-logo" loading="lazy" src="${s.logo}" alt="${s.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';">
@@ -321,6 +337,14 @@ renderAllContent();
     }
 
     function renderAllContent(){
+      if(regionEmpty()){
+        const name = (typeof TrackHype.currentView === "function" && TrackHype.currentView().name) || "This region";
+        document.getElementById("recentCharts").innerHTML = "";
+        document.getElementById("nationalTop").innerHTML = "";
+        document.getElementById("genreSections").innerHTML =
+          '<div class="th-card"><div class="th-empty"><strong>' + name + ' does not have content yet.</strong><span>Once artists from ' + name + ' submit music and moderators approve it, ' + name + ' songs, charts and artists appear here. Switch back to Browser mode for the demo while you wait.</span><button class="th-btn" type="button" onclick="TrackHype.navigate(\'region-selector.html\')">Choose a mode</button></div></div>';
+        return;
+      }
       const genres = activeFilter === "culture" ? cultureGenres : spiritualGenres;
       const prefs = (typeof TrackHype.getHomeCharts === "function")
         ? TrackHype.getHomeCharts()
