@@ -71,7 +71,13 @@
 <div class="th-card pad">
             <div class="th-form-group"><label>Artist Bio</label><textarea class="th-textarea" id="artist-bio" placeholder="Tell TrackHype about the artist..."></textarea></div>
             <div class="th-form-group"><label>Artist Portrait</label><input class="th-input" id="artist-portrait" type="file" accept="image/*" onchange="previewImage(this,'portrait-preview')"><img id="portrait-preview" class="cover-preview" alt="" style="max-width:140px;border-radius:8px;display:none;margin-top:8px"></div>
-            <div class="th-form-group"><label>Instagram / TikTok / Facebook</label><input class="th-input" id="artist-social" type="text" placeholder="Social profile links"></div>
+            <div class="th-form-group"><label>Social — YouTube</label><input class="th-input" id="artist-social-youtube" type="text" placeholder="youtube.com/your-channel" oninput="onSocialInput(this,'youtube')"></div>
+            <div class="th-form-group"><label>Social — Spotify</label><input class="th-input" id="artist-social-spotify" type="text" placeholder="open.spotify.com/artist/..." oninput="onSocialInput(this,'spotify')"></div>
+            <div class="th-form-group"><label>Social — iTunes / Apple Music</label><input class="th-input" id="artist-social-itunes" type="text" placeholder="music.apple.com/artist/..." oninput="onSocialInput(this,'itunes')"></div>
+            <div class="th-form-group"><label>Social — Amazon Music</label><input class="th-input" id="artist-social-amazonmusic" type="text" placeholder="amazon.com/music/..." oninput="onSocialInput(this,'amazonMusic')"></div>
+            <div class="th-form-group"><label>Social — Twitter / X</label><input class="th-input" id="artist-social-twitter" type="text" placeholder="x.com/yourhandle" oninput="onSocialInput(this,'twitter')"></div>
+            <div class="th-form-group"><label>Social — Facebook</label><input class="th-input" id="artist-social-facebook" type="text" placeholder="facebook.com/yourpage" oninput="onSocialInput(this,'facebook')"></div>
+            <div class="th-form-group"><label>Social — Instagram</label><input class="th-input" id="artist-social-instagram" type="text" placeholder="instagram.com/yourhandle" oninput="onSocialInput(this,'instagram')"></div>
           </div>
         </section>
 
@@ -155,6 +161,7 @@
 
   <script src="demo-playlist.js"></script>
   <script src="trackhype.js"></script>
+  <script src="js/api.js"></script>
   <script>
     const GENRES = ['Sungura','Chimurenga','Tuku Music','Afro-Jazz','Zimbabwean Jazz','Imbube','Zimbabwean Rumba','Afro-Fusion','Afro-Pop','Zimdancehall','Urban Grooves','Zim Hip Hop','Amapiano','Zimbabwean House','Zim EDM','R&B','Soul','Gospel','Reggae','Dancehall','House','Mbira','Jiti','Mbende / Jerusarema','Amabhiza'];
     const CHARTS = ['National Top 100','Zim Hip Hop Top 20','Zimdancehall Top 20','Gospel Top 20','Sungura Top 20','Zimbabwean House Top 20','R&B Top 20'];
@@ -300,6 +307,23 @@ function goToPreview(){
       window.scrollTo({top:0});
     }
 
+    var artistSocials = {};
+    window.onSocialInput = function(input, key){
+      artistSocials[key] = (input.value || '').trim();
+      if(!artistSocials[key]) delete artistSocials[key];
+    };
+    window.packSocials = function(){
+      var p = null, k, keys = Object.keys(artistSocials || {});
+      for(var i=0;i<keys.length;i++){
+        k = keys[i];
+        if(typeof artistSocials[k] === 'string' && artistSocials[k].trim()){
+          p = p || {};
+          p[k] = artistSocials[k].trim();
+        }
+      }
+      return p;
+    };
+
     function confirmAndPay(){
       const tracks = [...document.querySelectorAll('.track-box')];
       const artist = document.getElementById('global-artist').value.trim();
@@ -310,6 +334,7 @@ function goToPreview(){
         phone: document.getElementById('global-phone').value.trim(),
         network: document.getElementById('global-network').value,
         amountUSD: tracks.length * PRICE_PER_TRACK,
+        socials: window.packSocials ? packSocials() : null,
         tracks: tracks.map(t=>({
           title: t.querySelector('.track-title').value.trim(),
           chart: t.querySelector('.track-chart').value,
@@ -322,6 +347,11 @@ function goToPreview(){
         const pendingPayments = (pending && pending.payments) ? pending.payments : [];
         sessionStorage.setItem('trackhype_pending_submission', JSON.stringify({ ...submission, payments: pendingPayments.concat([submission]) }));
       }catch(e){ sessionStorage.setItem('trackhype_pending_submission', JSON.stringify(submission)); }
+      if(window.API && API.hasSession && API.hasSession() && window.packSocials && packSocials()){
+        try{
+          API.saveProfile({ socials: packSocials() });
+        }catch(err){ /* silent — socials already safe in the pending payload above */ }
+      }
       TrackHype.openSheet({
         title: 'Submission Received',
         html: `
