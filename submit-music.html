@@ -39,9 +39,9 @@
   <main class="th-app">
     <div class="th-shell">
 
-      <section>
+<section>
         <h1 class="th-page-title">Submit Music</h1>
-        <p class="th-page-subtitle">TrackHype Artist Submission — Zimbabwe. <strong>$10.00 USD per song.</strong> Payment creates a submission record; it does not guarantee official chart placement.</p>
+        <p class="th-page-subtitle" id="th-subtitle">TrackHype Artist Submission. <strong>$10.00 USD per song.</strong> Payment creates a submission record; it does not guarantee official chart placement.</p>
       </section>
 
       <!-- FORM -->
@@ -50,6 +50,10 @@
         <section class="th-section">
           <div class="th-section-head"><h2>Artist Details</h2></div>
 <div class="th-card pad">
+            <div class="th-form-group"><label>Chart Territory *</label>
+              <select class="th-select" id="chart-territory" onchange="onTerritoryChange()"></select>
+              <small style="display:block;margin-top:5px;font-size:12px;color:var(--th-muted)">Where this submission charts and how payment is displayed in the local currency.</small>
+            </div>
             <div class="th-form-group"><label>Artist / Group Name *</label><input class="th-input" id="global-artist" type="text" placeholder="Enter your stage name"></div>
             <div class="th-form-group"><label>Legal / Registered Name</label><input class="th-input" id="global-legal" type="text" placeholder="Optional legal / registered name"></div>
             <div class="th-form-group"><label>Contact Email *</label><input class="th-input" id="global-email" type="email" placeholder="artist@example.com"></div>
@@ -96,10 +100,10 @@
 
         <section>
           <div class="th-card pad" style="display:flex;align-items:center;justify-content:space-between;gap:10px">
-            <div>
+<div>
               <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:var(--th-muted)">Total Due</div>
               <div id="total-price-display" style="font-size:22px;font-weight:900;color:var(--th-primary-dark)">$10.00 USD</div>
-              <div style="font-size:11px;color:var(--th-muted)">$10.00 USD per song</div>
+              <div id="total-price-equivalent" style="font-size:11px;color:var(--th-muted)">$10.00 USD per song</div>
             </div>
             <button class="th-btn primary" type="button" onclick="goToPreview()">PREVIEW</button>
           </div>
@@ -125,10 +129,11 @@
             <div class="th-form-group"><label>Additional Notes</label><div style="font-size:13px" id="prev-notes"></div></div>
           </div>
           <div class="th-card pad">
-            <div style="font-weight:900;text-transform:uppercase;font-size:12px;color:var(--th-muted)">Payment</div>
+<div style="font-weight:900;text-transform:uppercase;font-size:12px;color:var(--th-muted)">Payment</div>
             <div style="font-size:28px;font-weight:900;color:var(--th-primary-dark);margin-top:4px" id="prev-total-cost">$10.00 USD</div>
             <div style="font-size:12px;color:var(--th-muted)">Artists pay $10.00 USD for each song submitted.</div>
-            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
+            <div style="font-size:12px;color:var(--th-muted)" id="prev-payment-equivalent"></div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px" id="prev-payment-chips">
               <span class="payment-chip">EcoCash</span><span class="payment-chip">OneMoney</span><span class="payment-chip">TeleCash</span><span class="payment-chip">Card / Online</span>
             </div>
           </div>
@@ -167,9 +172,58 @@
     const GENRES = (typeof TrackHype.getGenrePool === "function")
       ? TrackHype.getGenrePool((TrackHype.regionDefault ? TrackHype.regionDefault().genreKey : "") || "zimbabwe")
       : ['Sungura','Chimurenga','Tuku Music','Afro-Jazz','Zimbabwean Jazz','Imbube','Zimbabwean Rumba','Afro-Fusion','Afro-Pop','Zimdancehall','Urban Grooves','Zim Hip Hop','Amapiano','Zimbabwean House','Zim EDM','R&B','Soul','Gospel','Reggae','Dancehall','House','Mbira','Jiti','Mbende / Jerusarema','Amabhiza'];
-    const CHARTS = ['National Top 100','Zim Hip Hop Top 20','Zimdancehall Top 20','Gospel Top 20','Sungura Top 20','Zimbabwean House Top 20','R&B Top 20'];
+const CHARTS = ['National Top 100','Zim Hip Hop Top 20','Zimdancehall Top 20','Gospel Top 20','Sungura Top 20','Zimbabwean House Top 20','R&B Top 20'];
 const PRICE_PER_TRACK = 10;
+    let territory = (TrackHype.regionDefault && TrackHype.regionDefault()) || { code: "ZW", name: "Zimbabwe", currency: { code: "USD", label: "United States Dollar", five: "$5.00", ten: "$10.00" } };
     let trackCount = 0;
+
+    function fmtNumber(n){
+      return n.toLocaleString ? n.toLocaleString("en-US") : String(n);
+    }
+
+    function parseMoneyAmount(text){
+      const m = String(text || "").replace(/,/g, "").match(/[0-9]+(?:\.[0-9]+)?/);
+      return m ? parseFloat(m[0]) : null;
+    }
+
+    function moneyEquivalent(nTracks){
+      const amount = nTracks * PRICE_PER_TRACK;
+      const per = territory.currency;
+      const eq = parseMoneyAmount(per.ten);
+      if(!eq || amount === PRICE_PER_TRACK){ return per.ten; }
+      return per.ten.replace(/[0-9][0-9.,]*/, function(d){ return fmtNumber(parseFloat(d.replace(/,/g,"")) * nTracks); });
+    }
+
+    function onTerritoryChange(){
+      const sel = document.getElementById("chart-territory");
+      const code = sel ? sel.value : "ZW";
+      territory = (TrackHype.territoryFor && TrackHype.territoryFor(code)) || territory;
+      const cur = territory.currency || {};
+      const sub = document.getElementById("th-subtitle");
+      if(sub){
+        sub.innerHTML = "TrackHype Artist Submission — " + TrackHype.esc(territory.name) + ". <strong>$10.00 USD per song.</strong> Local equivalent: <strong>" + TrackHype.esc(cur.ten || "$10.00") + "</strong> per song. Payment creates a submission record; it does not guarantee official chart placement.";
+      }
+      const chips = document.getElementById("prev-payment-chips");
+      if(chips){
+        chips.innerHTML = '<span class="payment-chip">Mobile money</span><span class="payment-chip">Card / Online</span><span class="payment-chip">' + TrackHype.esc(cur.code || "USD") + '</span>';
+      }
+      const eqline = document.getElementById("prev-payment-equivalent");
+      if(eqline) eqline.textContent = "$10.00 USD = " + (cur.ten || "$10.00") + " per song (" + TrackHype.esc(territory.name) + ")";
+      rerenderGenrePills();
+      updateTotal();
+    }
+
+    function currentGenres(){
+      const k = territory.genreKey || "zimbabwe";
+      return (TrackHype.getGenrePool && TrackHype.getGenrePool(k)) || GENRES;
+    }
+
+    function rerenderGenrePills(){
+      document.querySelectorAll(".track-box .track-genres").forEach(function(box){
+        const active = [...box.querySelectorAll(".genre-pill.is-active")].map(x=>x.textContent);
+        box.innerHTML = currentGenres().map(g=>`<div class="genre-pill${active.indexOf(g)>=0 ? " is-active" : ""}" onclick="toggleGenre(this)">${g}</div>`).join('');
+      });
+    }
 
     function previewCover(input, id){
       const img = document.getElementById(id);
@@ -227,9 +281,13 @@ box.innerHTML = `
       updateTotal();
     }
 
-    function updateTotal(){
+function updateTotal(){
       const n = document.querySelectorAll('.track-box').length;
+      const cur = territory.currency || {};
       document.getElementById('total-price-display').textContent = '$' + (n * PRICE_PER_TRACK).toFixed(2) + ' USD';
+      const eq = cur.ten ? moneyEquivalent(n) : "$" + (n * PRICE_PER_TRACK).toFixed(2);
+      document.getElementById('total-price-equivalent').textContent =
+        n + ' track' + (n>1?'s':'') + ' \u00B7 $' + (n*PRICE_PER_TRACK).toFixed(2) + ' USD \u2248 ' + eq + ' (' + (territory.name || 'Zimbabwe') + ')';
     }
 
     function toggleGenre(el){
@@ -264,6 +322,7 @@ function goToPreview(){
       }
       document.getElementById('prev-track-count').textContent = tracks.length;
       document.getElementById('prev-total-cost').textContent = '$' + (tracks.length * PRICE_PER_TRACK).toFixed(2) + ' USD';
+      document.getElementById('prev-payment-equivalent').textContent = '$' + (tracks.length * PRICE_PER_TRACK).toFixed(2) + ' USD \u2248 ' + moneyEquivalent(tracks.length) + ' (' + (territory.name || 'Zimbabwe') + ')';
       const notes = document.getElementById('global-notes').value.trim();
       const notesContainer = document.getElementById('prev-notes-container');
       if(notes){ notesContainer.style.display = ''; document.getElementById('prev-notes').textContent = notes; }
@@ -360,7 +419,7 @@ function goToPreview(){
         html: `
           <p><strong>${TrackHype.esc(submission.id)}</strong></p>
           <div class="th-table-list" style="margin-top:10px">
-            <div class="th-table-row"><strong>Amount due</strong><span><strong>$ ${submission.amountUSD.toFixed(2)} USD</strong></span><span></span></div>
+            <div class="th-table-row"><strong>Amount due</strong><span><strong>$ ${submission.amountUSD.toFixed(2)} USD</strong></span><span>${territory.currency && territory.currency.ten ? '\u2248 ' + TrackHype.esc(moneyEquivalent(tracks.length)) + ' (' + TrackHype.esc(territory.name) + ')' : ''}</span></div>
             <div class="th-table-row"><strong>Status</strong><span class="th-status">Payment Required</span><span></span></div>
           </div>
           <p style="margin-top:12px">Payment creates a payment/submission record. It does not guarantee official chart placement.</p>`,
@@ -369,6 +428,37 @@ function goToPreview(){
     }
 
     addTrack();
+
+    (function initSubmitMusic(){
+      const sel = document.getElementById("chart-territory");
+      if(sel && TrackHype.getTerritories){
+        const savedCode = territory.code || "ZW";
+        sel.innerHTML = TrackHype.getTerritories().map(t =>
+          `<option value="${t.code}"${t.code===savedCode?" selected":""}>${t.name}</option>`
+        ).join("");
+      }
+
+      let profileChartCharts = [];
+      try {
+        const acct = JSON.parse(localStorage.getItem("trackhype_account") || "null");
+        if(acct && acct.chartTerritories && acct.chartTerritories.length){
+          profileChartCharts = acct.chartTerritories.reduce(function(acc,t){
+            return acc.concat((t.charts||[]).map(function(c){ return c; }));
+          }, []);
+        }
+      }catch(e){}
+
+      if(profileChartCharts.length){
+        document.querySelectorAll(".track-chart").forEach(function(sel){
+          const current = sel.value;
+          const optSet = {};
+          profileChartCharts.concat(CHARTS).forEach(function(c){ optSet[c]=true; });
+          sel.innerHTML = Object.keys(optSet).map(c => `<option${c===current?" selected":""}>${c}</option>`).join("");
+        });
+      }
+
+      onTerritoryChange();
+    })();
   </script>
 </body>
 </html>
