@@ -1,168 +1,18 @@
-# TrackHype — Progress & Roadmap
-
-## What TrackHype is
-Music discovery/voting web app. Static frontend (HTML/CSS/JS, no build step), hosted on GitHub Pages, backed by Supabase (auth + Postgres + RLS).
-
-- **Live site:** `https://kudigotdis.github.io/trackhype/` — auto-deploys from `main`, ~1 min.
-- **Local dev:** `Start TrackHype.bat` → `py serve.py --open` → `http://localhost:8080`.
-- **Supabase:** project `xtjbaaawzwzwiewzkrsa`. Anon key in `js/supabase-config.js` (publishable by design; RLS is the real protection).
-- **Shared shell:** `trackhype.js` (`TrackHype.navigate`, `.toast`, `.esc`, sheet/modals). Supabase JS client loaded from CDN before `js/api.js`.
-
-## Decisions locked (2026-09-15)
-- **Artist identity:** self-declared. Owner needs an **admin approval dashboard** (legal will confirm the artist list) before an artist profile is "verified/represented".
-- **Login required to vote and to follow** (fan actions). Browsing charts/music stays public; login is required at the confirm step.
-- **Votes move to Supabase** (real, per-profile vote history); localStorage stays as a warm local cache fallback.
-- **Profile page:** new `profile.html` (view + edit; preferences editable there).
-- **Public browsing:** keep charts/music/song/artist pages readable before signup.
-
-## What's done
-
-### Auth infra — `js/api.js` + `js/supabase-config.js`
-- Config committed and loaded before `api.js` on all relevant pages.
-- `API` wrapper: `ready`, `getSession`, `currentUser`, `signInWithEmail`, `signUp`, `signOut`, `resendConfirmation`, `emailConfirmed`, `getProfile`, `saveProfile`, `profileGenres`, `syncPendingProfile`, auth-change + flow hooks.
-- Redirect capture (`handleAuthRedirectUrl`): handles tokens in URL query, hash, PKCE `?code`, and `?token_hash` (incl. `type=recovery`); runs on load + `pageshow`, then strips tokens from the URL bar.
-- Password reset: `resetPassword`, `updatePassword` (8+ chars, confirm match), `onPasswordRecovery(cb)`.
-- **Recovery landing fix** (`c3798eb`): `resetPassword` uses deterministic `?reset=1` marker; non-`menu` recovery landings auto-route to `menu.html?reset=1` (all non-`menu` paths incl. root → no more dead-end at `/trackhype/`.
-- **Reset flow + UI finalized** (`menu.html` + `js/api.js`):
-  - `resetPassword` redirects to `menu.html?reset=1` (bare `?code=` redirect was broken — with no `?reset` marker and no `type=recovery` appended by Supabase PKCE, recovery detection failed and the page silently just signed you in).
-  - Popup gains a full recover canvas: request reset view, **"Check your inbox"** sent view (with `resend`), **set-new-password** view (8+ char + confirm + ready-session guard), and an **expired/invalid-link** state (`?reset=1` + `?error=`/`?error_code=otp_expired` → shows the reset request view with a "reset link expired" banner instead of a dead landing).
-  - Bootstrap handles `?reset=1` (open recovery view), `?reset=1&error=…` (show expired), and `#reset`/`?reset` (reset request view); `hideAuthViews()` single orchestration function, no duplicate IDs.
-- **Auth gate + PKCE reset** (`a188fde`):
-  - Client now uses `flowType: "pkce"` (api.js:12); email-link redirects land with `?code=` and are exchanged via `exchangeCodeForSession` (api.js:77).
-  - `TrackHype.requireProfile(feature)` (trackhype.js:4628): signed-in+profile check; if signed out, prompts an **in-sheet** sign-in with "Forgot password?" → "Send reset link" → "Check your inbox" views, so page state/audio player is never disturbed. Returns the profile row (or deprecation guard offline).
-  - Charts ballot gated at the confirm step: `openBallotSheet()` is now async and awaits `TrackHype.requireProfile("vote")` (charts.html).
-  - Router lazy-loads missing external `<script src>` deps (Supabase CDN, config, api.js) during in-SPA navigation so gated pages work without a full reload.
-  - History seeding fixed: `ensureSeed()` checks `getSnapshots(c)` instead of a per-week submissions map; `TH_SEED_REV` bumped to 5 (charts + history).
-
-### Onboarding — `onboarding.html`
-- 6 steps: personal info → music preferences → region → account (email/password) → verify → create profile.
-- Email confirmation ON, with an in-app overlay (no browser `alert()`).
-- `finish()` builds profile (username, location, bio, mobile money number), stores a pending profile locally, `syncPendingProfile()` pushes once the session is live.
-- Real region data: `docs/info/countries_mobile_networks.js`, `docs/info/mobile_money_banking_services.js`.
-- Vet/artist self-declare flag captured; KYC status stored.
-
-### Sign-in — `menu.html` popup
-- "Sign In / Sign Up" floating popup (choice + log-in form), inline validation, Enter-to-submit, in-popup errors.
-- Signed-in card (initials, name, "Logged in as", Log out).
-- `renderProfile()` hydrates from Supabase + mirrors to localStorage; `hydrate()` syncs genres/preferences.
-- Mobile double-tap close bug fixed (grace window, `touch-action:manipulation`, double-submit guard).
-
-### Database (Supabase, SQL applied in editor — "Success. No rows returned.")
-- `profiles` keyed to `auth.users.id`; RLS on.
-- Migrations committed + applied:
-  - `0006_add_mobile_money_number.sql` → `profiles.mobile_money_number`
-  - `0007_auth_location_fields.sql` → `profiles.location` + `bio`, rebuilt `handle_new_user()` trigger (auto-creates `profiles` row on signup, maps location/bio/mobile money).
-
-### Deployed (all on `main`)
-`85e0cba` config + redirect capture + confirmation overlay + pending profile + migrations
-`422a392` hardened redirect handling + menu signed-in card/logout
-`1f81968` sign-in popup
-`5b5c9e0` double-tap fixes
-`0ea8138` full password-reset flow (api + menu + onboarding link)
-`c3798eb` recovery-landing `?reset=1` fix
-`a188fde` voting auth gate (`requireProfile`) + PKCE email-link flow
-`9de6613` reset redirect = bare `menu.html` (exact allow-list match)
-
-### ✅ 2026-09-16 — artist info collection + storage (```
-**Committed + pushed** — migration `0008_artist_photos_socials` + onboarding rehydrate + photo upload.
-- **Migration `20260914_0008_artist_photos_socials.sql`**: `profiles` gains `whatsapp_same` (bool, default true), `photo_url`, `artist_photo_url`, `socials` (jsonb). Bucket `trackhype-media` created in dashboard (public). Storage RLS: owner write + public read via `storage.objects` policies keyed on `bucket_id='trackhype-media'` and `(storage.foldername(name))[1] = auth.uid()`.
-- **`js/api.js`**: `uploadProfilePhoto(file, kind)` (bucket `trackhype-media`, path `<user-id>/<kind>.webp`, upsert, public URL only — never stores the blob). `saveProfile` passes arbitrary `fields` through the UPSERT (whatsapp_same, socials, photo URLs ride in). Fixed latent `kindsBuckets` ReferenceError (whitelist inlined).
-- **`onboarding.html`**: `finish()` uploads pending profile/artist photos (data-URL stash → Storage → public URL) before `saveProfile`, includes `whatsapp_same`/`socials`/`photoURL`/`artistPhotoUrl` in the payload; rehydrate IIFE on BOOT prefills all inputs + genre/follow chips + region + mobile-money controls + photo preview from `API.localAccount()` mirror + `API.getProfile()`/`profileGenres()`.
-- **Verify**: `node --check` PASS (api.js + onboarding inline script); all rehydrate helper names resolve (no undefined call).
-
-### Uncommitted (working tree) — reset-flow completeness pass
-- `js/api.js`: `resetPassword` redirectTo → `menu.html?reset=1` (deterministic recovery marker).
-- `menu.html`: full in-sheet auth popup reset flow — request → **check-your-inbox (sent)** view with resend → **set-new-password** (8+ char, confirm match, ready-session guard that retries the PKCE exchange) → success toast → signed-in card updates; plus **expired/invalid-link** banner (`?reset=1&error=` `otp_expired`/`access_denied`) and `#reset`/`?reset=1` auto-open bootstrap.
-
-## Current status — reset flow complete, needs final test
-1. **Reset end-to-end (PKCE) — complete + pushed:** `resetPassword` redirects to `menu.html?reset=1` (deterministic recovery marker carried through PKCE exchange, no reliance on Supabase's flaky `type=recovery`/`PASSWORD_RECOVERY` PKCE signaling). `menu.html` now has the full reset UI: request view → "Check your inbox" sent view (with resend) → set-new-password view (8+ chars, confirm, ready-session guard) → success toast; plus an **expired/invalid-link banner** (`?error_code=otp_expired` / `?error=access_denied`) landing on the request view so stale links never dead-end at a bare page.
-2. **Supabase Dashboard → Authentication → URL Configuration (owner action — REQUIRED before testing):**
-   - **Site URL:** `https://kudigotdis.github.io/trackhype`
-   - **Redirect URLs (exact — wildcards ignored by hosted Supabase):**
-     - `https://kudigotdis.github.io/trackhype/menu.html`
-     - `https://kudigotdis.github.io/trackhype/menu.html?reset=1`
-     - `http://localhost:8080/menu.html`
-     - `http://localhost:8080/menu.html?reset=1`
-   - (Keep the bare entries; they cover plain sign-in/sign-up redirects. The `?reset=1` entries are needed because Supabase validates the full `redirect_to` string, which now ends in `?reset=1`.)
-2. **Supabase Dashboard → Authentication → URL Configuration** (owner action):
-   - **Site URL:** `https://kudigotdis.github.io/trackhype`
-   - **Redirect URLs:** add `http://localhost:8080/**` and `https://kudigotdis.github.io/trackhype/**`
-3. Account `ambitious450@gmail.com` exists, **email-confirmed**. Current password unknown → reset is the path back in.
-4. **localStorage is per-origin.** Profiles created on `localhost:8080` won't appear on the hosted site until signed in there (then it syncs from Supabase). Verify on the hosted origin.
-5. **Untracked (do not stage accidentally):** `PROGRESS.md`, `TrackHype_Market_Launch_And_Advertising_Roadmap.md`. (All code from the auth-gate work is committed in `a188fde`.)
-
-## Roadmap — gating behind valid profile / artist profile
-
-### Phase A — foundation
-- ~~Auth gate helper in `trackhype.js`: `TrackHype.requireProfile(feature)`~~ → **done** (`a188fde`); wired into the charts ballot.
-- Finish the reset-password end-to-end test (PKCE — needs Supabase URL config + a fresh reset link).
-
-### Phase B — view profile + preferences
-- Build `profile.html`: signed-in card, bio/location/mobile money/genres — read + edit via `API.saveProfile()` + genre tables; keep localStorage mirror in sync.
-- `menu.html` profile card/shell links to it.
-- Gate: only reachable signed in.
-
-### Phase C — lock interactive features
-- Wire `requireProfile()` into:
-  - **Voting** (`recordVote`, `confirmVoteSheet`, `submitDiscoveryBallot`, `hasVotedToday`, `aggregateVotes` in `trackhype.js`) at the confirm step.
-  - **Following** (genres, songs, artists, charts) — new `follows` table keyed by profile id.
-- **Migrate votes to Supabase:** new `votes`/`discovery_ballots` tables (user id, chart, song, position/points/upvotes, date/week); reads on `history.html`/`charts.html` switch from localStorage to the DB; keep localStorage as cache.
-- **Notifications** (`notifications.html`): gate + populate from real events (votes/follows on your songs/subs).
-
-### Phase D — artist identity + admin approval
-- Self-declare as artist → `kyc_status = pending` (already captured at onboarding).
-- **Admin approval dashboard** (owner-only, e.g. `admin.html`): lists pending artists from legal, approve/reject → flips a verified/"represented" flag; approved artists unlock `artist-dashboard.html` + are listed on artist pages.
-- Decide the exact "represented" marker (e.g. `profiles.role = 'artist'` + `artist_approved = true`).
-
-## Working notes / gotchas
-- **Never commit without checking `git status`**: untracked files right now are `PROGRESS.md` and `TrackHype_Market_Launch_And_Advertising_Roadmap.md`; all code is committed.
-- GitHub Pages deploys root of `main`; verify each auth change on the hosted origin (hard refresh Ctrl+Shift+R).
-- Validate scripts with `node --check` on extracted inline scripts + `js/api.js` before pushing.
-- Reset links are PKCE: fresh link required (old/expired clicks fail with `otp_expired`). `resetPassword` redirects to `origin + dirname(pathname) + "menu.html"` (no query string) so it exactly matches the Supabase Redirect URL allow-list entry. Hosted Supabase ignores `**` wildcards when validating `redirect_to` — use **exact** URLs (e.g. `…/menu.html`), never rely on wildcards.
-
-## Test checklist (release-ready)
-- [ ] Reset email → link (fresh, PKCE `?code=`) → "Set a new password" popup → save → signed in card updates.
-- [ ] Guest taps Vote on charts → in-sheet sign-in → ballot continues where it was.
-- [ ] Sign-in on hosted origin hydrates profile card + preferences.
-- [ ] Vote recorded to Supabase, 1/chart/day enforced, visible in vote history.
-- [ ] Follows saved per profile, reflected on song/artist/chart pages.
-- [ ] Artist self-declares → appears in admin dashboard → approve → artist dashboard unlocks.
-- [ ] Notifications reflect real events for the signed-in user.
 
 ---
 
-## SESSION END — 2025-09-16 (handoff for next session)
+## SESSION END — 2025-09-16 (admin slice: pending submission moderation)
 
-**PRESENT STATE (verified truth, be honest with yourself — nothing below is a guess):**
-1. `git status` shows **`M onboarding.html`** → the **7-social-input slice is COMPLETE but NOT YET COMMITTED/PUSHED**. (Last commit `12db17f` carries migration 0008 + api.js + onboarding rehydrate/photo-upload; the socials slice landed on top as an uncommitted working-tree delta.)
-2. **submit-music.html socials slice: NOT STARTED.** User explicitly confirmed on 2025-09-16 the art collection = **7 discrete social links (YouTube, Spotify, iTunes, Amazon Music, Twitter/X, Facebook, Instagram)** and chose **"Persist to Supabase too (Recommended)"** for BOTH surfaces. That slice is the entire next session.
+**This session's slice — pending-submission admin moderation (Phase 2).**
 
-**What the uncommitted onboarding slice contains (verified in file via read tool):**
-- `S.socials` state seed with 7 keys (youtube/spotify/itunes/amazonMusic/twitter/facebook/instagram) — onboarding.html L1211.
-- 7 social inputs paired into the artist step DOM grid (L1047-1058), each `oninput="onSocialInput(this,'<key>')"`.
-- `window.packSocials()` (L1981) → folds only filled strings as `{key:url}` jsonb, `null` when blank.
-- `window.prefillSocialsInputs()` (L1996) + seed-ride: `account.socials=packSocials()||null` and payload `socials:account.socials||null` (L2274/2340/2327).
-- Rehydrate: `if(p.socials) S.socials=p.socials;` → `if(window.prefillSocialsInputs) prefillSocialsInputs();` (L2734-2735 + 2761).
+**Files (all ASCII-only, node-verified):**
+- `admin.html` — sign-in gate → admin check → `admin_pending_submissions` list with Approve / Reject buttons.
+- `js/admin-api.js` — guarded Supabase wrapper (mirrors js/api.js doctrine: absent/offline Supabase never throws, returns `{ data, error }`).
+- `supabase/migrations/20260914_0009_pending_submission_admin.sql` — idempotent: view of pending submissions + admin-only RLS (re-usable, re-runnable).
 
-**NEXT SESSION — exact to-do list (in order):**
-1. Take stock (setup check): create PUBLIC Storage bucket `trackhype-media` in Dashboard → and run migration 0008 in SQL Editor if not already — the migration includes the storage RLS policies but **NOT the bucket itself**; bucket must exist before policy inserts/object writes work. Verify at least once in the SQL helper's "session-ready" card.
-2. `commit` + `push` the onboarding 7-social slice (message: `feat: artist 7 social links - onboarding collect + rehydrate`).
-3. **Build submit-music.html slice** (per user confirmation): replace the single-combined `#artist-social` (L74) with the same 7 discrete social inputs; add `onSocialInput` mirror + `packSocials()`; fold into the `submission` payload in `confirmAndPay` (L303-324); persist via the same guarded `API.saveProfile` path. (submit-music.html is the offline-first $10-submission surface — it currently has NO api.js include and NO session layer; keep the persistence **optional/guarded** exactly like onboarding, and store only URLs, never base64 blobs.)
-4. Update this REPORT + CHECKLIST, run `node --check` on extracted inline scripts, commit + push, verify on hosted origin (GitHub Pages hard-refresh).
+**SQL Editor task (exactly ONE, in order):**
+1. SHOW ensure you're applying *after* migration 0009 → paste `supabase/migrations/20260914_0009_pending_submission_admin.sql` into SQL Editor and RUN. It is idempotent (drop + create view/policy) so re-running is safe.
+2. Verify it took — run: `select * from public.admin_pending_submissions limit 1;` — should return zero rows (no pending yet) or the pending rows.
 
-**Gotcha already learned this session (record, save yourself 40 minutes):** onboarding/submit-music inline JS lives inside an IIFE but handlers are exposed as `window.*` for inline `oninput=` attributes; the 7 socials write straight into `S.socials` state and are packed/upserted via `account.socials` — do NOT create a second persistence path; ride the existing `API.saveProfile` upsert (profiles.socials jsonb).
-
-## SESSION END — 2025-09-16 (session 2 of art-socials work)
-
-**DONE this session (both surfaces now carry the 7 social links):**
-1. onboarding.html — COMMITTED+PUSHED (bb4d4c). 7 inputs, onSocialInput, packSocials, payload fold socials: account.socials||null, rehydrate prefillSocialsInputs, photo upload + rehydrate (0008). Working tree clean.
-2. submit-music.html — COMMITTED (18e5fcb pending doc update — verify git log). 7 inputs mirror, onSocialInput(artistSocials store), packSocials, confirmAndPay L337 payload fold + L350-353 **guarded** if(window.API && API.hasSession && API.hasSession() && window.packSocials && packSocials()){ API.saveProfile({socials:packSocials()}); } — offline-first never sends; guarded persist rides exactly the onboarding contract.
-
-**GOTCHA (the lesson that cost this session — record it, save yourself 2 hours next time):**
-NEVER trust the edit tool's *render* of non-ASCII content in 
-ewString/oldString. It silently mojibakes multi-byte chars. This session eturn p; became eturn p<arabic bytes>; in submit-music.html:324 — a byte-level truth the read/grep tools DO show but you must *actively hunt* for. The fix that caught it: git diff piped through a non-ASCII sweep ([^\x00-\x7F]), then a byte-level [Text.Encoding]::UTF8.GetBytes() dump to see the TRUE bytes. When editing HTML containing —, —, or any non-ASCII literal, cross-check the target file with a raw-ascii grep BEFORE and AFTER, or keep the content ASCII-only (use &#8212; etc in HTML, \u2014 in JS strings).
-
-**NEXT SESSION — resume point:**
-1. Verify submit-music.html commit landed (git log --oneline -1). If PROGRESS.md shows "pending doc update" in the commit msg, that's stale — the PROGRESS handoff is written AFTER the code commit, always.
-2. Supabase side: REPLACE the TODO. Storage bucket 	rackhype-media must exist before migration 0008 policy INSERTs work (0008 includes storage RLS but NOT the bucket). Confirm in Dashboard → Storage 	rackhype-media PUBLIC. Then run migration 0008 in SQL Editor if not already.
-3. Next feature slice ideas (in priority order): pending-submission admin view; chart rules modal; pay-first flow verification with a real  payment; notifications wiring.
+**GOTCHA (the lesson that genuinely cost this session — record it, spare yourself next time):**
+The mojibake doctrine now has a second clause. Not only does the **edit tool render** silently distort non-ASCII (learned last session: `return p;` → `return p<pb679 bytes>;`), this session it bit in a NEW way: **the `write` tool wrote an inline script block byte-perfect, but my own *interleaved* PowerShell heredoc `$body` in a wrapper was what carried the double-asterisk `null**` artifact into `js/admin-api.js`** — the file check gate `node --check` (byte-truth, not render) caught it at 0. Unlearn the habit of *interpolating project source into a PowerShell here-string*. Write slices as their own files, and let the *file* be the truth — never inline-string the code through a second parser.
