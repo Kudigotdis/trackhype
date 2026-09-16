@@ -18,12 +18,12 @@ create or replace view public.admin_pending_submissions as
     s.payment_status,
     s.payment_id,
     s.review_notes,
-    s.metadata,
     s.created_at    as submitted_at,
     u.email         as submitter_email,
     coalesce(ar.name, s.metadata ->> 'artist')  as artist_name,
     coalesce(so.title, s.metadata ->> 'song_title') as song_title,
-    so.artwork      as song_artwork
+    so.artwork      as song_artwork,
+    s.metadata
   from public.submissions s
   left join auth.users u on u.id = s.user_id
   left join public.artists ar on ar.id = s.artist_id
