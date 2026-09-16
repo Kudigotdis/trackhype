@@ -991,6 +991,18 @@
               </div>
             </div>
 
+            <div style="height:14px"></div>
+
+            <button class="ob-mt-btn" id="mtBtnChartIn" type="button" aria-expanded="false" onclick="toggleChartInPanel()">
+              Also chart in… <span style="opacity:.7;font-weight:600">(optional)</span>
+            </button>
+            <div class="ob-taste-panel" id="tastePanel-chartIn">
+              <p class="ob-lede">Optional — pick additional SADC countries / regions (beside your own) where you'd like your music to chart, and which charts in each.</p>
+              <div class="ob-chips" id="chartIn"></div>
+              <div class="ob-status" id="chartInStatus">No extra chart territories yet</div>
+              <div id="chartInDetails" style="margin-top:10px"></div>
+            </div>
+
           </div></div>
         </div>
       </section>
@@ -1146,6 +1158,7 @@
   <script src="js/api.js"></script>
   <script src="demo-playlist.js"></script>
   <script src="trackhype.js"></script>
+  <script src="js/territories.js"></script>
   <script src="countries-data.js"></script>
   <script src="zimbabwe_locations.js"></script>
   <script src="botswana_locations.js"></script>
@@ -1202,6 +1215,7 @@
       bio:"",
       genres:new Set(),
       followed:new Set(),
+      chartIn:{},
       artistName:"",
       artistType:null,
       artistEmail:"",
@@ -1449,6 +1463,7 @@
       renderMobileMoney();
       resetTownArea();
       populateTownList();
+      renderChartIn();
       refresh(1);
     }
 
@@ -2092,6 +2107,101 @@
     };
 
     /* ============================================================
+       ALSO CHART IN…  —  SADC extra chart territories (optional)
+       S.chartIn: { code: { code, name, charts:Set() } }
+       ============================================================ */
+    var CHART_IN_CHART_TYPES = [
+      "National Top 100", "Hip Hop Top 20", "House Top 20", "R&B Top 20",
+      "Dancehall Top 20", "Gospel Top 20", "Sungura Top 20"
+    ];
+
+    window.toggleChartInPanel=function(){
+      var panel=document.getElementById("tastePanel-chartIn");
+      var btn=document.getElementById("mtBtnChartIn");
+      if(!panel) return;
+      var open=!panel.classList.contains("is-open");
+      panel.classList.toggle("is-open",open);
+      if(btn){ btn.classList.toggle("is-active",open); btn.setAttribute("aria-expanded",open?"true":"false"); }
+    };
+
+    window.pickChartIn=function(btn){
+      var code=btn.getAttribute("data-code");
+      if(!code) return;
+      if(S.chartIn[code]){
+        delete S.chartIn[code];
+      }else{
+        S.chartIn[code]={ code:code, name:btn.getAttribute("data-name")||code, charts:new Set() };
+      }
+      renderChartIn();
+      updateTaste();
+      sync(4);
+    };
+
+    window.pickChartInChart=function(btn,code){
+      var entry=S.chartIn[code];
+      if(!entry||!btn) return;
+      var name=btn.textContent;
+      if(entry.charts.has(name)){ entry.charts.delete(name); }
+      else{ entry.charts.add(name); }
+      renderChartInDetails();
+      updateTaste();
+      sync(4);
+    };
+
+    function chartInTerritories(){
+      var t=(window.TrackHypeTerritories && TrackHypeTerritories.getTerritories) ? TrackHypeTerritories.getTerritories() : [];
+      if(!t.length && window.TrackHype && TrackHype.getTerritories) t=TrackHype.getTerritories();
+      var home=(S.region && S.region.code) ? S.region.code : "ZW";
+      return t.filter(function(x){ return x.code!==home; });
+    }
+
+    function renderChartIn(){
+      var host=document.getElementById("chartIn");
+      if(!host) return;
+      var list=chartInTerritories();
+      host.innerHTML=list.map(function(t){
+        var active=S.chartIn[t.code];
+        return '<button type="button" class="ob-choice'+(active?" is-active":"")+'" data-code="'+t.code+'" data-name="'+esc(t.name)+'" onclick="pickChartIn(this)">'+esc(t.name)+'</button>';
+      }).join("");
+      renderChartInDetails();
+    }
+
+    function renderChartInDetails(){
+      var host=document.getElementById("chartInDetails");
+      var status=document.getElementById("chartInStatus");
+      if(!host) return;
+      var codes=Object.keys(S.chartIn);
+      if(status){
+        status.textContent=codes.length
+          ? (codes.length+" extra chart territor"+(codes.length>1?"ies":"y")+" selected")
+          : "No extra chart territories yet";
+      }
+      if(!codes.length){ host.innerHTML=""; return; }
+      host.innerHTML=codes.map(function(code){
+        var entry=S.chartIn[code];
+        return '<div class="ob-note" style="margin:6px 0">'+
+          '<div style="font-weight:800">'+esc(entry.name)+'</div>'+
+          '<div class="ob-chips" style="margin-top:6px">'+
+          CHART_IN_CHART_TYPES.map(function(c){
+            var active=entry.charts.has(c);
+            return '<button type="button" class="ob-choice'+(active?" is-active":"")+'" style="font-size:11px" onclick="pickChartInChart(this,\''+code+'\')">'+esc(c)+'</button>';
+          }).join("")+
+          '</div></div>';
+      }).join("");
+    }
+
+    function chartInPayload(){
+      return Object.keys(S.chartIn).map(function(code){
+        var entry=S.chartIn[code];
+        return {
+          code:entry.code,
+          name:entry.name,
+          charts:Array.from(entry.charts)
+        };
+      });
+    }
+
+    /* ============================================================
        STEP 5 — ARTIST
        ============================================================ */
     window.toggleArtistProfile=function(){
@@ -2262,6 +2372,7 @@
         bio:val("bio").trim(),
         preferredGenres:Array.from(S.genres),
         followedArtists:Array.from(S.followed),
+        chartTerritories:chartInPayload(),
         kycStatus:S.kycStatus,
         artistProfile:S.artistMode ? {
           name:val("artistName").trim(),
@@ -2385,6 +2496,7 @@
         kyc_status:account.kycStatus,
         account_type:account.accountType,
         socials:account.socials||null,
+        chart_territories:account.chartTerritories||null,
         photo_url:meta.profilePhotoUrl||null,
         artist_photo_url:meta.artistPhotoUrl||null,
         artist_profile:meta.artistProfile||null
@@ -2408,6 +2520,7 @@
           localStorage.setItem("trackhype_pending_profile", JSON.stringify({
             profile: profile,
             preferredGenres: Array.from(S.genres),
+            chartTerritories: chartInPayload(),
             email: addr
           }));
         }catch(e){}
@@ -2640,6 +2753,7 @@
       });
 
       updateTaste();
+      renderChartIn();
 
       var stored=loadStoredRegion();
 
