@@ -71,24 +71,24 @@ Vote model (override): tap vote → modal → enter target position → song mov
 - [x] Headless Chrome walkthrough all 14 pages (no console errors/exceptions; no 404s) — fixed `TrackHype.getState` export, music-icon placeholder, chart cover/artwork for placeholder charts, favicon links; verified scroll-hide, square toggle, vote modal flow (pos 5 → 16 pts, VOTED lock), share/WhatsApp sheet
 
 ## Phase 17 — SADC territory data loader (`js/territories.js`)
-- [ ] Lazy-load `docs/info/locations/<code>_locations.js` on first access (script injection, avoids 650KB+ preload for mobile doctrine)
-- [ ] `TrackHype.territoryFor(code)` → { name, locations, currency{code, rate} (from `world_currencies.json`), genres } exposed as public API
-- [ ] Register all 15 SADC codes (ZW, BW, AO, KM, SZ, LS, MG, MW, MU, MZ, NA, SC, ZA, TZ, ZM)
+- [x] Lazy-load `docs/info/locations/<code>_locations.js` on first access (script injection, avoids 650KB+ preload for mobile doctrine)
+- [x] `TrackHype.territoryFor(code)` → { name, locations, currency{code, rate} (from `world_currencies.json`), genres } exposed as public API
+- [x] Register all 15 SADC codes (ZW, BW, AO, KM, SZ, LS, MG, MW, MU, MZ, NA, SC, ZA, TZ, ZM)
 
 ## Phase 18 — Onboarding territory picker (onboarding.html)
-- [ ] "Also chart in…" multi-select step after genres (SADC territories list from `js/territories.js`)
-- [ ] Per selected territory: chart-type picker (which charts within that territory)
-- [ ] Save selected territories to profile (Supabase + fallback to localStorage)
-- [ ] ≥8 ZW home-genre gate stays; SADC territories use region genre pool (Phase 19)
+- [x] "Also chart in…" multi-select step after genres (SADC territories list from `js/territories.js`)
+- [x] Per selected territory: chart-type picker (which charts within that territory)
+- [x] Save selected territories to profile (Supabase + fallback to localStorage)
+- [x] ≥8 ZW home-genre gate stays; SADC territories use region genre pool (Phase 19)
 
 ## Phase 19 — Genre pool region-keying (index/charts/submit-music + any region-keyed page)
-- [ ] Genre selector reads from `global_music_genres_195_plus.json` keyed by user's home territory
-- [ ] Charts page filter tabs: region-specific genre list (not hardcoded 4)
-- [ ] index.html genre sections: dynamic per region
-- [ ] submit-music.html: genre picker uses territory pool from `js/territories.js`
+- [x] Genre selector reads from `global_music_genres_195_plus.json` keyed by user's home territory
+- [x] Charts page filter tabs: region-specific genre list (not hardcoded 4)
+- [x] index.html genre sections: dynamic per region
+- [x] submit-music.html: genre picker uses territory pool from `js/territories.js`
 
 ## Phase 20 — Submit-music region picker
-- [ ] Territory selector (from profile or manual pick) flips currency to `world_currencies.json` display (BW→BWP, ZW→USD)
-- [ ] Territory genre pool applied to genre picker
-- [ ] Chart-in selection (from onboarding profile) pre-filled, editable per submission
-- [ ] $10 USD anchor price always shown; territory display = equivalent in local currency
+- [x] Territory selector (from profile or manual pick) flips currency to `world_currencies.json` display (BW→BWP, ZW→USD)
+- [x] Territory genre pool applied to genre picker
+- [x] Chart-in selection (from onboarding profile) pre-filled, editable per submission
+- [x] $10 USD anchor price always shown; territory display = equivalent in local currency

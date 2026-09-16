@@ -1,28 +1,46 @@
 
 ---
 
-## SESSION END — 2025-09-16 (SADC territory expansion: docs doctrine flip + queue)
+## SESSION END — 2025-09-16 (SADC multi-territory expansion: all slices committed)
 
-**This session — SADC multi-territory expansion.** Doctrine flipped: ZW-only → SADC-first (15 territories, world later). CHECKLIST.md L6 now reflects 15 SADC codes + `world_currencies.json` region-keyed currency + `docs/info/locations/` SADC location files. B0.4 verified ✓.
+**Scope completed: SADC-first multi-territory enablement (15 territories, world later).** Doctrine flipped: CHECKLIST.md L6 is now SADC 15-territory + world-later. Four build slices committed.
 
-**Slice queue (build mode, one commit each):**
-1. docs-slice ✓ (this commit)
-2. Data-slice — `js/territories.js` lazy loader for SADC locations + currency + genre registry
-3. Genres-slice — region-key genre pool from `global_music_genres_195_plus.json` across index/charts/submit-music
-4. Onboarding-slice — "Also chart in…" territory + chart multi-select (onboarding.html = owner)
-5. Submit-music-slice — region picker → `world_currencies.json` currency + territory genre pool
-6. Verify + push + PROGRESS.md handoff
+### Commits (in order)
+| Commit | Slice |
+|--------|-------|
+| `3545fef` | docs-slice + data-slice: SADC 15 codes, js/territories.js, 13 geojson, world_currencies.json, 195+ genres json |
+| `64925ee` | genres-slice: region-keyed genre pool across submit-music/index/charts via getGenrePool() |
+| `714e07b` | onboarding-slice: "Also chart in…" SADC territory + chart multi-select in step 4 |
+| `88a8a4d` | submit-music-slice: territory picker + dual-currency price + chart-in pre-fill from profile |
 
-**Byte-truth (all proven this session):**
-- 13 SADC location files in `docs/info/locations/` (AO, KM, SZ, LS, MG, MW, MU, MZ, NA, SC, ZA, TZ, ZM)
-- Root: `zimbabwe_locations.js` (135KB) + `botswana_locations.js` (47KB) = 15 SADC total
-- `world_currencies.json`: BW→BWP ($5=67.25P, $10=134.50P), ZW→USD/ZiG, per-region USD conversion keys
-- `global_music_genres_195_plus.json`: regional genre pools keyed by country/region
-- $10 USD per song = anchor currency (region affects display, not price)
+### Files changed (all ASCII-clean, node-verified, >127-byte count zero on new files)
+- `js/territories.js` — SADC registry: TERRITORY_CODES[], getTerritories(), territoryFor(code), regionDefault(), loadTerritoryLocations(code,cb), getGenrePool(genreKey). Lazy fetch for 13 SADC geojson; dynamic <script> for ZW/BW root location globals. Mirrors api.js {data,error} contract.
+- `onboarding.html` — step 4 "Also chart in…" panel; S.chartIn map; chartInPayload() serialized into account.chartTerritories + meta.chart_territories + pending stash.
+- `submit-music.html` — Chart Territory <select> in Artist Details; moneyEquivalent() for dual-currency display; rerenderGenrePills(); chart-in options pre-filled from trackhype_account.chartTerritories.
+- `index.html` — cultureGenres region-aware: ZW keeps curated GENRE_ONE showcase; non-ZW uses getGenrePool(); hero/randDemoSong fallbacks handle pool-only genres.
+- `charts.html` — CHART_TITLE_REGION label on top chart row; chart topology unchanged (territory charts arrive with later real data).
+- `docs/info/locations/` — 13 x cities-&-towns-*.geojson (FeatureCollection of Point features: name/region/country).
+- `docs/info/world_currencies.json` — SADC rows byte-confirmed: BW→BWP 67.25 P/134.50 P, ZW→USD, AO→AOA 4,625/9,250, ZA→ZAR 81/162, etc.
+- `docs/info/global_music_genres_195_plus.json` — 34 genres per SADC country; catalogue maps id→name (pop→Pop, afrobeats→Afrobeats, etc.)
+- `CHECKLIST.md` — L6 flipped ZW-only→SADC; Phases 17-20 marked [x].
 
-**SQL Editor ledger: STILL CLOSED.** Migrations 0001–0009 all on-disk + applied. No 0010 exists.
+### Verification (byte-truth this session)
+- territories.js: 201 lines, 0 high-bytes, 0 double-stars, node --check PASS. Functional: getTerritories→15, regionDefault→BW when saved, getGenrePool→34 names, loadTerritoryLocations ZW→script path OK, ZA→geojson fetch OK (cities-&-towns-south-africa.geojson resolved).
+- submit-music.html inline block: 55KB, node --check PASS. Functional: moneyEquivalent(1)→"10.00 X", moneyEquivalent(3)→"30 X", parseMoneyAmount("134.50 P")→134.5.
+- onboarding.html inline block: 55KB, node --check PASS. Functional: chartInPayload after add BW→[{code:'BW',...}], pickChartInChart adds "House Top 20", pickChartIn removes BW→[].
+- index.html + charts.html: git diff only +21 insertions total, pre-existing high-bytes confirmed (no introduced non-ASCII).
+- Headless Chrome TODO: will verify on next push to GH Pages; no blocking console errors expected.
+
+### SQL Editor ledger: STILL CLOSED. Migrations 0001–0009 all on-disk + applied. No 0010. No new columns used in these slices (chart territories rides user_metadata / localStorage; geojson/currency/genre data are static files). Profile row: chart_territories written as JSONB into user_metadata via handle_new_user trigger metadata; Supabase Storage bucket public (`trackhype-media`).
+
+### Gotchas
+1. **Lazy geojson under file://:** loadTerritoryLocations for the 13 SADC countries uses `fetch('docs/info/locations/cities-&-towns-<slug>.geojson')`. On GitHub Pages (HTTP) this works. Under file:// (local dev) it resolves to `{error}` gracefully — mirrors the offline-first doctrine. User may want to add a dynamic <script> loader for local dev if needed.
+2. **Lesotho $10 quirk:** world_currencies.json lists Lesotho $10 as "162.00 M" (not "L"). Kept byte-faithful to the source file — likely a typo in the data asset, not an app bug.
+3. **DRC (CD) missing:** SADC has 16 members; DRC/Congo has no location file or entry in TERRITORIES. User explicitly said "world regions later" — DRC will be added then.
+4. **Onboarding `renderChartIn()` timing:** called after `renderGrid("genres")` and after `renderRegionDependents()`. If region is changed mid-onboarding, the chart-in chips re-render to exclude the new home territory. `setRegion()` triggers `renderRegionDependents()` → `renderChartIn()`. Safe.
 
 ---
+
 
 ## SESSION END (admin slice) — 2025-09-16
 
