@@ -373,6 +373,14 @@
       grid-template-columns:auto 1fr;
       gap:7px;
     }
+    .ob-error{
+      display:block;
+      margin-top:4px;
+      font-size:12px;
+      font-weight:700;
+      color:var(--th-danger);
+    }
+    .ob-error[hidden]{display:none}
     .ob-dial-code{
       min-width:65px;
       display:grid;
@@ -839,8 +847,9 @@
             <label class="ob-label">Mobile number *</label>
             <div class="ob-dial">
               <span class="ob-dial-code" id="dialCode">+263</span>
-              <input class="th-input" id="mobile" type="tel" inputmode="numeric" placeholder="77 000 0000" autocomplete="tel-national">
+              <input class="th-input" id="mobile" type="tel" inputmode="numeric" placeholder="77 000 0000" autocomplete="tel-national" oninput="onPhoneInput('mobile','dialCode','mobileErr')">
             </div>
+            <small class="ob-error" id="mobileErr" hidden></small>
 
             <label class="ob-label">WhatsApp number</label>
             <label class="ob-check">
@@ -849,8 +858,9 @@
             </label>
             <div class="ob-dial" id="whatsappWrap">
               <span class="ob-dial-code" id="whatsappDial">+263</span>
-              <input class="th-input" id="whatsapp" type="tel" inputmode="numeric" placeholder="77 000 0000" autocomplete="tel-national" disabled>
+              <input class="th-input" id="whatsapp" type="tel" inputmode="numeric" placeholder="77 000 0000" autocomplete="tel-national" disabled oninput="onPhoneInput('whatsapp','whatsappDial','whatsappErr')">
             </div>
+            <small class="ob-error" id="whatsappErr" hidden></small>
 
             <label class="ob-label">Email address *</label>
             <input class="th-input" id="email" type="email" placeholder="you@example.com" autocomplete="email">
@@ -871,8 +881,9 @@
               <label class="ob-label" id="mobileMoneyNumberLabel" hidden>Mobile money number *</label>
               <div class="ob-dial" id="mobileMoneyNumberRow" hidden>
                 <span class="ob-dial-code" id="mobileMoneyDial">+263</span>
-                <input class="th-input" id="mobileMoneyNumber" type="tel" inputmode="numeric" placeholder="77 000 0000" autocomplete="tel-national">
+                <input class="th-input" id="mobileMoneyNumber" type="tel" inputmode="numeric" placeholder="77 000 0000" autocomplete="tel-national" oninput="onPhoneInput('mobileMoneyNumber','mobileMoneyDial','mobileMoneyErr')">
               </div>
+              <small class="ob-error" id="mobileMoneyErr" hidden></small>
             </div>
 
             <div class="ob-note"><b>Private.</b> Phone numbers, network and email are never shown on your public profile.</div>
@@ -1274,6 +1285,39 @@
 
     function e164(code,num){return "+"+code+num;}
 
+    function e164Digits(code,num){
+      return (String(code||"").replace(/\D/g,"") + String(num||"").replace(/\D/g,"")).length;
+    }
+
+    function e164Ok(code,num){
+      var n=e164Digits(code,num);
+      return n>=8 && n<=15;
+    }
+
+    function phoneError(id,msg){
+      var el=document.getElementById(id);
+      if(!el) return;
+      el.textContent=msg||"";
+      el.hidden=!msg;
+    }
+
+    function onPhoneInput(inputId,dialId,errId){
+      var codeEl=document.getElementById(dialId);
+      var code=(codeEl?codeEl.textContent:"").replace(/\D/g,"");
+      var num=digits(val(inputId));
+      if(num.length===0){
+        phoneError(errId,"");
+        return;
+      }
+      if(num.length<7){
+        phoneError(errId,"Enter the rest of your number (at least 7 digits).");
+      }else if(!e164Ok(code,num)){
+        phoneError(errId,"That number looks too long - check it and try again.");
+      }else{
+        phoneError(errId,"");
+      }
+    }
+
     function emailOk(v){return /^\S+@\S+\.\S+$/.test(String(v||"").trim());}
 
     function userOk(v){return /^[A-Za-z0-9_]{3,20}$/.test(String(v||"").trim());}
@@ -1330,10 +1374,10 @@
       if(n===1){
         if(!S.region || !S.network || !S.mobileMoney) return false;
         if(S.mobileMoney!=="None" && S.mobileMoney!=="Unavailable" &&
-           digits(val("mobileMoneyNumber")).length<7) return false;
-        if(digits(val("mobile")).length<7) return false;
+           !e164Ok(dial(),digits(val("mobileMoneyNumber")))) return false;
+        if(!e164Ok(dial(),digits(val("mobile")))) return false;
         if(!document.getElementById("whatsappSame").checked &&
-           digits(val("whatsapp")).length<7) return false;
+           !e164Ok(document.getElementById("whatsappDial").textContent,digits(val("whatsapp")))) return false;
         return emailOk(val("email"));
       }
 
