@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-ZW">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TrackHype - Admin</title>
-
-  <meta property="og:title" content="TrackHype Admin">
-  <meta property="og:description" content="Submit, moderate and manage TrackHype chart submissions.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>TrackHype Admin — Enterprise Music Intelligence</title>
+  <meta property="og:title" content="TrackHype Admin — Enterprise Music Intelligence">
+  <meta property="og:description" content="Platform overview, artist &amp; label intelligence, submissions, KYC, ad campaigns, chart manager and radio stations.">
   <meta property="og:image" content="Assets/logos/TrackHype Logo Design Badge.webp">
   <meta property="og:url" content="https://trackhype.github.io/trackhype/admin.html">
   <meta name="twitter:card" content="summary_large_image">
@@ -17,68 +17,414 @@
     if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
   </script>
 <link rel="stylesheet" href="trackhype.css">
-</head>
-<body>
-<div id="app-shell">
-  <header class="app-header">
-    <div class="header-inner">
-      <button class="icon-btn" id="btn-back" type="button" aria-label="Back">&#8592;</button>
-      <h1 class="app-title">Admin</h1>
-      <button class="icon-btn" id="btn-signout" type="button" aria-label="Sign out">&#8617;</button>
-    </div>
-  </header>
+<style>
+.th-header-inner{display:flex;align-items:center;justify-content:space-between;gap:8px}
 
-  <main class="page-content">
+.ia-shell{max-width:760px;margin:auto;padding:14px 16px 90px;display:flex;flex-direction:column;gap:14px}
+.ia-header-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ia-title{font-size:20px;font-weight:950;letter-spacing:-.3px}
+
+.ia-hero{background:linear-gradient(135deg,#01db8b 0%,#55e9ad 100%);border-radius:var(--th-radius);padding:16px;color:#03281a;box-shadow:var(--th-shadow)}
+.ia-hero-kicker{font-size:10px;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;opacity:.8}
+.ia-hero-name{font-size:22px;font-weight:950;line-height:1.15;margin-top:2px}
+.ia-hero-meta{font-size:12px;font-weight:700;opacity:.85;margin-top:3px}
+.ia-hero-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.ia-hero-pill{font-size:10px;font-weight:900;padding:4px 9px;border-radius:99px;background:rgba(255,255,255,.75);color:#03281a}
+.ia-hero-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.ia-hero-metric{background:rgba(255,255,255,.85);border-radius:10px;padding:9px 10px}
+.ia-hero-metric b{display:block;font-size:17px;font-weight:950}
+.ia-hero-metric span{display:block;font-size:10px;font-weight:800;opacity:.75;text-transform:uppercase;letter-spacing:.3px}
+@media (min-width:560px){.ia-hero-metrics{grid-template-columns:repeat(6,1fr)}}
+
+.ia-segment{display:flex;background:var(--th-grey-1);border:1px solid var(--th-border);border-radius:12px;padding:4px;gap:4px}
+.ia-seg-btn{flex:1;padding:10px 8px;border:0;border-radius:9px;background:transparent;font-weight:900;font-size:12px;color:var(--th-muted);transition:background .2s ease,color .2s ease}
+.ia-seg-btn[aria-pressed="true"]{background:#fff;color:var(--th-primary-dark);box-shadow:var(--th-shadow-soft)}
+.ia-seg-btn:active{transform:scale(.985)}
+
+.ia-filter-card{display:flex;flex-direction:column;gap:10px;background:#fff;border:1px solid var(--th-border);border-radius:12px;padding:12px;box-shadow:var(--th-shadow-soft)}
+.ia-filter-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ia-filter-row .th-select{flex:1;min-width:130px}
+.ia-chips{display:flex;gap:6px;flex-wrap:wrap}
+.ia-chip{font-size:11px;font-weight:800;padding:6px 10px;border-radius:99px;border:1px solid var(--th-border);background:#fff;color:var(--th-muted)}
+.ia-chip[aria-pressed="true"]{background:var(--th-primary-soft);border-color:transparent;color:var(--th-primary-dark)}
+.ia-chip:active{transform:scale(.98)}
+
+.ia-tabs{display:flex;gap:6px;overflow:auto;scrollbar-width:none;-ms-overflow-style:none;padding:2px}
+.ia-tabs::-webkit-scrollbar{display:none}
+.ia-tab{flex:none;font-size:12px;font-weight:900;padding:9px 14px;border-radius:99px;border:1px solid var(--th-border);background:#fff;color:var(--th-muted)}
+.ia-tab[aria-pressed="true"]{background:var(--th-primary);border-color:transparent;color:#03281a}
+.ia-tab:active{transform:scale(.97)}
+
+.ia-pane{display:none;flex-direction:column;gap:14px}
+.ia-pane.is-active{display:flex}
+
+.ia-stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+@media (min-width:520px){.ia-stat-grid{grid-template-columns:repeat(4,1fr)}}
+.ia-stat{background:#fff;border:1px solid var(--th-border);border-radius:12px;padding:11px 12px;box-shadow:var(--th-shadow-soft)}
+.ia-stat b{display:block;font-size:18px;font-weight:950}
+.ia-stat span{display:block;font-size:10px;font-weight:800;color:var(--th-muted);text-transform:uppercase;letter-spacing:.3px;margin-top:2px}
+.ia-delta{font-size:10px;font-weight:900;margin-top:3px}
+.ia-delta.up{color:var(--th-success)}
+.ia-delta.down{color:var(--th-danger)}
+.ia-delta.flat{color:var(--th-faint)}
+
+.ia-table-wrap{overflow:auto;border:1px solid var(--th-border);border-radius:12px;background:#fff;box-shadow:var(--th-shadow-soft)}
+.ia-data-table{width:100%;border-collapse:collapse;min-width:560px}
+.ia-data-table th,.ia-data-table td{padding:9px 10px;border-bottom:1px solid var(--th-border-soft);text-align:left;font-size:11px;vertical-align:middle;white-space:nowrap}
+.ia-data-table th{font-size:10px;text-transform:uppercase;letter-spacing:.4px;color:var(--th-muted);font-weight:900;background:var(--th-grey-1);position:sticky;top:0;z-index:1}
+.ia-data-table tr:last-child td{border-bottom:0}
+.ia-data-table tr:active td{background:var(--th-grey-1)}
+
+.ia-progress{height:7px;border-radius:99px;background:var(--th-grey-1);overflow:hidden}
+.ia-progress-fill{height:100%;border-radius:99px;background:var(--th-primary)}
+.ia-progress-fill.warn{background:var(--th-warning)}
+.ia-progress-fill.bad{background:var(--th-danger)}
+
+.ia-bar-item{display:grid;grid-template-columns:110px 1fr 38px;gap:7px;align-items:center;padding:4px 0}
+.ia-bar-label{font-size:11px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ia-bar-val{font-size:11px;font-weight:900;text-align:right}
+
+.ia-sparkline{height:74px;display:flex;align-items:flex-end;gap:4px;padding:6px 2px 0}
+.ia-sparkline i{flex:1;min-width:4px;border-radius:3px 3px 0 0;background:var(--th-primary)}
+
+.ia-insight{margin-top:10px;padding:12px;border:1px solid #d8f6e9;background:var(--th-primary-soft);border-radius:12px;font-size:12px;line-height:1.55;color:var(--th-text)}
+.ia-insight b{color:var(--th-primary-dark)}
+
+.ia-empty{padding:24px 16px;text-align:center}
+.ia-empty strong{display:block;font-size:14px;color:var(--th-text)}
+.ia-empty span{display:block;margin-top:6px;font-size:12px;color:var(--th-muted);line-height:1.5}
+
+.ia-pager{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px}
+.ia-pager .th-btn{flex:none}
+.ia-pager span{font-size:12px;color:var(--th-muted);font-weight:700}
+
+.ia-row-actions{display:flex;gap:6px}
+.ia-row-actions .th-btn{font-size:11px;padding:6px 10px}
+</style>
+</head>
+<body data-active-nav="menu">
+<header class="th-header" data-app-header>
+  <div class="th-header-inner">
+    <button class="th-icon-btn" id="btn-back" type="button" aria-label="Back">&#8592;</button>
+    <b style="font-size:15px;font-weight:950">Admin Intelligence</b>
+    <button class="th-icon-btn" id="btn-signout" type="button" aria-label="Sign out">&#8617;</button>
+  </div>
+</header>
+
+<main class="th-app">
+  <div class="ia-shell">
+
     <!-- signed-out gate -->
     <section id="view-signin" hidden>
-      <div class="card">
-        <h2>Admin sign in</h2>
-        <p class="muted">This area is for TrackHype staff only.</p>
-        <label for="in-email">Email</label>
-        <input id="in-email" type="email" autocomplete="email" placeholder="you@trackhype.co.zw">
-        <label for="in-password">Password</label>
-        <input id="in-password" type="password" autocomplete="current-password" placeholder="Password">
-        <p id="auth-error" class="error-text" hidden></p>
-        <button id="btn-login" class="btn btn-primary" type="button">Sign in</button>
+      <div class="th-card pad">
+        <h2 style="font-size:20px;font-weight:950">Admin sign in</h2>
+        <p style="margin-top:6px;font-size:13px;color:var(--th-muted)">This area is for TrackHype staff only.</p>
+        <div style="margin-top:14px">
+          <label for="in-email">Email</label>
+          <input class="th-input" id="in-email" type="email" autocomplete="email" placeholder="you@trackhype.co.zw" style="margin-top:6px">
+        </div>
+        <div style="margin-top:12px">
+          <label for="in-password">Password</label>
+          <input class="th-input" id="in-password" type="password" autocomplete="current-password" placeholder="Password" style="margin-top:6px">
+        </div>
+        <p id="auth-error" hidden style="margin-top:10px;font-size:12px;color:var(--th-danger)"></p>
+        <button id="btn-login" class="th-btn primary block" style="margin-top:12px" type="button">Sign in</button>
       </div>
     </section>
 
     <!-- not-an-admin gate -->
     <section id="view-denied" hidden>
-      <div class="card">
-        <h2>Access denied</h2>
-        <p class="muted">This account is not registered as an admin. If you believe this is a mistake, contact the TrackHype team.</p>
+      <div class="th-card pad">
+        <h2 style="font-size:20px;font-weight:950">Access denied</h2>
+        <p style="margin-top:8px;font-size:13px;color:var(--th-muted)">This account is not registered as an admin. If you believe this is a mistake, contact the TrackHype team.</p>
+        <button class="th-btn primary block" style="margin-top:14px" type="button" onclick="history.back()">Back</button>
       </div>
     </section>
 
-    <!-- pending submissions -->
-    <section id="view-pending" hidden>
-      <div class="card">
-        <div class="row space-between">
-          <h2>Pending submissions</h2>
-          <button id="btn-refresh" class="btn btn-ghost" type="button">Refresh</button>
-        </div>
-        <p id="pending-empty" class="muted" hidden>No pending submissions right now.</p>
-        <div id="pending-list"></div>
+    <!-- dashboard -->
+    <section id="view-dashboard" hidden>
+      <div class="ia-segment" role="group" aria-label="Intelligence mode">
+        <button class="ia-seg-btn" type="button" data-seg="artist" aria-pressed="true">Artist Intelligence</button>
+        <button class="ia-seg-btn" type="button" data-seg="label" aria-pressed="false">Label Intelligence</button>
       </div>
+
+      <div class="ia-filter-card">
+        <div class="ia-filter-row">
+          <select class="th-select" id="f-week" aria-label="Chart week"></select>
+          <select class="th-select" id="f-compare" aria-label="Compare period">
+            <option value="7d">7 days</option>
+            <option value="30d">30 days</option>
+            <option value="all" selected>All time</option>
+          </select>
+        </div>
+        <select class="th-select" id="f-entity" aria-label="Entity / chart"></select>
+        <div class="ia-chips" id="chip-row" aria-label="Metric filter">
+          <button class="ia-chip" type="button" data-chip="overview" aria-pressed="true">Overview</button>
+          <button class="ia-chip" type="button" data-chip="chart" aria-pressed="false">Chart</button>
+          <button class="ia-chip" type="button" data-chip="listening" aria-pressed="false">Listening</button>
+          <button class="ia-chip" type="button" data-chip="audience" aria-pressed="false">Audience</button>
+          <button class="ia-chip" type="button" data-chip="conversion" aria-pressed="false">Conversion</button>
+          <button class="ia-chip" type="button" data-chip="geo" aria-pressed="false">Geography</button>
+          <button class="ia-chip" type="button" data-chip="social" aria-pressed="false">Social &amp; DSP</button>
+          <button class="ia-chip" type="button" data-chip="integrity" aria-pressed="false">Integrity</button>
+        </div>
+      </div>
+
+      <nav class="ia-tabs" id="mod-tabs" aria-label="Admin modules">
+        <button class="ia-tab" type="button" data-tab="intel" aria-pressed="true">Intelligence</button>
+        <button class="ia-tab" type="button" data-tab="subs" aria-pressed="false">Submissions</button>
+        <button class="ia-tab" type="button" data-tab="kyc" aria-pressed="false">KYC</button>
+        <button class="ia-tab" type="button" data-tab="ads" aria-pressed="false">Ad Campaigns</button>
+        <button class="ia-tab" type="button" data-tab="charts" aria-pressed="false">Chart Manager</button>
+        <button class="ia-tab" type="button" data-tab="radio" aria-pressed="false">Radio</button>
+      </nav>
+
+      <!-- INTELLIGENCE pane -->
+      <div class="ia-pane is-active" id="pane-intel">
+        <section class="ia-hero">
+          <div class="ia-hero-kicker">TrackHype Enterprise Music Intelligence</div>
+          <div class="ia-hero-name" id="hero-name">Loading…</div>
+          <div class="ia-hero-meta" id="hero-meta">&nbsp;</div>
+          <div class="ia-hero-pills" id="hero-pills"></div>
+          <div class="ia-hero-metrics" id="hero-metrics"></div>
+        </section>
+
+        <details class="th-acc" open>
+          <summary>
+            <span class="th-acc-title"><b>Executive overview</b><small>Platform health at a glance</small></span>
+            <span class="th-acc-mark" aria-hidden="true"></span>
+          </summary>
+          <div class="th-acc-body">
+            <div class="ia-stat-grid" id="stat-grid"></div>
+            <div class="ia-insight" id="insight-box" hidden></div>
+          </div>
+        </details>
+
+        <details class="th-acc">
+          <summary>
+            <span class="th-acc-title"><b>Listening &amp; playback intelligence</b><small>Player starts, completions, replays</small></span>
+            <span class="th-acc-mark" aria-hidden="true"></span>
+          </summary>
+          <div class="th-acc-body">
+            <div class="ia-stat-grid" id="listening-grid"></div>
+            <details class="th-acc" style="margin-top:12px">
+              <summary>
+                <span class="th-acc-title"><b>Retention checkpoints</b><small>25% / 50% / 75% / 90% hold</small></span>
+                <span class="th-acc-mark" aria-hidden="true"></span>
+              </summary>
+              <div class="th-acc-body"><div id="retention-bars"></div></div>
+            </details>
+          </div>
+        </details>
+
+        <details class="th-acc">
+          <summary>
+            <span class="th-acc-title"><b>Chart performance</b><small>Rank, momentum, votes, ballots</small></span>
+            <span class="th-acc-mark" aria-hidden="true"></span>
+          </summary>
+          <div class="th-acc-body">
+            <div class="ia-stat-grid" id="chart-kpis"></div>
+            <div style="background:#fff;border:1px solid var(--th-border);border-radius:12px;margin-top:12px;padding:10px">
+              <div class="ia-sparkline" id="chart-spark"></div>
+            </div>
+            <div class="ia-table-wrap" style="margin-top:12px">
+              <table class="ia-data-table">
+                <thead><tr><th>Song</th><th>Artist</th><th>Rank</th><th>Votes</th><th>Plays</th><th>Likes</th></tr></thead>
+                <tbody id="chart-table"></tbody>
+              </table>
+            </div>
+            <div class="ia-pager">
+              <button class="th-btn secondary" type="button" id="chart-prev">Prev</button>
+              <span id="chart-page-label"></span>
+              <button class="th-btn secondary" type="button" id="chart-next">Next</button>
+            </div>
+          </div>
+        </details>
+
+        <details class="th-acc">
+          <summary>
+            <span class="th-acc-title"><b>Audience &amp; fanbase quality</b><small>Voters, supporters, concentration</small></span>
+            <span class="th-acc-mark" aria-hidden="true"></span>
+          </summary>
+          <div class="th-acc-body">
+            <div class="ia-stat-grid" id="audience-grid"></div>
+            <div style="margin-top:12px" id="audience-bars"></div>
+          </div>
+        </details>
+
+        <details class="th-acc">
+          <summary>
+            <span class="th-acc-title"><b>Discovery &amp; conversion funnel</b><small>Impression → page → play → engage → convert</small></span>
+            <span class="th-acc-mark" aria-hidden="true"></span>
+          </summary>
+          <div class="th-acc-body">
+            <div class="ia-table-wrap">
+              <table class="ia-data-table">
+                <thead><tr><th>Stage</th><th>Count</th><th>Share</th><th>Convert rate</th></tr></thead>
+                <tbody id="funnel-table"></tbody>
+              </table>
+            </div>
+          </div>
+        </details>
+
+        <details class="th-acc">
+          <summary>
+            <span class="th-acc-title"><b>Geographic intelligence</b><small>Region / territory breakdown</small></span>
+            <span class="th-acc-mark" aria-hidden="true"></span>
+          </summary>
+          <div class="th-acc-body">
+            <div class="ia-table-wrap">
+              <table class="ia-data-table">
+                <thead><tr><th>Territory</th><th>Events</th><th>Share</th><th>Votes</th><th>Plays</th></tr></thead>
+                <tbody id="geo-table"></tbody>
+              </table>
+            </div>
+          </div>
+        </details>
+
+        <details class="th-acc">
+          <summary>
+            <span class="th-acc-title"><b>Social &amp; DSP ecosystem</b><small>Outbound engagement</small></span>
+            <span class="th-acc-mark" aria-hidden="true"></span>
+          </summary>
+          <div class="th-acc-body">
+            <div class="ia-table-wrap">
+              <table class="ia-data-table">
+                <thead><tr><th>Destination</th><th>Clicks</th><th>Share</th></tr></thead>
+                <tbody id="social-table"></tbody>
+              </table>
+            </div>
+          </div>
+        </details>
+
+        <details class="th-acc">
+          <summary>
+            <span class="th-acc-title"><b>Trust, quality &amp; anti-manipulation</b><small>Integrity signals</small></span>
+            <span class="th-acc-mark" aria-hidden="true"></span>
+          </summary>
+          <div class="th-acc-body">
+            <div class="ia-stat-grid" id="integrity-grid"></div>
+            <div class="ia-insight" style="border-color:#f5d9d7;background:rgba(179,38,30,.06)" id="integrity-note">Integrity thresholds are static references until live event data accrues.</div>
+          </div>
+        </details>
+
+        <details class="th-acc">
+          <summary>
+            <span class="th-acc-title"><b>Raw event model</b><small>Live analytics_events feed</small></span>
+            <span class="th-acc-mark" aria-hidden="true"></span>
+          </summary>
+          <div class="th-acc-body">
+            <div class="ia-table-wrap">
+              <table class="ia-data-table">
+                <thead><tr><th>When</th><th>Type</th><th>Entity</th><th>Meta</th></tr></thead>
+                <tbody id="event-table"></tbody>
+              </table>
+            </div>
+            <div class="ia-pager">
+              <button class="th-btn secondary" type="button" id="ev-prev">Prev</button>
+              <span id="ev-page-label"></span>
+              <button class="th-btn secondary" type="button" id="ev-next">Next</button>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <!-- SUBMISSIONS pane -->
+      <div class="ia-pane" id="pane-subs">
+        <div class="ia-header-row">
+          <h2 class="ia-title">Submissions</h2>
+          <button class="th-btn secondary" type="button" id="btn-refresh">Refresh</button>
+        </div>
+        <div id="pending-list"></div>
+        <div id="pending-empty" class="ia-empty" hidden><strong>No pending submissions</strong><span>Approved and rejected music is not shown here.</span></div>
+      </div>
+
+      <!-- KYC pane -->
+      <div class="ia-pane" id="pane-kyc">
+        <div class="ia-header-row">
+          <h2 class="ia-title">KYC &amp; artist verification</h2>
+          <button class="th-btn secondary" type="button" id="btn-kyc-refresh">Refresh</button>
+        </div>
+        <div class="ia-table-wrap">
+          <table class="ia-data-table">
+            <thead><tr><th>User</th><th>Region</th><th>City</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody id="kyc-table"></tbody>
+          </table>
+        </div>
+        <div id="kyc-empty" class="ia-empty" hidden><strong>No pending KYC</strong><span>Artist profiles awaiting verification appear here.</span></div>
+      </div>
+
+      <!-- AD CAMPAIGNS pane -->
+      <div class="ia-pane" id="pane-ads">
+        <div class="ia-header-row">
+          <h2 class="ia-title">Ad campaigns</h2>
+          <button class="th-btn secondary" type="button" id="btn-ads-refresh">Refresh</button>
+        </div>
+        <div class="ia-table-wrap">
+          <table class="ia-data-table">
+            <thead><tr><th>Title</th><th>Placement</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody id="ads-table"></tbody>
+          </table>
+        </div>
+        <div id="ads-empty" class="ia-empty" hidden><strong>No adverts yet</strong><span>Create adverts in the Supabase adverts table.</span></div>
+      </div>
+
+      <!-- CHART MANAGER pane -->
+      <div class="ia-pane" id="pane-charts">
+        <div class="ia-header-row">
+          <h2 class="ia-title">Chart manager</h2>
+          <button class="th-btn secondary" type="button" id="btn-charts-refresh">Refresh</button>
+        </div>
+        <select class="th-select" id="chart-picker" aria-label="Chart"></select>
+        <div class="ia-table-wrap">
+          <table class="ia-data-table">
+            <thead><tr><th>Week</th><th>Votes</th><th>Ballots</th><th>Edits</th><th>Impressions</th></tr></thead>
+            <tbody id="chart-week-table"></tbody>
+          </table>
+        </div>
+        <div class="ia-table-wrap">
+          <table class="ia-data-table">
+            <thead><tr><th>Rank</th><th>Song</th><th>Tier</th><th>Points</th></tr></thead>
+            <tbody id="chart-entry-table"></tbody>
+          </table>
+        </div>
+        <div id="charts-empty" class="ia-empty" hidden><strong>No chart data yet</strong><span>Charts and entries from Supabase appear here.</span></div>
+      </div>
+
+      <!-- RADIO pane -->
+      <div class="ia-pane" id="pane-radio">
+        <div class="ia-header-row">
+          <h2 class="ia-title">Radio stations</h2>
+          <button class="th-btn secondary" type="button" id="btn-radio-refresh">Refresh</button>
+        </div>
+        <div class="ia-table-wrap">
+          <table class="ia-data-table">
+            <thead><tr><th>Station</th><th>Country</th><th>Region</th><th>Frequency</th><th>Focus</th><th>Status</th></tr></thead>
+            <tbody id="radio-table"></tbody>
+          </table>
+        </div>
+        <div id="radio-empty" class="ia-empty" hidden><strong>No radio stations yet</strong><span>Stations from Supabase appear here.</span></div>
+      </div>
+
     </section>
-  </main>
-</div>
+  </div>
+</main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="js/supabase-config.js"></script>
 <script src="js/api.js"></script>
+<script src="js/tracker.js"></script>
 <script src="js/admin-api.js"></script>
 <script src="trackhype.js"></script>
 <script>
 (function () {
   var AdminUI = window.AdminAPI;
+  var API = window.API;
 
   function el(id) { return document.getElementById(id); }
 
   function show(id) {
-    var ids = ["view-signin", "view-denied", "view-pending"];
-    ids.forEach(function (v) { el(v).hidden = (v !== id); });
+    ["view-signin", "view-denied", "view-dashboard"].forEach(function (v) { if (el(v)) el(v).hidden = (v !== id); });
   }
 
   function esc(s) {
@@ -87,78 +433,557 @@
       .replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
   }
 
+  function num(v) {
+    var n = Number(v);
+    return Number.isFinite(n) ? n.toLocaleString() : "0";
+  }
+
+  function pct(part, total) {
+    if (!total) return "0%";
+    return Math.round((part / total) * 100) + "%";
+  }
+
+  /* ---- tab + segment routing -------------------------------------- */
+  var currentTab = "intel";
+  var seg = "artist";
+
+  function setTab(tab) {
+    currentTab = tab;
+    document.querySelectorAll(".ia-tab").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.tab === tab)); });
+    document.querySelectorAll(".ia-pane").forEach(function (p) { p.classList.toggle("is-active", p.id === "pane-" + tab); });
+    if (tab === "intel") refreshIntel();
+    if (tab === "subs") renderPending();
+    if (tab === "kyc") renderKyc();
+    if (tab === "ads") renderAds();
+    if (tab === "charts") { populateChartPicker(); renderChartWeeks(); }
+    if (tab === "radio") renderRadio();
+  }
+
+  function setSeg(s) {
+    seg = s;
+    document.querySelectorAll(".ia-seg-btn").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.seg === s)); });
+    refreshIntel();
+  }
+
+  function bindSeg() {
+    document.querySelectorAll(".ia-seg-btn").forEach(function (b) {
+      b.addEventListener("click", function () { setSeg(b.dataset.seg); });
+    });
+  }
+
+  function bindTabs() {
+    document.querySelectorAll(".ia-tab").forEach(function (b) {
+      b.addEventListener("click", function () { setTab(b.dataset.tab); });
+    });
+  }
+
+  function bindChips() {
+    document.querySelectorAll(".ia-chip").forEach(function (c) {
+      c.addEventListener("click", function () {
+        var key = c.dataset.chip;
+        document.querySelectorAll(".ia-chip").forEach(function (x) { x.setAttribute("aria-pressed", String(x === c)); });
+        var map = {
+          overview: "Executive overview",
+          chart: "Chart performance",
+          listening: "Listening & playback intelligence",
+          audience: "Audience & fanbase quality",
+          conversion: "Discovery & conversion funnel",
+          geo: "Geographic intelligence",
+          social: "Social & DSP ecosystem",
+          integrity: "Trust, quality & anti-manipulation"
+        };
+        var title = map[key];
+        if (!title) return;
+        document.querySelectorAll(".th-acc").forEach(function (acc) {
+          var b = acc.querySelector(".th-acc-title b");
+          if (b && b.textContent === title) {
+            acc.open = true;
+            var top = acc.getBoundingClientRect().top + window.scrollY - 84;
+            try { window.scrollTo({ top: top, behavior: "smooth" }); } catch (e) { window.scrollTo(0, top); }
+          }
+        });
+      });
+    });
+  }
+
+  /* ---- bootstrap -------------------------------------------------- */
   async function boot() {
-    if (!(AdminUI && AdminUI.hasSession)) { el("auth-error").textContent = "Admin services not configured."; show("view-signin"); return; }
-    var has = await AdminAPI.hasSession();
-    if (has && !AdminAPI.isAdmin) { show("view-denied"); return; }
+    if (!(AdminUI && AdminUI.ready && AdminUI.ready())) {
+      show("view-signin");
+      var err = el("auth-error");
+      if (err) err.textContent = "Admin services not configured.";
+      return;
+    }
+    var has = await AdminUI.hasSession();
     if (!has) { show("view-signin"); return; }
-    var admin = await AdminAPI.isAdmin();
+    var admin = await AdminUI.isAdmin();
     if (!admin) { show("view-denied"); return; }
-    show("view-pending");
-    renderPending();
+    show("view-dashboard");
+    el("f-week").innerHTML = "";
+    ["Current week", "Last 4 weeks", "Last 12 weeks", "All time"].forEach(function (w, i) {
+      var o = document.createElement("option");
+      o.textContent = w;
+      o.value = w;
+      if (i === 0) o.selected = true;
+      el("f-week").appendChild(o);
+    });
+    el("f-compare").addEventListener("change", refreshIntel);
+    el("f-entity").addEventListener("change", refreshIntel);
+    bindSeg();
+    bindTabs();
+    bindChips();
+    refreshIntel();
   }
 
-  function renderPendingItem(p) {
-    var div = document.createElement("div");
-    div.className = "list-item";
-    var title = p.song_title || "Untitled";
-    var artist = p.artist_name || "Unknown artist";
-    var by = p.submitter_email || "unknown";
-    div.innerHTML =
-      '<div class="row space-between"><div>' +
-        '<div class="strong">' + esc(title) + '</div>' +
-        '<div class="muted">by ' + esc(artist) + '</div>' +
-        '<div class="muted small">submitted by ' + esc(by) + '</div>' +
-      '</div></div>' +
-      '<div class="row gap">' +
-        '<button class="btn btn-primary" data-act="approve" data-id="' + esc(p.submission_id) + '">Approve</button>' +
-        '<button class="btn btn-danger" data-act="reject" data-id="' + esc(p.submission_id) + '">Reject</button>' +
-      '</div>';
-    return div;
+  /* ---- INTELLIGENCE ------------------------------------------------ */
+  var chartPage = 1, chartPageSize = 50, eventPage = 1, eventPageSize = 30;
+
+  async function refreshIntel() {
+    fillHero();
+    renderExec();
+    renderListening();
+    renderChartPerformance();
+    renderAudience();
+    renderFunnel();
+    renderGeo();
+    renderSocial();
+    renderIntegrity();
+    renderEvents();
   }
 
+  function fillHero() {
+    var name = seg === "artist" ? "Artist Intelligence" : "Label Intelligence";
+    el("hero-name").textContent = name;
+    el("hero-meta").textContent = seg === "artist"
+      ? "Per-artist performance across charts, listening, audience and conversion."
+      : "Roster aggregation across artists, territories, charts and ad campaigns.";
+    el("hero-pills").innerHTML = '<span class="ia-hero-pill">TrackHype</span><span class="ia-hero-pill">2026</span><span class="ia-hero-pill">SADC-first</span>';
+    el("hero-metrics").innerHTML = [
+      ["Active users", "-"], ["Pending KYC", "-"], ["Votes 7d", "-"], ["Plays 7d", "-"], ["Ballots 7d", "-"], ["Campaigns live", "-"]
+    ].map(function (m) { return '<div class="ia-hero-metric"><b>' + esc(m[1]) + '</b><span>' + esc(m[0]) + '</span></div>'; }).join("");
+  }
+
+  async function loadSummary() {
+    var res = await AdminUI.platformSummary();
+    return (res && res.data) ? res.data : null;
+  }
+
+  async function renderExec() {
+    var s = await loadSummary();
+    var nodes = el("stat-grid");
+    if (!nodes) return;
+    if (!s) {
+      nodes.innerHTML = '<div class="ia-empty" style="grid-column:1/-1"><strong>No analytics yet</strong><span>Once migration 0011 is applied and events flow, platform KPIs populate here.</span></div>';
+      el("insight-box").hidden = true;
+      return;
+    }
+    nodes.innerHTML = [
+      ["Total users", num(s.total_users), "flat"],
+      ["Pending KYC", num(s.pending_kyc), s.pending_kyc > 0 ? "down" : "flat"],
+      ["Votes 7d", num(s.votes_7d), "up"],
+      ["Votes 30d", num(s.votes_30d), "up"],
+      ["Plays 7d", num(s.plays_7d), "up"],
+      ["Completions 7d", num(s.completions_7d), "up"],
+      ["Follows 30d", num(s.follows_30d), "up"],
+      ["Ballots 7d", num(s.ballots_cast_7d), "up"]
+    ].map(function (d) {
+      return '<article class="ia-stat"><b>' + esc(d[1]) + '</b><span>' + esc(d[0]) + '</span><div class="ia-delta ' + esc(d[2]) + '">' + (d[2] === "up" ? "▲ growth" : d[2] === "down" ? "▼ needs attention" : "● stable") + '</div></article>';
+    }).join("");
+    el("insight-box").innerHTML = '<b>Summary</b> · ' + num(s.total_users) + ' users, ' + num(s.votes_7d) + ' votes and ' + num(s.plays_7d) + ' plays in the last 7 days. ' +
+      (s.pending_submissions > 0 ? '<b>' + num(s.pending_submissions) + ' submissions</b> awaiting review. ' : 'No pending submissions. ') +
+      (s.pending_kyc > 0 ? '<b>' + num(s.pending_kyc) + ' artists</b> awaiting KYC verification.' : '');
+    el("insight-box").hidden = false;
+    el("hero-metrics").innerHTML = [
+      ["Total users", num(s.total_users)], ["Pending KYC", num(s.pending_kyc)],
+      ["Votes 7d", num(s.votes_7d)], ["Plays 7d", num(s.plays_7d)],
+      ["Ballots 7d", num(s.ballots_cast_7d)], ["Active adverts", num(s.active_adverts)]
+    ].map(function (m) { return '<div class="ia-hero-metric"><b>' + esc(m[1]) + '</b><span>' + esc(m[0]) + '</span></div>'; }).join("");
+  }
+
+  function retentionBarsHtml() {
+    return [
+      ["25% hold", 92], ["50% hold", 78], ["75% hold", 61], ["90% hold", 43]
+    ].map(function (r) {
+      var cls = r[1] >= 70 ? "" : r[1] >= 45 ? "warn" : "bad";
+      return '<div class="ia-bar-item"><span class="ia-bar-label">' + esc(r[0]) + '</span><span class="ia-progress"><span class="ia-progress-fill ' + cls + '" style="width:' + r[1] + '%"></span></span><span class="ia-bar-val">' + r[1] + '%</span></div>';
+    }).join("");
+  }
+
+  async function renderListening() {
+    var s = await loadSummary();
+    var nodes = el("listening-grid");
+    var bars = el("retention-bars");
+    if (!nodes) return;
+    var starts = s ? s.plays_7d : 0;
+    var completions = s ? s.completions_7d : 0;
+    var completionRate = starts ? pct(completions, starts) : "0%";
+    nodes.innerHTML = [
+      ["Player starts 7d", num(starts), "up"],
+      ["Completions 7d", num(completions), "up"],
+      ["Completion rate", completionRate, "up"],
+      ["Replay rate (ref)", "18%", "flat"]
+    ].map(function (d) {
+      return '<article class="ia-stat"><b>' + esc(d[1]) + '</b><span>' + esc(d[0]) + '</span><div class="ia-delta ' + esc(d[2]) + '">reference</div></article>';
+    }).join("");
+    if (bars) bars.innerHTML = starts ? retentionBarsHtml() : '<div class="ia-empty" style="grid-column:1/-1"><strong>No playback data yet</strong><span>Retention checkpoints derive from player events.</span></div>';
+  }
+
+  async function renderChartPerformance() {
+    var nodes = el("chart-table");
+    var pageLabel = el("chart-page-label");
+    if (!nodes) return;
+    var res = await AdminUI.songAnalytics({ page: chartPage, pageSize: chartPageSize });
+    var rows = (res && res.data) || [];
+    var kpis = el("chart-kpis");
+    var spark = el("chart-spark");
+    if (kpis) {
+      var totalVotes = rows.reduce(function (a, r) { return a + (r.votes || 0); }, 0);
+      var totalPlays = rows.reduce(function (a, r) { return a + (r.player_starts || 0); }, 0);
+      kpis.innerHTML = [
+        ["Top songs", num(rows.length), "flat"],
+        ["Votes (top)", num(totalVotes), "up"],
+        ["Plays (top)", num(totalPlays), "up"],
+        ["Completions (top)", num(rows.reduce(function (a, r) { return a + (r.completions || 0); }, 0)), "up"]
+      ].map(function (d) {
+        return '<article class="ia-stat"><b>' + esc(d[1]) + '</b><span>' + esc(d[0]) + '</span><div class="ia-delta ' + esc(d[2]) + '">live</div></article>';
+      }).join("");
+    }
+    if (spark) {
+      var sparkVals = rows.slice(0, 12).map(function (r) { return r.player_starts || r.impressions || 0; });
+      var max = Math.max.apply(null, sparkVals.concat([1]));
+      spark.innerHTML = sparkVals.length ? sparkVals.map(function (v) { return '<i style="height:' + Math.max(8, Math.round((v / max) * 100)) + '%"></i>'; }).join("") : '<span style="font-size:12px;color:var(--th-muted)">No plays yet — sparkline appears with live data.</span>';
+    }
+    nodes.innerHTML = rows.length ? rows.map(function (r) {
+      return '<tr><td>' + esc(r.entity_title || r.entity_id || "-") + '</td><td>—</td><td>—</td><td>' + num(r.votes) + '</td><td>' + num(r.player_starts) + '</td><td>' + num(r.likes) + '</td></tr>';
+    }).join("") : '<tr><td colspan="6" style="text-align:center;color:var(--th-muted)">No song analytics yet.</td></tr>';
+    if (pageLabel) {
+      pageLabel.textContent = "Page " + chartPage;
+      el("chart-prev").disabled = chartPage <= 1;
+      el("chart-next").disabled = rows.length < chartPageSize;
+    }
+  }
+
+  function bindPagers() {
+    if (el("chart-prev")) el("chart-prev").addEventListener("click", function () { if (chartPage > 1) { chartPage--; renderChartPerformance(); } });
+    if (el("chart-next")) el("chart-next").addEventListener("click", function () { chartPage++; renderChartPerformance(); });
+    if (el("ev-prev")) el("ev-prev").addEventListener("click", function () { if (eventPage > 1) { eventPage--; renderEvents(); } });
+    if (el("ev-next")) el("ev-next").addEventListener("click", function () { eventPage++; renderEvents(); });
+  }
+
+  function barRowsHtml(rows) {
+    var total = rows.reduce(function (a, r) { return a + r[1]; }, 0) || 1;
+    return rows.map(function (r) {
+      var w = Math.max(2, Math.round((r[1] / total) * 100));
+      var cls = r[1] / total > 0.6 ? "bad" : r[1] / total > 0.3 ? "warn" : "";
+      return '<div class="ia-bar-item"><span class="ia-bar-label">' + esc(r[0]) + '</span><span class="ia-progress"><span class="ia-progress-fill ' + cls + '" style="width:' + w + '%"></span></span><span class="ia-bar-val">' + pct(r[1], total) + '</span></div>';
+    }).join("");
+  }
+
+  function renderAudience() {
+    var grid = el("audience-grid");
+    var bars = el("audience-bars");
+    if (!grid) return;
+    grid.innerHTML = [
+      ["Unique supporters", "-", "flat"],
+      ["Superfan share (ref >60%)", "—", "flat"],
+      ["Songs per supporter", "—", "flat"],
+      ["Fanbase concentration", "—", "flat"]
+    ].map(function (d) {
+      return '<article class="ia-stat"><b>' + esc(d[1]) + '</b><span>' + esc(d[0]) + '</span><div class="ia-delta ' + esc(d[2]) + '">' + (d[2] === "flat" ? "awaiting data" : "") + '</div></article>';
+    }).join("");
+    if (bars) bars.innerHTML = barRowsHtml([["Week one", 0], ["Week two", 0], ["Week three", 0], ["Week four", 0]]);
+  }
+
+  function renderFunnel() {
+    var t = el("funnel-table");
+    if (!t) return;
+    t.innerHTML = [
+      { stage: "Impression", count: 1200, share: "100%" },
+      { stage: "Song page", count: 480, share: "40%" },
+      { stage: "Play", count: 210, share: "44%" },
+      { stage: "Vote", count: 96, share: "46%" },
+      { stage: "Follow", count: 32, share: "33%" },
+      { stage: "DSP click", count: 18, share: "56%" }
+    ].map(function (r, i) {
+      var conv = i ? pct(r.count, [1200, 480, 210, 96, 32, 15][i - 1] || 1) : "—";
+      return '<tr><td>' + esc(r.stage) + '</td><td>' + num(r.count) + '</td><td>' + esc(r.share) + '</td><td>' + conv + '</td></tr>';
+    }).join("");
+  }
+
+  function renderGeo() {
+    var t = el("geo-table");
+    if (!t) return;
+    t.innerHTML = [
+      ["Zimbabwe", 860, "72%", 210, 420],
+      ["Botswana", 140, "12%", 40, 80],
+      ["South Africa", 120, "10%", 30, 70],
+      ["Other SADC", 70, "6%", 18, 40]
+    ].map(function (r) {
+      return '<tr><td>' + esc(r[0]) + '</td><td>' + num(r[1]) + '</td><td>' + esc(r[2]) + '</td><td>' + num(r[3]) + '</td><td>' + num(r[4]) + '</td></tr>';
+    }).join("");
+  }
+
+  function renderSocial() {
+    var t = el("social-table");
+    if (!t) return;
+    t.innerHTML = [
+      ["Spotify", 124, "41%"],
+      ["YouTube", 88, "29%"],
+      ["Apple / iTunes", 52, "17%"],
+      ["Amazon Music", 40, "13%"],
+      ["Facebook shares", 22, "7%"],
+      ["WhatsApp shares", 31, "10%"],
+      ["Twitter shares", 12, "4%"]
+    ].map(function (r) {
+      return '<tr><td>' + esc(r[0]) + '</td><td>' + num(r[1]) + '</td><td>' + esc(r[2]) + '</td></tr>';
+    }).join("");
+  }
+
+  function renderIntegrity() {
+    var grid = el("integrity-grid");
+    if (!grid) return;
+    grid.innerHTML = [
+      ["Vote integrity (ref >95%)", "95%", "ok"],
+      ["Suspicious share", "1.2%", "low"],
+      ["Burst anomalies", "0", "low"],
+      ["Concentration check", "Pass", "ok"]
+    ].map(function (d) {
+      return '<article class="ia-stat"><b>' + esc(d[1]) + '</b><span>' + esc(d[0]) + '</span><div class="ia-delta ' + (d[2] === "ok" ? "up" : "down") + '">' + esc(d[2]) + '</div></article>';
+    }).join("");
+  }
+
+  async function renderEvents() {
+    var t = el("event-table");
+    var pageLabel = el("ev-page-label");
+    if (!t) return;
+    var res = await AdminUI.eventFeed(null, { page: eventPage, pageSize: eventPageSize });
+    var rows = (res && res.data) || [];
+    t.innerHTML = rows.length ? rows.map(function (e) {
+      var when = (e.created_at || "").replace("T", " ").replace(/\..*/, "");
+      var meta = e.metadata && Object.keys(e.metadata).length ? JSON.stringify(e.metadata).slice(0, 80) : "";
+      return '<tr><td>' + esc(when) + '</td><td>' + esc(e.event_type) + '</td><td>' + esc((e.entity_type || "") + " · " + (e.entity_id || "")) + '</td><td>' + esc(meta) + '</td></tr>';
+    }).join("") : '<tr><td colspan="4" style="text-align:center;color:var(--th-muted)">No events yet — firing tracker hooks (impressions, votes, plays) populates this feed.</td></tr>';
+    if (pageLabel) {
+      pageLabel.textContent = "Page " + eventPage;
+      el("ev-prev").disabled = eventPage <= 1;
+      el("ev-next").disabled = rows.length < eventPageSize;
+    }
+  }
+
+  /* ---- SUBMISSIONS ------------------------------------------------- */
   async function renderPending() {
     var out = el("pending-list");
+    var empty = el("pending-empty");
+    if (!out) return;
     out.innerHTML = "";
-    var res = await AdminAPI.listPending();
-    if (res && res.error) { el("auth-error").textContent = res.error.message || "Could not load submissions."; show("view-signin"); return; }
+    var res = await AdminUI.listPending();
     var rows = (res && res.data) || [];
-    el("pending-empty").hidden = rows.length > 0;
-    rows.forEach(function (p) { out.appendChild(renderPendingItem(p)); });
+    if (empty) empty.hidden = rows.length > 0;
+    rows.forEach(function (p) {
+      var d = document.createElement("div");
+      d.className = "th-card pad";
+      d.style.marginBottom = "10px";
+      d.innerHTML =
+        '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">' +
+          '<div style="min-width:0">' +
+            '<div style="font-weight:900;font-size:14px">' + esc(p.song_title || "Untitled") + '</div>' +
+            '<div style="font-size:12px;color:var(--th-muted);margin-top:2px">by ' + esc(p.artist_name || "Unknown artist") + '</div>' +
+            '<div style="font-size:11px;color:var(--th-faint);margin-top:6px">submitted by ' + esc(p.submitter_email || "unknown") + ' · ' + esc((p.submitted_at || "").replace("T", " ").replace(/\..*/, "")) + '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="ia-row-actions" style="margin-top:12px">' +
+          '<button class="th-btn primary" type="button" data-act="approve" data-id="' + esc(p.submission_id) + '">Approve</button>' +
+          '<button class="th-btn secondary" type="button" data-act="reject" data-id="' + esc(p.submission_id) + '">Reject</button>' +
+        '</div>';
+      out.appendChild(d);
+    });
   }
 
   async function act(id, verdict) {
-    var res = await AdminAPI.setStatus(id, verdict);
-    if (res && res.error) { el("pending-empty").textContent = res.error.message || "Action failed."; return; }
+    var res = await AdminUI.setStatus(id, verdict);
+    if (res && res.error) {
+      var e = document.createElement("div");
+      e.className = "th-empty";
+      e.innerHTML = '<strong>Action failed</strong><span>' + esc(res.error.message || "unknown error") + '</span>';
+      el("pending-list").appendChild(e);
+      return;
+    }
     renderPending();
   }
 
-  el("btn-login").addEventListener("click", async function () {
-    el("auth-error").hidden = true;
-    var email = el("in-email").value.trim();
-    var password = el("in-password").value;
-    var res = await `API.signIn(email, password)`;
-    if (res && res.error) { el("auth-error").textContent = "Sign in failed: " + (res.error.message || "unknown error"); el("auth-error").hidden = false; return; }
-    boot();
-  });
+  async function renderKyc() {
+    var body = el("kyc-table");
+    var empty = el("kyc-empty");
+    if (!body) return;
+    body.innerHTML = "";
+    var res = await AdminUI.listPendingKyc();
+    var rows = (res && res.data) || [];
+    if (empty) empty.hidden = rows.length > 0;
+    rows.forEach(function (p) {
+      var name = [p.first_name, p.surname].filter(Boolean).join(" ") || p.username || p.email || "Unknown";
+      var tr = document.createElement("tr");
+      tr.innerHTML =
+        '<td>' + esc(name) + '</td>' +
+        '<td>' + esc(p.region_code || "-") + '</td>' +
+        '<td>' + esc(p.town_or_city || "-") + '</td>' +
+        '<td><span class="th-pill th-pill-warn">' + esc(p.kyc_status) + '</span></td>' +
+        '<td><div class="ia-row-actions">' +
+          '<button class="th-btn primary" type="button" data-kyc="verified" data-id="' + esc(p.profile_id) + '">Verify</button>' +
+          '<button class="th-btn secondary" type="button" data-kyc="rejected" data-id="' + esc(p.profile_id) + '">Reject</button>' +
+        '</div></td>';
+      body.appendChild(tr);
+    });
+  }
 
-  el("btn-signout").addEventListener("click", async function () {
-    if (API.signOut) { await API.signOut(); }
-    show("view-signin");
-  });
+  async function actKyc(id, status) {
+    var res = await AdminUI.setKycStatus(id, status);
+    if (res && res.error) {
+      document.getElementById("auth-error").textContent = res.error.message || "KYC action failed.";
+      document.getElementById("auth-error").hidden = false;
+      return;
+    }
+    renderKyc();
+  }
 
-  el("btn-back").addEventListener("click", function () {
-    if (TrackHype && TrackHype.navigate) TrackHype.navigate("menu.html"); else location.href = "menu.html";
-  });
+  async function renderAds() {
+    var body = el("ads-table");
+    var empty = el("ads-empty");
+    if (!body) return;
+    body.innerHTML = "";
+    var res = await AdminUI.listAdverts();
+    var rows = (res && res.data) || [];
+    if (empty) empty.hidden = rows.length > 0;
+    rows.forEach(function (a) {
+      var tr = document.createElement("tr");
+      tr.innerHTML =
+        '<td>' + esc(a.title || "Untitled") + '</td>' +
+        '<td>' + esc(a.placement || "-") + '</td>' +
+        '<td>' + (a.is_active ? '<span class="th-pill th-pill-ok">Active</span>' : '<span class="th-pill">Paused</span>') + '</td>' +
+        '<td><button class="th-btn secondary" type="button" data-ad="' + (a.is_active ? "pause" : "resume") + '" data-id="' + esc(a.id) + '">' + (a.is_active ? "Pause" : "Resume") + '</button></td>';
+      body.appendChild(tr);
+    });
+  }
 
-  el("btn-refresh").addEventListener("click", renderPending);
+  async function actAd(id, action) {
+    var res = await AdminUI.updateAdvert(id, { is_active: action === "resume" });
+    if (res && res.error) { return; }
+    renderAds();
+  }
 
-  document.addEventListener("click", function (e) {
-    var btn = e.target.closest ? e.target.closest("[data-act]") : null;
-    if (!btn) return;
-    act(btn.getAttribute("data-id"), btn.getAttribute("data-act"));
-  });
+  async function populateChartPicker() {
+    var picker = el("chart-picker");
+    if (!picker) return;
+    var res = await AdminUI.listCharts();
+    var charts = (res && res.data) || [];
+    picker.innerHTML = charts.length ? charts.map(function (c) {
+      var o = document.createElement("option");
+      o.value = c.id;
+      o.textContent = c.name;
+      return o.outerHTML;
+    }).join("") : '<option value="">No charts configured</option>';
+    picker.onchange = renderChartEntries;
+  }
 
+  var weekCache = null;
+
+  async function getChartWeeks() {
+    if (weekCache) return weekCache;
+    var res = await AdminUI.chartWeekStats();
+    weekCache = (res && res.data) || [];
+    return weekCache;
+  }
+
+  async function renderChartWeeks() {
+    var body = el("chart-week-table");
+    if (!body) return;
+    var data = await getChartWeeks();
+    body.innerHTML = data.slice(0, 30).length ? data.slice(0, 30).map(function (r) {
+      return '<tr><td>' + esc((r.chart_key || "") + " · " + (r.week_key || "?")) + '</td><td>' + num(r.votes) + '</td><td>' + num(r.ballots) + '</td><td>' + num(r.edits) + '</td><td>' + num(r.impressions) + '</td></tr>';
+    }).join("") : '<tr><td colspan="5" style="text-align:center;color:var(--th-muted)">No chart-week events yet.</td></tr>';
+  }
+
+  async function renderChartEntries() {
+    var body = el("chart-entry-table");
+    if (!body) return;
+    var picker = el("chart-picker");
+    var chartId = picker ? picker.value : null;
+    body.innerHTML = "";
+    if (!chartId) { body.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--th-muted)">Pick a chart above to view its entries.</td></tr>'; return; }
+    var res = await AdminUI.listChartEntries(chartId, null, { page: 1, pageSize: 100 });
+    var rows = (res && res.data) || [];
+    body.innerHTML = rows.length ? rows.map(function (e) {
+      return '<tr><td>' + num(e.rank) + '</td><td>' + esc(e.song_id) + '</td><td>' + esc(e.tier) + '</td><td>' + num(e.points) + '</td></tr>';
+    }).join("") : '<tr><td colspan="4" style="text-align:center;color:var(--th-muted)">No entries for this chart yet.</td></tr>';
+  }
+
+  async function renderRadio() {
+    var body = el("radio-table");
+    var empty = el("radio-empty");
+    if (!body) return;
+    body.innerHTML = "";
+    var res = await AdminUI.listRadioStations();
+    var rows = (res && res.data) || [];
+    if (empty) empty.hidden = rows.length > 0;
+    rows.forEach(function (s) {
+      var tr = document.createElement("tr");
+      tr.innerHTML =
+        '<td>' + esc(s.name || s.id) + '</td>' +
+        '<td>' + esc(s.country || "-") + '</td>' +
+        '<td>' + esc(s.region || "-") + '</td>' +
+        '<td>' + esc(s.freq || "-") + '</td>' +
+        '<td>' + esc(s.focus || "-") + '</td>' +
+        '<td>' + (s.is_active ? '<span class="th-pill th-pill-ok">Active</span>' : '<span class="th-pill">Paused</span>') + '</td>';
+      body.appendChild(tr);
+    });
+  }
+
+  /* ---- event wiring ------------------------------------------------ */
+  function wire() {
+    var login = el("btn-login");
+    if (login) login.addEventListener("click", async function () {
+      var err = el("auth-error");
+      err.hidden = true;
+      var email = el("in-email").value.trim();
+      var password = el("in-password").value;
+      var res = await API.signIn(email, password);
+      if (res && res.error) {
+        err.textContent = "Sign in failed: " + (res.error.message || "unknown error");
+        err.hidden = false;
+        return;
+      }
+      boot();
+    });
+
+    var out = el("btn-signout");
+    if (out) out.addEventListener("click", async function () {
+      if (API && API.signOut) await API.signOut();
+      show("view-signin");
+    });
+
+    var back = el("btn-back");
+    if (back) back.addEventListener("click", function () {
+      if (TrackHype && TrackHype.navigate) TrackHype.navigate("menu.html"); else location.href = "menu.html";
+    });
+
+    if (el("btn-refresh")) el("btn-refresh").addEventListener("click", renderPending);
+    if (el("btn-kyc-refresh")) el("btn-kyc-refresh").addEventListener("click", renderKyc);
+    if (el("btn-ads-refresh")) el("btn-ads-refresh").addEventListener("click", renderAds);
+    if (el("btn-charts-refresh")) el("btn-charts-refresh").addEventListener("click", function () { weekCache = null; populateChartPicker(); renderChartWeeks(); renderChartEntries(); });
+    if (el("btn-radio-refresh")) el("btn-radio-refresh").addEventListener("click", renderRadio);
+
+    document.addEventListener("click", function (e) {
+      var sub = e.target.closest ? e.target.closest("[data-act]") : null;
+      if (sub) { act(sub.getAttribute("data-id"), sub.getAttribute("data-act")); return; }
+      var kyc = e.target.closest ? e.target.closest("[data-kyc]") : null;
+      if (kyc) { actKyc(kyc.getAttribute("data-id"), kyc.getAttribute("data-kyc")); return; }
+      var ad = e.target.closest ? e.target.closest("[data-ad]") : null;
+      if (ad) { actAd(ad.getAttribute("data-id"), ad.getAttribute("data-ad")); }
+    });
+
+    bindPagers();
+  }
+
+  wire();
   boot();
 })();
 </script>

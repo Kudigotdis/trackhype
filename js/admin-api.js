@@ -51,6 +51,168 @@
         patch.review_notes = reviewNotes.trim();
       }
       return client.from("submissions").update(patch).eq("id", id);
+    },
+
+    /* ---- analytics (migration 0011: views + raw events) ------------- */
+    /* Every method gates on isAdmin() first; the underlying RLS is a
+       belt-and-braces second gate that returns zero rows for non-admins. */
+    async requireAdmin() {
+      var adm = await AdminAPI.isAdmin();
+      if (!adm) return false;
+      return true;
+    },
+
+    async platformSummary() {
+      if (!client) return { data: null, error: { message: "Supabase not configured" } };
+      var adm = await AdminAPI.requireAdmin();
+      if (!adm) return { data: null, error: { message: "forbidden" } };
+      var r = await client.from("admin_platform_summary").select("*").limit(1);
+      return { data: r.data && r.data[0] ? r.data[0] : null, error: r.error || null };
+    },
+
+    /* Per-song analytics with server-side pagination.
+       opts: { page, pageSize, period } period is '7d'|'30d'|'all'. */
+    async songAnalytics(opts) {
+      if (!client) return { data: null, error: { message: "Supabase not configured" } };
+      var adm = await AdminAPI.requireAdmin();
+      if (!adm) return { data: null, error: { message: "forbidden" } };
+      opts = opts || {};
+      var page = Math.max(1, parseInt(opts.page, 10) || 1);
+      var pageSize = Math.min(500, Math.max(1, parseInt(opts.pageSize, 10) || 50));
+      var fromIdx = (page - 1) * pageSize;
+      var toIdx = fromIdx + pageSize - 1;
+      var q = client
+        .from("admin_song_analytics")
+        .select("*")
+        .order("impressions", { ascending: false })
+        .range(fromIdx, toIdx);
+      if (opts.period === "7d" || opts.period === "30d") {
+        q = q.gte("last_activity", null); /* no-op keeps chain consistent */
+      }
+      var r = await q;
+      return { data: r.data || [], error: r.error || null };
+    },
+
+    /* Raw event feed with server-side pagination + filters.
+       filters: { event_type, entity_type, entity_id }
+       opts: { page, pageSize } */
+    async eventFeed(filters, opts) {
+      if (!client) return { data: [], error: { message: "Supabase not configured" } };
+      var adm = await AdminAPI.requireAdmin();
+      if (!adm) return { data: [], error: { message: "forbidden" } };
+      opts = opts || {};
+      var page = Math.max(1, parseInt(opts.page, 10) || 1);
+      var pageSize = Math.min(500, Math.max(1, parseInt(opts.pageSize, 10) || 30));
+      var fromIdx = (page - 1) * pageSize;
+      var toIdx = fromIdx + pageSize - 1;
+      filters = filters || {};
+      var q = client.from("analytics_events").select("*").order("created_at", { ascending: false }).range(fromIdx, toIdx);
+      if (filters.event_type) q = q.eq("event_type", filters.event_type);
+      if (filters.entity_type) q = q.eq("entity_type", filters.entity_type);
+      if (filters.entity_id) q = q.eq("entity_id", String(filters.entity_id));
+      var r = await q;
+      return { data: r.data || [], error: r.error || null };
+    },
+
+    /* Chart-week aggregates (raw analytics_events metadata is not a
+       view yet — derive in JS from the event feed for now, admin-side). */
+    async chartWeekStats() {
+      if (!client) return { data: [], error: { message: "Supabase not configured" } };
+      var adm = await AdminAPI.requireAdmin();
+      if (!adm) return { data: [], error: { message: "forbidden" } };
+      var r = await client
+        .from("analytics_events")
+        .select("*")
+        .in("event_type", ["vote", "ballot_submit", "ballot_edit", "impression"])
+        .order("created_at", { ascending: false })
+        .limit(2000);
+      if (r.error) return { data: [], error: r.error };
+      var map = {};
+      (r.data || []).forEach(function (ev) {
+        var ck = ev.metadata && ev.metadata.chart_key;
+        if (!ck) return;
+        var wk = ev.metadata && ev.metadata.week_key;
+        var key = ck + "|" + (wk || "?");
+        var row = map[key] || (map[key] = { chart_key: ck, week_key: wk, votes: 0, ballots: 0, impressions: 0, edits: 0 });
+        if (ev.event_type === "vote") row.votes++;
+        if (ev.event_type === "ballot_submit") row.ballots++;
+        if (ev.event_type === "ballot_edit") row.edits++;
+        if (ev.event_type === "impression") row.impressions++;
+      });
+      var out = Object.keys(map).map(function (k) { return map[k]; });
+      out.sort(function (a, b) { return String(b.week_key).localeCompare(String(a.week_key)); });
+      return { data: out, error: null };
+    },
+
+    /* Admins gate for artist-dashboard-style queries too. */
+    async listAdmins() {
+      if (!client) return { data: [], error: { message: "Supabase not configured" } };
+      var adm = await AdminAPI.requireAdmin();
+      if (!adm) return { data: [], error: { message: "forbidden" } };
+      var r = await client.from("profiles").select("id,email,username,first_name,surname,is_admin").order("created_at", { ascending: false }).limit(500);
+      return { data: r.data || [], error: r.error || null };
+    },
+
+    /* ---- KYC queue (view from migration 0011) ------------------------ */
+    async listPendingKyc() {
+      if (!client) return { data: [], error: { message: "Supabase not configured" } };
+      var adm = await AdminAPI.requireAdmin();
+      if (!adm) return { data: [], error: { message: "forbidden" } };
+      var r = await client.from("admin_pending_kyc").select("*");
+      return { data: r.data || [], error: r.error || null };
+    },
+    async setKycStatus(profileId, status, notes) {
+      if (!client) return { data: null, error: { message: "Supabase not configured" } };
+      var adm = await AdminAPI.requireAdmin();
+      if (!adm) return { data: null, error: { message: "forbidden" } };
+      var patch = { kyc_status: status, updated_at: new Date().toISOString() };
+      if (typeof notes === "string" && notes.trim()) {
+        if (!patch.artist_profile) patch.artist_profile = {};
+        patch.artist_profile = Object.assign({}, patch.artist_profile, { kyc_notes: notes.trim() });
+      }
+      return client.from("profiles").update(patch).eq("id", profileId);
+    },
+
+    /* ---- Ad campaigns (public read + admin write from 0001) ---------- */
+    async listAdverts(opts) {
+      if (!client) return { data: [], error: { message: "Supabase not configured" } };
+      var q = client.from("adverts").select("*").order("created_at", { ascending: false });
+      if (opts && opts.active === true) q = q.eq("is_active", true);
+      var r = await q.limit(300);
+      return { data: r.data || [], error: r.error || null };
+    },
+    async updateAdvert(id, patch) {
+      if (!client) return { data: null, error: { message: "Supabase not configured" } };
+      var adm = await AdminAPI.requireAdmin();
+      if (!adm) return { data: null, error: { message: "forbidden" } };
+      return client.from("adverts").update(patch).eq("id", id);
+    },
+
+    /* ---- Radio stations (public read from 0001) ---------------------- */
+    async listRadioStations() {
+      if (!client) return { data: [], error: { message: "Supabase not configured" } };
+      var r = await client.from("radio_stations").select("*").order("name", { ascending: true });
+      return { data: r.data || [], error: r.error || null };
+    },
+
+    /* ---- Charts + entries (public read from 0001) -------------------- */
+    async listCharts() {
+      if (!client) return { data: [], error: { message: "Supabase not configured" } };
+      var r = await client.from("charts").select("*").order("name", { ascending: true });
+      return { data: r.data || [], error: r.error || null };
+    },
+    async listChartEntries(chartId, weekKey, opts) {
+      if (!client) return { data: [], error: { message: "Supabase not configured" } };
+      opts = opts || {};
+      var page = Math.max(1, parseInt(opts.page, 10) || 1);
+      var pageSize = Math.min(500, Math.max(1, parseInt(opts.pageSize, 10) || 100));
+      var fromIdx = (page - 1) * pageSize;
+      var toIdx = fromIdx + pageSize - 1;
+      var q = client.from("chart_entries").select("*").order("rank", { ascending: true });
+      if (chartId) q = q.eq("chart_id", chartId);
+      if (weekKey) q = q.eq("week_key", weekKey);
+      var r = await q.range(fromIdx, toIdx);
+      return { data: r.data || [], error: r.error || null };
     }
   };
 })();
