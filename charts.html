@@ -229,6 +229,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="js/supabase-config.js"></script>
   <script src="js/api.js"></script>
+  <script src="js/tracker.js"></script>
   <script src="demo-playlist.js"></script>
   <script src="docs/Demo Charts/chart_history-data.js"></script>
   <script src="trackhype.js"></script>
@@ -700,6 +701,40 @@
         list.innerHTML = t3.map((s, i) => tierRowHtml(s, i, newsestLabel(s, TrackHype.currentWeekKey()))).join("")
           || '<p style="padding:18px;text-align:center;color:var(--th-muted);font-size:13px">No Newest songs yet — approved releases appear after moderation approval.</p>';
       }
+      trackVisibleImpressions(current, tier);
+    }
+
+    function trackVisibleImpressions(chart, tierKind){
+      try{
+        if(!window.TRACK){ return; }
+        const rows = document.querySelectorAll("#chartList .ch-row");
+        if(!rows.length){ return; }
+        const wk = TrackHype.currentWeekKey();
+        const seen = new Set();
+        const obs = new IntersectionObserver(entries => {
+          entries.forEach(en => {
+            if(!en.isIntersecting){ return; }
+            const el = en.target;
+            const idx = el.getAttribute("data-index");
+            if(idx == null || seen.has(idx)){ return; }
+            seen.add(idx);
+            const song = order[Number(idx)];
+            if(!song){ return; }
+            const meta = { chart_key: chart.key, tier: tierKind, week_key: wk };
+            if(song.rank != null){ meta.rank = song.rank; }
+            window.TRACK.impression("song", song.songId || song.id, Object.assign({ title: song.title, artist: song.artistName }, meta));
+          });
+        }, { root: null, threshold: 0.4 });
+        rows.forEach((r, i) => {
+          r.setAttribute("data-index", String(i));
+          obs.observe(r);
+        });
+        window.__chartImpressObservers = window.__chartImpressObservers || [];
+        window.__chartImpressObservers.push(obs);
+        if(window.__chartImpressObservers.length > 4){
+          window.__chartImpressObservers.shift().disconnect();
+        }
+      }catch(e){}
     }
 
     function renderAll(){
@@ -842,6 +877,11 @@
       if(!pool.length){ TrackHype.toast("No songs competing on this chart yet."); return; }
 
       const saved = TrackHype.getBallot(c, wk);
+      try{
+        if(saved && saved.picks && saved.picks.length && window.TRACK && window.TRACK.ballotEdit){
+          window.TRACK.ballotEdit(c, wk, { opened_existing: true, picks: saved.picks.length });
+        }
+      }catch(e){}
       const indexed = pool.map((s, i) => ({
         submissionId: s.id,
         title: s.title,
@@ -976,6 +1016,12 @@
         const [row] = order.splice(idx, 1);
         order.splice(target, 0, row);
         assignRanks();
+        try{
+          if(window.TRACK && window.TRACK.ballotEdit){
+            const rowEl = order[target] || {};
+            window.TRACK.ballotEdit(c, wk, { title: (row.title || rowEl.title) || "", artist: (row.artistName || rowEl.artistName) || "" });
+          }
+        }catch(e){}
         render();
       }
 
@@ -1036,6 +1082,11 @@
           order = order.filter(r => r.submissionId !== id);
           order.splice(Math.max(0, Math.min(target - 1, order.length)), 0, row);
           assignRanks();
+          try{
+            if(window.TRACK && window.TRACK.ballotEdit){
+              window.TRACK.ballotEdit(c, wk, { title: row.title, artist: row.artistName, exact_rank: target });
+            }
+          }catch(e){}
           TrackHype.closeSheet();
           render();
         };
@@ -1050,6 +1101,17 @@
         TrackHype.toast(res.replaced
           ? "Ballot updated — only your latest saved ballot counts until close."
           : "Ballot saved — you can edit until Monday 00:00 Harare.");
+        try{
+          if(window.TRACK && window.TRACK.ballotSubmit){
+            window.TRACK.ballotSubmit(c, wk, picks.length, !!res.replaced);
+            picks.slice().sort((a, b) => a.rank - b.rank).forEach(p => {
+              const row = byId[p.submissionId];
+              if(window.TRACK && window.TRACK.vote && row){
+                window.TRACK.vote(p.submissionId, c, wk, p.rank, { title: row.title, artist: row.artistName });
+              }
+            });
+          }
+        }catch(e){}
         exitBallot();
       }
 
@@ -1061,11 +1123,18 @@
       const song = order.find(s => String(s.id) === String(id) || String(s.songId) === String(id));
       if(!song){ return; }
       const key = favKey(song);
+      const wasFav = (TrackHype.getState().favouriteSongs || []).includes(key);
       TrackHype.updateState(s => {
         s.favouriteSongs = s.favouriteSongs || [];
         const i = s.favouriteSongs.indexOf(key);
         if(i >= 0){ s.favouriteSongs.splice(i,1); } else { s.favouriteSongs.push(key); }
       });
+      try{
+        if(window.TRACK && window.TRACK.like){
+          if(wasFav){ window.TRACK.unlike(song.songId || song.id, { title: song.title, artist: song.artistName }); }
+          else{ window.TRACK.like(song.songId || song.id, { title: song.title, artist: song.artistName }); }
+        }
+      }catch(e){}
       if(openPanelIndex >= 0 && openPanelKind === "info"){
         const panel = document.getElementById("panel-" + openPanelIndex);
         if(panel){ panel.innerHTML = infoPanel(song); }
@@ -1094,6 +1163,21 @@
       if(kind === "video"){
         const v = panel.querySelector("video");
         if(v && "play" in v){ v.play().catch(()=>{}); }
+      }else{
+        try{
+          if(window.TRACK && window.TRACK.view){
+            window.TRACK.view("song", song.songId || song.id, { title: song.title, artist: song.artistName, chart_key: current.key });
+          }
+        }catch(e){}
+        panel.querySelectorAll("[data-dsp]").forEach(a => {
+          a.addEventListener("click", () => {
+            try{
+              if(window.TRACK && window.TRACK.dspClick){
+                window.TRACK.dspClick(a.dataset.dsp, a.dataset.platform, { title: song.title, artist: song.artistName });
+              }
+            }catch(e){}
+          });
+        });
       }
     }
 
@@ -1206,10 +1290,10 @@
           <a id="favBtn" style="text-decoration:none;line-height:0" title="Favourite" onclick="toggleChartFav('${id}')">
             <img id="favIcon" src="${faved ? "Assets/icons/heart_active_icon.png" : "Assets/icons/heart_inactive_icon.png"}" alt="">
           </a>
-          <a class="sg-link" href="#" target="_blank" rel="noopener" aria-label="Listen on Spotify"><img src="Assets/icons/Spotify_icon.svg.webp" alt=""></a>
-          <a class="sg-link" href="#" target="_blank" rel="noopener" aria-label="Listen on YouTube"><img src="Assets/icons/YouTube_On.png" alt=""></a>
-          <a class="sg-link" href="#" target="_blank" rel="noopener" aria-label="Listen on Amazon Music"><img src="Assets/icons/amazon_music_icon.webp" alt=""></a>
-          <a class="sg-link" href="#" target="_blank" rel="noopener" aria-label="Listen on iTunes"><img src="Assets/icons/itunes_icon.png" alt=""></a>
+          <a class="sg-link" href="#" target="_blank" rel="noopener" aria-label="Listen on Spotify" data-dsp="${id}" data-platform="Spotify"><img src="Assets/icons/Spotify_icon.svg.webp" alt=""></a>
+          <a class="sg-link" href="#" target="_blank" rel="noopener" aria-label="Listen on YouTube" data-dsp="${id}" data-platform="YouTube"><img src="Assets/icons/YouTube_On.png" alt=""></a>
+          <a class="sg-link" href="#" target="_blank" rel="noopener" aria-label="Listen on Amazon Music" data-dsp="${id}" data-platform="Amazon Music"><img src="Assets/icons/amazon_music_icon.webp" alt=""></a>
+          <a class="sg-link" href="#" target="_blank" rel="noopener" aria-label="Listen on iTunes" data-dsp="${id}" data-platform="iTunes"><img src="Assets/icons/itunes_icon.png" alt=""></a>
         </div>`;
     }
 

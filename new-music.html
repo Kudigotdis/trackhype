@@ -227,6 +227,8 @@
   </div>
 
   <script src="demo-playlist.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/tracker.js"></script>
   <script src="trackhype.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -377,7 +379,34 @@
             </article>`;
         }).join("");
 
+        trackReleaseImpressions();
         syncFilterUI();
+      }
+
+      function trackReleaseImpressions(){
+        try{
+          if(!window.TRACK){ return; }
+          const rows = tracks.querySelectorAll(".th-track");
+          if(!rows.length){ return; }
+          const seen = new Set();
+          const obs = new IntersectionObserver(entries => {
+            entries.forEach(en => {
+              if(!en.isIntersecting){ return; }
+              const el = en.target;
+              const id = el.getAttribute("data-id");
+              if(id == null || seen.has(id)){ return; }
+              seen.add(id);
+              const item = music.find(song => String(song.id) === String(id));
+              if(item){ window.TRACK.impression("song", item.id, { title: item.title, artist: item.artist, genre: item.genre, page: "new-music" }); }
+            });
+          }, { root: null, threshold: 0.4 });
+          rows.forEach(r => obs.observe(r));
+          window.__nmImpressObservers = window.__nmImpressObservers || [];
+          window.__nmImpressObservers.push(obs);
+          if(window.__nmImpressObservers.length > 4){
+            window.__nmImpressObservers.shift().disconnect();
+          }
+        }catch(e){}
       }
 
       function syncFilterUI(){

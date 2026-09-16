@@ -84,6 +84,9 @@
     </div>
   </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/tracker.js"></script>
   <script src="demo-playlist.js"></script>
   <script src="trackhype.js"></script>
   <script>
@@ -100,6 +103,11 @@ function runSearch(){
       const q = (document.getElementById("q").value || "").trim();
       const items = TrackHype.searchInCatalog(q, currentType);
       const head = items.slice(0, currentType === "all" ? 40 : 50);
+      try{
+        if(window.TRACK && window.TRACK.search && q.length >= 2){
+          window.TRACK.search(q, head.length, { type: currentType });
+        }
+      }catch(e){}
       document.getElementById("results").innerHTML = head.length ? head.map(x => {
         const isSong = x.kind === "Song";
         const isArtist = x.kind === "Artist";

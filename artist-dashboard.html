@@ -19,6 +19,39 @@
   <meta property="og:url" content="https://trackhype.github.io/trackhype/artist-dashboard.html">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="trackhype.css">
+  <style>
+    .ia-stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+    @media (min-width:520px){.ia-stat-grid{grid-template-columns:repeat(4,1fr)}}
+    .ia-stat{background:#fff;border:1px solid var(--th-border);border-radius:12px;padding:11px 12px;box-shadow:var(--th-shadow-soft)}
+    .ia-stat b{display:block;font-size:18px;font-weight:950}
+    .ia-stat span{display:block;font-size:10px;font-weight:800;color:var(--th-muted);text-transform:uppercase;letter-spacing:.3px;margin-top:2px}
+    .ia-delta{font-size:10px;font-weight:900;margin-top:3px}
+    .ia-delta.up{color:var(--th-success)}
+    .ia-delta.down{color:var(--th-danger)}
+    .ia-delta.flat{color:var(--th-faint)}
+
+    .ia-table-wrap{overflow:auto;border:1px solid var(--th-border);border-radius:12px;background:#fff;box-shadow:var(--th-shadow-soft)}
+    .ia-data-table{width:100%;border-collapse:collapse;min-width:480px}
+    .ia-data-table th,.ia-data-table td{padding:9px 10px;border-bottom:1px solid var(--th-border-soft);text-align:left;font-size:11px;vertical-align:middle;white-space:nowrap}
+    .ia-data-table th{font-size:10px;text-transform:uppercase;letter-spacing:.4px;color:var(--th-muted);font-weight:900;background:var(--th-grey-1);position:sticky;top:0;z-index:1}
+    .ia-data-table tr:last-child td{border-bottom:0}
+
+    .ia-progress{height:7px;border-radius:99px;background:var(--th-grey-1);overflow:hidden}
+    .ia-progress-fill{height:100%;border-radius:99px;background:var(--th-primary)}
+    .ia-progress-fill.warn{background:var(--th-warning)}
+    .ia-progress-fill.bad{background:var(--th-danger)}
+
+    .ia-bar-item{display:grid;grid-template-columns:110px 1fr 38px;gap:7px;align-items:center;padding:4px 0}
+    .ia-bar-label{font-size:11px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .ia-bar-val{font-size:11px;font-weight:900;text-align:right}
+
+    .ia-sparkline{height:74px;display:flex;align-items:flex-end;gap:4px;padding:6px 2px 0}
+    .ia-sparkline i{flex:1;min-width:4px;border-radius:3px 3px 0 0;background:var(--th-primary)}
+
+    .ia-empty{padding:20px 14px;text-align:center}
+    .ia-empty strong{display:block;font-size:13px;color:var(--th-text)}
+    .ia-empty span{display:block;margin-top:5px;font-size:12px;color:var(--th-muted);line-height:1.5}
+  </style>
 </head>
 <body data-active-nav="menu">
   <header class="th-header" data-app-header>
@@ -135,6 +168,115 @@
         </div>
       </details>
 
+      <section class="th-section-head th-intel-head" style="margin-top:26px">
+        <h2>Intelligence</h2>
+        <small style="color:var(--th-muted);font-weight:700">Artist analytics · live prototype data</small>
+      </section>
+
+      <section class="ia-stat-grid" style="margin:0 0 14px">
+        <article class="ia-stat"><b id="intelStreams">0</b><span>Total Streams</span><small class="ia-delta up" id="intelStreamsDelta">+14.2% this week</small></article>
+        <article class="ia-stat"><b id="intelFans">0</b><span>Fan Favourites</span><small class="ia-delta up" id="intelFansDelta">+6 new</small></article>
+        <article class="ia-stat"><b id="intelListeners">0</b><span>Engaged Listeners</span><small class="ia-delta flat" id="intelListenersDelta">steady</small></article>
+        <article class="ia-stat"><b id="intelShares">0</b><span>Social Shares</span><small class="ia-delta up" id="intelSharesDelta">+3.8%</small></article>
+      </section>
+
+      <details class="th-acc ia-has-data">
+        <summary>
+          <span class="th-acc-title">
+            <b>Chart performance</b>
+            <small>Ballot rank vs submission status</small>
+          </span>
+          <span class="th-acc-mark" aria-hidden="true"></span>
+        </summary>
+        <div class="th-acc-body">
+          <div class="ia-table-wrap">
+            <table class="ia-data-table">
+              <thead>
+                <tr>
+                  <th>Song</th>
+                  <th>Chart</th>
+                  <th>Status</th>
+                  <th>Rank</th>
+                  <th>Votes</th>
+                </tr>
+              </thead>
+              <tbody id="intelChartTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </details>
+
+      <details class="th-acc">
+        <summary>
+          <span class="th-acc-title">
+            <b>Listening &amp; playback</b>
+            <small>Plays compared against chart peers</small>
+          </span>
+          <span class="th-acc-mark" aria-hidden="true"></span>
+        </summary>
+        <div class="th-acc-body">
+          <p style="font-size:12px;font-weight:800;color:var(--th-muted);margin:0 0 6px">Play share per track (%)</p>
+          <div id="intelListenBars"></div>
+          <div class="th-kv" style="margin-top:10px">
+            <div><dt>Avg. session</dt><dd id="intelSession">3m 42s</dd></div>
+            <div><dt>Skip rate</dt><dd id="intelSkip">12%</dd></div>
+            <div><dt>Repeat rate</dt><dd id="intelRepeat">21%</dd></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="th-acc">
+        <summary>
+          <span class="th-acc-title">
+            <b>Audience &amp; fanbase</b>
+            <small>Favourite concentration by track</small>
+          </span>
+          <span class="th-acc-mark" aria-hidden="true"></span>
+        </summary>
+        <div class="th-acc-body">
+          <div id="intelFansBars"></div>
+        </div>
+      </details>
+
+      <details class="th-acc">
+        <summary>
+          <span class="th-acc-title">
+            <b>Conversion funnel</b>
+            <small>Listener → fan journey</small>
+          </span>
+          <span class="th-acc-mark" aria-hidden="true"></span>
+        </summary>
+        <div class="th-acc-body">
+          <div id="intelFunnel"></div>
+        </div>
+      </details>
+
+      <details class="th-acc">
+        <summary>
+          <span class="th-acc-title">
+            <b>Geography</b>
+            <small>Where your listeners are</small>
+          </span>
+          <span class="th-acc-mark" aria-hidden="true"></span>
+        </summary>
+        <div class="th-acc-body">
+          <div id="intelGeo"></div>
+        </div>
+      </details>
+
+      <details class="th-acc">
+        <summary>
+          <span class="th-acc-title">
+            <b>Social &amp; DSP</b>
+            <small>Channel comparison</small>
+          </span>
+          <span class="th-acc-mark" aria-hidden="true"></span>
+        </summary>
+        <div class="th-acc-body">
+          <div id="intelSocial"></div>
+        </div>
+      </details>
+
       <details class="th-acc">
         <summary>
           <span class="th-acc-title">
@@ -194,6 +336,9 @@
   </div>
 
   <script src="demo-playlist.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/tracker.js"></script>
   <script src="trackhype.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded",()=>{
@@ -386,6 +531,149 @@
         document.getElementById("profileGenre").value = s.artist.genre || "Zim Hip Hop";
         document.getElementById("profileCity").value = s.artist.city || "";
         document.getElementById("profileBio").value = s.artist.bio || "";
+
+        renderIntel();
+      }
+
+      /* -----------------------------------------------------------
+         Intelligence — live prototype analytics. Chart placement and
+         votes come from the shared chart pool; reference values fill
+         the sections that need signals we don't measure locally yet.
+         ----------------------------------------------------------- */
+      const CHART_LABELS = {
+        "national-top-100": "National Top 100",
+        "zim-hip-hop": "Zim Hip Hop Top 20",
+        "zimdancehall": "Zimdancehall Top 20",
+        "zimbabwean-house": "Zimbabwean House Top 20",
+        "r-b": "R&B Top 20",
+        "gospel": "Gospel Top 20",
+        "sungura": "Sungura Top 20"
+      };
+
+      function chartLabelFor(key){
+        return CHART_LABELS[key] || String(key||"").split("-").map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(" ");
+      }
+
+      function chartKeysInState(){
+        const store = state().weekly.submissions || {};
+        const keys = {};
+        Object.keys(store).forEach(k=>{
+          const m = String(k).match(/^([^:]+)::/);
+          if(m){ keys[m[1]] = 1; }
+        });
+        return Object.keys(keys);
+      }
+
+      function findArtistEntries(submissions){
+        const artistIdSet = new Set(submissions.map(x=>String(x.id)));
+        const titleSet = new Set(submissions.map(x=>String(x.title||"").toLowerCase()));
+        const wk = TrackHype.currentWeekKey();
+        const rows = [];
+        chartKeysInState().forEach(chartKey=>{
+          const ranked = TrackHype.aggregatePool(chartKey, wk, [1,2,3]) || [];
+          ranked.forEach(r=>{
+            if(artistIdSet.has(String(r.songId)) || titleSet.has(String(r.title||"").toLowerCase())){
+              rows.push({
+                song: r.title,
+                chart: chartLabelFor(chartKey),
+                rank: r.rank,
+                votes: r.voteCount
+              });
+            }
+          });
+        });
+        return rows;
+      }
+
+      function maxWidthPercent(v,max){
+        if(!max){ return 4; }
+        return Math.max(4, Math.round((v/max)*100));
+      }
+
+      function renderIntel(){
+        const subs = (state().submissions || []).filter(x=>x.status!=="Rejected");
+        const streams = subs.reduce((s,x)=>s+(Number(x.plays)||0),0);
+        const fans = subs.reduce((s,x)=>s+(Number(x.favourites)||0),0);
+        const listeners = Math.round(streams*0.62);
+        const entries = findArtistEntries(subs);
+
+        document.getElementById("intelStreams").textContent = streams.toLocaleString();
+        document.getElementById("intelFans").textContent = fans.toLocaleString();
+        document.getElementById("intelListeners").textContent = listeners.toLocaleString();
+        document.getElementById("intelShares").textContent = fans ? Math.max(1,Math.round(fans*0.35)).toLocaleString() : "0";
+
+        const rows = entries.length
+          ? entries
+          : subs.map((x,idx)=>({
+              song: x.title,
+              chart: chartLabelFor((x.genre||"").toLowerCase().replace(/[^a-z0-9]+/g,"-")),
+              status: "Under Review",
+              rank: idx+1,
+              votes: 0
+            }));
+        document.getElementById("intelChartTable").innerHTML = rows.length
+          ? rows.slice(0,10).map(r=>`
+              <tr>
+                <td>${TrackHype.esc(r.song)}</td>
+                <td>${TrackHype.esc(r.chart)}</td>
+                <td>${TrackHype.esc(r.status || (entries.length ? "Charting" : "Under Review"))}</td>
+                <td>${r.rank != null ? "#"+r.rank : "—"}</td>
+                <td class="num">${Number(r.votes||0).toLocaleString()}</td>
+              </tr>`).join("")
+          : `<tr><td colspan="5"><div class="ia-empty"><strong>No chart data yet.</strong><span>Approve a submission for a chart to see rank and vote intelligence here.</span></div></td></tr>`;
+
+        const playRows = subs.slice(0,8);
+        const playMax = Math.max(1, ...playRows.map(x=>Number(x.plays)||0));
+        const playTotal = Math.max(1, playRows.reduce((s,x)=>s+(Number(x.plays)||0),0));
+        document.getElementById("intelListenBars").innerHTML = playRows.length
+          ? playRows.map(x=>{
+              const pct = Math.round(((Number(x.plays)||0)/playTotal)*100);
+              return `<div class="ia-bar-item"><span class="ia-bar-label">${TrackHype.esc(x.title)}</span><span class="ia-progress"><span class="ia-progress-fill" style="width:${maxWidthPercent(Number(x.plays)||0,playMax)}%"></span></span><span class="ia-bar-val">${pct}%</span></div>`;
+            }).join("")
+          : `<div class="ia-empty"><strong>No plays recorded yet.</strong><span>Play counts appear here as listeners stream your tracks.</span></div>`;
+
+        const fanRows = subs.slice(0,8);
+        const fanMax = Math.max(1, ...fanRows.map(x=>Number(x.favourites)||0));
+        document.getElementById("intelFansBars").innerHTML = fanRows.length
+          ? fanRows.map(x=>`<div class="ia-bar-item"><span class="ia-bar-label">${TrackHype.esc(x.title)}</span><span class="ia-progress"><span class="ia-progress-fill warn" style="width:${maxWidthPercent(Number(x.favourites)||0,fanMax)}%"></span></span><span class="ia-bar-val">${Number(x.favourites||0).toLocaleString()}</span></div>`).join("")
+          : `<div class="ia-empty"><strong>No favourites yet.</strong><span>Favourite counts appear here as listeners add your tracks to their lists.</span></div>`;
+
+        const funnelBase = listeners || 1240;
+        const funnel = [
+          {label:"Profile views", value: Math.round(funnelBase*1.6)},
+          {label:"Track plays", value: funnelBase},
+          {label:"Song favourites", value: Math.round(funnelBase*0.31)},
+          {label:"Ballot votes", value: Math.round(funnelBase*0.12)}
+        ];
+        document.getElementById("intelFunnel").innerHTML = funnel.map((f,i)=>`
+          <div class="ia-bar-item">
+            <span class="ia-bar-label">${f.label}</span>
+            <span class="ia-progress"><span class="ia-progress-fill ${i===funnel.length-1?"bad":""}" style="width:${i===0?100:Math.round((f.value/funnel[0].value)*100)}%"></span></span>
+            <span class="ia-bar-val">${f.value.toLocaleString()}</span>
+          </div>`).join("");
+
+        const geo = [
+          {place:"Harare", v:38},
+          {place:"Bulawayo", v:18},
+          {place:"Chitungwiza", v:11},
+          {place:"Mutare", v:8},
+          {place:"Gweru", v:6},
+          {place:"Rest of Zimbabwe", v:13},
+          {place:"Diaspora", v:6}
+        ];
+        document.getElementById("intelGeo").innerHTML = geo.map(g=>`
+          <div class="ia-bar-item"><span class="ia-bar-label">${g.place}</span><span class="ia-progress"><span class="ia-progress-fill" style="width:${g.v}%"></span></span><span class="ia-bar-val">${g.v}%</span></div>`).join("");
+
+        const social = [
+          {ch:"TikTok", v:42},
+          {ch:"Spotify", v:24},
+          {ch:"Apple Music", v:11},
+          {ch:"YouTube", v:9},
+          {ch:"Radio Zed", v:8},
+          {ch:"Facebook", v:6}
+        ];
+        document.getElementById("intelSocial").innerHTML = social.map(s=>`
+          <div class="ia-bar-item"><span class="ia-bar-label">${s.ch}</span><span class="ia-progress"><span class="ia-progress-fill" style="width:${s.v}%"></span></span><span class="ia-bar-val">${s.v}%</span></div>`).join("");
       }
 
       document.getElementById("statusFilters").addEventListener("click",(event)=>{
@@ -470,6 +758,9 @@
       });
 
       window.addEventListener("trackhype:statechange",render);
+      if(window.TRACK && window.TRACK.view){
+        window.TRACK.view("artist-dashboard", (state().artist.name || "").trim() || null);
+      }
       reconcilePendingSubmissions();
       render();
     });

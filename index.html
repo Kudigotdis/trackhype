@@ -168,6 +168,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="js/supabase-config.js"></script>
   <script src="js/api.js"></script>
+  <script src="js/tracker.js"></script>
   <script src="demo-playlist.js"></script>
   <script src="playlists.js"></script>
   <script src="radio-data.js"></script>
@@ -295,7 +296,28 @@
       document.querySelectorAll(".filter-btn").forEach(b => {
         b.classList.toggle("is-active", b.dataset.filter === filter);
       });
-      renderAllContent();
+renderAllContent();
+    trackFeedImpressions();
+
+    function trackFeedImpressions(){
+      try{
+        if(!window.TRACK){ return; }
+        const cells = document.querySelectorAll(".genre-scroll-cell a, .genre-hero");
+        if(!cells.length){ return; }
+        const obs = new IntersectionObserver(entries => {
+          entries.forEach(en => {
+            if(!en.isIntersecting){ return; }
+            const el = en.target;
+            const href = el.getAttribute("href") || "";
+            if(!href || el.getAttribute("data-tracked")){ return; }
+            el.setAttribute("data-tracked", "1");
+            const title = el.getAttribute("alt") || decodeURIComponent((href.match(/[?&]title=([^&]*)/) || [])[1] || "");
+            window.TRACK.impression("song", decodeURIComponent((href.match(/[?&]id=([^&]*)/) || [])[1] || href), { title: title, page: "index" });
+          });
+        }, { root: null, threshold: 0.4 });
+        cells.forEach(c => obs.observe(c));
+      }catch(e){}
+    }
     }
 
     function renderAllContent(){

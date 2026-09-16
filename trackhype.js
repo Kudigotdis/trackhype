@@ -956,6 +956,7 @@
         updateState(s => { s.isPlaying = true; });
       }
       syncPlayerToggleIcon();
+      trackPlaybackEvent("player_start", el);
     });
     el.addEventListener("pause", () => {
       if(getState().isPlaying){
@@ -963,9 +964,29 @@
       }
       syncPlayerToggleIcon();
       savePlaybackSnapshot();
+      trackPlaybackEvent("player_pause", el);
+    });
+    el.addEventListener("seeked", () => {
+      trackPlaybackEvent("player_seek", el);
     });
     demoAudio = el;
     return el;
+  }
+
+  function currentTrackId(){
+    const t = getState().currentTrack || {};
+    return t.id || t.songId || t.title || t.src || null;
+  }
+
+  function trackPlaybackEvent(type, el){
+    if(!window.TRACK || typeof window.TRACK.event !== "function"){ return; }
+    try{
+      const meta = { title: (getState().currentTrack || {}).title || "" };
+      if(el && el.duration && Number.isFinite(el.duration)){
+        meta.progress_pct = Math.round((el.currentTime / el.duration) * 100);
+      }
+      window.TRACK.event(type, "song", currentTrackId(), meta);
+    }catch(e){}
   }
 
   function matchRegion(name, code){
@@ -1096,6 +1117,11 @@
   }
 
   function onAudioEnded(){
+    try{
+      if(window.TRACK && typeof window.TRACK.event === "function"){
+        window.TRACK.event("player_complete", "song", currentTrackId(), { title: (getState().currentTrack || {}).title || "" });
+      }
+    }catch(e){}
     const list = currentPlaylist();
     if(!list.length){
       updateState(s => { s.isPlaying = false; });

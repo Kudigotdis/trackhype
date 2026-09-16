@@ -164,6 +164,9 @@ body[data-active-nav="artists.html"] .th-shell{gap:14px;padding-top:0}
     </div>
   </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/tracker.js"></script>
   <script src="demo-playlist.js"></script>
   <script src="trackhype.js"></script>
   <script>
@@ -325,17 +328,30 @@ document.getElementById("historyList").innerHTML = Array.from({length:6},(_,i) =
       btn.classList.toggle("primary", !following);
     }
 
-    window.toggleFollow = () => {
+window.toggleFollow = () => {
+      const following = (TrackHype.getState().followingArtists || []).includes(name);
       TrackHype.updateState(s => {
         s.followingArtists = s.followingArtists || [];
         const i = s.followingArtists.indexOf(name);
         if(i >= 0){ s.followingArtists.splice(i,1); TrackHype.toast("Unfollowed " + name); }
         else { s.followingArtists.push(name); TrackHype.toast("Following " + name); }
       });
+      try{
+        if(window.TRACK && window.TRACK.follow){
+          if(following){ window.TRACK.unfollow(name, { genre: genre }); }
+          else{ window.TRACK.follow(name, { genre: genre }); }
+        }
+      }catch(e){}
       renderFollow();
     };
 
     renderFollow();
+
+    try{
+      if(window.TRACK && window.TRACK.view){
+        window.TRACK.view("artist", name, { genre: genre });
+      }
+    }catch(e){}
   </script>
 </body>
 </html>

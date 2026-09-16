@@ -174,6 +174,9 @@
     </div>
   </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/tracker.js"></script>
   <script src="demo-playlist.js"></script>
   <script src="trackhype.js"></script>
   <script>
@@ -239,12 +242,19 @@ function updateFavIcon(){
         </div>`).join("")
       : '<div class="th-empty"><strong>No chart history yet.</strong>Past placements will appear here.</div>';
 
-    window.toggleFav = () => {
+window.toggleFav = () => {
+      const wasFav = TrackHype.getState().favouriteSongs.includes(currentId);
       TrackHype.updateState(s => {
         s.favouriteSongs = s.favouriteSongs || [];
         const i = s.favouriteSongs.indexOf(currentId);
         if(i >= 0){ s.favouriteSongs.splice(i,1); } else { s.favouriteSongs.push(currentId); }
       });
+      try{
+        if(window.TRACK && window.TRACK.like){
+          if(wasFav){ window.TRACK.unlike(currentId, { title: SONG_DATA.title, artist: SONG_DATA.artist }); }
+          else{ window.TRACK.like(currentId, { title: SONG_DATA.title, artist: SONG_DATA.artist }); }
+        }
+      }catch(e){}
 updateFavIcon();
       TrackHype.toast("Updated favourites");
     };
@@ -252,19 +262,50 @@ updateFavIcon();
     window.shareFacebook = () => {
       const url = encodeURIComponent(location.href);
       window.open("https://www.facebook.com/sharer/sharer.php?u=" + url, "_blank", "noopener");
+      try{ if(window.TRACK && window.TRACK.share){ window.TRACK.share(currentId, "facebook", { title: SONG_DATA.title, artist: SONG_DATA.artist }); } }catch(e){}
     };
 
     window.shareTwitter = () => {
       const text = SONG_DATA.title + " on TrackHype — " + SONG_DATA.artist;
       window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(text), "_blank", "noopener");
+      try{ if(window.TRACK && window.TRACK.share){ window.TRACK.share(currentId, "twitter", { title: SONG_DATA.title, artist: SONG_DATA.artist }); } }catch(e){}
     };
 
     window.shareWhatsApp = () => {
       const text = SONG_DATA.title + " on TrackHype — " + SONG_DATA.artist;
       window.open("https://wa.me/?text=" + encodeURIComponent(text), "_blank", "noopener");
+      try{ if(window.TRACK && window.TRACK.share){ window.TRACK.share(currentId, "whatsapp", { title: SONG_DATA.title, artist: SONG_DATA.artist }); } }catch(e){}
     };
 
     updateFavIcon();
+
+    try{
+      if(window.TRACK && window.TRACK.view){
+        window.TRACK.view("song", currentId, { title: SONG_DATA.title, artist: SONG_DATA.artist, genre: SONG_DATA.genre });
+      }
+    }catch(e){}
+
+    document.querySelectorAll(".Music-Icons a.sg-link").forEach(a => {
+      a.addEventListener("click", () => {
+        try{
+          if(window.TRACK && window.TRACK.dspClick){
+            const label = (a.getAttribute("aria-label") || "").replace("Listen on ", "");
+            window.TRACK.dspClick(currentId, label, { title: SONG_DATA.title, artist: SONG_DATA.artist });
+          }
+        }catch(e){}
+      });
+    });
+
+    document.querySelectorAll(".Share-Icons a.sg-link").forEach(a => {
+      a.addEventListener("click", () => {
+        try{
+          if(window.TRACK && window.TRACK.socialClick){
+            const label = (a.getAttribute("aria-label") || "").replace("Share on ", "").replace("Tweet this song", "twitter");
+            window.TRACK.socialClick(currentId, label, { title: SONG_DATA.title, artist: SONG_DATA.artist });
+          }
+        }catch(e){}
+      });
+    });
   </script>
 </body>
 </html>
