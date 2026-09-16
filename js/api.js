@@ -301,7 +301,7 @@
     chartEntries(chartKey, weekKey) {
       if (!client) return Promise.resolve({ data: [], error: null });
       var q = client.from("chart_entries")
-        .select("*, song:songs(*)")
+        .select("*, song:songs(*, song_artists(artist:artists(name)))")
         .eq("charts.key", chartKey);
       if (weekKey) q = q.eq("week_key", weekKey);
       return q.order("rank");

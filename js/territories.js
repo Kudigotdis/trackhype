@@ -94,6 +94,15 @@
   }
 
   function regionDefault() {
+    if (window.TrackHype && typeof window.TrackHype.currentMode === "function" &&
+        window.TrackHype.currentMode() === "demo") {
+      return {
+        code: "DEMO",
+        name: "Browser",
+        genreKey: "",
+        currency: { code: "", label: "", five: "", ten: "" }
+      };
+    }
     var saved = null;
     try { saved = JSON.parse(localStorage.getItem("trackhype.region") || "null"); } catch (e) { saved = null; }
     var code = saved && saved.code ? saved.code : "ZW";

@@ -48,6 +48,11 @@
 
   function regionCode() {
     try {
+      var v = JSON.parse(sessionStorage.getItem("trackhype.view") || "null");
+      if (v && v.mode === "demo") return "DEMO";
+      if (v && v.mode === "region" && v.region && v.region.code) return v.region.code;
+    } catch (e) {}
+    try {
       var r = JSON.parse(localStorage.getItem("trackhype.region") || "null");
       if (r && r.code) return r.code;
     } catch (e) {}

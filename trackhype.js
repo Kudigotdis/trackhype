@@ -1006,6 +1006,9 @@
     if(!data.length){
       return [];
     }
+    if(currentMode() === "demo"){
+      return data.slice();
+    }
     let saved = null;
     try{
       saved = JSON.parse(
@@ -2588,6 +2591,32 @@
     return String(name || "").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"") || "chart";
   }
 
+  /* Local chartId -> DB charts.key mapping for the published-chart bridge.
+     Keys mirror supabase/migrations/20260914_0003_seed_charts.sql. */
+  function dbChartKeyFor(local){
+    const s = String(local || "").toLowerCase();
+    const map = {
+      "national-top-100": "national-100",
+      "zim-hip-hop-top-20": "hiphop-20",
+      "zimdancehall-top-20": "dancehall-20",
+      "gospel-top-20": "gospel-20",
+      "sungura-top-20": "sungura-20",
+      "zimbabwean-house-top-20": "house-20",
+      "r-b-top-20": "rnb-20"
+    };
+    if(map[s]){ return map[s]; }
+    const byName = {
+      "national top 100": "national-100",
+      "zim hip hop top 20": "hiphop-20",
+      "zimdancehall top 20": "dancehall-20",
+      "gospel top 20": "gospel-20",
+      "sungura top 20": "sungura-20",
+      "zimbabwean house top 20": "house-20",
+      "r&b top 20": "rnb-20"
+    };
+    return byName[s] || (map[chartId(s)] || "");
+  }
+
   function defaultChartOrder(max = 20){
     const base = {
       "national-top-100": "top_40_chart",
@@ -2650,6 +2679,11 @@
   }
 
   function recordVote(chartName, song, targetPos){
+    var voteGate = canVote();
+    if(!voteGate.ok){
+      toast(voteGate.reason);
+      return null;
+    }
     const key = chartId(chartName);
     const vote = {
       id: "vote-" + Date.now(),
@@ -2669,6 +2703,11 @@
   }
 
   function confirmVoteSheet(chartName, song, max){
+    var vote = canVote();
+    if(!vote.ok){
+      toast(vote.reason);
+      return;
+    }
     const key = chartId(chartName);
     const chartMax = maxForChart(chartName);
     const limit = (max && max > 0) ? max : chartMax;
@@ -2719,8 +2758,11 @@
         return;
       }
       const rec = recordVote(chartName, song, val);
+      if(!rec){
+        closeSheet();
+        return;
+      }
       window.TrackHype._lastVote = rec;
-      closeSheet();
       document.dispatchEvent(new CustomEvent("trackhype:chart-update", {
         detail: {
           chart: chartName,
@@ -3154,7 +3196,110 @@
     return (store[key] || []).length > 0;
   }
 
+  /* Published-chart bridge (Phase 5): when a region has real DB
+     chart_entries (populated by admin/migration), pull them into the
+     local weekly store as a non-seed snapshot so every public page
+     (charts, history, index) lights up automatically in region mode. */
+  function loadPublishedChart(chartKey, weekKey, dbKey){
+    if(!window.API || typeof window.API.chartEntries !== "function"){
+      return Promise.resolve({ ok:false, reason:"api-unavailable" });
+    }
+    var key = chartKey;
+    if(typeof dbChartKeyFor === "function" && !dbKey){
+      dbKey = dbChartKeyFor(chartKey);
+    }
+    if(!dbKey){ return Promise.resolve({ ok:false, reason:"no-db-key" }); }
+    var wk = weekKey || currentWeekKey();
+    return window.API.chartEntries(dbKey, wk).then(function(res){
+      var rows = (res && res.data) || [];
+      if(!rows.length){ return { ok:false, reason:"empty", weekKey:wk }; }
+      var snapshot = getSnapshotFor(key, wk);
+      if(snapshot && (snapshot.rankings || []).some(function(r){ return !r.isSeed; })){
+        return { ok:true, count:rows.length, weekKey:wk, already:true };
+      }
+      var entries = rows.map(function(e, i){
+        var song = e.song || {};
+        var artist = "";
+        if(song.song_artists && song.song_artists.length){
+          artist = song.song_artists.map(function(sa){ return (sa.artist && sa.artist.name) || ""; }).filter(Boolean).join(" ft ");
+        }
+        if(!artist && song.artist_name){ artist = song.artist_name; }
+        return {
+          submissionId: e.id || ("db-" + key + "-" + (e.rank || i + 1)),
+          songId: e.song_id || (song.id || null),
+          title: song.title || "Untitled",
+          artistName: artist || "Unknown Artist",
+          artwork: song.artwork || "",
+          rank: Number(e.rank) || i + 1,
+          points: Number(e.points) || 0,
+          tier: e.tier || "on_top",
+          isSeed: false,
+          weekKey: wk,
+          published: true,
+          fromDb: true
+        };
+      });
+      var topEntries = entries.filter(function(e){ return e.tier === "on_top"; });
+      var contenderEntries = entries.filter(function(e){ return e.tier === "contenders"; });
+      var newestEntries = entries.filter(function(e){ return e.tier === "newest"; });
+      var snapshotEntries = topEntries.length ? topEntries : entries;
+      updateState(function(s){
+        var store = s.weekly.snapshots;
+        store[key + "::" + wk] = {
+          id: "snapshot-" + key + "-" + wk,
+          chartKey: key,
+          weekKey: wk,
+          publishedAt: Date.now(),
+          rankings: snapshotEntries.map(function(e, i){
+            return {
+              submissionId: e.submissionId,
+              songId: e.songId,
+              title: e.title,
+              artistName: e.artistName,
+              artwork: e.artwork,
+              rank: e.rank || i + 1,
+              points: e.points,
+              movement: 0,
+              isSeed: false,
+              published: true,
+              fromDb: true
+            };
+          })
+        };
+      });
+      var subStore = getState().weekly.submissions;
+      var tierKey3 = subTierKey(key, wk, 3);
+      var tierKey2 = subTierKey(key, wk, 2);
+      if(!(subStore[tierKey3] || []).some(function(x){ return !x.isSeed; })){
+        updateState(function(s){
+          s.weekly.submissions[tierKey3] = newestEntries.map(function(e){
+            return { id: e.submissionId, songId: e.songId, title: e.title, artistName: e.artistName,
+              artwork: e.artwork, tier: 3, isSeed: false, weekKey: wk, published: true, fromDb: true };
+          });
+        });
+      }
+      if(!(subStore[tierKey2] || []).some(function(x){ return !x.isSeed; })){
+        updateState(function(s){
+          s.weekly.submissions[tierKey2] = contenderEntries.map(function(e){
+            return { id: e.submissionId, songId: e.songId, title: e.title, artistName: e.artistName,
+              artwork: e.artwork, tier: 2, isSeed: false, weekKey: wk, published: true, fromDb: true };
+          });
+        });
+      }
+      try{
+        document.dispatchEvent(new CustomEvent("trackhype:chart-update", { detail: { chartKey: key, weekKey: wk, source: "db" } }));
+      }catch(e){}
+      return { ok:true, count:rows.length, weekKey:wk };
+    }).catch(function(){
+      return { ok:false, reason:"error" };
+    });
+  }
+
   function submitBallot(chartKey, picks){
+    var voteGate = canVote();
+    if(!voteGate.ok){
+      return { ok: false, error: voteGate.reason };
+    }
     const weekKey = currentWeekKey();
     const config = chartConfigFor(chartKey);
     const closed = Date.now() >= closeMsForWeek(weekKey, config.timezone);
@@ -4687,6 +4832,111 @@ Web Router — gapless in-app navigation (SPA)
   }
 
   /* =========================================================
+     Beta mode core (Browser Demo vs Account regions)
+     =========================================================
+     LocalStorage "trackhype.region" is the IDENTITY / voting region
+     (written by onboarding; meaningful only for account users).
+     SessionStorage "trackhype.view" is the CURRENT browsing view:
+       { mode:"demo" }                                  -> demo showcase
+       { mode:"region", region:{code,name,flag} }       -> a region view
+     Fresh visits re-default: browsers -> demo, account users -> their
+     identity region. View picks never change the identity region.
+     ========================================================= */
+
+  function ISODNS_KEY(){
+    return "trackhype.view";
+  }
+
+  function persona(){
+    var onboarded = false;
+    try{ onboarded = localStorage.getItem("trackhype_onboarding_complete") === "true"; }catch(e){}
+    return onboarded ? "account" : "browser";
+  }
+
+  function identityRegion(){
+    try{ return JSON.parse(localStorage.getItem("trackhype.region") || "null"); }catch(e){ return null; }
+  }
+
+  function readView(){
+    try{ return JSON.parse(sessionStorage.getItem(ISODNS_KEY()) || "null"); }catch(e){ return null; }
+  }
+
+  function setView(v){
+    try{ sessionStorage.setItem(ISODNS_KEY(), JSON.stringify(v || { mode:"demo" })); }catch(e){}
+  }
+
+  function clearView(){
+    try{ sessionStorage.removeItem(ISODNS_KEY()); }catch(e){}
+  }
+
+  function demoDescriptor(){
+    return { mode:"demo", region:null, code:"DEMO", name:"Browser" };
+  }
+
+  function currentView(){
+    var v = readView();
+    if(v && v.mode === "region" && v.region && v.region.code){
+      return { mode:"region", region: v.region, code: v.region.code, name: v.region.name || v.region.code };
+    }
+    if(v && v.mode === "demo"){ return demoDescriptor(); }
+    if(persona() === "account"){
+      var id = identityRegion();
+      if(id && id.code){
+        return { mode:"region", region: id, code: id.code, name: id.name || id.code };
+      }
+    }
+    return demoDescriptor();
+  }
+
+  function currentMode(){
+    return currentView().mode;
+  }
+
+  function anyRealContent(){
+    try{
+      var s = getState();
+      var weekly = (s && s.weekly) || {};
+      var subs = weekly.submissions || {};
+      for(var k in subs){
+        var arr = subs[k] || [];
+        for(var i = 0; i < arr.length; i++){
+          if(arr[i] && !arr[i].isSeed) return true;
+        }
+      }
+      var snaps = weekly.snapshots || {};
+      for(var k2 in snaps){
+        var rk = (snaps[k2] && snaps[k2].rankings) || [];
+        for(var j = 0; j < rk.length; j++){
+          if(rk[j] && !rk[j].isSeed) return true;
+        }
+      }
+    }catch(e){}
+    return false;
+  }
+
+  function canVote(){
+    if(persona() !== "account"){
+      return { ok:false, reason:"Create an account to vote." };
+    }
+    var v = currentView();
+    if(v.mode !== "region" || !v.region || !v.region.code){
+      return { ok:false, reason:"Voting happens inside your own region. Pick yours in the region selector." };
+    }
+    var id = identityRegion();
+    if(!id || !id.code || String(id.code).toUpperCase() !== String(v.region.code).toUpperCase()){
+      return { ok:false, reason:"You can only vote within your own region." };
+    }
+    if(!anyRealContent()){
+      return { ok:false, reason:"Voting is on hold until artists from your region submit music." };
+    }
+    return { ok:true, reason:"" };
+  }
+
+  function votingLocked(){
+    return !canVote().ok;
+  }
+
+  /* =========================================================
      Public TrackHype API
      ==========================================================*/
 
@@ -4703,6 +4953,19 @@ setState,
     navigate,
 
     requireProfile,
+
+    persona,
+    identityRegion,
+    readView,
+    setView,
+    clearView,
+    currentView,
+    currentMode,
+    anyRealContent,
+    canVote,
+    votingLocked,
+    loadPublishedChart,
+    dbChartKeyFor,
 
     fmtMoney,
 
@@ -4909,14 +5172,13 @@ init: function({
       window.TrackHype?.init();
       window.TrackHype?.renderAdSlots();
 
-      var savedRegion = null;
-      try { savedRegion = JSON.parse(localStorage.getItem("trackhype.region") || "null"); } catch(e){ savedRegion = null; }
+      var view = currentView();
       var headerFlag = document.getElementById("headerFlag");
       if(headerFlag){
-        var code = (savedRegion && savedRegion.code) ? savedRegion.code : "ZW";
+        var code = (view && view.mode === "region" && view.code) ? view.code : (view && view.code === "DEMO" ? "DEMO" : "ZW");
         headerFlag.textContent = String(code).toUpperCase();
-        headerFlag.setAttribute("aria-label", (savedRegion && savedRegion.name ? savedRegion.name : "Zimbabwe") + " — select region");
-        if(savedRegion && savedRegion.name){ headerFlag.title = savedRegion.name; }
+        headerFlag.setAttribute("aria-label", (view && view.name ? view.name : "Zimbabwe") + " — select region");
+        if(view && view.name){ headerFlag.title = view.name; }
       }
 
     }
