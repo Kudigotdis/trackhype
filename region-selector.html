@@ -11,6 +11,7 @@
     if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
   </script>
   <link rel="icon" type="image/webp" href="Assets/logos/TrackHype Logo Design Badge.webp">
+  <link rel="apple-touch-icon" href="Assets/logos/TrackHype-Logo-192.png">
   <title>Select Region — TrackHype</title>
 
   <meta property="og:title" content="Select Region - TrackHype">
@@ -36,6 +37,14 @@
     .rs-flag{flex:none;width:48px;height:32px;border-radius:1px;object-fit:cover;border:1px solid var(--th-border-soft);background:var(--th-grey-2)}
     .rs-name{font-weight:800;font-size:14px;color:var(--th-text)}
     .rs-current{margin-top:14px;display:flex;align-items:center;gap:12px;background:var(--th-bg);border:1px solid var(--th-primary);box-shadow:0 0 0 1px var(--th-primary);border-radius:var(--th-radius-sm);padding:12px}
+    .rs-demo{display:flex;align-items:center;gap:12px;width:100%;background:#f97316;border:1px solid #f97316;border-radius:var(--th-radius-sm);padding:12px;cursor:pointer;text-align:left;transition:box-shadow .15s ease,transform .05s ease;color:#fff}
+    .rs-demo:active{transform:scale(.99)}
+    .rs-demo[aria-pressed="true"]{box-shadow:0 0 0 2px #fff,0 0 0 4px #f97316}
+    .rs-demo .rs-name{color:#fff}
+    .rs-demo-label{flex:none;font-weight:900;font-size:15px;letter-spacing:.5px;text-transform:uppercase}
+    .rs-demo-note{flex:1}
+    .rs-demo-check{display:none;flex:none;font-weight:900;font-size:11px;letter-spacing:1px;text-transform:uppercase;background:rgba(255,255,255,.28);border-radius:999px;padding:3px 8px}
+    .rs-demo[aria-pressed="true"] .rs-demo-check{display:inline-block}
   </style>
 </head>
 <body data-active-nav="menu.html">
@@ -77,12 +86,8 @@
 <script src="trackhype.js"></script>
   <script src="countries-data.js"></script>
   <script>
-    var REGION_KEY = "trackhype.region";
-    var DEFAULT_REGION = { name: "Zimbabwe", code: "ZW", flag: "zw.png" };
-
-    function loadRegion(){
-      try { var r = JSON.parse(localStorage.getItem(REGION_KEY) || "null"); return r || DEFAULT_REGION; }
-      catch(e){ return DEFAULT_REGION; }
+    function escText(s){
+      return (window.esc && TrackHype && TrackHype.esc) ? TrackHype.esc(s) : String(s);
     }
 
     var byCode = {};
@@ -95,10 +100,18 @@
       }).filter(Boolean);
     }
 
+    function demoItemHtml(active){
+      return '<button type="button" class="rs-item rs-demo" data-demo="1" aria-pressed="' + (active ? "true" : "false") + '">'
+        + '<span class="rs-demo-label">Demo</span>'
+        + '<span class="rs-name rs-demo-note">Browse all charts, artists and playlists right now.</span>'
+        + '<span class="rs-demo-check">On</span>'
+        + '</button>';
+    }
+
     function itemHtml(c){
       return '<button type="button" class="rs-item" data-code="' + c.code + '">'
-        + '<img class="rs-flag" src="Country-Flag-Icons/' + c.code + '.png" alt="' + (window.esc ? TrackHype.esc(c.name) : c.name) + '" loading="lazy">'
-        + '<span class="rs-name">' + (window.esc ? TrackHype.esc(c.name) : c.name) + '</span>'
+        + '<img class="rs-flag" src="Country-Flag-Icons/' + c.code + '.png" alt="' + escText(c.name) + '" loading="lazy">'
+        + '<span class="rs-name">' + escText(c.name) + '</span>'
         + '</button>';
     }
 
@@ -110,19 +123,38 @@
       });
     }
 
+    function currentViewInfo(){
+      if(TrackHype && TrackHype.currentView){
+        return TrackHype.currentView();
+      }
+      return { mode:"demo", code:"DEMO", name:"Browser" };
+    }
+
     function renderCurrent(){
-      var c = loadRegion();
-      var matched = byCode[(c.code || "").toLowerCase()];
-      if(matched){ c = matched; }
-      var flag = c.code.toLowerCase();
-      document.getElementById("regionCurrent").innerHTML =
+      var v = currentViewInfo();
+      var host = document.getElementById("regionCurrent");
+      if(v && v.mode === "demo"){
+        host.innerHTML = '<div class="rs-current">'
+          + '<span class="rs-name" style="font-weight:900;letter-spacing:.5px">Demo</span>'
+          + '<span class="rs-name">Browser - explore the full showcase before creating an account.</span>'
+          + '</div>';
+        return;
+      }
+      var code = v && v.code ? v.code.toLowerCase() : "zw";
+      var matched = byCode[code] || byCode["zw"];
+      var name = matched ? matched.name : (v ? v.name : "Zimbabwe");
+      var flagFile = matched ? matched.code : "zw";
+      var demoActive = document.getElementById("rsDemo") || null;
+      host.innerHTML =
         '<div class="rs-current">'
-        + '<img class="rs-flag" src="Country-Flag-Icons/' + flag + '.png" alt="' + (window.esc ? TrackHype.esc(c.name) : c.name) + '" loading="lazy">'
-        + '<span class="rs-name">' + (window.esc ? TrackHype.esc(c.name) : c.name) + '</span>'
+        + '<img class="rs-flag" src="Country-Flag-Icons/' + flagFile + '.png" alt="' + escText(name) + '" loading="lazy">'
+        + '<span class="rs-name">' + escText(name) + '</span>'
         + '</div>';
     }
 
     function render(q){
+      var v = currentViewInfo();
+      var demoActive = !!(v && v.mode === "demo");
       renderCurrent();
       var host = document.getElementById("regionGroups");
       var list = filterCountries(q);
@@ -132,6 +164,9 @@
 
       var html = "";
       if(q){ featured = []; rest = list; } // when searching, show single flat list
+      html += '<div class="rs-group"><div class="rs-group-title">Browser Mode</div><div class="rs-list">'
+        + demoItemHtml(demoActive)
+        + '</div></div>';
       if(featured.length){
         html += '<div class="rs-group"><div class="rs-group-title">SADC Spotlight</div><div class="rs-list">'
           + featured.map(function(c){ return itemHtml(c); }).join("")
@@ -141,21 +176,26 @@
         html += '<div class="rs-group"><div class="rs-group-title">' + (q ? 'Results' : 'All Countries') + '</div><div class="rs-list">'
           + rest.map(function(c){ return itemHtml(c); }).join("")
           + '</div></div>';
-      } else if(!featured.length && !q){
-        html = '<div class="rs-list">' + featured.map(function(c){ return itemHtml(c); }).join("") + '</div>';
       }
-      host.innerHTML = html || '<p style="color:var(--th-muted);font-size:13px;padding:12px 2px">No countries match "' + (window.esc ? TrackHype.esc(q) : q) + '".</p>';
+      host.innerHTML = html;
     }
 
     function bindEvents(){
       document.getElementById("regionGroups").addEventListener("click", function(ev){
         var btn = ev.target.closest(".rs-item");
         if(!btn){ return; }
-        var code = btn.dataset.code;
-        var c = byCode[code];
+        if(btn.dataset.demo){
+          if(TrackHype && TrackHype.setView){ TrackHype.setView({ mode:"demo" }); }
+          if(TrackHype && TrackHype.toast){ TrackHype.toast("Browsing the TrackHype Demo"); }
+          render("");
+          history.back();
+          return;
+        }
+        var c = byCode[btn.dataset.code];
         if(!c){ return; }
-        var region = { name: c.name, code: c.code.toUpperCase(), flag: c.code + ".png" };
-        localStorage.setItem(REGION_KEY, JSON.stringify(region));
+        if(TrackHype && TrackHype.setView){
+          TrackHype.setView({ mode:"region", region:{ name: c.name, code: c.code.toUpperCase(), flag: c.code + ".png" } });
+        }
         if(TrackHype && TrackHype.toast){ TrackHype.toast("Region set to " + c.name); }
         history.back();
       });
