@@ -1,6 +1,51 @@
 
 ---
 
+## SESSION END — 2025-09-16 (parallel work committed + ad engine + tracker coverage)
+
+**Scope: land the user's parallel admin/analytics/legal work, ship migration 0011, ad engine (API.adverts + placements + impression/click tracking), full tracker coverage, fix submit-music submission write-path gap.**
+
+### Commits (in order; all pushed to origin/main)
+| Commit | Slice |
+|--------|-------|
+| `af16f33` | fix: migration 0010 — append `metadata` last in admin view (42P16 rename fix; applied in SQL Editor — ledger CLOSED for 0010) |
+| `5da9c9e` | feat: analytics event layer — js/tracker.js (`window.TRACK`) + migration 0011 (analytics_events + admin views + KYC queue) |
+| `9cc86af` | feat: admin dashboard overhaul — Overview/Submissions/Song Analytics/Event Feed/Votes/KYC/Ads/Radio/Charts tabs; admin-api.js 13 methods |
+| `766629c` | feat: privacy-policy.html + terms-of-use.html (+ .txt sources), linked from settings |
+| `921a4e2` | feat: wire TRACK analytics into 8 app pages + playback heartbeats in trackhype.js |
+| `0943e8e` | feat: ad engine — `API.adverts(placement)` + `TrackHype.renderAdSlots()` (`[data-ad-slot]` containers, cycling, demo fallback, `TRACK.impression`/`campaignClick`) |
+| `221fae8` | feat: wire TRACK into remaining 15 app pages (+ UMD/config where absent) — **fixes latent submit-music write-path bug** |
+
+### Notable findings this session
+- **42P16 root cause**: PostgreSQL `CREATE OR REPLACE VIEW` can only append new columns at the END of the column list — inserting `s.metadata` (migration 0010) at position 6 was read as renaming `submitted_at` → `metadata`. Fixed by appending last.
+- **submit-music write-path gap (fixed)**: `submit-music.html` loaded `js/api.js` with NO supabase UMD/config, so `API.saveSubmission` had `client = null` and silently returned "Supabase not configured". The tracker-wiring pass added the full stack to all pages lacking it — verified same script-load ordering as pages that work.
+- **Mojibake false alarm**: the PowerShell `Set-Content` diff-capture re-encoded UTF-8, making legit `—`/`·`/`→` (artist-dashboard.html) look like `ÔÇö`. Raw-file byte check confirmed clean; only the capture pipeline was at fault.
+- api.js / admin-api.js / trackhype.js high-bytes: all legitimate em-dashes in comments (UTF-8 e2 80 94), zero mojibake, zero `**`.
+
+### Ad engine status (roadmap §1)
+- `API.adverts(placement)` — live (public-read RLS ships in 0001; admin manage via AdminUI.listAdverts/updateAdvert).
+- `TrackHype.renderAdSlots()` — runs on DOMContentLoaded; groups `[data-ad-slot]` by placement, cycles active ads, retains demo promo fallback when DB empty, fires `TRACK.impression("campaign",...)` on intersect + `TRACK.campaignClick(...)` on tap. Harness verified: f1→ad-f1, f2→ad-f2 cycling, grouping, blank slots stay blank.
+- index.html slots live: `home-radio`, `home-recent`, `home-national`, `home-feed`. **OPEN**: charts in-feed sponsor card, radio sponsor card (`radio-charts/radio-station`), menu showcase banner.
+
+### Analytics status (roadmap §7)
+- tracker.js wired into ALL 23 app pages. Events flow to `analytics_events`; admin views (platform_summary, song_analytics, event_feed, pending_kyc) surface them. GA/Plausible not used — custom layer instead (noted in roadmap).
+
+### SQL Editor ledger: OPEN (migration 0011).
+```sql
+-- paste supabase/migrations/20260914_0011_analytics_events.sql and RUN (mostly idempotent)
+-- note: "analytics insert auth or anon" policy is FOR INSERT TO authenticated —
+-- unauthenticated (anon) impressions will NOT persist unless you add TO anon.
+```
+
+### Still open
+- Charts / radio / menu ad placements (slice next).
+- Ballots RLS: no DB unique constraint (1-per-24h enforced client-side only).
+- PWA real 192/512 icons (manifest uses sizes "any").
+- Payment gateway integration (Phase 33), custom domain, pitch kit.
+- `UTILISE INFORMATION/` enterprise dashboard + the two `.ps1` verify scripts + the roadmap `.md` remain untracked (user-held).
+
+---
+
 ## SESSION END — 2025-09-16 (launch-readiness slice batch: 21-24 + 26 committed)
 
 **Scope: closure of critical funnels gate production-launch gaps.** 5 commits on top of the SADC expansion.
