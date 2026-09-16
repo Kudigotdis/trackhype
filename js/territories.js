@@ -184,12 +184,68 @@
     fetchGeojson(t, done);
   }
 
+  /* ---- Genre pool (region-keyed from global_music_genres_195_plus.json) ---
+
+     All 15 SADC territories share the same 34-genre pool.  The catalogue
+     maps genre IDs (as used in the json's country.globalGenreIds arrays)
+     to display names.  If a page loads the full json as a script that
+     exposes window.TrackHypeGenreCatalogue, that takes precedence; otherwise
+     the inline catalogue below is used.  Both are byte-mirrors of the json.
+     --------------------------------------------------------------- */
+
+  var INLINE_GENRE_CATALOGUE = {
+    pop: "Pop",
+    synth_pop_new_wave: "Synth-Pop / New Wave",
+    indie_pop: "Indie Pop",
+    dance_pop: "Dance-Pop",
+    hip_hop: "Hip-Hop",
+    rap: "Rap",
+    rnb: "Contemporary R&B",
+    trap: "Trap / Modern Hip-Hop",
+    neo_soul: "Neo-Soul",
+    rock: "Rock",
+    alternative_rock: "Alternative Rock / Indie Rock",
+    hard_rock_metal: "Hard Rock / Heavy Metal",
+    punk: "Punk Rock",
+    pop_punk: "Pop-Punk",
+    house: "House",
+    techno: "Techno",
+    trance: "Trance / Progressive",
+    drum_bass: "Drum & Bass / Jungle",
+    dubstep_bass: "Dubstep / Bass Music",
+    ambient_chillout: "Ambient / Chillout",
+    folk: "Folk / Singer-Songwriter",
+    acoustic_unplugged: "Acoustic / Unplugged",
+    folklore: "Folklore / Traditional",
+    classical: "Classical",
+    jazz: "Jazz",
+    blues: "Blues",
+    film_score: "Film Score / Soundtracks",
+    reggae_dub: "Reggae / Dub",
+    reggaeton_latin: "Reggaeton / Latin Pop",
+    afrobeats: "Afrobeats",
+    kpop: "K-Pop",
+    latin: "Latin / Tropical",
+    gospel_spiritual: "Spiritual / Gospel / Devotional",
+    electronic: "Electronic / EDM"
+  };
+
+  var SADC_GENRE_IDS = Object.keys(INLINE_GENRE_CATALOGUE);
+
+  function getGenrePool(genreKey) {
+    var catalogue = window.TrackHypeGenreCatalogue || INLINE_GENRE_CATALOGUE;
+    return SADC_GENRE_IDS.map(function (id) {
+      return catalogue[id] ? catalogue[id] : id.replace(/_/g, " ").replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+    });
+  }
+
   var api = {
     TERRITORY_CODES: TERRITORIES.map(function (t) { return t.code; }),
     getTerritories: getTerritories,
     territoryFor: territoryFor,
     regionDefault: regionDefault,
-    loadTerritoryLocations: loadTerritoryLocations
+    loadTerritoryLocations: loadTerritoryLocations,
+    getGenrePool: getGenrePool
   };
 
   if (window.TrackHype && typeof window.TrackHype === "object") {

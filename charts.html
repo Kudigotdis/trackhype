@@ -220,10 +220,14 @@
   <script src="demo-playlist.js"></script>
   <script src="docs/Demo Charts/chart_history-data.js"></script>
   <script src="trackhype.js"></script>
+  <script src="js/territories.js"></script>
   <script>
+    const CHART_TITLE_REGION = (typeof TrackHype.regionDefault === "function")
+      ? (TrackHype.regionDefault() || {name:"Zimbabwe"}).name
+      : "Zimbabwe";
     const CHARTS = [
-      {key:"top40",     title:"National Top 100",    genre:"All Genres — Zimbabwe", folder:"top_40_chart",
-        label:"National Top 100", genreFilter:"",      mapped:true},
+      {key:"top40",     title:("National Top 100 — " + CHART_TITLE_REGION), genre:("All Genres — " + CHART_TITLE_REGION), folder:"top_40_chart",
+        label:CHART_TITLE_REGION + " Top 100", genreFilter:"",      mapped:true},
       {key:"hiphop",    title:"Zim Hip Hop Top 20",  genre:"Zim Hip Hop",          folder:"top_25_local_hip_hop",
         label:"Zim Hip Hop",       genreFilter:"Zim Hip Hop", mapped:true},
       {key:"house",     title:"Zimbabwean House Top 20", genre:"House",            folder:"top_20_house",

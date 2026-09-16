@@ -159,11 +159,14 @@
     </div>
   </div>
 
-  <script src="demo-playlist.js"></script>
+<script src="demo-playlist.js"></script>
   <script src="trackhype.js"></script>
   <script src="js/api.js"></script>
+  <script src="js/territories.js"></script>
   <script>
-    const GENRES = ['Sungura','Chimurenga','Tuku Music','Afro-Jazz','Zimbabwean Jazz','Imbube','Zimbabwean Rumba','Afro-Fusion','Afro-Pop','Zimdancehall','Urban Grooves','Zim Hip Hop','Amapiano','Zimbabwean House','Zim EDM','R&B','Soul','Gospel','Reggae','Dancehall','House','Mbira','Jiti','Mbende / Jerusarema','Amabhiza'];
+    const GENRES = (typeof TrackHype.getGenrePool === "function")
+      ? TrackHype.getGenrePool((TrackHype.regionDefault ? TrackHype.regionDefault().genreKey : "") || "zimbabwe")
+      : ['Sungura','Chimurenga','Tuku Music','Afro-Jazz','Zimbabwean Jazz','Imbube','Zimbabwean Rumba','Afro-Fusion','Afro-Pop','Zimdancehall','Urban Grooves','Zim Hip Hop','Amapiano','Zimbabwean House','Zim EDM','R&B','Soul','Gospel','Reggae','Dancehall','House','Mbira','Jiti','Mbende / Jerusarema','Amabhiza'];
     const CHARTS = ['National Top 100','Zim Hip Hop Top 20','Zimdancehall Top 20','Gospel Top 20','Sungura Top 20','Zimbabwean House Top 20','R&B Top 20'];
 const PRICE_PER_TRACK = 10;
     let trackCount = 0;

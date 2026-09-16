@@ -154,13 +154,14 @@
   </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="js/supabase-config.js"></script>
-<script src="js/api.js"></script>
-<script src="demo-playlist.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="demo-playlist.js"></script>
   <script src="playlists.js"></script>
   <script src="radio-data.js"></script>
   <script src="docs/Demo Charts/chart_history-data.js"></script>
   <script src="trackhype.js"></script>
+  <script src="js/territories.js"></script>
   <script>
     const GENRE_ONE = {
       "Sungura":{genre:"Sungura",title:"Bhiya",artist:"Killer T & Xiba",art:"Demo Charts/Demo_Artworks/Killer T & Xiba — Bhiya.jpg"},
@@ -195,7 +196,12 @@
       "Reggae":{genre:"Reggae",title:"Lovers Reggae",artist:"Seh Calaz",art:"Demo Charts/Demo_Artworks/Seh Calaz - Lovers Reggae.jpg"},
       "House":{genre:"House",title:"Harare Nights",artist:"Raydizz",art:"Demo Charts/Demo_Artworks/Raydizz - Harare Nights.png"}
     };
-    const cultureGenres = Object.keys(GENRE_ONE);
+    const cultureGenres = (typeof TrackHype.getGenrePool === "function")
+      ? (function(){
+          const t = TrackHype.regionDefault();
+          return (t && t.code !== "ZW") ? TrackHype.getGenrePool(t.genreKey) : Object.keys(GENRE_ONE);
+        })()
+      : Object.keys(GENRE_ONE);
     const spiritualGenres = cultureGenres.map(g => "Gospel " + g);
 
     const DEMO_SONGS = [
