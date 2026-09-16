@@ -117,7 +117,23 @@ This document outlines the detailed technical, operational, and commercial requi
 
 ---
 
-## 10. Phased Execution Timeline
+## 10. Beta Launch — Demo Mode & Region Gating
+
+**Goal:** ship a Beta where signed-out visitors get a fully populated **Demo** showcase, while real country regions stay honest and empty ("coming soon") until artists submit and admin publishes music. No banners, no badges — the content itself is the demo.
+
+- [x] **Mode core (`trackhype.js`)** — `identityRegion()` (onboarding choice) vs `currentView()` (session-only browsing view). Persona is derived: `trackhype_onboarding_complete === "true"` = account, else browser. Every visit defaults to Browser/Demo unless the visitor tapped a real region this session.
+- [x] **Real regions are empty** — selecting a country shows a "coming soon" state, never demo content. Region picks are session-scoped and do not persist for browser visitors.
+- [x] **Content switching per surface** — charts, home, history, playlists, new-music, artists, search and menu all render view-aware content or an honest empty state.
+- [x] **Voting freeze** — voting is gated by `canVote()`: an account user may vote only inside their own region, and only once that region has **real** (non-seed) content. Demo/other regions never allow voting.
+- [x] **Real-content bridge** — when a region is published, `loadPublishedChart()` hydrates local snapshots from `API.chartEntries()` (non-seed) so charts/history light up automatically; demo seeds are only ever created in Demo mode.
+- [x] **PWA install polish** — manifest icons + `rel="icon"` + `apple-touch-icon` across all root pages.
+- [ ] **Live E2E verification** on GitHub Pages (browser → demo showcase; account → empty region; sign-out resets to Browser).
+
+*Progress log: `docs/Beta_Demo_Mode_Progress.md`.*
+
+---
+
+## 11. Phased Execution Timeline
 
 ```
 [ Phase 1: Auth & Session Fixes ]  ──►  [ Phase 2: Dynamic Ad Engine ]
