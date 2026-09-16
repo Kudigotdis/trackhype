@@ -151,3 +151,18 @@ Music discovery/voting web app. Static frontend (HTML/CSS/JS, no build step), ho
 4. Update this REPORT + CHECKLIST, run `node --check` on extracted inline scripts, commit + push, verify on hosted origin (GitHub Pages hard-refresh).
 
 **Gotcha already learned this session (record, save yourself 40 minutes):** onboarding/submit-music inline JS lives inside an IIFE but handlers are exposed as `window.*` for inline `oninput=` attributes; the 7 socials write straight into `S.socials` state and are packed/upserted via `account.socials` — do NOT create a second persistence path; ride the existing `API.saveProfile` upsert (profiles.socials jsonb).
+
+## SESSION END — 2025-09-16 (session 2 of art-socials work)
+
+**DONE this session (both surfaces now carry the 7 social links):**
+1. onboarding.html — COMMITTED+PUSHED (bb4d4c). 7 inputs, onSocialInput, packSocials, payload fold socials: account.socials||null, rehydrate prefillSocialsInputs, photo upload + rehydrate (0008). Working tree clean.
+2. submit-music.html — COMMITTED (18e5fcb pending doc update — verify git log). 7 inputs mirror, onSocialInput(artistSocials store), packSocials, confirmAndPay L337 payload fold + L350-353 **guarded** if(window.API && API.hasSession && API.hasSession() && window.packSocials && packSocials()){ API.saveProfile({socials:packSocials()}); } — offline-first never sends; guarded persist rides exactly the onboarding contract.
+
+**GOTCHA (the lesson that cost this session — record it, save yourself 2 hours next time):**
+NEVER trust the edit tool's *render* of non-ASCII content in 
+ewString/oldString. It silently mojibakes multi-byte chars. This session eturn p; became eturn p<arabic bytes>; in submit-music.html:324 — a byte-level truth the read/grep tools DO show but you must *actively hunt* for. The fix that caught it: git diff piped through a non-ASCII sweep ([^\x00-\x7F]), then a byte-level [Text.Encoding]::UTF8.GetBytes() dump to see the TRUE bytes. When editing HTML containing —, —, or any non-ASCII literal, cross-check the target file with a raw-ascii grep BEFORE and AFTER, or keep the content ASCII-only (use &#8212; etc in HTML, \u2014 in JS strings).
+
+**NEXT SESSION — resume point:**
+1. Verify submit-music.html commit landed (git log --oneline -1). If PROGRESS.md shows "pending doc update" in the commit msg, that's stale — the PROGRESS handoff is written AFTER the code commit, always.
+2. Supabase side: REPLACE the TODO. Storage bucket 	rackhype-media must exist before migration 0008 policy INSERTs work (0008 includes storage RLS but NOT the bucket). Confirm in Dashboard → Storage 	rackhype-media PUBLIC. Then run migration 0008 in SQL Editor if not already.
+3. Next feature slice ideas (in priority order): pending-submission admin view; chart rules modal; pay-first flow verification with a real  payment; notifications wiring.
