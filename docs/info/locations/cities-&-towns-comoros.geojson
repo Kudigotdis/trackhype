@@ -1,0 +1,7491 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.25506,
+          -11.70216
+        ]
+      },
+      "properties": {
+        "name": "Moroni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 74749,
+        "feature_type": "capital of a political entity",
+        "geoname_id": 921772
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.39944,
+          -12.16672
+        ]
+      },
+      "properties": {
+        "name": "Moutsamoudou",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 26313,
+        "feature_type": "seat of a first-order administrative division",
+        "geoname_id": 921753
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.74344,
+          -12.28759
+        ]
+      },
+      "properties": {
+        "name": "Fomboni",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 17291,
+        "feature_type": "seat of a first-order administrative division",
+        "geoname_id": 921889
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.46472,
+          -12.20583
+        ]
+      },
+      "properties": {
+        "name": "Tsimbeo",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 12590,
+        "feature_type": "populated place",
+        "geoname_id": 921664
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.52947,
+          -12.26067
+        ]
+      },
+      "properties": {
+        "name": "Domoni",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 12262,
+        "feature_type": "populated place",
+        "geoname_id": 921906
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.40986,
+          -12.1604
+        ]
+      },
+      "properties": {
+        "name": "Mirontsi",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 11955,
+        "feature_type": "populated place",
+        "geoname_id": 1091117
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.49722,
+          -12.2925
+        ]
+      },
+      "properties": {
+        "name": "Adda-Douéni",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 10858,
+        "feature_type": "populated place",
+        "geoname_id": 1091401
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.42493,
+          -12.13554
+        ]
+      },
+      "properties": {
+        "name": "Ouani",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 10073,
+        "feature_type": "populated place",
+        "geoname_id": 921721
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.28806,
+          -11.38972
+        ]
+      },
+      "properties": {
+        "name": "Nkourani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 10000,
+        "feature_type": "populated place",
+        "geoname_id": 1091669
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.27667,
+          -12.19556
+        ]
+      },
+      "properties": {
+        "name": "Sima",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 8737,
+        "feature_type": "populated place",
+        "geoname_id": 921675
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.48167,
+          -12.22972
+        ]
+      },
+      "properties": {
+        "name": "Koni-Djodjo",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 8109,
+        "feature_type": "populated place",
+        "geoname_id": 921834
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.43685,
+          -12.30967
+        ]
+      },
+      "properties": {
+        "name": "Moya",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 7529,
+        "feature_type": "populated place",
+        "geoname_id": 921764
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.43026,
+          -12.13861
+        ]
+      },
+      "properties": {
+        "name": "Barakani",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 6089,
+        "feature_type": "section of populated place",
+        "geoname_id": 1091088
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.46472,
+          -12.195
+        ]
+      },
+      "properties": {
+        "name": "Chandra",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 5645,
+        "feature_type": "populated place",
+        "geoname_id": 921946
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.33194,
+          -11.39028
+        ]
+      },
+      "properties": {
+        "name": "Ouellah",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 5478,
+        "feature_type": "populated place",
+        "geoname_id": 921719
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.2371,
+          -11.74487
+        ]
+      },
+      "properties": {
+        "name": "Ikoni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 5474,
+        "feature_type": "populated place",
+        "geoname_id": 1092369
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.49861,
+          -12.30833
+        ]
+      },
+      "properties": {
+        "name": "Mrémani",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 5470,
+        "feature_type": "populated place",
+        "geoname_id": 921762
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.3775,
+          -11.50139
+        ]
+      },
+      "properties": {
+        "name": "Mbéni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 5128,
+        "feature_type": "populated place",
+        "geoname_id": 921806
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.52861,
+          -12.34639
+        ]
+      },
+      "properties": {
+        "name": "Mramani",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 5126,
+        "feature_type": "populated place",
+        "geoname_id": 921763
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.44167,
+          -12.17139
+        ]
+      },
+      "properties": {
+        "name": "Koki",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 4929,
+        "feature_type": "populated place",
+        "geoname_id": 921838
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.28444,
+          -11.38472
+        ]
+      },
+      "properties": {
+        "name": "Mitsamiouli",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 4811,
+        "feature_type": "populated place",
+        "geoname_id": 921786
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.2752,
+          -11.71965
+        ]
+      },
+      "properties": {
+        "name": "Mvouni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 4791,
+        "feature_type": "populated place",
+        "geoname_id": 1092341
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.27057,
+          -11.70137
+        ]
+      },
+      "properties": {
+        "name": "Tsidjé",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 4600,
+        "feature_type": "populated place",
+        "geoname_id": 1092169
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.4727,
+          -12.32102
+        ]
+      },
+      "properties": {
+        "name": "Kangani",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 3711,
+        "feature_type": "populated place",
+        "geoname_id": 921847
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.41833,
+          -12.25583
+        ]
+      },
+      "properties": {
+        "name": "Lingoni",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 3583,
+        "feature_type": "populated place",
+        "geoname_id": 1091370
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.27157,
+          -11.66077
+        ]
+      },
+      "properties": {
+        "name": "Ntsoudjini",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 3559,
+        "feature_type": "populated place",
+        "geoname_id": 921729
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.49529,
+          -11.86537
+        ]
+      },
+      "properties": {
+        "name": "Foumbouni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 3386,
+        "feature_type": "populated place",
+        "geoname_id": 921884
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.48,
+          -12.21583
+        ]
+      },
+      "properties": {
+        "name": "Koni-Ngani",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 3288,
+        "feature_type": "populated place",
+        "geoname_id": 921835
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.28043,
+          -11.81209
+        ]
+      },
+      "properties": {
+        "name": "Mitsoudjé",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 3129,
+        "feature_type": "populated place",
+        "geoname_id": 921785
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.37028,
+          -12.19167
+        ]
+      },
+      "properties": {
+        "name": "Mjimandra",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 3114,
+        "feature_type": "populated place",
+        "geoname_id": 921783
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.26278,
+          -11.46583
+        ]
+      },
+      "properties": {
+        "name": "Ntsaouéni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 2760,
+        "feature_type": "populated place",
+        "geoname_id": 921731
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.51638,
+          -12.20325
+        ]
+      },
+      "properties": {
+        "name": "Bambao",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 2699,
+        "feature_type": "populated place",
+        "geoname_id": 921992
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.71528,
+          -12.36139
+        ]
+      },
+      "properties": {
+        "name": "Nioumachoua",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 2687,
+        "feature_type": "populated place",
+        "geoname_id": 921745
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.26466,
+          -11.67638
+        ]
+      },
+      "properties": {
+        "name": "Itsandra",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 2684,
+        "feature_type": "populated place",
+        "geoname_id": 921856
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.48861,
+          -12.32583
+        ]
+      },
+      "properties": {
+        "name": "Daji",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 2676,
+        "feature_type": "populated place",
+        "geoname_id": 1091436
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.39778,
+          -11.87361
+        ]
+      },
+      "properties": {
+        "name": "Dembéni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 2657,
+        "feature_type": "populated place",
+        "geoname_id": 921918
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.29429,
+          -11.8233
+        ]
+      },
+      "properties": {
+        "name": "Chouani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 2615,
+        "feature_type": "populated place",
+        "geoname_id": 921948
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.37444,
+          -12.24417
+        ]
+      },
+      "properties": {
+        "name": "Vouani",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 2513,
+        "feature_type": "populated place",
+        "geoname_id": 921655
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.48881,
+          -12.12434
+        ]
+      },
+      "properties": {
+        "name": "Hajoho",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 2505,
+        "feature_type": "populated place",
+        "geoname_id": 1091076
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.29944,
+          -12.20556
+        ]
+      },
+      "properties": {
+        "name": "Boungouéni",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 2465,
+        "feature_type": "populated place",
+        "geoname_id": 921957
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.3525,
+          -12.19111
+        ]
+      },
+      "properties": {
+        "name": "Chironkamba",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 2391,
+        "feature_type": "populated place",
+        "geoname_id": 921939
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.39625,
+          -11.4314
+        ]
+      },
+      "properties": {
+        "name": "Chezani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 2322,
+        "feature_type": "populated place",
+        "geoname_id": 921944
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.31731,
+          -11.84784
+        ]
+      },
+      "properties": {
+        "name": "Singani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 2309,
+        "feature_type": "populated place",
+        "geoname_id": 921674
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.41583,
+          -12.27806
+        ]
+      },
+      "properties": {
+        "name": "Magnassini-Nindri",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 2213,
+        "feature_type": "populated place",
+        "geoname_id": 1091390
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.51917,
+          -12.33222
+        ]
+      },
+      "properties": {
+        "name": "Kyo",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 2209,
+        "feature_type": "populated place",
+        "geoname_id": 921746
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.26944,
+          -12.19194
+        ]
+      },
+      "properties": {
+        "name": "Kavani",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 2160,
+        "feature_type": "populated place",
+        "geoname_id": 1090919
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.77425,
+          -12.30587
+        ]
+      },
+      "properties": {
+        "name": "Djoyézi",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 2096,
+        "feature_type": "populated place",
+        "geoname_id": 921913
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.50694,
+          -12.17028
+        ]
+      },
+      "properties": {
+        "name": "Ongoni",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 2058,
+        "feature_type": "populated place",
+        "geoname_id": 921726
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.35667,
+          -11.62306
+        ]
+      },
+      "properties": {
+        "name": "Koimbani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 2054,
+        "feature_type": "populated place",
+        "geoname_id": 921839
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.23556,
+          -12.18833
+        ]
+      },
+      "properties": {
+        "name": "Bimbini",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 2052,
+        "feature_type": "populated place",
+        "geoname_id": 921967
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.45436,
+          -11.82701
+        ]
+      },
+      "properties": {
+        "name": "Mohoro",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 2014,
+        "feature_type": "populated place",
+        "geoname_id": 921777
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.41102,
+          -11.43178
+        ]
+      },
+      "properties": {
+        "name": "Hantsindzi",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 2004,
+        "feature_type": "populated place",
+        "geoname_id": 1091828
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.34987,
+          -11.85287
+        ]
+      },
+      "properties": {
+        "name": "Dzahadjou",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 2000,
+        "feature_type": "populated place",
+        "geoname_id": 921902
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.28222,
+          -11.405
+        ]
+      },
+      "properties": {
+        "name": "Ouhozi",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 1930,
+        "feature_type": "populated place",
+        "geoname_id": 1091674
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.45356,
+          -11.78788
+        ]
+      },
+      "properties": {
+        "name": "Bandamadji-Domba",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 1929,
+        "feature_type": "religious populated place",
+        "geoname_id": 921984
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.7975,
+          -12.3375
+        ]
+      },
+      "properties": {
+        "name": "Wanani",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 1917,
+        "feature_type": "populated place",
+        "geoname_id": 921654
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.38806,
+          -12.16972
+        ]
+      },
+      "properties": {
+        "name": "Pajé",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 1894,
+        "feature_type": "populated place",
+        "geoname_id": 1091121
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.47972,
+          -12.26722
+        ]
+      },
+      "properties": {
+        "name": "Ouzini",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 1886,
+        "feature_type": "populated place",
+        "geoname_id": 921711
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.27611,
+          -11.6075
+        ]
+      },
+      "properties": {
+        "name": "Vanadjou",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 1830,
+        "feature_type": "populated place",
+        "geoname_id": 1092041
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.28694,
+          -12.19167
+        ]
+      },
+      "properties": {
+        "name": "Bandajou",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 1816,
+        "feature_type": "populated place",
+        "geoname_id": 1090930
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.28889,
+          -11.42111
+        ]
+      },
+      "properties": {
+        "name": "Douniani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 1778,
+        "feature_type": "populated place",
+        "geoname_id": 1091712
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.48333,
+          -12.18333
+        ]
+      },
+      "properties": {
+        "name": "Dziani",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 1754,
+        "feature_type": "populated place",
+        "geoname_id": 921897
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.26722,
+          -11.585
+        ]
+      },
+      "properties": {
+        "name": "Ousivo",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 1708,
+        "feature_type": "populated place",
+        "geoname_id": 921713
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.49828,
+          -12.15108
+        ]
+      },
+      "properties": {
+        "name": "Harembo",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 1698,
+        "feature_type": "populated place",
+        "geoname_id": 1091102
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.26823,
+          -11.8115
+        ]
+      },
+      "properties": {
+        "name": "Salimani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 1662,
+        "feature_type": "populated place",
+        "geoname_id": 921687
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.27036,
+          -11.78756
+        ]
+      },
+      "properties": {
+        "name": "Séléa",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 1662,
+        "feature_type": "populated place",
+        "geoname_id": 1092396
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.25306,
+          -11.61139
+        ]
+      },
+      "properties": {
+        "name": "Vanamboini",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 1654,
+        "feature_type": "populated place",
+        "geoname_id": 921661
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.29528,
+          -11.41806
+        ]
+      },
+      "properties": {
+        "name": "Mandza",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 1602,
+        "feature_type": "populated place",
+        "geoname_id": 1091711
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.43722,
+          -12.15556
+        ]
+      },
+      "properties": {
+        "name": "Patsy",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 1498,
+        "feature_type": "populated place",
+        "geoname_id": 921703
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.31,
+          -12.19361
+        ]
+      },
+      "properties": {
+        "name": "Mjamaoué",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 1490,
+        "feature_type": "populated place",
+        "geoname_id": 921784
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.49109,
+          -11.92328
+        ]
+      },
+      "properties": {
+        "name": "Chindini",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 1471,
+        "feature_type": "populated place",
+        "geoname_id": 921942
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.37972,
+          -11.54389
+        ]
+      },
+      "properties": {
+        "name": "Héroumbili",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 1463,
+        "feature_type": "populated place",
+        "geoname_id": 921858
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.49804,
+          -11.91375
+        ]
+      },
+      "properties": {
+        "name": "Ourovéni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 1419,
+        "feature_type": "populated place",
+        "geoname_id": 921714
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.31333,
+          -12.23083
+        ]
+      },
+      "properties": {
+        "name": "Maraharé",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 1415,
+        "feature_type": "populated place",
+        "geoname_id": 921814
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.70361,
+          -12.26111
+        ]
+      },
+      "properties": {
+        "name": "Mtakoudja",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 1410,
+        "feature_type": "populated place",
+        "geoname_id": 1090583
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.34713,
+          -11.40514
+        ]
+      },
+      "properties": {
+        "name": "Koua",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 1391,
+        "feature_type": "populated place",
+        "geoname_id": 1091713
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.26233,
+          -11.71953
+        ]
+      },
+      "properties": {
+        "name": "Mavingouni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 1390,
+        "feature_type": "populated place",
+        "geoname_id": 1092343
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.38444,
+          -11.47278
+        ]
+      },
+      "properties": {
+        "name": "Itsandzéni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 1382,
+        "feature_type": "populated place",
+        "geoname_id": 1091868
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.37722,
+          -11.47861
+        ]
+      },
+      "properties": {
+        "name": "Bambadjani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 1355,
+        "feature_type": "populated place",
+        "geoname_id": 1091870
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.27806,
+          -11.82167
+        ]
+      },
+      "properties": {
+        "name": "Madjeouéni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 1320,
+        "feature_type": "populated place",
+        "geoname_id": 1092516
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.39454,
+          -11.39157
+        ]
+      },
+      "properties": {
+        "name": "Ivouani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 1317,
+        "feature_type": "populated place",
+        "geoname_id": 921852
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.28417,
+          -11.63972
+        ]
+      },
+      "properties": {
+        "name": "Bahani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 1272,
+        "feature_type": "populated place",
+        "geoname_id": 1092065
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.7775,
+          -12.3325
+        ]
+      },
+      "properties": {
+        "name": "Ziroudani",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 1197,
+        "feature_type": "populated place",
+        "geoname_id": 1090640
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.5225,
+          -12.35639
+        ]
+      },
+      "properties": {
+        "name": "Antsahé",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 1180,
+        "feature_type": "populated place",
+        "geoname_id": 921998
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.38056,
+          -11.60694
+        ]
+      },
+      "properties": {
+        "name": "Mtsamdou",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 1171,
+        "feature_type": "populated place",
+        "geoname_id": 921756
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.67472,
+          -12.25083
+        ]
+      },
+      "properties": {
+        "name": "Hoani",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 1114,
+        "feature_type": "populated place",
+        "geoname_id": 921870
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.31972,
+          -12.23306
+        ]
+      },
+      "properties": {
+        "name": "Assimpao",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 1112,
+        "feature_type": "populated place",
+        "geoname_id": 921996
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.38833,
+          -11.48694
+        ]
+      },
+      "properties": {
+        "name": "Bouni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 1104,
+        "feature_type": "populated place",
+        "geoname_id": 921956
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.33556,
+          -12.18583
+        ]
+      },
+      "properties": {
+        "name": "Chitrouni",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 1081,
+        "feature_type": "populated place",
+        "geoname_id": 1090960
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.44607,
+          -11.85461
+        ]
+      },
+      "properties": {
+        "name": "Nioumamilima",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 1068,
+        "feature_type": "populated place",
+        "geoname_id": 1092529
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.38806,
+          -12.25083
+        ]
+      },
+      "properties": {
+        "name": "Dar Salam",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 1059,
+        "feature_type": "populated place",
+        "geoname_id": 1090996
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.50528,
+          -12.23944
+        ]
+      },
+      "properties": {
+        "name": "Limbi",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 1037,
+        "feature_type": "populated place",
+        "geoname_id": 1091159
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.37389,
+          -11.51778
+        ]
+      },
+      "properties": {
+        "name": "Mnoungou",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 1013,
+        "feature_type": "populated place",
+        "geoname_id": 1091996
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.28056,
+          -11.65361
+        ]
+      },
+      "properties": {
+        "name": "Wela",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 1000,
+        "feature_type": "populated place",
+        "geoname_id": 1092157
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.26583,
+          -11.64583
+        ]
+      },
+      "properties": {
+        "name": "Zivandani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 976,
+        "feature_type": "populated place",
+        "geoname_id": 1092067
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.31388,
+          -11.83642
+        ]
+      },
+      "properties": {
+        "name": "Mdjoyézi",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 957,
+        "feature_type": "populated place",
+        "geoname_id": 921801
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.3425,
+          -12.23194
+        ]
+      },
+      "properties": {
+        "name": "Vassi",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 944,
+        "feature_type": "populated place",
+        "geoname_id": 921660
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.3931,
+          -11.87482
+        ]
+      },
+      "properties": {
+        "name": "Panda",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 899,
+        "feature_type": "populated place",
+        "geoname_id": 921706
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.26389,
+          -12.19806
+        ]
+      },
+      "properties": {
+        "name": "Milembéni",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 885,
+        "feature_type": "populated place",
+        "geoname_id": 1090918
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.2525,
+          -12.19056
+        ]
+      },
+      "properties": {
+        "name": "Mirongani",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 882,
+        "feature_type": "populated place",
+        "geoname_id": 1090870
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.82,
+          -12.34278
+        ]
+      },
+      "properties": {
+        "name": "Kangani",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 856,
+        "feature_type": "populated place",
+        "geoname_id": 921846
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.63528,
+          -12.29667
+        ]
+      },
+      "properties": {
+        "name": "Miringoni",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 834,
+        "feature_type": "populated place",
+        "geoname_id": 921790
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.38583,
+          -11.64306
+        ]
+      },
+      "properties": {
+        "name": "Chomoni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 807,
+        "feature_type": "populated place",
+        "geoname_id": 921935
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.26639,
+          -11.66167
+        ]
+      },
+      "properties": {
+        "name": "Milembéni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 790,
+        "feature_type": "populated place",
+        "geoname_id": 1092152
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.31583,
+          -11.84472
+        ]
+      },
+      "properties": {
+        "name": "Hetsa",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 785,
+        "feature_type": "populated place",
+        "geoname_id": 921871
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.83833,
+          -12.37306
+        ]
+      },
+      "properties": {
+        "name": "Hamavouna",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 778,
+        "feature_type": "populated place",
+        "geoname_id": 1090832
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.43611,
+          -11.75444
+        ]
+      },
+      "properties": {
+        "name": "Oungoni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 765,
+        "feature_type": "populated place",
+        "geoname_id": 1092389
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.28776,
+          -11.57916
+        ]
+      },
+      "properties": {
+        "name": "Bibavou",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 733,
+        "feature_type": "populated place",
+        "geoname_id": 1092024
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.29762,
+          -11.5549
+        ]
+      },
+      "properties": {
+        "name": "Milévani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 729,
+        "feature_type": "populated place",
+        "geoname_id": 921793
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.41083,
+          -11.88639
+        ]
+      },
+      "properties": {
+        "name": "Dima",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 698,
+        "feature_type": "populated place",
+        "geoname_id": 1092577
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.26,
+          -11.62833
+        ]
+      },
+      "properties": {
+        "name": "Batsa",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 692,
+        "feature_type": "populated place",
+        "geoname_id": 1092051
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.47222,
+          -11.87583
+        ]
+      },
+      "properties": {
+        "name": "Kové",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 690,
+        "feature_type": "populated place",
+        "geoname_id": 1092567
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.86778,
+          -12.36417
+        ]
+      },
+      "properties": {
+        "name": "Itsamia",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 611,
+        "feature_type": "populated place",
+        "geoname_id": 921857
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.63194,
+          -12.27444
+        ]
+      },
+      "properties": {
+        "name": "Hamba",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 585,
+        "feature_type": "populated place",
+        "geoname_id": 1090507
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.3575,
+          -11.49861
+        ]
+      },
+      "properties": {
+        "name": "Batou",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 562,
+        "feature_type": "populated place",
+        "geoname_id": 1091989
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.405,
+          -11.67139
+        ]
+      },
+      "properties": {
+        "name": "Sidjou",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 555,
+        "feature_type": "populated place",
+        "geoname_id": 1092162
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.37611,
+          -11.50944
+        ]
+      },
+      "properties": {
+        "name": "Sada-Chihoué",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 551,
+        "feature_type": "populated place",
+        "geoname_id": 1091995
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.27556,
+          -11.65722
+        ]
+      },
+      "properties": {
+        "name": "Dzahani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 523,
+        "feature_type": "populated place",
+        "geoname_id": 1092156
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.3416,
+          -11.8524
+        ]
+      },
+      "properties": {
+        "name": "Mbambani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 521,
+        "feature_type": "populated place",
+        "geoname_id": 1092542
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.39667,
+          -11.88389
+        ]
+      },
+      "properties": {
+        "name": "Mandzissani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 497,
+        "feature_type": "populated place",
+        "geoname_id": 1092574
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.26806,
+          -11.39861
+        ]
+      },
+      "properties": {
+        "name": "Fâssi",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 490,
+        "feature_type": "populated place",
+        "geoname_id": 1091673
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.48111,
+          -11.88083
+        ]
+      },
+      "properties": {
+        "name": "Didjoni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 490,
+        "feature_type": "populated place",
+        "geoname_id": 1092588
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.49778,
+          -12.27861
+        ]
+      },
+      "properties": {
+        "name": "Outsa",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 489,
+        "feature_type": "populated place",
+        "geoname_id": 1091384
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.405,
+          -11.68667
+        ]
+      },
+      "properties": {
+        "name": "Ntsoralé",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 476,
+        "feature_type": "populated place",
+        "geoname_id": 1092163
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.38722,
+          -11.5675
+        ]
+      },
+      "properties": {
+        "name": "Kouhani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 432,
+        "feature_type": "populated place",
+        "geoname_id": 921833
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.32528,
+          -11.38028
+        ]
+      },
+      "properties": {
+        "name": "Ouémani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 426,
+        "feature_type": "populated place",
+        "geoname_id": 921718
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.48495,
+          -11.91249
+        ]
+      },
+      "properties": {
+        "name": "Midjendjéni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 426,
+        "feature_type": "populated place",
+        "geoname_id": 1092600
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.38222,
+          -11.61778
+        ]
+      },
+      "properties": {
+        "name": "Hassendjé",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 417,
+        "feature_type": "populated place",
+        "geoname_id": 1092044
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.29083,
+          -11.39222
+        ]
+      },
+      "properties": {
+        "name": "Songomani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 409,
+        "feature_type": "populated place",
+        "geoname_id": 1091670
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.23472,
+          -11.75639
+        ]
+      },
+      "properties": {
+        "name": "Séréhini",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 407,
+        "feature_type": "populated place",
+        "geoname_id": 1092373
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.38222,
+          -11.41833
+        ]
+      },
+      "properties": {
+        "name": "Bandamadji",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 374,
+        "feature_type": "populated place",
+        "geoname_id": 1091700
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.37667,
+          -11.53444
+        ]
+      },
+      "properties": {
+        "name": "Ifoundihé",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 356,
+        "feature_type": "populated place",
+        "geoname_id": 921865
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.42333,
+          -11.85861
+        ]
+      },
+      "properties": {
+        "name": "Famaré",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 352,
+        "feature_type": "populated place",
+        "geoname_id": 1092553
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.36222,
+          -12.23278
+        ]
+      },
+      "properties": {
+        "name": "Salamani",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 320,
+        "feature_type": "populated place",
+        "geoname_id": 1090972
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.67306,
+          -12.26167
+        ]
+      },
+      "properties": {
+        "name": "Ngamaroumbo",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 316,
+        "feature_type": "populated place",
+        "geoname_id": 1090577
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.50278,
+          -12.34639
+        ]
+      },
+      "properties": {
+        "name": "Nounga",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 315,
+        "feature_type": "populated place",
+        "geoname_id": 921728
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.24333,
+          -11.75
+        ]
+      },
+      "properties": {
+        "name": "Vouvouni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 311,
+        "feature_type": "populated place",
+        "geoname_id": 1092368
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.64222,
+          -12.25194
+        ]
+      },
+      "properties": {
+        "name": "Domoni",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 309,
+        "feature_type": "populated place",
+        "geoname_id": 921907
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.26361,
+          -11.7675
+        ]
+      },
+      "properties": {
+        "name": "Daouéni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 308,
+        "feature_type": "populated place",
+        "geoname_id": 1092381
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.38806,
+          -11.46528
+        ]
+      },
+      "properties": {
+        "name": "Ngolé",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 306,
+        "feature_type": "populated place",
+        "geoname_id": 1091866
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.35778,
+          -11.63194
+        ]
+      },
+      "properties": {
+        "name": "Sada",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 185,
+        "feature_type": "populated place",
+        "geoname_id": 1092057
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.47722,
+          -11.90139
+        ]
+      },
+      "properties": {
+        "name": "Ndzouani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 160,
+        "feature_type": "populated place",
+        "geoname_id": 1092591
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.32306,
+          -12.23556
+        ]
+      },
+      "properties": {
+        "name": "Chitsangachélé",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 148,
+        "feature_type": "populated place",
+        "geoname_id": 1090952
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.75194,
+          -12.35083
+        ]
+      },
+      "properties": {
+        "name": "Ndréméani",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 147,
+        "feature_type": "populated place",
+        "geoname_id": 1090629
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.27417,
+          -11.55
+        ]
+      },
+      "properties": {
+        "name": "Mbaléni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 137,
+        "feature_type": "populated place",
+        "geoname_id": 1092003
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.35833,
+          -11.85111
+        ]
+      },
+      "properties": {
+        "name": "Makorani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 137,
+        "feature_type": "populated place",
+        "geoname_id": 1092538
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.39167,
+          -11.45667
+        ]
+      },
+      "properties": {
+        "name": "Mbatsé",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 123,
+        "feature_type": "populated place",
+        "geoname_id": 1091864
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.28028,
+          -11.7525
+        ]
+      },
+      "properties": {
+        "name": "Boboni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 105,
+        "feature_type": "populated place",
+        "geoname_id": 921964
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.39806,
+          -11.66528
+        ]
+      },
+      "properties": {
+        "name": "Samba-Madi",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 93,
+        "feature_type": "populated place",
+        "geoname_id": 921686
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.79611,
+          -12.36694
+        ]
+      },
+      "properties": {
+        "name": "Sambia",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 24,
+        "feature_type": "populated place",
+        "geoname_id": 921685
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.33111,
+          -12.23639
+        ]
+      },
+      "properties": {
+        "name": "Hadongo",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 16,
+        "feature_type": "populated place",
+        "geoname_id": 1090965
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.33278,
+          -12.19028
+        ]
+      },
+      "properties": {
+        "name": "Sanadani",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921683
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.40889,
+          -12.28
+        ]
+      },
+      "properties": {
+        "name": "Pomoni",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921698
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.45191,
+          -11.76425
+        ]
+      },
+      "properties": {
+        "name": "Pidjani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921700
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.505,
+          -12.26528
+        ]
+      },
+      "properties": {
+        "name": "Ajaho",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921712
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.66333,
+          -12.32556
+        ]
+      },
+      "properties": {
+        "name": "Ouallah",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921722
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.51389,
+          -12.31
+        ]
+      },
+      "properties": {
+        "name": "Ongoujou",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921725
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.25,
+          -12.16667
+        ]
+      },
+      "properties": {
+        "name": "Ntsazou",
+        "country": "Comoros",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921730
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.29722,
+          -11.79917
+        ]
+      },
+      "properties": {
+        "name": "Nioumbadjou",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921740
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.50124,
+          -12.35342
+        ]
+      },
+      "properties": {
+        "name": "Chaouéni",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921742
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.45472,
+          -11.83944
+        ]
+      },
+      "properties": {
+        "name": "Nioumadzaha Mvoumbari",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921743
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.26694,
+          -11.40611
+        ]
+      },
+      "properties": {
+        "name": "Ndzaouze",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921747
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.31667,
+          -12.2
+        ]
+      },
+      "properties": {
+        "name": "Mouroumouli",
+        "country": "Comoros",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921765
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.48333,
+          -12.15
+        ]
+      },
+      "properties": {
+        "name": "Moujou",
+        "country": "Comoros",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921770
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.78083,
+          -12.36167
+        ]
+      },
+      "properties": {
+        "name": "Mouahani",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921776
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.52111,
+          -12.32222
+        ]
+      },
+      "properties": {
+        "name": "Mirondoni",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921787
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.40806,
+          -11.69028
+        ]
+      },
+      "properties": {
+        "name": "Miréréni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921792
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.62917,
+          -12.26389
+        ]
+      },
+      "properties": {
+        "name": "Mifoni",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921794
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.43306,
+          -11.77389
+        ]
+      },
+      "properties": {
+        "name": "Membéni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921800
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.46667,
+          -11.71667
+        ]
+      },
+      "properties": {
+        "name": "Mdjoizema",
+        "country": "Comoros",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921802
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.24056,
+          -11.73611
+        ]
+      },
+      "properties": {
+        "name": "Mdé",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921803
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.41972,
+          -11.69417
+        ]
+      },
+      "properties": {
+        "name": "Mboudé",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921805
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.69778,
+          -12.25944
+        ]
+      },
+      "properties": {
+        "name": "Mbatsé",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921808
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.23818,
+          -11.74718
+        ]
+      },
+      "properties": {
+        "name": "Mbachilé",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921809
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.49306,
+          -12.33194
+        ]
+      },
+      "properties": {
+        "name": "Mrijou",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921813
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.78333,
+          -12.35
+        ]
+      },
+      "properties": {
+        "name": "Malhani",
+        "country": "Comoros",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921816
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.4975,
+          -11.88417
+        ]
+      },
+      "properties": {
+        "name": "Male",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921817
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.42278,
+          -11.72833
+        ]
+      },
+      "properties": {
+        "name": "Madjoumadjou",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921820
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.41667,
+          -12.25
+        ]
+      },
+      "properties": {
+        "name": "Longoni",
+        "country": "Comoros",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921826
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.31667,
+          -11.6
+        ]
+      },
+      "properties": {
+        "name": "La Grotte",
+        "country": "Comoros",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921829
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.33333,
+          -11.45
+        ]
+      },
+      "properties": {
+        "name": "La Grille",
+        "country": "Comoros",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921830
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.81667,
+          -12.31667
+        ]
+      },
+      "properties": {
+        "name": "Labanda",
+        "country": "Comoros",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921832
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.44722,
+          -12.16861
+        ]
+      },
+      "properties": {
+        "name": "Kondroni",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921836
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.47333,
+          -11.85583
+        ]
+      },
+      "properties": {
+        "name": "Kouambani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921837
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.78333,
+          -12.31667
+        ]
+      },
+      "properties": {
+        "name": "Jiroudain",
+        "country": "Comoros",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921850
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.4642,
+          -12.09709
+        ]
+      },
+      "properties": {
+        "name": "Jimilimé",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921851
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.31806,
+          -11.47778
+        ]
+      },
+      "properties": {
+        "name": "Ivembeni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921853
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.41667,
+          -11.41667
+        ]
+      },
+      "properties": {
+        "name": "Itsoadjou",
+        "country": "Comoros",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921854
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.37583,
+          -11.58361
+        ]
+      },
+      "properties": {
+        "name": "Itsikoudi",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921855
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.41222,
+          -11.90028
+        ]
+      },
+      "properties": {
+        "name": "Ifoundihé Chambouani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921864
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.41389,
+          -11.71056
+        ]
+      },
+      "properties": {
+        "name": "Idjikoundzi",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921866
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.305,
+          -11.43667
+        ]
+      },
+      "properties": {
+        "name": "Helendjé",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921872
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.41667,
+          -12.43333
+        ]
+      },
+      "properties": {
+        "name": "Hantzinzi",
+        "country": "Comoros",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921873
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.38333,
+          -11.58333
+        ]
+      },
+      "properties": {
+        "name": "Hambo",
+        "country": "Comoros",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921875
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.27214,
+          -11.56223
+        ]
+      },
+      "properties": {
+        "name": "Hahaya",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921876
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.85,
+          -12.31667
+        ]
+      },
+      "properties": {
+        "name": "Hagniamada",
+        "country": "Comoros",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921877
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.41667,
+          -11.45
+        ]
+      },
+      "properties": {
+        "name": "Hadjambo",
+        "country": "Comoros",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921878
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.68333,
+          -12.25
+        ]
+      },
+      "properties": {
+        "name": "Guamarumbo",
+        "country": "Comoros",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921880
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.65,
+          -12.25
+        ]
+      },
+      "properties": {
+        "name": "Fongapepo",
+        "country": "Comoros",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921887
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.3,
+          -12.18333
+        ]
+      },
+      "properties": {
+        "name": "Fombani",
+        "country": "Comoros",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921890
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.44444,
+          -11.90778
+        ]
+      },
+      "properties": {
+        "name": "Dzahadjou",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921901
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.26917,
+          -11.48694
+        ]
+      },
+      "properties": {
+        "name": "Domoni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921908
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.26667,
+          -11.75
+        ]
+      },
+      "properties": {
+        "name": "Djoumbe",
+        "country": "Comoros",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921910
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.75,
+          -12.28333
+        ]
+      },
+      "properties": {
+        "name": "Djoumadounia",
+        "country": "Comoros",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921911
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.25944,
+          -11.43028
+        ]
+      },
+      "properties": {
+        "name": "Djomani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921912
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.4525,
+          -12.21
+        ]
+      },
+      "properties": {
+        "name": "Dindi",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921914
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.31444,
+          -11.55694
+        ]
+      },
+      "properties": {
+        "name": "Dibouani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921915
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.75,
+          -12.38333
+        ]
+      },
+      "properties": {
+        "name": "Demeani",
+        "country": "Comoros",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921916
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.65,
+          -12.3
+        ]
+      },
+      "properties": {
+        "name": "Damou",
+        "country": "Comoros",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921923
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.31972,
+          -11.755
+        ]
+      },
+      "properties": {
+        "name": "La Convalescence",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921926
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.71667,
+          -12.33333
+        ]
+      },
+      "properties": {
+        "name": "Buanitonque",
+        "country": "Comoros",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921953
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.51167,
+          -12.34889
+        ]
+      },
+      "properties": {
+        "name": "Bouéjou",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921959
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.44889,
+          -12.17917
+        ]
+      },
+      "properties": {
+        "name": "Bazimini",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921969
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.41667,
+          -11.83333
+        ]
+      },
+      "properties": {
+        "name": "Barakani",
+        "country": "Comoros",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921972
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.75139,
+          -12.28389
+        ]
+      },
+      "properties": {
+        "name": "Bangoma",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921973
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.35278,
+          -11.3675
+        ]
+      },
+      "properties": {
+        "name": "Bangoua Kouni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921974
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.3,
+          -11.81667
+        ]
+      },
+      "properties": {
+        "name": "Bangoi",
+        "country": "Comoros",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921975
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.81667,
+          -12.33333
+        ]
+      },
+      "properties": {
+        "name": "Bandani",
+        "country": "Comoros",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921981
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.38556,
+          -12.24472
+        ]
+      },
+      "properties": {
+        "name": "Bandani-Vouani",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921982
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.8,
+          -12.3
+        ]
+      },
+      "properties": {
+        "name": "Babani",
+        "country": "Comoros",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 921994
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.63417,
+          -12.26806
+        ]
+      },
+      "properties": {
+        "name": "Kobela",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090506
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.63167,
+          -12.28583
+        ]
+      },
+      "properties": {
+        "name": "Chikoni",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090511
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.65972,
+          -12.32111
+        ]
+      },
+      "properties": {
+        "name": "Miréréni",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090538
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.66833,
+          -12.33972
+        ]
+      },
+      "properties": {
+        "name": "Mirémani",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090558
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.68222,
+          -12.34278
+        ]
+      },
+      "properties": {
+        "name": "Ndrondroni",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090564
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.66917,
+          -12.25083
+        ]
+      },
+      "properties": {
+        "name": "Gnambo Yamaoré",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090581
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.75854,
+          -12.29845
+        ]
+      },
+      "properties": {
+        "name": "Bandaressalam",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090615
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.74583,
+          -12.27861
+        ]
+      },
+      "properties": {
+        "name": "Mnadzi Modja",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "section of populated place",
+        "geoname_id": 1090616
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.7675,
+          -12.35833
+        ]
+      },
+      "properties": {
+        "name": "Mihoungouni",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090633
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.78056,
+          -12.33417
+        ]
+      },
+      "properties": {
+        "name": "Siri",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090639
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.77806,
+          -12.30056
+        ]
+      },
+      "properties": {
+        "name": "Gnombéni",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090645
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.81139,
+          -12.33139
+        ]
+      },
+      "properties": {
+        "name": "Mlabanda",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090677
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.79917,
+          -12.34056
+        ]
+      },
+      "properties": {
+        "name": "Kirimani",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "section of populated place",
+        "geoname_id": 1090678
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.83083,
+          -12.375
+        ]
+      },
+      "properties": {
+        "name": "Hagnengélé",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090691
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.83139,
+          -12.33972
+        ]
+      },
+      "properties": {
+        "name": "Mouhou",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090831
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.8425,
+          -12.33333
+        ]
+      },
+      "properties": {
+        "name": "Hagnamouada",
+        "country": "Comoros",
+        "region": "Mohéli",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090852
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.22278,
+          -12.16861
+        ]
+      },
+      "properties": {
+        "name": "Ntakoudja",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090858
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.22639,
+          -12.17139
+        ]
+      },
+      "properties": {
+        "name": "Bangouélamvouéra",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090862
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.23667,
+          -12.17778
+        ]
+      },
+      "properties": {
+        "name": "Ntsajou",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090866
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.24583,
+          -12.19556
+        ]
+      },
+      "properties": {
+        "name": "Souni",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090869
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.27472,
+          -12.18583
+        ]
+      },
+      "properties": {
+        "name": "Majouani",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090921
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.25778,
+          -12.18111
+        ]
+      },
+      "properties": {
+        "name": "Mtsangamléni",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090922
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.28944,
+          -12.21889
+        ]
+      },
+      "properties": {
+        "name": "Lamboué",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090940
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.30111,
+          -12.21833
+        ]
+      },
+      "properties": {
+        "name": "Iméré",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090944
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.30306,
+          -12.225
+        ]
+      },
+      "properties": {
+        "name": "Mro Mouhouli",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090945
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.31028,
+          -12.22917
+        ]
+      },
+      "properties": {
+        "name": "Mitréni",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090948
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.30972,
+          -12.20722
+        ]
+      },
+      "properties": {
+        "name": "Vindjajou",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090953
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.31778,
+          -12.19444
+        ]
+      },
+      "properties": {
+        "name": "Mkirijou",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090954
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.32056,
+          -12.19222
+        ]
+      },
+      "properties": {
+        "name": "Sombé",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090955
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.31861,
+          -12.19056
+        ]
+      },
+      "properties": {
+        "name": "Chongochahari",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090956
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.36194,
+          -12.235
+        ]
+      },
+      "properties": {
+        "name": "Dzindri Mtsangani",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090971
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.35361,
+          -12.23028
+        ]
+      },
+      "properties": {
+        "name": "Dzindri",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090973
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.34194,
+          -12.18944
+        ]
+      },
+      "properties": {
+        "name": "Bandani Mtsangani",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090976
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.34472,
+          -12.19611
+        ]
+      },
+      "properties": {
+        "name": "Maouéni",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090978
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.36167,
+          -12.19333
+        ]
+      },
+      "properties": {
+        "name": "Ankibani",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090981
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.36694,
+          -12.23889
+        ]
+      },
+      "properties": {
+        "name": "Marontronii",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090988
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.36778,
+          -12.23611
+        ]
+      },
+      "properties": {
+        "name": "Iméré",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090989
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.39694,
+          -12.25194
+        ]
+      },
+      "properties": {
+        "name": "Choungoui",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1090997
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.48111,
+          -12.07667
+        ]
+      },
+      "properties": {
+        "name": "Banda Mtsanga",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091001
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.49417,
+          -12.11917
+        ]
+      },
+      "properties": {
+        "name": "Ndrangani",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091077
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.43656,
+          -12.13886
+        ]
+      },
+      "properties": {
+        "name": "Gnantranga",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091087
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.49889,
+          -12.14722
+        ]
+      },
+      "properties": {
+        "name": "Lamahalé",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091103
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.4025,
+          -12.15972
+        ]
+      },
+      "properties": {
+        "name": "Goungouamoué",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "section of populated place",
+        "geoname_id": 1091116
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.40139,
+          -12.16917
+        ]
+      },
+      "properties": {
+        "name": "Hombo",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091119
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.40667,
+          -12.17333
+        ]
+      },
+      "properties": {
+        "name": "Sangani",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091120
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.3875,
+          -12.17444
+        ]
+      },
+      "properties": {
+        "name": "Moujimouvia",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091122
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.37833,
+          -12.18
+        ]
+      },
+      "properties": {
+        "name": "Mouamoua",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091133
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.51056,
+          -12.20361
+        ]
+      },
+      "properties": {
+        "name": "Mromagi",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091139
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.5225,
+          -12.22333
+        ]
+      },
+      "properties": {
+        "name": "Jéjé",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091152
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.39778,
+          -12.26556
+        ]
+      },
+      "properties": {
+        "name": "Hamamboua",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091372
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.52639,
+          -12.27444
+        ]
+      },
+      "properties": {
+        "name": "Mbouéladoungou",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091379
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.41944,
+          -12.28222
+        ]
+      },
+      "properties": {
+        "name": "Koué",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091391
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.43944,
+          -12.28889
+        ]
+      },
+      "properties": {
+        "name": "Nkozini",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091397
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.49722,
+          -12.29917
+        ]
+      },
+      "properties": {
+        "name": "Jandza",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091402
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.49556,
+          -12.31306
+        ]
+      },
+      "properties": {
+        "name": "Bandracouni",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091409
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.52,
+          -12.36222
+        ]
+      },
+      "properties": {
+        "name": "Bandamaji",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091414
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.50194,
+          -12.3425
+        ]
+      },
+      "properties": {
+        "name": "Mnazichoumoué",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091431
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.46306,
+          -12.31694
+        ]
+      },
+      "properties": {
+        "name": "Chindrini",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091446
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.45688,
+          -12.31948
+        ]
+      },
+      "properties": {
+        "name": "Maouéni",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091447
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.50306,
+          -12.35639
+        ]
+      },
+      "properties": {
+        "name": "Bouijou",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091454
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.50694,
+          -12.37111
+        ]
+      },
+      "properties": {
+        "name": "Salapouani",
+        "country": "Comoros",
+        "region": "Anjouan",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091457
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.305,
+          -11.37722
+        ]
+      },
+      "properties": {
+        "name": "Trou du Prophète",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091667
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.30667,
+          -11.38056
+        ]
+      },
+      "properties": {
+        "name": "Memboua Bouani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091668
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.29389,
+          -11.39639
+        ]
+      },
+      "properties": {
+        "name": "Bangouamafsakoa",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091671
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.28472,
+          -11.39861
+        ]
+      },
+      "properties": {
+        "name": "Ntsadjéni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091672
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.28778,
+          -11.41194
+        ]
+      },
+      "properties": {
+        "name": "Founga",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091675
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.29528,
+          -11.41083
+        ]
+      },
+      "properties": {
+        "name": "Anihani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091676
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.30528,
+          -11.40528
+        ]
+      },
+      "properties": {
+        "name": "Toyifa",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091678
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.31361,
+          -11.40028
+        ]
+      },
+      "properties": {
+        "name": "Membouadjou",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091681
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.33833,
+          -11.40222
+        ]
+      },
+      "properties": {
+        "name": "Koua",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091683
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.37209,
+          -11.39804
+        ]
+      },
+      "properties": {
+        "name": "Balsa",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091688
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.37565,
+          -11.40364
+        ]
+      },
+      "properties": {
+        "name": "Ouzio",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091689
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.40921,
+          -11.42143
+        ]
+      },
+      "properties": {
+        "name": "Ndroudé",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091694
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.38056,
+          -11.41333
+        ]
+      },
+      "properties": {
+        "name": "Mrouadjou",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091697
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.38278,
+          -11.41833
+        ]
+      },
+      "properties": {
+        "name": "Massihini",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091698
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.38306,
+          -11.42
+        ]
+      },
+      "properties": {
+        "name": "Salimani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091699
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.38417,
+          -11.42111
+        ]
+      },
+      "properties": {
+        "name": "Maoré",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091701
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.26778,
+          -11.43028
+        ]
+      },
+      "properties": {
+        "name": "Mchénazi",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091714
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.29833,
+          -11.43
+        ]
+      },
+      "properties": {
+        "name": "Zouda",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091718
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.29361,
+          -11.44222
+        ]
+      },
+      "properties": {
+        "name": "Haïgnandrama",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091721
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.40479,
+          -11.44297
+        ]
+      },
+      "properties": {
+        "name": "Nioumamilina",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091829
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.30167,
+          -11.44167
+        ]
+      },
+      "properties": {
+        "name": "Minoungouni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091841
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.29194,
+          -11.44972
+        ]
+      },
+      "properties": {
+        "name": "Manda",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091843
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.27694,
+          -11.4475
+        ]
+      },
+      "properties": {
+        "name": "Miréréni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091844
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.26694,
+          -11.44472
+        ]
+      },
+      "properties": {
+        "name": "Chamle",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091845
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.27778,
+          -11.46361
+        ]
+      },
+      "properties": {
+        "name": "Djoengoé",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091849
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.27778,
+          -11.46806
+        ]
+      },
+      "properties": {
+        "name": "Simboussa",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091850
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.28694,
+          -11.46806
+        ]
+      },
+      "properties": {
+        "name": "Mouadja",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091851
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.295,
+          -11.47194
+        ]
+      },
+      "properties": {
+        "name": "Founga",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091852
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.31611,
+          -11.46333
+        ]
+      },
+      "properties": {
+        "name": "Maouéni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091856
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.36444,
+          -11.47361
+        ]
+      },
+      "properties": {
+        "name": "Dimadjou",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091863
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.37917,
+          -11.46333
+        ]
+      },
+      "properties": {
+        "name": "Mouadja",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091865
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.37667,
+          -11.46778
+        ]
+      },
+      "properties": {
+        "name": "Niadoumbouéni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091867
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.39278,
+          -11.475
+        ]
+      },
+      "properties": {
+        "name": "Ouéla",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091869
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.37333,
+          -11.48389
+        ]
+      },
+      "properties": {
+        "name": "Mdjibari",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091871
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.27778,
+          -11.48361
+        ]
+      },
+      "properties": {
+        "name": "Domoni Adjou",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091878
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.26889,
+          -11.48806
+        ]
+      },
+      "properties": {
+        "name": "Domoni Ambouani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "section of populated place",
+        "geoname_id": 1091879
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.3575,
+          -11.4975
+        ]
+      },
+      "properties": {
+        "name": "Touaïfa",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "section of populated place",
+        "geoname_id": 1091990
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.36833,
+          -11.49361
+        ]
+      },
+      "properties": {
+        "name": "Kourani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091991
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.37167,
+          -11.49556
+        ]
+      },
+      "properties": {
+        "name": "Sada Mouamboua",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091992
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.39028,
+          -11.49944
+        ]
+      },
+      "properties": {
+        "name": "Séléyani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091993
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.37778,
+          -11.50861
+        ]
+      },
+      "properties": {
+        "name": "Salémani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1091994
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.38861,
+          -11.53806
+        ]
+      },
+      "properties": {
+        "name": "Kangalinda",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092015
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.31167,
+          -11.55278
+        ]
+      },
+      "properties": {
+        "name": "Dzahadjou",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092021
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.28725,
+          -11.56568
+        ]
+      },
+      "properties": {
+        "name": "Bouenindi",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092023
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.27917,
+          -11.58
+        ]
+      },
+      "properties": {
+        "name": "Bangahani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092026
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.3625,
+          -11.5825
+        ]
+      },
+      "properties": {
+        "name": "Dzaheni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092034
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.26222,
+          -11.61083
+        ]
+      },
+      "properties": {
+        "name": "Vounambadani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092040
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.37028,
+          -11.61
+        ]
+      },
+      "properties": {
+        "name": "Sima",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092045
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.27472,
+          -11.62639
+        ]
+      },
+      "properties": {
+        "name": "Dzahadjou",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092052
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.3525,
+          -11.63083
+        ]
+      },
+      "properties": {
+        "name": "Bouéni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092056
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.36139,
+          -11.62472
+        ]
+      },
+      "properties": {
+        "name": "Sadani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "section of populated place",
+        "geoname_id": 1092058
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.35222,
+          -11.63306
+        ]
+      },
+      "properties": {
+        "name": "Irouhé",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092059
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.35972,
+          -11.64583
+        ]
+      },
+      "properties": {
+        "name": "Dzahadjou",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092060
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.28361,
+          -11.645
+        ]
+      },
+      "properties": {
+        "name": "Sima",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092066
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.25444,
+          -11.63694
+        ]
+      },
+      "properties": {
+        "name": "Vouadjou",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092068
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.27361,
+          -11.64806
+        ]
+      },
+      "properties": {
+        "name": "Sambakouni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092149
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.25667,
+          -11.65361
+        ]
+      },
+      "properties": {
+        "name": "Gouni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092150
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.26569,
+          -11.66395
+        ]
+      },
+      "properties": {
+        "name": "Hantsambou",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092151
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.26028,
+          -11.66611
+        ]
+      },
+      "properties": {
+        "name": "Bandamadji",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092153
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.26889,
+          -11.66833
+        ]
+      },
+      "properties": {
+        "name": "Samba",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092154
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.27333,
+          -11.66278
+        ]
+      },
+      "properties": {
+        "name": "Minassini",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092155
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.39139,
+          -11.65444
+        ]
+      },
+      "properties": {
+        "name": "Chamro",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092161
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.27389,
+          -11.67167
+        ]
+      },
+      "properties": {
+        "name": "Mdé",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092164
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.27528,
+          -11.67306
+        ]
+      },
+      "properties": {
+        "name": "Dimadjou",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092165
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.26361,
+          -11.67861
+        ]
+      },
+      "properties": {
+        "name": "Itsambouni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092167
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.27504,
+          -11.68415
+        ]
+      },
+      "properties": {
+        "name": "Salimani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092168
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.42417,
+          -11.70583
+        ]
+      },
+      "properties": {
+        "name": "Foumboudzivouni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092177
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.425,
+          -11.715
+        ]
+      },
+      "properties": {
+        "name": "Tsangadjou",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092178
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.42667,
+          -11.72194
+        ]
+      },
+      "properties": {
+        "name": "Idjouandradja",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092338
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.25139,
+          -11.7125
+        ]
+      },
+      "properties": {
+        "name": "Daché",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092342
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.25528,
+          -11.72583
+        ]
+      },
+      "properties": {
+        "name": "Itsambouni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092344
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.24361,
+          -11.72972
+        ]
+      },
+      "properties": {
+        "name": "Sahani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092346
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.26622,
+          -11.73415
+        ]
+      },
+      "properties": {
+        "name": "Mkazi",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092350
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.27861,
+          -11.75722
+        ]
+      },
+      "properties": {
+        "name": "Djitaché",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092366
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.25345,
+          -11.76748
+        ]
+      },
+      "properties": {
+        "name": "Ndroini",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092375
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.24371,
+          -11.77487
+        ]
+      },
+      "properties": {
+        "name": "Mouandzaza Ambouani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092378
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.265,
+          -11.77139
+        ]
+      },
+      "properties": {
+        "name": "Boudé-Adjou",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092383
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.2647,
+          -11.7771
+        ]
+      },
+      "properties": {
+        "name": "Mouandzaza Djoumbé",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092384
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.43861,
+          -11.7725
+        ]
+      },
+      "properties": {
+        "name": "Banda Daouéni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092391
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.42472,
+          -11.78722
+        ]
+      },
+      "properties": {
+        "name": "Mahavani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092394
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.27602,
+          -11.79449
+        ]
+      },
+      "properties": {
+        "name": "Nioumadzaha",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092403
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.43552,
+          -11.79714
+        ]
+      },
+      "properties": {
+        "name": "Tsinimouapanga",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092404
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.42611,
+          -11.79556
+        ]
+      },
+      "properties": {
+        "name": "Mrondadjou",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092406
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.44278,
+          -11.81028
+        ]
+      },
+      "properties": {
+        "name": "Itsangoué",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092407
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.28083,
+          -11.80722
+        ]
+      },
+      "properties": {
+        "name": "Komioni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092411
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.2951,
+          -11.80979
+        ]
+      },
+      "properties": {
+        "name": "Djoumouachongo",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092412
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.285,
+          -11.80111
+        ]
+      },
+      "properties": {
+        "name": "Magaridjou",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092413
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.26917,
+          -11.80222
+        ]
+      },
+      "properties": {
+        "name": "Zikaledjou",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092414
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.28444,
+          -11.83139
+        ]
+      },
+      "properties": {
+        "name": "Hamsaoua",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092517
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.42624,
+          -11.85068
+        ]
+      },
+      "properties": {
+        "name": "Kourani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092530
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.38861,
+          -11.85556
+        ]
+      },
+      "properties": {
+        "name": "Mdjoua Hahia",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092534
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.39164,
+          -11.85895
+        ]
+      },
+      "properties": {
+        "name": "Kanzilé",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092535
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.37882,
+          -11.84993
+        ]
+      },
+      "properties": {
+        "name": "Tsinimouachongo",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092536
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.3575,
+          -11.84917
+        ]
+      },
+      "properties": {
+        "name": "Djivani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092539
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.32944,
+          -11.84722
+        ]
+      },
+      "properties": {
+        "name": "Samba",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092543
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.29225,
+          -11.84221
+        ]
+      },
+      "properties": {
+        "name": "Bangoua",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092545
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.40389,
+          -11.87889
+        ]
+      },
+      "properties": {
+        "name": "Mdji Diakagnoa",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092549
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.41893,
+          -11.87869
+        ]
+      },
+      "properties": {
+        "name": "Domoni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092550
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.42222,
+          -11.87694
+        ]
+      },
+      "properties": {
+        "name": "Dzouadjou",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092551
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.45889,
+          -11.86528
+        ]
+      },
+      "properties": {
+        "name": "Mlalouankoudjou",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092559
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.47028,
+          -11.8525
+        ]
+      },
+      "properties": {
+        "name": "Missouiri",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092561
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.45222,
+          -11.87944
+        ]
+      },
+      "properties": {
+        "name": "Simboussa",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092569
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.38917,
+          -11.88
+        ]
+      },
+      "properties": {
+        "name": "Mindralou",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092572
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.3925,
+          -11.88111
+        ]
+      },
+      "properties": {
+        "name": "Ourondroni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092573
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.39889,
+          -11.88528
+        ]
+      },
+      "properties": {
+        "name": "Mlimani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092575
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.41528,
+          -11.88861
+        ]
+      },
+      "properties": {
+        "name": "Ouziouani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092576
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.44417,
+          -11.88667
+        ]
+      },
+      "properties": {
+        "name": "Kourani-Mkanga",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092579
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.46111,
+          -11.8925
+        ]
+      },
+      "properties": {
+        "name": "Bandamadji",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092582
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.46611,
+          -11.88778
+        ]
+      },
+      "properties": {
+        "name": "Inané",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092585
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.47056,
+          -11.89444
+        ]
+      },
+      "properties": {
+        "name": "Ngnambéni",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092587
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.46167,
+          -11.91556
+        ]
+      },
+      "properties": {
+        "name": "Sima Ambouani",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092605
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.45278,
+          -11.90972
+        ]
+      },
+      "properties": {
+        "name": "Hada-Haïa",
+        "country": "Comoros",
+        "region": "Grande Comore",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 1092606
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.3808,
+          -11.61428
+        ]
+      },
+      "properties": {
+        "name": "Sima Oichili",
+        "country": "Comoros",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 7732123
+      }
+    }
+  ]
+}

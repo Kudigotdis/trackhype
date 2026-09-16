@@ -1,0 +1,993 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.45501,
+          -4.62001
+        ]
+      },
+      "properties": {
+        "name": "Victoria",
+        "country": "Seychelles",
+        "region": "La Rivière Anglaise",
+        "elevation_m": null,
+        "population": 22881,
+        "feature_type": "capital of a political entity",
+        "geoname_id": 241131
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.49952,
+          -4.66915
+        ]
+      },
+      "properties": {
+        "name": "Cascade",
+        "country": "Seychelles",
+        "region": "Cascade",
+        "elevation_m": null,
+        "population": 7263,
+        "feature_type": "seat of a first-order administrative division",
+        "geoname_id": 241395
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.46428,
+          -4.60445
+        ]
+      },
+      "properties": {
+        "name": "Perseverance",
+        "country": "Seychelles",
+        "region": "",
+        "elevation_m": null,
+        "population": 6209,
+        "feature_type": "populated place",
+        "geoname_id": 12718739
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.75338,
+          -4.31997
+        ]
+      },
+      "properties": {
+        "name": "Baie Sainte Anne",
+        "country": "Seychelles",
+        "region": "Baie Sainte Anne",
+        "elevation_m": null,
+        "population": 5063,
+        "feature_type": "populated place",
+        "geoname_id": 6691843
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.4754,
+          -4.74971
+        ]
+      },
+      "properties": {
+        "name": "Baie Lazare",
+        "country": "Seychelles",
+        "region": "Baie Lazare",
+        "elevation_m": null,
+        "population": 4795,
+        "feature_type": "populated place",
+        "geoname_id": 10793745
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.522,
+          -4.686
+        ]
+      },
+      "properties": {
+        "name": "Anse aux Pins",
+        "country": "Seychelles",
+        "region": "Anse-aux-Pins",
+        "elevation_m": null,
+        "population": 4685,
+        "feature_type": "populated place",
+        "geoname_id": 10792304
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.46179,
+          -4.64085
+        ]
+      },
+      "properties": {
+        "name": "Plaisance",
+        "country": "Seychelles",
+        "region": "Mont Fleuri",
+        "elevation_m": null,
+        "population": 4622,
+        "feature_type": "section of populated place",
+        "geoname_id": 13527030
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.4368,
+          -4.57578
+        ]
+      },
+      "properties": {
+        "name": "Glacis",
+        "country": "Seychelles",
+        "region": "Glacis",
+        "elevation_m": null,
+        "population": 4496,
+        "feature_type": "populated place",
+        "geoname_id": 11395546
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.72206,
+          -4.33109
+        ]
+      },
+      "properties": {
+        "name": "Grand'Anse",
+        "country": "Seychelles",
+        "region": "Grand Anse Praslin",
+        "elevation_m": null,
+        "population": 4344,
+        "feature_type": "populated place",
+        "geoname_id": 8629285
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.45475,
+          -4.61365
+        ]
+      },
+      "properties": {
+        "name": "English River",
+        "country": "Seychelles",
+        "region": "La Rivière Anglaise",
+        "elevation_m": null,
+        "population": 4236,
+        "feature_type": "populated place",
+        "geoname_id": 13527028
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.48333,
+          -4.71667
+        ]
+      },
+      "properties": {
+        "name": "Anse Boileau",
+        "country": "Seychelles",
+        "region": "Anse Boileau",
+        "elevation_m": null,
+        "population": 4183,
+        "feature_type": "seat of a first-order administrative division",
+        "geoname_id": 241448
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.41667,
+          -4.61667
+        ]
+      },
+      "properties": {
+        "name": "Bel Ombre",
+        "country": "Seychelles",
+        "region": "Bel Ombre",
+        "elevation_m": null,
+        "population": 4163,
+        "feature_type": "seat of a first-order administrative division",
+        "geoname_id": 241423
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.43015,
+          -4.62091
+        ]
+      },
+      "properties": {
+        "name": "Beau Vallon",
+        "country": "Seychelles",
+        "region": "Beau Vallon",
+        "elevation_m": null,
+        "population": 4142,
+        "feature_type": "seat of a first-order administrative division",
+        "geoname_id": 241427
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.46667,
+          -4.66667
+        ]
+      },
+      "properties": {
+        "name": "Grand'Anse",
+        "country": "Seychelles",
+        "region": "Grand Anse Mahe",
+        "elevation_m": null,
+        "population": 4140,
+        "feature_type": "populated place",
+        "geoname_id": 241257
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.45427,
+          -4.62695
+        ]
+      },
+      "properties": {
+        "name": "Pier Ward",
+        "country": "Seychelles",
+        "region": "Bel Air",
+        "elevation_m": null,
+        "population": 4055,
+        "feature_type": "section of populated place",
+        "geoname_id": 13527029
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.83527,
+          -4.35544
+        ]
+      },
+      "properties": {
+        "name": "La Digue",
+        "country": "Seychelles",
+        "region": "La Digue and Inner Islands",
+        "elevation_m": null,
+        "population": 3934,
+        "feature_type": "populated place",
+        "geoname_id": 241303
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.46879,
+          -4.6401
+        ]
+      },
+      "properties": {
+        "name": "Red Cayman",
+        "country": "Seychelles",
+        "region": "Roche Caiman",
+        "elevation_m": null,
+        "population": 3828,
+        "feature_type": "populated place",
+        "geoname_id": 11694896
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.51667,
+          -4.73333
+        ]
+      },
+      "properties": {
+        "name": "Anse Royale",
+        "country": "Seychelles",
+        "region": "Anse Royale",
+        "elevation_m": null,
+        "population": 3818,
+        "feature_type": "seat of a first-order administrative division",
+        "geoname_id": 241443
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.5131,
+          -4.67323
+        ]
+      },
+      "properties": {
+        "name": "Pointe La Rue",
+        "country": "Seychelles",
+        "region": "Pointe La Rue",
+        "elevation_m": null,
+        "population": 3750,
+        "feature_type": "populated place",
+        "geoname_id": 10793687
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.44441,
+          -4.62457
+        ]
+      },
+      "properties": {
+        "name": "Saint Louis",
+        "country": "Seychelles",
+        "region": "Saint Louis",
+        "elevation_m": null,
+        "population": 3692,
+        "feature_type": "section of populated place",
+        "geoname_id": 11694895
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.44821,
+          -4.61638
+        ]
+      },
+      "properties": {
+        "name": "Mont Buxton",
+        "country": "Seychelles",
+        "region": "Mont Buxton",
+        "elevation_m": null,
+        "population": 3383,
+        "feature_type": "section of populated place",
+        "geoname_id": 11694891
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.41841,
+          -4.66256
+        ]
+      },
+      "properties": {
+        "name": "Port Glaud",
+        "country": "Seychelles",
+        "region": "Port Glaud",
+        "elevation_m": null,
+        "population": 3243,
+        "feature_type": "seat of a first-order administrative division",
+        "geoname_id": 241214
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.44547,
+          -4.62947
+        ]
+      },
+      "properties": {
+        "name": "Bel Air",
+        "country": "Seychelles",
+        "region": "Bel Air",
+        "elevation_m": null,
+        "population": 3129,
+        "feature_type": "section of populated place",
+        "geoname_id": 11694889
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.46795,
+          -4.64584
+        ]
+      },
+      "properties": {
+        "name": "Les Mamelles",
+        "country": "Seychelles",
+        "region": "Les Mamelles",
+        "elevation_m": null,
+        "population": 2719,
+        "feature_type": "section of populated place",
+        "geoname_id": 13527031
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.5,
+          -4.76667
+        ]
+      },
+      "properties": {
+        "name": "Takamaka",
+        "country": "Seychelles",
+        "region": "Takamaka",
+        "elevation_m": null,
+        "population": 2580,
+        "feature_type": "seat of a first-order administrative division",
+        "geoname_id": 241150
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.70249,
+          -4.29583
+        ]
+      },
+      "properties": {
+        "name": "Anse Lazio",
+        "country": "Seychelles",
+        "region": "Baie Sainte Anne",
+        "elevation_m": null,
+        "population": 210,
+        "feature_type": "populated place",
+        "geoname_id": 11694887
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.25262,
+          -4.48599
+        ]
+      },
+      "properties": {
+        "name": "Silhouette Island",
+        "country": "Seychelles",
+        "region": "Outer Islands",
+        "elevation_m": null,
+        "population": 200,
+        "feature_type": "populated place",
+        "geoname_id": 10629843
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.24407,
+          -4.39342
+        ]
+      },
+      "properties": {
+        "name": "North Island",
+        "country": "Seychelles",
+        "region": "Outer Islands",
+        "elevation_m": null,
+        "population": 152,
+        "feature_type": "populated place",
+        "geoname_id": 11822653
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.49278,
+          -4.63108
+        ]
+      },
+      "properties": {
+        "name": "Ile au Cerf",
+        "country": "Seychelles",
+        "region": "Mont Fleuri",
+        "elevation_m": null,
+        "population": 60,
+        "feature_type": "populated place",
+        "geoname_id": 11184853
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          53.67087,
+          -5.6903
+        ]
+      },
+      "properties": {
+        "name": "Desroches",
+        "country": "Seychelles",
+        "region": "Anse Boileau",
+        "elevation_m": null,
+        "population": 60,
+        "feature_type": "populated place",
+        "geoname_id": 13527032
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          46.51281,
+          -9.73461
+        ]
+      },
+      "properties": {
+        "name": "Assumption",
+        "country": "Seychelles",
+        "region": "",
+        "elevation_m": null,
+        "population": 20,
+        "feature_type": "populated place",
+        "geoname_id": 13580086
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.45225,
+          -4.59093
+        ]
+      },
+      "properties": {
+        "name": "Maldive Village",
+        "country": "Seychelles",
+        "region": "Anse Etoile",
+        "elevation_m": null,
+        "population": 15,
+        "feature_type": "populated place",
+        "geoname_id": 11694885
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          46.47197,
+          -9.42279
+        ]
+      },
+      "properties": {
+        "name": "Aldabra",
+        "country": "Seychelles",
+        "region": "",
+        "elevation_m": null,
+        "population": 12,
+        "feature_type": "populated place",
+        "geoname_id": 13580085
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          53.31667,
+          -5.76667
+        ]
+      },
+      "properties": {
+        "name": "Poivre Nord",
+        "country": "Seychelles",
+        "region": "Les Mamelles",
+        "elevation_m": null,
+        "population": 8,
+        "feature_type": "populated place",
+        "geoname_id": 11694892
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.38332,
+          -5.86354
+        ]
+      },
+      "properties": {
+        "name": "Platte Island",
+        "country": "Seychelles",
+        "region": "Bel Ombre",
+        "elevation_m": null,
+        "population": 4,
+        "feature_type": "populated place",
+        "geoname_id": 13527034
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.4457,
+          -4.56523
+        ]
+      },
+      "properties": {
+        "name": "Machabee",
+        "country": "Seychelles",
+        "region": "Glacis",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 241276
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.48333,
+          -4.71667
+        ]
+      },
+      "properties": {
+        "name": "L’Espérance",
+        "country": "Seychelles",
+        "region": "Anse Boileau",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 241287
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.45692,
+          -4.6026
+        ]
+      },
+      "properties": {
+        "name": "De Quincey Village",
+        "country": "Seychelles",
+        "region": "Anse Etoile",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 241357
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.73333,
+          -4.31667
+        ]
+      },
+      "properties": {
+        "name": "Anse Volbert Village",
+        "country": "Seychelles",
+        "region": "Baie Sainte Anne",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 241442
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.6845,
+          -4.30524
+        ]
+      },
+      "properties": {
+        "name": "Anse Kerlan",
+        "country": "Seychelles",
+        "region": "Grand Anse Praslin",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 6691844
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.51012,
+          -4.77873
+        ]
+      },
+      "properties": {
+        "name": "Quatre Bornes de Takamaka",
+        "country": "Seychelles",
+        "region": "Takamaka",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 10860737
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.83269,
+          -4.34808
+        ]
+      },
+      "properties": {
+        "name": "La Passe",
+        "country": "Seychelles",
+        "region": "La Digue and Inner Islands",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "seat of a first-order administrative division",
+        "geoname_id": 11103219
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.52108,
+          -4.6808
+        ]
+      },
+      "properties": {
+        "name": "Pointe La Rue",
+        "country": "Seychelles",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11257135
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.4462,
+          -4.59093
+        ]
+      },
+      "properties": {
+        "name": "La Gouge",
+        "country": "Seychelles",
+        "region": "Anse Etoile",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11694884
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.76008,
+          -4.33036
+        ]
+      },
+      "properties": {
+        "name": "Cap Samy",
+        "country": "Seychelles",
+        "region": "Baie Sainte Anne",
+        "elevation_m": 23,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11694888
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.50344,
+          -4.63937
+        ]
+      },
+      "properties": {
+        "name": "South Point",
+        "country": "Seychelles",
+        "region": "Mont Fleuri",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11694893
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.46431,
+          -4.65877
+        ]
+      },
+      "properties": {
+        "name": "Fairview",
+        "country": "Seychelles",
+        "region": "Plaisance",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11694894
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.52416,
+          -4.72834
+        ]
+      },
+      "properties": {
+        "name": "Pointe Au Sel",
+        "country": "Seychelles",
+        "region": "Au Cap",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11003008
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.43212,
+          -4.59166
+        ]
+      },
+      "properties": {
+        "name": "Victoria - Mahe",
+        "country": "Seychelles",
+        "region": "Beau Vallon",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 13631322
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          51.16204,
+          -10.12158
+        ]
+      },
+      "properties": {
+        "name": "Farquhar",
+        "country": "Seychelles",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 13580363
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          56.27267,
+          -7.13553
+        ]
+      },
+      "properties": {
+        "name": "Coetivy",
+        "country": "Seychelles",
+        "region": "Outer Islands",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 13580365
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          55.38333,
+          -5.86334
+        ]
+      },
+      "properties": {
+        "name": "Platte Island",
+        "country": "Seychelles",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 13609089
+      }
+    }
+  ]
+}

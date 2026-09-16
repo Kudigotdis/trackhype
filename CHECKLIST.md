@@ -3,7 +3,7 @@
 Brand: `#01db8b` / `#02925e` on white, with 3 light muted greys.
 Canonical shell: **new `.th-*` / `data-*`** (trackhype.css + trackhype.js). Legacy pages keep a compatibility shim in `trackhype.js`.
 
-Zimbabwe-only: ZW, +263, USD, Econet/NetOne/Telecel, EcoCash/OneMoney/TeleCash, **$10.00 USD per song**. No Botswana / P / BWP / +267 / `.co.bw`.
+SADC-first (15 territories now, world later): ZW, BW, AO, KM, SZ, LS, MG, MW, MU, MZ, NA, SC, ZA, TZ, ZM. Each territory keys its own currency + mobile networks via `docs/info/world_currencies.json` + `docs/info/locations/`. **$10.00 USD per song** (anchor currency — region is display, not price). Payment via EcoCash/OneMoney/TeleCash (ZW) or territory-equivalent mobile money.
 
 Vote model (override): tap vote → modal → enter target position → song moves there, incumbent shifts down. 20→1 points. One vote per chart per 24h. Flow: user order → vote record → aggregation → published chart (single vote must NOT mutate public chart).
 
@@ -19,7 +19,7 @@ Vote model (override): tap vote → modal → enter target position → song mov
 - [x] B1.1 `index.html` (Hyped) — new shell, badge + text-logo header, artwork tiles, green, icons
 - [x] B1.2 Landing/splash route — `landing.html` (TrackHype Logo Design.png on white) → Get Started / Explore
 
-## Phase 2 — Onboarding polish (verify B0.4 vs spec) — pending
+## Phase 2 — Onboarding polish (verify B0.4 vs spec) ✓ verified 2025-09-16
 
 ## Phase 3 — Charts page (`charts.html`)
 - [x] Genre tabs (4 mapped artwork sets + placeholder for others)
@@ -69,3 +69,26 @@ Vote model (override): tap vote → modal → enter target position → song mov
 - [x] Sweep: remove any red/#d81a1a, Pula, +267, `.co.bw` references (clean)
 - [x] Verify all `Assets/` paths + icon usage everywhere (clean; chart artwork now maps real extensions)
 - [x] Headless Chrome walkthrough all 14 pages (no console errors/exceptions; no 404s) — fixed `TrackHype.getState` export, music-icon placeholder, chart cover/artwork for placeholder charts, favicon links; verified scroll-hide, square toggle, vote modal flow (pos 5 → 16 pts, VOTED lock), share/WhatsApp sheet
+
+## Phase 17 — SADC territory data loader (`js/territories.js`)
+- [ ] Lazy-load `docs/info/locations/<code>_locations.js` on first access (script injection, avoids 650KB+ preload for mobile doctrine)
+- [ ] `TrackHype.territoryFor(code)` → { name, locations, currency{code, rate} (from `world_currencies.json`), genres } exposed as public API
+- [ ] Register all 15 SADC codes (ZW, BW, AO, KM, SZ, LS, MG, MW, MU, MZ, NA, SC, ZA, TZ, ZM)
+
+## Phase 18 — Onboarding territory picker (onboarding.html)
+- [ ] "Also chart in…" multi-select step after genres (SADC territories list from `js/territories.js`)
+- [ ] Per selected territory: chart-type picker (which charts within that territory)
+- [ ] Save selected territories to profile (Supabase + fallback to localStorage)
+- [ ] ≥8 ZW home-genre gate stays; SADC territories use region genre pool (Phase 19)
+
+## Phase 19 — Genre pool region-keying (index/charts/submit-music + any region-keyed page)
+- [ ] Genre selector reads from `global_music_genres_195_plus.json` keyed by user's home territory
+- [ ] Charts page filter tabs: region-specific genre list (not hardcoded 4)
+- [ ] index.html genre sections: dynamic per region
+- [ ] submit-music.html: genre picker uses territory pool from `js/territories.js`
+
+## Phase 20 — Submit-music region picker
+- [ ] Territory selector (from profile or manual pick) flips currency to `world_currencies.json` display (BW→BWP, ZW→USD)
+- [ ] Territory genre pool applied to genre picker
+- [ ] Chart-in selection (from onboarding profile) pre-filled, editable per submission
+- [ ] $10 USD anchor price always shown; territory display = equivalent in local currency

@@ -1,0 +1,7605 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.48333,
+          -29.31667
+        ]
+      },
+      "properties": {
+        "name": "Maseru",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 359753,
+        "feature_type": "capital of a political entity",
+        "geoname_id": 932505
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.89915,
+          -28.8866
+        ]
+      },
+      "properties": {
+        "name": "Maputsoe",
+        "country": "Lesotho",
+        "region": "Leribe",
+        "elevation_m": null,
+        "population": 61916,
+        "feature_type": "populated place",
+        "geoname_id": 932521
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.47691,
+          -30.15137
+        ]
+      },
+      "properties": {
+        "name": "Mohale's Hoek",
+        "country": "Lesotho",
+        "region": "Mohale's Hoek District",
+        "elevation_m": null,
+        "population": 46593,
+        "feature_type": "seat of a first-order administrative division",
+        "geoname_id": 932438
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.23744,
+          -29.82299
+        ]
+      },
+      "properties": {
+        "name": "Mafeteng",
+        "country": "Lesotho",
+        "region": "Mafeteng District",
+        "elevation_m": null,
+        "population": 45287,
+        "feature_type": "seat of a first-order administrative division",
+        "geoname_id": 932614
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.04501,
+          -28.87185
+        ]
+      },
+      "properties": {
+        "name": "Hlotse",
+        "country": "Lesotho",
+        "region": "Leribe",
+        "elevation_m": null,
+        "population": 43967,
+        "feature_type": "seat of a first-order administrative division",
+        "geoname_id": 932698
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.24937,
+          -28.76659
+        ]
+      },
+      "properties": {
+        "name": "Butha-Buthe",
+        "country": "Lesotho",
+        "region": "Butha-Buthe",
+        "elevation_m": null,
+        "population": 40599,
+        "feature_type": "seat of a first-order administrative division",
+        "geoname_id": 932886
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.52417,
+          -29.27861
+        ]
+      },
+      "properties": {
+        "name": "Mabote",
+        "country": "Lesotho",
+        "region": "Berea",
+        "elevation_m": null,
+        "population": 38047,
+        "feature_type": "populated place",
+        "geoname_id": 11237575
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.70027,
+          -30.40001
+        ]
+      },
+      "properties": {
+        "name": "Quthing",
+        "country": "Lesotho",
+        "region": "Quthing",
+        "elevation_m": null,
+        "population": 33910,
+        "feature_type": "seat of a first-order administrative division",
+        "geoname_id": 932183
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.74895,
+          -29.14719
+        ]
+      },
+      "properties": {
+        "name": "Teyateyaneng",
+        "country": "Lesotho",
+        "region": "Berea",
+        "elevation_m": null,
+        "population": 27272,
+        "feature_type": "seat of a first-order administrative division",
+        "geoname_id": 932035
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.68936,
+          -30.11537
+        ]
+      },
+      "properties": {
+        "name": "Qacha's Nek",
+        "country": "Lesotho",
+        "region": "Qacha's Nek District",
+        "elevation_m": null,
+        "population": 25573,
+        "feature_type": "populated place",
+        "geoname_id": 932218
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.6084,
+          -29.52204
+        ]
+      },
+      "properties": {
+        "name": "Thaba-Tseka",
+        "country": "Lesotho",
+        "region": "Thaba-Tseka",
+        "elevation_m": null,
+        "population": 16765,
+        "feature_type": "seat of a first-order administrative division",
+        "geoname_id": 1106835
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.06751,
+          -29.28939
+        ]
+      },
+      "properties": {
+        "name": "Mokhotlong",
+        "country": "Lesotho",
+        "region": "Mokhotlong District",
+        "elevation_m": null,
+        "population": 14461,
+        "feature_type": "seat of a first-order administrative division",
+        "geoname_id": 932416
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.70806,
+          -29.44667
+        ]
+      },
+      "properties": {
+        "name": "Roma",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 14259,
+        "feature_type": "populated place",
+        "geoname_id": 932151
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.9741,
+          -29.10979
+        ]
+      },
+      "properties": {
+        "name": "Mapoteng",
+        "country": "Lesotho",
+        "region": "Berea",
+        "elevation_m": null,
+        "population": 14161,
+        "feature_type": "seat of a second-order administrative division",
+        "geoname_id": 932525
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.76667,
+          -29.61667
+        ]
+      },
+      "properties": {
+        "name": "Nako",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 13146,
+        "feature_type": "populated place",
+        "geoname_id": 932320
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.56893,
+          -29.41896
+        ]
+      },
+      "properties": {
+        "name": "Mazenod",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 12713,
+        "feature_type": "populated place",
+        "geoname_id": 932466
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.51667,
+          -29.48333
+        ]
+      },
+      "properties": {
+        "name": "Mantsebo",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 9216,
+        "feature_type": "populated place",
+        "geoname_id": 932537
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.0504,
+          -29.8433
+        ]
+      },
+      "properties": {
+        "name": "Semonkong",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 8636,
+        "feature_type": "populated place",
+        "geoname_id": 12687284
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.8014,
+          -30.24809
+        ]
+      },
+      "properties": {
+        "name": "Phamong",
+        "country": "Lesotho",
+        "region": "Mohale's Hoek District",
+        "elevation_m": null,
+        "population": 8402,
+        "feature_type": "populated place",
+        "geoname_id": 932269
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.83363,
+          -29.12636
+        ]
+      },
+      "properties": {
+        "name": "Mamathes",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 8058,
+        "feature_type": "populated place",
+        "geoname_id": 932547
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.87076,
+          -30.2731
+        ]
+      },
+      "properties": {
+        "name": "Mount Moorosi",
+        "country": "Lesotho",
+        "region": "Quthing",
+        "elevation_m": null,
+        "population": 6992,
+        "feature_type": "populated place",
+        "geoname_id": 932341
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.21328,
+          -29.00699
+        ]
+      },
+      "properties": {
+        "name": "Pitseng",
+        "country": "Lesotho",
+        "region": "Leribe",
+        "elevation_m": null,
+        "population": 6486,
+        "feature_type": "populated place",
+        "geoname_id": 932248
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.42044,
+          -29.96008
+        ]
+      },
+      "properties": {
+        "name": "Thabana Morena",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 5970,
+        "feature_type": "populated place",
+        "geoname_id": 932025
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.26991,
+          -29.53317
+        ]
+      },
+      "properties": {
+        "name": "Mantsonyane",
+        "country": "Lesotho",
+        "region": "Thaba-Tseka",
+        "elevation_m": null,
+        "population": 5965,
+        "feature_type": "populated place",
+        "geoname_id": 7729880
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.76258,
+          -28.96883
+        ]
+      },
+      "properties": {
+        "name": "Peka",
+        "country": "Lesotho",
+        "region": "Leribe",
+        "elevation_m": null,
+        "population": 5937,
+        "feature_type": "populated place",
+        "geoname_id": 932276
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.68751,
+          -29.68884
+        ]
+      },
+      "properties": {
+        "name": "Kolo",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 5233,
+        "feature_type": "populated place",
+        "geoname_id": 12687288
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.51351,
+          -29.62982
+        ]
+      },
+      "properties": {
+        "name": "Morija",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 5160,
+        "feature_type": "populated place",
+        "geoname_id": 932371
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.80765,
+          -29.27894
+        ]
+      },
+      "properties": {
+        "name": "Sefikeng",
+        "country": "Lesotho",
+        "region": "Berea",
+        "elevation_m": null,
+        "population": 5119,
+        "feature_type": "populated place",
+        "geoname_id": 932112
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.46044,
+          -29.57239
+        ]
+      },
+      "properties": {
+        "name": "Rothe",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 4879,
+        "feature_type": "populated place",
+        "geoname_id": 12718649
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.53327,
+          -29.8311
+        ]
+      },
+      "properties": {
+        "name": "Morunyaneng",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 4541,
+        "feature_type": "populated place",
+        "geoname_id": 932369
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.56645,
+          -29.61715
+        ]
+      },
+      "properties": {
+        "name": "Matsieng",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 4197,
+        "feature_type": "populated place",
+        "geoname_id": 932470
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.73308,
+          -29.06506
+        ]
+      },
+      "properties": {
+        "name": "Kolonyama",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 3989,
+        "feature_type": "populated place",
+        "geoname_id": 932746
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.86802,
+          -29.20026
+        ]
+      },
+      "properties": {
+        "name": "Mapholaneng",
+        "country": "Lesotho",
+        "region": "Mokhotlong District",
+        "elevation_m": null,
+        "population": 3739,
+        "feature_type": "populated place",
+        "geoname_id": 12687291
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.48002,
+          -29.33531
+        ]
+      },
+      "properties": {
+        "name": "Katse",
+        "country": "Lesotho",
+        "region": "Thaba-Tseka",
+        "elevation_m": null,
+        "population": 2870,
+        "feature_type": "populated place",
+        "geoname_id": 12687286
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.15164,
+          -29.66918
+        ]
+      },
+      "properties": {
+        "name": "Tsa Kholo",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 2688,
+        "feature_type": "populated place",
+        "geoname_id": 931973
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.54341,
+          -29.7566
+        ]
+      },
+      "properties": {
+        "name": "Makhakhe",
+        "country": "Lesotho",
+        "region": "Mafeteng District",
+        "elevation_m": null,
+        "population": 2486,
+        "feature_type": "populated place",
+        "geoname_id": 12687289
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.35,
+          -30
+        ]
+      },
+      "properties": {
+        "name": "Sekake",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 2443,
+        "feature_type": "populated place",
+        "geoname_id": 932101
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.79745,
+          -29.77826
+        ]
+      },
+      "properties": {
+        "name": "Sehonghong",
+        "country": "Lesotho",
+        "region": "Thaba-Tseka",
+        "elevation_m": null,
+        "population": 2234,
+        "feature_type": "populated place",
+        "geoname_id": 932106
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.55,
+          -30.01667
+        ]
+      },
+      "properties": {
+        "name": "Mpharane",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 2181,
+        "feature_type": "populated place",
+        "geoname_id": 932330
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.48807,
+          -29.10853
+        ]
+      },
+      "properties": {
+        "name": "Lejone",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 2178,
+        "feature_type": "populated place",
+        "geoname_id": 932718
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.05186,
+          -29.87509
+        ]
+      },
+      "properties": {
+        "name": "Sehlabathebe",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 1985,
+        "feature_type": "populated place",
+        "geoname_id": 932110
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.12965,
+          -30.19397
+        ]
+      },
+      "properties": {
+        "name": "Mphaki",
+        "country": "Lesotho",
+        "region": "Quthing",
+        "elevation_m": null,
+        "population": 1978,
+        "feature_type": "populated place",
+        "geoname_id": 12687283
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.78695,
+          -29.66732
+        ]
+      },
+      "properties": {
+        "name": "Ramabanta",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 1971,
+        "feature_type": "populated place",
+        "geoname_id": 7669282
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.05708,
+          -29.47912
+        ]
+      },
+      "properties": {
+        "name": "Mohale",
+        "country": "Lesotho",
+        "region": "Thaba-Tseka",
+        "elevation_m": null,
+        "population": 1932,
+        "feature_type": "populated place",
+        "geoname_id": 12687282
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.85875,
+          -30.07299
+        ]
+      },
+      "properties": {
+        "name": "Ketane",
+        "country": "Lesotho",
+        "region": "Mohale's Hoek District",
+        "elevation_m": null,
+        "population": 1908,
+        "feature_type": "populated place",
+        "geoname_id": 12687287
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.54947,
+          -29.271
+        ]
+      },
+      "properties": {
+        "name": "Seshote",
+        "country": "Lesotho",
+        "region": "Leribe",
+        "elevation_m": null,
+        "population": 1858,
+        "feature_type": "populated place",
+        "geoname_id": 12687285
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.14148,
+          -29.54498
+        ]
+      },
+      "properties": {
+        "name": "Marakabei",
+        "country": "Lesotho",
+        "region": "Thaba-Tseka",
+        "elevation_m": null,
+        "population": 1659,
+        "feature_type": "populated place",
+        "geoname_id": 932516
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.48333,
+          -30.05
+        ]
+      },
+      "properties": {
+        "name": "White Hill",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 931923
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.10929,
+          -29.75552
+        ]
+      },
+      "properties": {
+        "name": "Van Rooyens Gate",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 931924
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.51199,
+          -29.50895
+        ]
+      },
+      "properties": {
+        "name": "Upper Qeme",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 931925
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.09854,
+          -29.7071
+        ]
+      },
+      "properties": {
+        "name": "Tsupane Gate",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 931931
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.35988,
+          -30.01335
+        ]
+      },
+      "properties": {
+        "name": "Tsoloane",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 931937
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.69723,
+          -30.03259
+        ]
+      },
+      "properties": {
+        "name": "Tsoelike",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 931939
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.66667,
+          -30.01667
+        ]
+      },
+      "properties": {
+        "name": "Tsoelike",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 931940
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.41613,
+          -28.78831
+        ]
+      },
+      "properties": {
+        "name": "Tsime",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 931946
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.9962,
+          -28.89379
+        ]
+      },
+      "properties": {
+        "name": "Tsikoane",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 931949
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.45833,
+          -29.38849
+        ]
+      },
+      "properties": {
+        "name": "Tsiame",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 931951
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.50984,
+          -29.41225
+        ]
+      },
+      "properties": {
+        "name": "Tseka",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 931964
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.78333,
+          -29.31667
+        ]
+      },
+      "properties": {
+        "name": "Tsehlo",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 931965
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.91471,
+          -30.33585
+        ]
+      },
+      "properties": {
+        "name": "Tosing",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 931975
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.46809,
+          -29.64452
+        ]
+      },
+      "properties": {
+        "name": "Toloane",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 931977
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.8,
+          -29.71667
+        ]
+      },
+      "properties": {
+        "name": "Tlhakanelo",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 931983
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.71949,
+          -29.58803
+        ]
+      },
+      "properties": {
+        "name": "Tlalis",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 931990
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.46228,
+          -29.35656
+        ]
+      },
+      "properties": {
+        "name": "Tikoe",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 931995
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.26008,
+          -29.58907
+        ]
+      },
+      "properties": {
+        "name": "Thulo",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932000
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.51507,
+          -29.04189
+        ]
+      },
+      "properties": {
+        "name": "Tholo",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932002
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.7731,
+          -29.02975
+        ]
+      },
+      "properties": {
+        "name": "Thokoa",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932003
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.76667,
+          -29.41667
+        ]
+      },
+      "properties": {
+        "name": "Theko",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932004
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.9,
+          -29.71667
+        ]
+      },
+      "properties": {
+        "name": "Theetsoa",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932005
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.65,
+          -28.75
+        ]
+      },
+      "properties": {
+        "name": "Thakabannas Cattle Post",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932008
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.46443,
+          -28.61571
+        ]
+      },
+      "properties": {
+        "name": "Thakabannas",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932009
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.06095,
+          -29.59367
+        ]
+      },
+      "properties": {
+        "name": "Thaba Putsoa",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932012
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.5,
+          -29.81667
+        ]
+      },
+      "properties": {
+        "name": "Thabaneng",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932022
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.67134,
+          -29.3451
+        ]
+      },
+      "properties": {
+        "name": "Thaba Bosigo",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932033
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.88103,
+          -29.96845
+        ]
+      },
+      "properties": {
+        "name": "Teba",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932046
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.18333,
+          -29.01667
+        ]
+      },
+      "properties": {
+        "name": "Tau",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932049
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.48341,
+          -29.71058
+        ]
+      },
+      "properties": {
+        "name": "Tajane",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932051
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.81928,
+          -28.96189
+        ]
+      },
+      "properties": {
+        "name": "Tabola",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932053
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.73333,
+          -30.56667
+        ]
+      },
+      "properties": {
+        "name": "Sinxondo",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932058
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.28294,
+          -29.9541
+        ]
+      },
+      "properties": {
+        "name": "Siloe",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932061
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.82006,
+          -29.89628
+        ]
+      },
+      "properties": {
+        "name": "Sibi Sibi",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932065
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.95174,
+          -29.16845
+        ]
+      },
+      "properties": {
+        "name": "Seutloali",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932067
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.7875,
+          -29.664
+        ]
+      },
+      "properties": {
+        "name": "Setleketseng",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932070
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28,
+          -29.6
+        ]
+      },
+      "properties": {
+        "name": "Setleketseng",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932071
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.96667,
+          -29.03333
+        ]
+      },
+      "properties": {
+        "name": "Seshophe",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932073
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.29942,
+          -28.72906
+        ]
+      },
+      "properties": {
+        "name": "Serutle",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932074
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.21308,
+          -29.95406
+        ]
+      },
+      "properties": {
+        "name": "Sephapos Gate",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932076
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.36526,
+          -29.79628
+        ]
+      },
+      "properties": {
+        "name": "Sepechele",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932077
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.72765,
+          -29.2554
+        ]
+      },
+      "properties": {
+        "name": "Ha Senekane",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932083
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.34329,
+          -28.77549
+        ]
+      },
+      "properties": {
+        "name": "Selomas",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932091
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.46667,
+          -29.43333
+        ]
+      },
+      "properties": {
+        "name": "Sekoala",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932095
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.24791,
+          -30.05252
+        ]
+      },
+      "properties": {
+        "name": "Seforong",
+        "country": "Lesotho",
+        "region": "Quthing",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932111
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.17516,
+          -28.90035
+        ]
+      },
+      "properties": {
+        "name": "Seetsas",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932118
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.5,
+          -30.3
+        ]
+      },
+      "properties": {
+        "name": "Schoolplaats",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932129
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.72494,
+          -29.46134
+        ]
+      },
+      "properties": {
+        "name": "Roma",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932150
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.33333,
+          -30.01667
+        ]
+      },
+      "properties": {
+        "name": "Riet Vlei",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932152
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.61667,
+          -29.88333
+        ]
+      },
+      "properties": {
+        "name": "Richard",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932153
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.6627,
+          -29.84425
+        ]
+      },
+      "properties": {
+        "name": "Ribaneng",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932155
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.41523,
+          -29.63197
+        ]
+      },
+      "properties": {
+        "name": "Reisi",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932157
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.73457,
+          -29.3611
+        ]
+      },
+      "properties": {
+        "name": "Ratau",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932159
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.35,
+          -28.75
+        ]
+      },
+      "properties": {
+        "name": "Rasekilas",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932160
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.75,
+          -29.85
+        ]
+      },
+      "properties": {
+        "name": "Rasebetsane",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932161
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.23867,
+          -29.56713
+        ]
+      },
+      "properties": {
+        "name": "Ranko",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932164
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.52446,
+          -29.90776
+        ]
+      },
+      "properties": {
+        "name": "Ramosoeu",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932166
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.93315,
+          -30.04965
+        ]
+      },
+      "properties": {
+        "name": "Ramatseliso",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932169
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.14915,
+          -28.98999
+        ]
+      },
+      "properties": {
+        "name": "Ramapepe",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932170
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.15,
+          -29.75
+        ]
+      },
+      "properties": {
+        "name": "Ramahleas",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932171
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.71667,
+          -29.73333
+        ]
+      },
+      "properties": {
+        "name": "Ramabitsa",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932172
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.70025,
+          -29.67959
+        ]
+      },
+      "properties": {
+        "name": "Raleqheka",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932173
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.55146,
+          -29.02743
+        ]
+      },
+      "properties": {
+        "name": "Rakotoane",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932175
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.00679,
+          -29.34799
+        ]
+      },
+      "properties": {
+        "name": "Rafolatsane",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932177
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.73333,
+          -30.43333
+        ]
+      },
+      "properties": {
+        "name": "Qomoqomong",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932190
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.68291,
+          -29.35115
+        ]
+      },
+      "properties": {
+        "name": "Qiloane",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932196
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.40898,
+          -29.78468
+        ]
+      },
+      "properties": {
+        "name": "Qamako",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932212
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.66212,
+          -29.21295
+        ]
+      },
+      "properties": {
+        "name": "Qalaheng",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932215
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.59149,
+          -29.85897
+        ]
+      },
+      "properties": {
+        "name": "Qaba",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932223
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.81097,
+          -29.0623
+        ]
+      },
+      "properties": {
+        "name": "Phoofolo",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932260
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.67746,
+          -29.80576
+        ]
+      },
+      "properties": {
+        "name": "Phafoli",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932271
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.75004,
+          -28.96808
+        ]
+      },
+      "properties": {
+        "name": "Peka",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932275
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.74409,
+          -29.52606
+        ]
+      },
+      "properties": {
+        "name": "Patrick",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932279
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.47549,
+          -30.10729
+        ]
+      },
+      "properties": {
+        "name": "Old Mohales Hoek",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932286
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.23991,
+          -29.58096
+        ]
+      },
+      "properties": {
+        "name": "Nyane",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932287
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.77324,
+          -29.52522
+        ]
+      },
+      "properties": {
+        "name": "Nyakosoba",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932288
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.96667,
+          -29.05
+        ]
+      },
+      "properties": {
+        "name": "Numolani",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932289
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.76366,
+          -29.4002
+        ]
+      },
+      "properties": {
+        "name": "Ntsi",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932297
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.80822,
+          -29.51421
+        ]
+      },
+      "properties": {
+        "name": "Ntsane",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932298
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.87541,
+          -29.17442
+        ]
+      },
+      "properties": {
+        "name": "Ntlamas",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932303
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.28333,
+          -29.96667
+        ]
+      },
+      "properties": {
+        "name": "Ntilane",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932307
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.75,
+          -30.48333
+        ]
+      },
+      "properties": {
+        "name": "Nthodimonate",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932308
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.91667,
+          -29.98333
+        ]
+      },
+      "properties": {
+        "name": "Nthamaha",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932309
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.35,
+          -30.2
+        ]
+      },
+      "properties": {
+        "name": "Neni",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932318
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.45,
+          -28.81667
+        ]
+      },
+      "properties": {
+        "name": "Mutlanyane",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932322
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.8034,
+          -29.77818
+        ]
+      },
+      "properties": {
+        "name": "Mpobong",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932326
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.62082,
+          -30.07465
+        ]
+      },
+      "properties": {
+        "name": "Mpite",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932327
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.58916,
+          -29.44536
+        ]
+      },
+      "properties": {
+        "name": "Mphoto",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932328
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.68333,
+          -30.41667
+        ]
+      },
+      "properties": {
+        "name": "Moyeni Camp",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932338
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.73333,
+          -30.36667
+        ]
+      },
+      "properties": {
+        "name": "Moyeni Camp",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932339
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.28311,
+          -29.92015
+        ]
+      },
+      "properties": {
+        "name": "Motsie",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932344
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.43436,
+          -29.70102
+        ]
+      },
+      "properties": {
+        "name": "Motsekuoa",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932347
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.64998,
+          -29.32236
+        ]
+      },
+      "properties": {
+        "name": "Motloang",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932351
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.75,
+          -30.33333
+        ]
+      },
+      "properties": {
+        "name": "Mosetlas",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932362
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.55707,
+          -29.72984
+        ]
+      },
+      "properties": {
+        "name": "Mosala",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932367
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.40383,
+          -30.30249
+        ]
+      },
+      "properties": {
+        "name": "Morifi",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932372
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.72566,
+          -29.08004
+        ]
+      },
+      "properties": {
+        "name": "Morameng",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932377
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.33949,
+          -29.97715
+        ]
+      },
+      "properties": {
+        "name": "Monyake",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932382
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.63333,
+          -28.56667
+        ]
+      },
+      "properties": {
+        "name": "Monantsa",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932389
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.71667,
+          -29.86667
+        ]
+      },
+      "properties": {
+        "name": "Monaheng",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932390
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.98931,
+          -29.32551
+        ]
+      },
+      "properties": {
+        "name": "Molumong",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932391
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.48407,
+          -29.71603
+        ]
+      },
+      "properties": {
+        "name": "Molomos Hoek",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932394
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.05,
+          -28.95
+        ]
+      },
+      "properties": {
+        "name": "Moliboeas",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932396
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.1,
+          -28.9
+        ]
+      },
+      "properties": {
+        "name": "Moliboeas",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932397
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.05,
+          -29.16667
+        ]
+      },
+      "properties": {
+        "name": "Moletsanes",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932398
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.31424,
+          -29.92743
+        ]
+      },
+      "properties": {
+        "name": "Moletsane",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932399
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.28333,
+          -28.76667
+        ]
+      },
+      "properties": {
+        "name": "Molefis",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932400
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.21481,
+          -29.92369
+        ]
+      },
+      "properties": {
+        "name": "Mokoroane",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932405
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.85867,
+          -29.28832
+        ]
+      },
+      "properties": {
+        "name": "Mokonyane",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932408
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.54508,
+          -28.99637
+        ]
+      },
+      "properties": {
+        "name": "Mokomane",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932409
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.90116,
+          -29.24077
+        ]
+      },
+      "properties": {
+        "name": "Mokoeng",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932411
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.95,
+          -29.11667
+        ]
+      },
+      "properties": {
+        "name": "Mokhathis",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932423
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.36667,
+          -29.48333
+        ]
+      },
+      "properties": {
+        "name": "Mokhalinyane",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932424
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.65,
+          -29.46667
+        ]
+      },
+      "properties": {
+        "name": "Mokema",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932426
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.88814,
+          -29.54875
+        ]
+      },
+      "properties": {
+        "name": "Mojela",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932427
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.76667,
+          -29.58333
+        ]
+      },
+      "properties": {
+        "name": "Moitsupelis",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932428
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.20782,
+          -29.73885
+        ]
+      },
+      "properties": {
+        "name": "Mohlehli",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932433
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.66963,
+          -29.59308
+        ]
+      },
+      "properties": {
+        "name": "Mohlanapeng",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932434
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.93939,
+          -30.21788
+        ]
+      },
+      "properties": {
+        "name": "Mohlakoanas",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932435
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.86667,
+          -29.03333
+        ]
+      },
+      "properties": {
+        "name": "Mohlafateng",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932436
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.59683,
+          -29.50601
+        ]
+      },
+      "properties": {
+        "name": "Mofokas",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932440
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.78338,
+          -29.34379
+        ]
+      },
+      "properties": {
+        "name": "Metolong",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932449
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.48781,
+          -30.29135
+        ]
+      },
+      "properties": {
+        "name": "Mekaling",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932460
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.53333,
+          -29.6
+        ]
+      },
+      "properties": {
+        "name": "Matsieng",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932471
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.7758,
+          -29.81867
+        ]
+      },
+      "properties": {
+        "name": "Matsaile",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932472
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.75263,
+          -29.65974
+        ]
+      },
+      "properties": {
+        "name": "Matsaba",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932474
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.02778,
+          -28.97246
+        ]
+      },
+      "properties": {
+        "name": "Mathokoane",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932480
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.76764,
+          -29.37502
+        ]
+      },
+      "properties": {
+        "name": "Matela",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932487
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.88333,
+          -29.23333
+        ]
+      },
+      "properties": {
+        "name": "Mateka",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932488
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.57716,
+          -29.53067
+        ]
+      },
+      "properties": {
+        "name": "Massabiella",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932492
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.64556,
+          -30.40404
+        ]
+      },
+      "properties": {
+        "name": "Masitise",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932493
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.48914,
+          -29.58838
+        ]
+      },
+      "properties": {
+        "name": "Masite Nek",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932494
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.80923,
+          -29.64512
+        ]
+      },
+      "properties": {
+        "name": "Mashai",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932502
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.22512,
+          -29.63973
+        ]
+      },
+      "properties": {
+        "name": "Mapotu",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932524
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.51667,
+          -30.21667
+        ]
+      },
+      "properties": {
+        "name": "Maphutseng",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932527
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.83799,
+          -29.6558
+        ]
+      },
+      "properties": {
+        "name": "Mantsa",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932538
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.9,
+          -29.15
+        ]
+      },
+      "properties": {
+        "name": "Mantoetsi",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932539
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.35,
+          -29.85
+        ]
+      },
+      "properties": {
+        "name": "Mankimane",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932540
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.93577,
+          -30.24886
+        ]
+      },
+      "properties": {
+        "name": "Malibe",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932558
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.56667,
+          -29.85
+        ]
+      },
+      "properties": {
+        "name": "Malealea",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932564
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.33581,
+          -29.65254
+        ]
+      },
+      "properties": {
+        "name": "Malaleng",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932566
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.05757,
+          -30.28799
+        ]
+      },
+      "properties": {
+        "name": "Makuaes",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932571
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.73333,
+          -29.93333
+        ]
+      },
+      "properties": {
+        "name": "Makojang",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932575
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.5998,
+          -29.34987
+        ]
+      },
+      "properties": {
+        "name": "Makhoathi",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932578
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.13354,
+          -28.96386
+        ]
+      },
+      "properties": {
+        "name": "Makhoas",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932579
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.35,
+          -30.15
+        ]
+      },
+      "properties": {
+        "name": "Makhinas",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932582
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.9,
+          -29.51667
+        ]
+      },
+      "properties": {
+        "name": "Makhaleng",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932586
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.61739,
+          -29.40874
+        ]
+      },
+      "properties": {
+        "name": "Makhalanyane",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932588
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.75745,
+          -29.00184
+        ]
+      },
+      "properties": {
+        "name": "Makhaketsa",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932591
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.55126,
+          -29.5689
+        ]
+      },
+      "properties": {
+        "name": "Mahloenyeng",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932603
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.98333,
+          -29.21667
+        ]
+      },
+      "properties": {
+        "name": "Mahlatsas Nek",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932604
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.84178,
+          -29.20855
+        ]
+      },
+      "properties": {
+        "name": "Mahatlanes",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932608
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.39565,
+          -30.15764
+        ]
+      },
+      "properties": {
+        "name": "Maghalleen",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932610
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.545,
+          -29.43532
+        ]
+      },
+      "properties": {
+        "name": "Machekoaneng",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932618
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.06723,
+          -29.64353
+        ]
+      },
+      "properties": {
+        "name": "Mabotse",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932621
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.49545,
+          -29.53242
+        ]
+      },
+      "properties": {
+        "name": "Lower Qeme",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932625
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.70356,
+          -29.22257
+        ]
+      },
+      "properties": {
+        "name": "Litsilong",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932633
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.93333,
+          -29.45
+        ]
+      },
+      "properties": {
+        "name": "Lirahalibonoe",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932636
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.43349,
+          -30.03942
+        ]
+      },
+      "properties": {
+        "name": "Liphateng",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932643
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.36484,
+          -28.72794
+        ]
+      },
+      "properties": {
+        "name": "Liphakoeng",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932644
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.28793,
+          -29.7649
+        ]
+      },
+      "properties": {
+        "name": "Likupa",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932656
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.29492,
+          -29.80693
+        ]
+      },
+      "properties": {
+        "name": "Likhoele",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932663
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.31949,
+          -29.6214
+        ]
+      },
+      "properties": {
+        "name": "Likhakeng",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932669
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.57097,
+          -28.6244
+        ]
+      },
+      "properties": {
+        "name": "Libono",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932676
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.51626,
+          -29.53689
+        ]
+      },
+      "properties": {
+        "name": "Leutsoa",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932677
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.4229,
+          -28.66502
+        ]
+      },
+      "properties": {
+        "name": "Letsikas",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932680
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.38333,
+          -28.63333
+        ]
+      },
+      "properties": {
+        "name": "Letsikas",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932681
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.31667,
+          -29.83333
+        ]
+      },
+      "properties": {
+        "name": "Letsie",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932682
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.81667,
+          -28.91667
+        ]
+      },
+      "properties": {
+        "name": "Letseng-la-Terae",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932684
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.1,
+          -29.03333
+        ]
+      },
+      "properties": {
+        "name": "Lersuelas",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932696
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.69003,
+          -29.16433
+        ]
+      },
+      "properties": {
+        "name": "Lekokoaneng",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932709
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.42761,
+          -29.90857
+        ]
+      },
+      "properties": {
+        "name": "Lekoatsa",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932710
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.91667,
+          -29.9
+        ]
+      },
+      "properties": {
+        "name": "Lekhooa",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932711
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.9,
+          -28.91667
+        ]
+      },
+      "properties": {
+        "name": "Lebingwanas Cattle Post",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932723
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.51667,
+          -29.03333
+        ]
+      },
+      "properties": {
+        "name": "Laoti",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932725
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.00787,
+          -29.07472
+        ]
+      },
+      "properties": {
+        "name": "Kueneng",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932730
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.01978,
+          -30.09404
+        ]
+      },
+      "properties": {
+        "name": "Kubung",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932733
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.63333,
+          -29.5
+        ]
+      },
+      "properties": {
+        "name": "Koro-Koro",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932741
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.34835,
+          -29.59315
+        ]
+      },
+      "properties": {
+        "name": "Kolo",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932750
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.90831,
+          -29.30522
+        ]
+      },
+      "properties": {
+        "name": "Kokolia",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932754
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.01667,
+          -29.06667
+        ]
+      },
+      "properties": {
+        "name": "Koeneng",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932760
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28,
+          -29.03333
+        ]
+      },
+      "properties": {
+        "name": "Koeneng",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932761
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.76669,
+          -29.20476
+        ]
+      },
+      "properties": {
+        "name": "Koali",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932764
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.41667,
+          -28.71667
+        ]
+      },
+      "properties": {
+        "name": "Khukuhune",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932766
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.93539,
+          -29.06107
+        ]
+      },
+      "properties": {
+        "name": "Khotsi",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932771
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.41387,
+          -30.09214
+        ]
+      },
+      "properties": {
+        "name": "Khitsane",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932780
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.16667,
+          -28.91667
+        ]
+      },
+      "properties": {
+        "name": "Khetisas",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932784
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.73333,
+          -29.35
+        ]
+      },
+      "properties": {
+        "name": "Khamolane",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932790
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.23333,
+          -28.83333
+        ]
+      },
+      "properties": {
+        "name": "Khabos",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932792
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.77199,
+          -29.15648
+        ]
+      },
+      "properties": {
+        "name": "Kepi",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932797
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.65,
+          -29.76667
+        ]
+      },
+      "properties": {
+        "name": "Kena",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932798
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.80467,
+          -29.74481
+        ]
+      },
+      "properties": {
+        "name": "Kelechane",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932800
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.64088,
+          -29.95565
+        ]
+      },
+      "properties": {
+        "name": "Kaphe",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932802
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.33333,
+          -28.71667
+        ]
+      },
+      "properties": {
+        "name": "Kala",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932803
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.10665,
+          -28.8016
+        ]
+      },
+      "properties": {
+        "name": "Jonathans",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932806
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.28333,
+          -28.7
+        ]
+      },
+      "properties": {
+        "name": "Joels Drift",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932807
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.87387,
+          -29.45688
+        ]
+      },
+      "properties": {
+        "name": "Jaele",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932809
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.96667,
+          -29.11667
+        ]
+      },
+      "properties": {
+        "name": "Hobsons",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932814
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.07512,
+          -28.88291
+        ]
+      },
+      "properties": {
+        "name": "Hlotse Camp",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932816
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.43679,
+          -28.71234
+        ]
+      },
+      "properties": {
+        "name": "Hlakametsas",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932822
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.8062,
+          -30.05363
+        ]
+      },
+      "properties": {
+        "name": "Hill Top",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932824
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.11191,
+          -29.72529
+        ]
+      },
+      "properties": {
+        "name": "Hermon",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932825
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.40448,
+          -28.62929
+        ]
+      },
+      "properties": {
+        "name": "Hendriks",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932826
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.4,
+          -29.86667
+        ]
+      },
+      "properties": {
+        "name": "Helspoort",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932827
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.5,
+          -29.98333
+        ]
+      },
+      "properties": {
+        "name": "Helehehle",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932828
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.85378,
+          -30.05371
+        ]
+      },
+      "properties": {
+        "name": "Ha Nohana",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932829
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.56667,
+          -29.2
+        ]
+      },
+      "properties": {
+        "name": "Hangers Drift",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932830
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.95,
+          -29.25
+        ]
+      },
+      "properties": {
+        "name": "George",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932835
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.56667,
+          -29.26667
+        ]
+      },
+      "properties": {
+        "name": "Foso",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932837
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.86667,
+          -29.43333
+        ]
+      },
+      "properties": {
+        "name": "Fosi",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932838
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.75,
+          -30.33333
+        ]
+      },
+      "properties": {
+        "name": "Fort Hartley",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932839
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.80598,
+          -29.28241
+        ]
+      },
+      "properties": {
+        "name": "Fako",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932847
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.55,
+          -29.76667
+        ]
+      },
+      "properties": {
+        "name": "Emmaus",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932848
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.51667,
+          -28.61667
+        ]
+      },
+      "properties": {
+        "name": "Dinkung",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932861
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.67018,
+          -30.52698
+        ]
+      },
+      "properties": {
+        "name": "Dilli Dilli",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932865
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.75,
+          -30.26667
+        ]
+      },
+      "properties": {
+        "name": "Cutting Camp",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932878
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.98333,
+          -28.98333
+        ]
+      },
+      "properties": {
+        "name": "Corn Exchange",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932879
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.17003,
+          -29.60234
+        ]
+      },
+      "properties": {
+        "name": "Chere",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932882
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.83507,
+          -29.10911
+        ]
+      },
+      "properties": {
+        "name": "Cana",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932885
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.43452,
+          -30.24178
+        ]
+      },
+      "properties": {
+        "name": "Brakfontein",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932890
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.51667,
+          -29.26667
+        ]
+      },
+      "properties": {
+        "name": "Botsabelo",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932894
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.5885,
+          -29.3549
+        ]
+      },
+      "properties": {
+        "name": "Boqate",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932901
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.60256,
+          -30.44179
+        ]
+      },
+      "properties": {
+        "name": "Bolepeletsa",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932907
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.46091,
+          -29.33587
+        ]
+      },
+      "properties": {
+        "name": "Bokong",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932914
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.52884,
+          -30.33952
+        ]
+      },
+      "properties": {
+        "name": "Blue Gums",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932920
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.65406,
+          -29.89561
+        ]
+      },
+      "properties": {
+        "name": "Berente",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932927
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.6103,
+          -29.26913
+        ]
+      },
+      "properties": {
+        "name": "Berea Hills",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932929
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.35,
+          -29.71667
+        ]
+      },
+      "properties": {
+        "name": "Baroaneng",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932937
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.62072,
+          -30.39442
+        ]
+      },
+      "properties": {
+        "name": "Alwyns Kop",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932943
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.6769,
+          -29.63985
+        ]
+      },
+      "properties": {
+        "name": "Abele",
+        "country": "Lesotho",
+        "region": "",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 932945
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.3589,
+          -29.75778
+        ]
+      },
+      "properties": {
+        "name": "Lesobeng",
+        "country": "Lesotho",
+        "region": "Thaba-Tseka",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 7303401
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.62736,
+          -29.01579
+        ]
+      },
+      "properties": {
+        "name": "Kao",
+        "country": "Lesotho",
+        "region": "Butha-Buthe",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 7303489
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.59866,
+          -28.9876
+        ]
+      },
+      "properties": {
+        "name": "Liqhobong",
+        "country": "Lesotho",
+        "region": "Mokhotlong District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 7303560
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.45609,
+          -28.62725
+        ]
+      },
+      "properties": {
+        "name": "Makhunoane",
+        "country": "Lesotho",
+        "region": "Butha-Buthe",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 7303607
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.87038,
+          -28.92899
+        ]
+      },
+      "properties": {
+        "name": "Hleoheng",
+        "country": "Lesotho",
+        "region": "Leribe",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 7303689
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.46342,
+          -29.35348
+        ]
+      },
+      "properties": {
+        "name": "Ha Tsolo",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 7669374
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.1716,
+          -30.0212
+        ]
+      },
+      "properties": {
+        "name": "Mokopung",
+        "country": "Lesotho",
+        "region": "Mohale's Hoek District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 7669382
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.91677,
+          -28.90405
+        ]
+      },
+      "properties": {
+        "name": "Ha Nyenye",
+        "country": "Lesotho",
+        "region": "Leribe",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 7670779
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.03563,
+          -29.15881
+        ]
+      },
+      "properties": {
+        "name": "ha Makhoroana",
+        "country": "Lesotho",
+        "region": "Berea",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 7670817
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.545,
+          -29.251
+        ]
+      },
+      "properties": {
+        "name": "Ha Ntsooa",
+        "country": "Lesotho",
+        "region": "Leribe",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11237642
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.4936,
+          -29.3552
+        ]
+      },
+      "properties": {
+        "name": "Ha Ratsoana",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11237675
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.75357,
+          -29.33471
+        ]
+      },
+      "properties": {
+        "name": "Ha Khabele",
+        "country": "Lesotho",
+        "region": "Berea",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11239009
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.1068,
+          -29.9581
+        ]
+      },
+      "properties": {
+        "name": "Ha Sekhebetlele",
+        "country": "Lesotho",
+        "region": "Mohale's Hoek District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11239736
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.10645,
+          -29.6846
+        ]
+      },
+      "properties": {
+        "name": "Ha Mphobe",
+        "country": "Lesotho",
+        "region": "Mafeteng District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11239779
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.744,
+          -29.405
+        ]
+      },
+      "properties": {
+        "name": "Ha Thoso",
+        "country": "Lesotho",
+        "region": "Thaba-Tseka",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11103074
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.56694,
+          -29.38444
+        ]
+      },
+      "properties": {
+        "name": "Ha Mpesi",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11103144
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.47694,
+          -30.13472
+        ]
+      },
+      "properties": {
+        "name": "Qalakheng",
+        "country": "Lesotho",
+        "region": "Mohale's Hoek District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11103467
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.55698,
+          -29.29676
+        ]
+      },
+      "properties": {
+        "name": "Koalabata",
+        "country": "Lesotho",
+        "region": "Berea",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11103478
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.54512,
+          -29.41744
+        ]
+      },
+      "properties": {
+        "name": "Taung",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated locality",
+        "geoname_id": 11103536
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.61333,
+          -30.365
+        ]
+      },
+      "properties": {
+        "name": "Taung",
+        "country": "Lesotho",
+        "region": "Quthing",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11103537
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.4153,
+          -30.22196
+        ]
+      },
+      "properties": {
+        "name": "Phahameng",
+        "country": "Lesotho",
+        "region": "Mohale's Hoek District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11103542
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.55235,
+          -29.43023
+        ]
+      },
+      "properties": {
+        "name": "Motse-Mocha",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11103714
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.729,
+          -29.1536
+        ]
+      },
+      "properties": {
+        "name": "Ha Molemane",
+        "country": "Lesotho",
+        "region": "Berea",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11204658
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.50813,
+          -29.37135
+        ]
+      },
+      "properties": {
+        "name": "Ha-Seoli",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11204674
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.50693,
+          -29.31537
+        ]
+      },
+      "properties": {
+        "name": "Mohalalitoe",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "section of populated place",
+        "geoname_id": 11204815
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.47533,
+          -29.32699
+        ]
+      },
+      "properties": {
+        "name": "Hills View",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11205008
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.49528,
+          -29.37333
+        ]
+      },
+      "properties": {
+        "name": "Letlapeng",
+        "country": "Lesotho",
+        "region": "Thaba-Tseka",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11205012
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.56488,
+          -29.44309
+        ]
+      },
+      "properties": {
+        "name": "Ha Takalimane",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "section of populated place",
+        "geoname_id": 11205033
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.39704,
+          -29.47378
+        ]
+      },
+      "properties": {
+        "name": "Tikathole",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11205084
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.56052,
+          -29.3779
+        ]
+      },
+      "properties": {
+        "name": "Ha Nelese",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11205631
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.0991,
+          -28.8652
+        ]
+      },
+      "properties": {
+        "name": "Ha Lejone",
+        "country": "Lesotho",
+        "region": "Leribe",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11205649
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.04202,
+          -28.87841
+        ]
+      },
+      "properties": {
+        "name": "Lisemeng 1",
+        "country": "Lesotho",
+        "region": "Leribe",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11205703
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.71376,
+          -29.45349
+        ]
+      },
+      "properties": {
+        "name": "Mafikeng",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11205706
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.769,
+          -30.572
+        ]
+      },
+      "properties": {
+        "name": "Ha Motsapi",
+        "country": "Lesotho",
+        "region": "Quthing",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11300083
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.505,
+          -29.695
+        ]
+      },
+      "properties": {
+        "name": "Ha Mohau",
+        "country": "Lesotho",
+        "region": "Thaba-Tseka",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11352104
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.854,
+          -30.407
+        ]
+      },
+      "properties": {
+        "name": "Ha Sejakhosi",
+        "country": "Lesotho",
+        "region": "Quthing",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11352139
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.0412,
+          -29.2895
+        ]
+      },
+      "properties": {
+        "name": "Mangaung",
+        "country": "Lesotho",
+        "region": "Mokhotlong District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11352294
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.63008,
+          -29.51522
+        ]
+      },
+      "properties": {
+        "name": "Ha Phohleli",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11352302
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.465,
+          -29.919
+        ]
+      },
+      "properties": {
+        "name": "Ha Sebaki",
+        "country": "Lesotho",
+        "region": "Mafeteng District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11352359
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.60808,
+          -29.67996
+        ]
+      },
+      "properties": {
+        "name": "Ha Moima",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11377081
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.50266,
+          -28.76322
+        ]
+      },
+      "properties": {
+        "name": "Phelandaba",
+        "country": "Lesotho",
+        "region": "Butha-Buthe",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11377124
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.6169,
+          -29.57196
+        ]
+      },
+      "properties": {
+        "name": "Ha Ramalapi",
+        "country": "Lesotho",
+        "region": "Thaba-Tseka",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11405423
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.5135,
+          -29.31986
+        ]
+      },
+      "properties": {
+        "name": "Lower Thamae",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "section of populated place",
+        "geoname_id": 11405426
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.48071,
+          -29.17025
+        ]
+      },
+      "properties": {
+        "name": "Ha Thibeli",
+        "country": "Lesotho",
+        "region": "Leribe",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11397271
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.16186,
+          -28.95397
+        ]
+      },
+      "properties": {
+        "name": "Ha Khojane",
+        "country": "Lesotho",
+        "region": "Leribe",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11398129
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.74135,
+          -29.13759
+        ]
+      },
+      "properties": {
+        "name": "Ha Ntjabane",
+        "country": "Lesotho",
+        "region": "Berea",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11398231
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.544,
+          -30.174
+        ]
+      },
+      "properties": {
+        "name": "Ha Mafethe",
+        "country": "Lesotho",
+        "region": "Mohale's Hoek District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11398276
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.076,
+          -28.936
+        ]
+      },
+      "properties": {
+        "name": "Ha Hoki",
+        "country": "Lesotho",
+        "region": "Leribe",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11395391
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.53869,
+          -29.30923
+        ]
+      },
+      "properties": {
+        "name": "Ts'enola",
+        "country": "Lesotho",
+        "region": "Berea",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11395540
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.81833,
+          -30.43444
+        ]
+      },
+      "properties": {
+        "name": "Ha Raphera",
+        "country": "Lesotho",
+        "region": "Quthing",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11475545
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.77705,
+          -29.54998
+        ]
+      },
+      "properties": {
+        "name": "Ha Macheli",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11467703
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.62,
+          -29.424
+        ]
+      },
+      "properties": {
+        "name": "Ha Leoka",
+        "country": "Lesotho",
+        "region": "Thaba-Tseka",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11467710
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.8,
+          -30.2359
+        ]
+      },
+      "properties": {
+        "name": "Ha Putsoane",
+        "country": "Lesotho",
+        "region": "Mohale's Hoek District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11467769
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.2493,
+          -28.7768
+        ]
+      },
+      "properties": {
+        "name": "Ha Kamoho",
+        "country": "Lesotho",
+        "region": "Butha-Buthe",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11467770
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.44174,
+          -30.10171
+        ]
+      },
+      "properties": {
+        "name": "Ha Nchoba",
+        "country": "Lesotho",
+        "region": "Mohale's Hoek District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11467861
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.60161,
+          -29.52915
+        ]
+      },
+      "properties": {
+        "name": "Live-Stock",
+        "country": "Lesotho",
+        "region": "Thaba-Tseka",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11427334
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.7006,
+          -30.39907
+        ]
+      },
+      "properties": {
+        "name": "Ha Sikara",
+        "country": "Lesotho",
+        "region": "Quthing",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11427335
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.52454,
+          -29.30697
+        ]
+      },
+      "properties": {
+        "name": "Phopholetsa",
+        "country": "Lesotho",
+        "region": "Berea",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11427338
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.28407,
+          -30.05279
+        ]
+      },
+      "properties": {
+        "name": "Ha Mosi",
+        "country": "Lesotho",
+        "region": "Quthing",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11427347
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.47956,
+          -30.1282
+        ]
+      },
+      "properties": {
+        "name": "Ha Lekhema",
+        "country": "Lesotho",
+        "region": "Mohale's Hoek District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11427369
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.869,
+          -29.228
+        ]
+      },
+      "properties": {
+        "name": "Ha Matjotjo",
+        "country": "Lesotho",
+        "region": "Berea",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11427963
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.525,
+          -29.908
+        ]
+      },
+      "properties": {
+        "name": "Ha Ramosoeu",
+        "country": "Lesotho",
+        "region": "Mafeteng District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11427965
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.23262,
+          -29.82922
+        ]
+      },
+      "properties": {
+        "name": "Phahameng",
+        "country": "Lesotho",
+        "region": "Mafeteng District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11281612
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.5326,
+          -29.35674
+        ]
+      },
+      "properties": {
+        "name": "Ha Keiso",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11281613
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.47056,
+          -29.59544
+        ]
+      },
+      "properties": {
+        "name": "Ha Tlhakanenlo",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11281617
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.76933,
+          -30.3838
+        ]
+      },
+      "properties": {
+        "name": "Manekoleng",
+        "country": "Lesotho",
+        "region": "Quthing",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11281632
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.20005,
+          -30.03315
+        ]
+      },
+      "properties": {
+        "name": "Nkaus",
+        "country": "Lesotho",
+        "region": "Quthing",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11281883
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.6039,
+          -29.4629
+        ]
+      },
+      "properties": {
+        "name": "Ha Katu",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11281897
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.8168,
+          -29.1624
+        ]
+      },
+      "properties": {
+        "name": "Ha Lethokonyana",
+        "country": "Lesotho",
+        "region": "Berea",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11281900
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.9999,
+          -29.0174
+        ]
+      },
+      "properties": {
+        "name": "Tuke",
+        "country": "Lesotho",
+        "region": "Berea",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11282124
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.54315,
+          -29.3755
+        ]
+      },
+      "properties": {
+        "name": "Ha Matala",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11282136
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.52112,
+          -29.36246
+        ]
+      },
+      "properties": {
+        "name": "Lower Seoli",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11282169
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.26423,
+          -28.9337
+        ]
+      },
+      "properties": {
+        "name": "Ha Makuka",
+        "country": "Lesotho",
+        "region": "Leribe",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11282217
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.5579,
+          -28.95
+        ]
+      },
+      "properties": {
+        "name": "Ha Lehloara",
+        "country": "Lesotho",
+        "region": "Butha-Buthe",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11287516
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.74166,
+          -29.15139
+        ]
+      },
+      "properties": {
+        "name": "Ha Ramonaheng",
+        "country": "Lesotho",
+        "region": "Berea",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11287519
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.0863,
+          -29.1139
+        ]
+      },
+      "properties": {
+        "name": "Ha Maqotoane",
+        "country": "Lesotho",
+        "region": "Berea",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11287524
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.465,
+          -28.782
+        ]
+      },
+      "properties": {
+        "name": "Boinyatso",
+        "country": "Lesotho",
+        "region": "Butha-Buthe",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11287587
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.81315,
+          -29.67801
+        ]
+      },
+      "properties": {
+        "name": "Ha Setala",
+        "country": "Lesotho",
+        "region": "Thaba-Tseka",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11287864
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.49895,
+          -29.30766
+        ]
+      },
+      "properties": {
+        "name": "Sea-Point",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "section of populated place",
+        "geoname_id": 11287951
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.34724,
+          -29.7477
+        ]
+      },
+      "properties": {
+        "name": "Ha-Ramokoatsi",
+        "country": "Lesotho",
+        "region": "Mafeteng District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11288048
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.74361,
+          -29.0425
+        ]
+      },
+      "properties": {
+        "name": "Tsoilitsoili",
+        "country": "Lesotho",
+        "region": "Leribe",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11288057
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.44698,
+          -29.34448
+        ]
+      },
+      "properties": {
+        "name": "Thetsane West",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "section of populated place",
+        "geoname_id": 11257185
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.901,
+          -28.9628
+        ]
+      },
+      "properties": {
+        "name": "Ha Mokati",
+        "country": "Lesotho",
+        "region": "Leribe",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11257389
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.5559,
+          -29.4103
+        ]
+      },
+      "properties": {
+        "name": "Ha Paki",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "farm village",
+        "geoname_id": 11258051
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.71718,
+          -29.31567
+        ]
+      },
+      "properties": {
+        "name": "Ha Khohlooa",
+        "country": "Lesotho",
+        "region": "Berea",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11258455
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.40585,
+          -30.16897
+        ]
+      },
+      "properties": {
+        "name": "Ha Sankatana",
+        "country": "Lesotho",
+        "region": "Mohale's Hoek District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11258466
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.33575,
+          -29.33455
+        ]
+      },
+      "properties": {
+        "name": "Ha Petje",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11258478
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.57239,
+          -29.35558
+        ]
+      },
+      "properties": {
+        "name": "Ha Leaoa",
+        "country": "Lesotho",
+        "region": "Thaba-Tseka",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11258600
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.47631,
+          -29.30468
+        ]
+      },
+      "properties": {
+        "name": "Maseru West",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "section of populated place",
+        "geoname_id": 11258821
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.76685,
+          -30.29298
+        ]
+      },
+      "properties": {
+        "name": "Ha Seleitara",
+        "country": "Lesotho",
+        "region": "Mohale's Hoek District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11258822
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.489,
+          -29.331
+        ]
+      },
+      "properties": {
+        "name": "Katlehong",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11288140
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.236,
+          -29.821
+        ]
+      },
+      "properties": {
+        "name": "Matlapaneng",
+        "country": "Lesotho",
+        "region": "Mafeteng District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11288150
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.34022,
+          -29.69195
+        ]
+      },
+      "properties": {
+        "name": "Ha Mafeto",
+        "country": "Lesotho",
+        "region": "Mafeteng District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11288636
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.24018,
+          -29.67838
+        ]
+      },
+      "properties": {
+        "name": "Ha Majake",
+        "country": "Lesotho",
+        "region": "Mafeteng District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11288672
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.66,
+          -29.119
+        ]
+      },
+      "properties": {
+        "name": "Ha Nepe",
+        "country": "Lesotho",
+        "region": "Berea",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11288678
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.482,
+          -30.148
+        ]
+      },
+      "properties": {
+        "name": "Likhutlong",
+        "country": "Lesotho",
+        "region": "Mohale's Hoek District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11290011
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.99471,
+          -30.11879
+        ]
+      },
+      "properties": {
+        "name": "Ha Majara",
+        "country": "Lesotho",
+        "region": "Quthing",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11496159
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.43486,
+          -29.45344
+        ]
+      },
+      "properties": {
+        "name": "Ha Tsautse",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11496161
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.8318,
+          -30.20785
+        ]
+      },
+      "properties": {
+        "name": "Ha Malephane",
+        "country": "Lesotho",
+        "region": "Mohale's Hoek District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11496162
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.871,
+          -29.0919
+        ]
+      },
+      "properties": {
+        "name": "Ha Ntsabane",
+        "country": "Lesotho",
+        "region": "Berea",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11427991
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.88453,
+          -30.03169
+        ]
+      },
+      "properties": {
+        "name": "Ha Apeal Makhoareng",
+        "country": "Lesotho",
+        "region": "Qacha's Nek District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11428146
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.54175,
+          -29.40572
+        ]
+      },
+      "properties": {
+        "name": "Ha Jimisi",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11428161
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.5931,
+          -29.50911
+        ]
+      },
+      "properties": {
+        "name": "Thabong I",
+        "country": "Lesotho",
+        "region": "Thaba-Tseka",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11428275
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.54197,
+          -30.29446
+        ]
+      },
+      "properties": {
+        "name": "Ha-Nkhetheleng",
+        "country": "Lesotho",
+        "region": "Mohale's Hoek District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11428502
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.313,
+          -29.821
+        ]
+      },
+      "properties": {
+        "name": "Makeneng",
+        "country": "Lesotho",
+        "region": "Mafeteng District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11428519
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.46262,
+          -29.33974
+        ]
+      },
+      "properties": {
+        "name": "Ha Thetsane",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11428875
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.47123,
+          -28.74618
+        ]
+      },
+      "properties": {
+        "name": "Ha Molapo",
+        "country": "Lesotho",
+        "region": "Butha-Buthe",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11428910
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.91368,
+          -30.15158
+        ]
+      },
+      "properties": {
+        "name": "Ha Machakela",
+        "country": "Lesotho",
+        "region": "Quthing",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11429054
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.52827,
+          -29.78506
+        ]
+      },
+      "properties": {
+        "name": "Ha Khotlela",
+        "country": "Lesotho",
+        "region": "Mafeteng District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11429059
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.10887,
+          -28.79989
+        ]
+      },
+      "properties": {
+        "name": "Leribe Moreneng",
+        "country": "Lesotho",
+        "region": "Leribe",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11429062
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.64384,
+          -30.38836
+        ]
+      },
+      "properties": {
+        "name": "Ha Malibe",
+        "country": "Lesotho",
+        "region": "Quthing",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11280250
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.5128,
+          -29.33051
+        ]
+      },
+      "properties": {
+        "name": "Upper Thamae",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11280617
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.78491,
+          -29.5297
+        ]
+      },
+      "properties": {
+        "name": "Linakeng Ha Mphosi",
+        "country": "Lesotho",
+        "region": "Mokhotlong District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11280712
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.31308,
+          -28.71895
+        ]
+      },
+      "properties": {
+        "name": "Qalo",
+        "country": "Lesotho",
+        "region": "Butha-Buthe",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11280717
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.54444,
+          -29.28028
+        ]
+      },
+      "properties": {
+        "name": "Sekamaneng",
+        "country": "Lesotho",
+        "region": "Berea",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11280733
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.51447,
+          -29.34298
+        ]
+      },
+      "properties": {
+        "name": "Borokhoaneng",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "section of populated place",
+        "geoname_id": 11280737
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.74832,
+          -29.14329
+        ]
+      },
+      "properties": {
+        "name": "Ha Motjoka",
+        "country": "Lesotho",
+        "region": "Berea",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11280843
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.0815,
+          -28.8925
+        ]
+      },
+      "properties": {
+        "name": "Ha Kotsane",
+        "country": "Lesotho",
+        "region": "Leribe",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11281388
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.51178,
+          -29.94395
+        ]
+      },
+      "properties": {
+        "name": "Ha Fou",
+        "country": "Lesotho",
+        "region": "Qacha's Nek District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11497839
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.81407,
+          -30.21869
+        ]
+      },
+      "properties": {
+        "name": "Ha Qacha",
+        "country": "Lesotho",
+        "region": "Mohale's Hoek District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11497840
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.61514,
+          -29.40572
+        ]
+      },
+      "properties": {
+        "name": "Ha Makhalanyane",
+        "country": "Lesotho",
+        "region": "Maseru District",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11497841
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.04039,
+          -28.8687
+        ]
+      },
+      "properties": {
+        "name": "Mankoaneng",
+        "country": "Lesotho",
+        "region": "Leribe",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11497842
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.56969,
+          -29.26121
+        ]
+      },
+      "properties": {
+        "name": "Ha Foso",
+        "country": "Lesotho",
+        "region": "Berea",
+        "elevation_m": null,
+        "population": 0,
+        "feature_type": "populated place",
+        "geoname_id": 11497843
+      }
+    }
+  ]
+}

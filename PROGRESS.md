@@ -1,7 +1,30 @@
 
 ---
 
-## SESSION END — 2025-09-16 (admin slice: pending submission moderation)
+## SESSION END — 2025-09-16 (SADC territory expansion: docs doctrine flip + queue)
+
+**This session — SADC multi-territory expansion.** Doctrine flipped: ZW-only → SADC-first (15 territories, world later). CHECKLIST.md L6 now reflects 15 SADC codes + `world_currencies.json` region-keyed currency + `docs/info/locations/` SADC location files. B0.4 verified ✓.
+
+**Slice queue (build mode, one commit each):**
+1. docs-slice ✓ (this commit)
+2. Data-slice — `js/territories.js` lazy loader for SADC locations + currency + genre registry
+3. Genres-slice — region-key genre pool from `global_music_genres_195_plus.json` across index/charts/submit-music
+4. Onboarding-slice — "Also chart in…" territory + chart multi-select (onboarding.html = owner)
+5. Submit-music-slice — region picker → `world_currencies.json` currency + territory genre pool
+6. Verify + push + PROGRESS.md handoff
+
+**Byte-truth (all proven this session):**
+- 13 SADC location files in `docs/info/locations/` (AO, KM, SZ, LS, MG, MW, MU, MZ, NA, SC, ZA, TZ, ZM)
+- Root: `zimbabwe_locations.js` (135KB) + `botswana_locations.js` (47KB) = 15 SADC total
+- `world_currencies.json`: BW→BWP ($5=67.25P, $10=134.50P), ZW→USD/ZiG, per-region USD conversion keys
+- `global_music_genres_195_plus.json`: regional genre pools keyed by country/region
+- $10 USD per song = anchor currency (region affects display, not price)
+
+**SQL Editor ledger: STILL CLOSED.** Migrations 0001–0009 all on-disk + applied. No 0010 exists.
+
+---
+
+## SESSION END (admin slice) — 2025-09-16
 
 **This session's slice — pending-submission admin moderation (Phase 2).**
 

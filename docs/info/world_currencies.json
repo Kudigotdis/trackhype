@@ -1,0 +1,1318 @@
+{
+  "base_currency": "USD",
+  "usd_amounts": [5, 10],
+  "columns": [
+    "Country",
+    "Currency Name",
+    "Code",
+    "$5.00 USD Equivalent",
+    "$10.00 USD Equivalent"
+  ],
+  "regions": {
+    "Africa": [
+      {
+        "Country": "Algeria",
+        "Currency Name": "Algerian Dinar",
+        "Code": "DZD",
+        "$5.00 USD Equivalent": "661.00 DZD",
+        "$10.00 USD Equivalent": "1,322.00 DZD"
+      },
+      {
+        "Country": "Angola",
+        "Currency Name": "Angolan Kwanza",
+        "Code": "AOA",
+        "$5.00 USD Equivalent": "4,625.00 AOA",
+        "$10.00 USD Equivalent": "9,250.00 AOA"
+      },
+      {
+        "Country": "Benin",
+        "Currency Name": "West African CFA Franc",
+        "Code": "XOF",
+        "$5.00 USD Equivalent": "2,870.00 XOF",
+        "$10.00 USD Equivalent": "5,740.00 XOF"
+      },
+      {
+        "Country": "Botswana",
+        "Currency Name": "Botswanan Pula",
+        "Code": "BWP",
+        "$5.00 USD Equivalent": "67.25 P",
+        "$10.00 USD Equivalent": "134.50 P"
+      },
+      {
+        "Country": "Burkina Faso",
+        "Currency Name": "West African CFA Franc",
+        "Code": "XOF",
+        "$5.00 USD Equivalent": "2,870.00 XOF",
+        "$10.00 USD Equivalent": "5,740.00 XOF"
+      },
+      {
+        "Country": "Burundi",
+        "Currency Name": "Burundian Franc",
+        "Code": "BIF",
+        "$5.00 USD Equivalent": "14,350.00 BIF",
+        "$10.00 USD Equivalent": "28,700.00 BIF"
+      },
+      {
+        "Country": "Cabo Verde",
+        "Currency Name": "Cape Verdean Escudo",
+        "Code": "CVE",
+        "$5.00 USD Equivalent": "480.00 CVE",
+        "$10.00 USD Equivalent": "960.00 CVE"
+      },
+      {
+        "Country": "Cameroon",
+        "Currency Name": "Central African CFA Franc",
+        "Code": "XAF",
+        "$5.00 USD Equivalent": "2,870.00 XAF",
+        "$10.00 USD Equivalent": "5,740.00 XAF"
+      },
+      {
+        "Country": "Central African Rep.",
+        "Currency Name": "Central African CFA Franc",
+        "Code": "XAF",
+        "$5.00 USD Equivalent": "2,870.00 XAF",
+        "$10.00 USD Equivalent": "5,740.00 XAF"
+      },
+      {
+        "Country": "Chad",
+        "Currency Name": "Central African CFA Franc",
+        "Code": "XAF",
+        "$5.00 USD Equivalent": "2,870.00 XAF",
+        "$10.00 USD Equivalent": "5,740.00 XAF"
+      },
+      {
+        "Country": "Comoros",
+        "Currency Name": "Comorian Franc",
+        "Code": "KMF",
+        "$5.00 USD Equivalent": "2,150.00 KMF",
+        "$10.00 USD Equivalent": "4,300.00 KMF"
+      },
+      {
+        "Country": "Congo (Brazzaville)",
+        "Currency Name": "Central African CFA Franc",
+        "Code": "XAF",
+        "$5.00 USD Equivalent": "2,870.00 XAF",
+        "$10.00 USD Equivalent": "5,740.00 XAF"
+      },
+      {
+        "Country": "Congo (Kinshasa / DRC)",
+        "Currency Name": "Congolese Franc",
+        "Code": "CDF",
+        "$5.00 USD Equivalent": "14,250.00 CDF",
+        "$10.00 USD Equivalent": "28,500.00 CDF"
+      },
+      {
+        "Country": "Côte d'Ivoire",
+        "Currency Name": "West African CFA Franc",
+        "Code": "XOF",
+        "$5.00 USD Equivalent": "2,870.00 XOF",
+        "$10.00 USD Equivalent": "5,740.00 XOF"
+      },
+      {
+        "Country": "Djibouti",
+        "Currency Name": "Djiboutian Franc",
+        "Code": "DJF",
+        "$5.00 USD Equivalent": "890.00 DJF",
+        "$10.00 USD Equivalent": "1,780.00 DJF"
+      },
+      {
+        "Country": "Egypt",
+        "Currency Name": "Egyptian Pound",
+        "Code": "EGP",
+        "$5.00 USD Equivalent": "242.50 EGP",
+        "$10.00 USD Equivalent": "485.00 EGP"
+      },
+      {
+        "Country": "Equatorial Guinea",
+        "Currency Name": "Central African CFA Franc",
+        "Code": "XAF",
+        "$5.00 USD Equivalent": "2,870.00 XAF",
+        "$10.00 USD Equivalent": "5,740.00 XAF"
+      },
+      {
+        "Country": "Eritrea",
+        "Currency Name": "Eritrean Nakfa",
+        "Code": "ERN",
+        "$5.00 USD Equivalent": "75.00 ERN",
+        "$10.00 USD Equivalent": "150.00 ERN"
+      },
+      {
+        "Country": "Eswatini",
+        "Currency Name": "Swazi Lilangeni",
+        "Code": "SZL",
+        "$5.00 USD Equivalent": "81.00 E",
+        "$10.00 USD Equivalent": "162.00 E"
+      },
+      {
+        "Country": "Ethiopia",
+        "Currency Name": "Ethiopian Birr",
+        "Code": "ETB",
+        "$5.00 USD Equivalent": "625.00 ETB",
+        "$10.00 USD Equivalent": "1,250.00 ETB"
+      },
+      {
+        "Country": "Gabon",
+        "Currency Name": "Central African CFA Franc",
+        "Code": "XAF",
+        "$5.00 USD Equivalent": "2,870.00 XAF",
+        "$10.00 USD Equivalent": "5,740.00 XAF"
+      },
+      {
+        "Country": "Gambia",
+        "Currency Name": "Gambian Dalasi",
+        "Code": "GMD",
+        "$5.00 USD Equivalent": "355.00 D",
+        "$10.00 USD Equivalent": "710.00 D"
+      },
+      {
+        "Country": "Ghana",
+        "Currency Name": "Ghanaian Cedi",
+        "Code": "GHS",
+        "$5.00 USD Equivalent": "76.50 ₵",
+        "$10.00 USD Equivalent": "153.00 ₵"
+      },
+      {
+        "Country": "Guinea",
+        "Currency Name": "Guinean Franc",
+        "Code": "GNF",
+        "$5.00 USD Equivalent": "43,000.00 FG",
+        "$10.00 USD Equivalent": "86,000.00 FG"
+      },
+      {
+        "Country": "Guinea-Bissau",
+        "Currency Name": "West African CFA Franc",
+        "Code": "XOF",
+        "$5.00 USD Equivalent": "2,870.00 XOF",
+        "$10.00 USD Equivalent": "5,740.00 XOF"
+      },
+      {
+        "Country": "Kenya",
+        "Currency Name": "Kenyan Shilling",
+        "Code": "KES",
+        "$5.00 USD Equivalent": "645.00 KSh",
+        "$10.00 USD Equivalent": "1,290.00 KSh"
+      },
+      {
+        "Country": "Lesotho",
+        "Currency Name": "Lesotho Loti",
+        "Code": "LSL",
+        "$5.00 USD Equivalent": "81.00 L",
+        "$10.00 USD Equivalent": "162.00 M"
+      },
+      {
+        "Country": "Liberia",
+        "Currency Name": "Liberian Dollar",
+        "Code": "LRD",
+        "$5.00 USD Equivalent": "975.00 L$",
+        "$10.00 USD Equivalent": "1,950.00 L$"
+      },
+      {
+        "Country": "Libya",
+        "Currency Name": "Libyan Dinar",
+        "Code": "LYD",
+        "$5.00 USD Equivalent": "24.20 LD",
+        "$10.00 USD Equivalent": "48.40 LD"
+      },
+      {
+        "Country": "Madagascar",
+        "Currency Name": "Malagasy Ariary",
+        "Code": "MGA",
+        "$5.00 USD Equivalent": "22,750.00 Ar",
+        "$10.00 USD Equivalent": "45,500.00 Ar"
+      },
+      {
+        "Country": "Malawi",
+        "Currency Name": "Malawian Kwacha",
+        "Code": "MWK",
+        "$5.00 USD Equivalent": "8,675.00 MK",
+        "$10.00 USD Equivalent": "17,350.00 MK"
+      },
+      {
+        "Country": "Mali",
+        "Currency Name": "West African CFA Franc",
+        "Code": "XOF",
+        "$5.00 USD Equivalent": "2,870.00 XOF",
+        "$10.00 USD Equivalent": "5,740.00 XOF"
+      },
+      {
+        "Country": "Mauritania",
+        "Currency Name": "Mauritanian Ouguiya",
+        "Code": "MRU",
+        "$5.00 USD Equivalent": "198.00 UM",
+        "$10.00 USD Equivalent": "396.00 UM"
+      },
+      {
+        "Country": "Mauritius",
+        "Currency Name": "Mauritian Rupee",
+        "Code": "MUR",
+        "$5.00 USD Equivalent": "232.50 ₨",
+        "$10.00 USD Equivalent": "465.00 ₨"
+      },
+      {
+        "Country": "Morocco",
+        "Currency Name": "Moroccan Dirham",
+        "Code": "MAD",
+        "$5.00 USD Equivalent": "49.50 DH",
+        "$10.00 USD Equivalent": "99.00 DH"
+      },
+      {
+        "Country": "Mozambique",
+        "Currency Name": "Mozambican Metical",
+        "Code": "MZN",
+        "$5.00 USD Equivalent": "319.50 MT",
+        "$10.00 USD Equivalent": "639.00 MT"
+      },
+      {
+        "Country": "Namibia",
+        "Currency Name": "Namibian Dollar",
+        "Code": "NAD",
+        "$5.00 USD Equivalent": "81.00 N$",
+        "$10.00 USD Equivalent": "162.00 N$"
+      },
+      {
+        "Country": "Niger",
+        "Currency Name": "West African CFA Franc",
+        "Code": "XOF",
+        "$5.00 USD Equivalent": "2,870.00 XOF",
+        "$10.00 USD Equivalent": "5,740.00 XOF"
+      },
+      {
+        "Country": "Nigeria",
+        "Currency Name": "Nigerian Naira",
+        "Code": "NGN",
+        "$5.00 USD Equivalent": "8,150.00 ₦",
+        "$10.00 USD Equivalent": "16,300.00 ₦"
+      },
+      {
+        "Country": "Rwanda",
+        "Currency Name": "Rwandan Franc",
+        "Code": "RWF",
+        "$5.00 USD Equivalent": "6,850.00 FRw",
+        "$10.00 USD Equivalent": "13,700.00 FRw"
+      },
+      {
+        "Country": "São Tomé & Príncipe",
+        "Currency Name": "Dobra",
+        "Code": "STN",
+        "$5.00 USD Equivalent": "110.00 Db",
+        "$10.00 USD Equivalent": "220.00 Db"
+      },
+      {
+        "Country": "Senegal",
+        "Currency Name": "West African CFA Franc",
+        "Code": "XOF",
+        "$5.00 USD Equivalent": "2,870.00 XOF",
+        "$10.00 USD Equivalent": "5,740.00 XOF"
+      },
+      {
+        "Country": "Seychelles",
+        "Currency Name": "Seychellois Rupee",
+        "Code": "SCR",
+        "$5.00 USD Equivalent": "70.00 ₨",
+        "$10.00 USD Equivalent": "140.00 ₨"
+      },
+      {
+        "Country": "Sierra Leone",
+        "Currency Name": "Sierra Leonean Leone",
+        "Code": "SLE",
+        "$5.00 USD Equivalent": "112.50 Le",
+        "$10.00 USD Equivalent": "225.00 Le"
+      },
+      {
+        "Country": "Somalia",
+        "Currency Name": "Somali Shilling",
+        "Code": "SOS",
+        "$5.00 USD Equivalent": "2,855.00 Sh.So.",
+        "$10.00 USD Equivalent": "5,710.00 Sh.So."
+      },
+      {
+        "Country": "South Africa",
+        "Currency Name": "South African Rand",
+        "Code": "ZAR",
+        "$5.00 USD Equivalent": "81.00 R",
+        "$10.00 USD Equivalent": "162.00 R"
+      },
+      {
+        "Country": "South Sudan",
+        "Currency Name": "South Sudanese Pound",
+        "Code": "SSP",
+        "$5.00 USD Equivalent": "15,250.00 £",
+        "$10.00 USD Equivalent": "30,500.00 £"
+      },
+      {
+        "Country": "Sudan",
+        "Currency Name": "Sudanese Pound",
+        "Code": "SDG",
+        "$5.00 USD Equivalent": "3,005.00 SD",
+        "$10.00 USD Equivalent": "6,010.00 SD"
+      },
+      {
+        "Country": "Tanzania",
+        "Currency Name": "Tanzanian Shilling",
+        "Code": "TZS",
+        "$5.00 USD Equivalent": "13,200.00 TSh",
+        "$10.00 USD Equivalent": "26,400.00 TSh"
+      },
+      {
+        "Country": "Togo",
+        "Currency Name": "West African CFA Franc",
+        "Code": "XOF",
+        "$5.00 USD Equivalent": "2,870.00 XOF",
+        "$10.00 USD Equivalent": "5,740.00 XOF"
+      },
+      {
+        "Country": "Tunisia",
+        "Currency Name": "Tunisian Dinar",
+        "Code": "TND",
+        "$5.00 USD Equivalent": "15.20 DT",
+        "$10.00 USD Equivalent": "30.40 DT"
+      },
+      {
+        "Country": "Uganda",
+        "Currency Name": "Ugandan Shilling",
+        "Code": "UGX",
+        "$5.00 USD Equivalent": "18,350.00 USh",
+        "$10.00 USD Equivalent": "36,700.00 USh"
+      },
+      {
+        "Country": "Zambia",
+        "Currency Name": "Zambian Kwacha",
+        "Code": "ZMW",
+        "$5.00 USD Equivalent": "138.00 ZK",
+        "$10.00 USD Equivalent": "276.00 ZK"
+      },
+      {
+        "Country": "Zimbabwe",
+        "Currency Name": "United States Dollar",
+        "Code": "USD",
+        "$5.00 USD Equivalent": "$5.00",
+        "$10.00 USD Equivalent": "$10.00"
+      },
+      {
+        "Country": "Zimbabwe (Official)",
+        "Currency Name": "Zimbabwe Gold",
+        "Code": "ZiG / ZWG",
+        "$5.00 USD Equivalent": "134.00 ZiG",
+        "$10.00 USD Equivalent": "268.00 ZiG"
+      }
+    ],
+    "Americas": [
+      {
+        "Country": "Antigua & Barbuda",
+        "Currency Name": "East Caribbean Dollar",
+        "Code": "XCD",
+        "$5.00 USD Equivalent": "13.50 EC$",
+        "$10.00 USD Equivalent": "27.00 EC$"
+      },
+      {
+        "Country": "Argentina",
+        "Currency Name": "Argentine Peso",
+        "Code": "ARS",
+        "$5.00 USD Equivalent": "4,925.00 ARS",
+        "$10.00 USD Equivalent": "9,850.00 ARS"
+      },
+      {
+        "Country": "Bahamas",
+        "Currency Name": "Bahamian Dollar",
+        "Code": "BSD",
+        "$5.00 USD Equivalent": "B$5.00",
+        "$10.00 USD Equivalent": "B$10.00"
+      },
+      {
+        "Country": "Barbados",
+        "Currency Name": "Barbadian Dollar",
+        "Code": "BBD",
+        "$5.00 USD Equivalent": "Bds$10.00",
+        "$10.00 USD Equivalent": "Bds$20.00"
+      },
+      {
+        "Country": "Belize",
+        "Currency Name": "Belize Dollar",
+        "Code": "BZD",
+        "$5.00 USD Equivalent": "BZ$10.00",
+        "$10.00 USD Equivalent": "BZ$20.00"
+      },
+      {
+        "Country": "Bolivia",
+        "Currency Name": "Bolivian Boliviano",
+        "Code": "BOB",
+        "$5.00 USD Equivalent": "34.50 Bs.",
+        "$10.00 USD Equivalent": "69.00 Bs."
+      },
+      {
+        "Country": "Brazil",
+        "Currency Name": "Brazilian Real",
+        "Code": "BRL",
+        "$5.00 USD Equivalent": "25.70 R$",
+        "$10.00 USD Equivalent": "51.40 R$"
+      },
+      {
+        "Country": "Canada",
+        "Currency Name": "Canadian Dollar",
+        "Code": "CAD",
+        "$5.00 USD Equivalent": "CA$6.95",
+        "$10.00 USD Equivalent": "CA$13.90"
+      },
+      {
+        "Country": "Chile",
+        "Currency Name": "Chilean Peso",
+        "Code": "CLP",
+        "$5.00 USD Equivalent": "4,680.00 CLP",
+        "$10.00 USD Equivalent": "9,360.00 CLP"
+      },
+      {
+        "Country": "Colombia",
+        "Currency Name": "Colombian Peso",
+        "Code": "COP",
+        "$5.00 USD Equivalent": "20,400.00 COP",
+        "$10.00 USD Equivalent": "40,800.00 COP"
+      },
+      {
+        "Country": "Costa Rica",
+        "Currency Name": "Costa Rican Colón",
+        "Code": "CRC",
+        "$5.00 USD Equivalent": "2,525.00 ₡",
+        "$10.00 USD Equivalent": "5,050.00 ₡"
+      },
+      {
+        "Country": "Cuba",
+        "Currency Name": "Cuban Peso",
+        "Code": "CUP",
+        "$5.00 USD Equivalent": "120.00 CUP",
+        "$10.00 USD Equivalent": "240.00 CUP"
+      },
+      {
+        "Country": "Dominica",
+        "Currency Name": "East Caribbean Dollar",
+        "Code": "XCD",
+        "$5.00 USD Equivalent": "13.50 EC$",
+        "$10.00 USD Equivalent": "27.00 EC$"
+      },
+      {
+        "Country": "Dominican Republic",
+        "Currency Name": "Dominican Peso",
+        "Code": "DOP",
+        "$5.00 USD Equivalent": "302.50 RD$",
+        "$10.00 USD Equivalent": "605.00 RD$"
+      },
+      {
+        "Country": "Ecuador",
+        "Currency Name": "United States Dollar",
+        "Code": "USD",
+        "$5.00 USD Equivalent": "$5.00",
+        "$10.00 USD Equivalent": "$10.00"
+      },
+      {
+        "Country": "El Salvador",
+        "Currency Name": "United States Dollar",
+        "Code": "USD",
+        "$5.00 USD Equivalent": "$5.00",
+        "$10.00 USD Equivalent": "$10.00"
+      },
+      {
+        "Country": "Grenada",
+        "Currency Name": "East Caribbean Dollar",
+        "Code": "XCD",
+        "$5.00 USD Equivalent": "13.50 EC$",
+        "$10.00 USD Equivalent": "27.00 EC$"
+      },
+      {
+        "Country": "Guatemala",
+        "Currency Name": "Guatemalan Quetzal",
+        "Code": "GTQ",
+        "$5.00 USD Equivalent": "38.60 Q",
+        "$10.00 USD Equivalent": "77.20 Q"
+      },
+      {
+        "Country": "Guyana",
+        "Currency Name": "Guyanese Dollar",
+        "Code": "GYD",
+        "$5.00 USD Equivalent": "1,045.00 GYD",
+        "$10.00 USD Equivalent": "2,090.00 GYD"
+      },
+      {
+        "Country": "Haiti",
+        "Currency Name": "Haitian Gourde",
+        "Code": "HTG",
+        "$5.00 USD Equivalent": "658.00 G",
+        "$10.00 USD Equivalent": "1,316.00 G"
+      },
+      {
+        "Country": "Honduras",
+        "Currency Name": "Honduran Lempira",
+        "Code": "HNL",
+        "$5.00 USD Equivalent": "126.00 L",
+        "$10.00 USD Equivalent": "252.00 L"
+      },
+      {
+        "Country": "Jamaica",
+        "Currency Name": "Jamaican Dollar",
+        "Code": "JMD",
+        "$5.00 USD Equivalent": "785.00 J$",
+        "$10.00 USD Equivalent": "1,570.00 J$"
+      },
+      {
+        "Country": "Mexico",
+        "Currency Name": "Mexican Peso",
+        "Code": "MXN",
+        "$5.00 USD Equivalent": "85.50 MEX$",
+        "$10.00 USD Equivalent": "171.00 MEX$"
+      },
+      {
+        "Country": "Nicaragua",
+        "Currency Name": "Nicaraguan Córdoba",
+        "Code": "NIO",
+        "$5.00 USD Equivalent": "183.50 C$",
+        "$10.00 USD Equivalent": "367.00 C$"
+      },
+      {
+        "Country": "Panama",
+        "Currency Name": "Panamanian Balboa",
+        "Code": "PAB",
+        "$5.00 USD Equivalent": "B/.5.00",
+        "$10.00 USD Equivalent": "B/.10.00"
+      },
+      {
+        "Country": "Paraguay",
+        "Currency Name": "Paraguayan Guaraní",
+        "Code": "PYG",
+        "$5.00 USD Equivalent": "37,800.00 ₲",
+        "$10.00 USD Equivalent": "75,600.00 ₲"
+      },
+      {
+        "Country": "Peru",
+        "Currency Name": "Peruvian Sol",
+        "Code": "PEN",
+        "$5.00 USD Equivalent": "18.75 S/",
+        "$10.00 USD Equivalent": "37.50 S/"
+      },
+      {
+        "Country": "Saint Kitts & Nevis",
+        "Currency Name": "East Caribbean Dollar",
+        "Code": "XCD",
+        "$5.00 USD Equivalent": "13.50 EC$",
+        "$10.00 USD Equivalent": "27.00 EC$"
+      },
+      {
+        "Country": "Saint Lucia",
+        "Currency Name": "East Caribbean Dollar",
+        "Code": "XCD",
+        "$5.00 USD Equivalent": "13.50 EC$",
+        "$10.00 USD Equivalent": "27.00 EC$"
+      },
+      {
+        "Country": "St. Vincent & Grenadines",
+        "Currency Name": "East Caribbean Dollar",
+        "Code": "XCD",
+        "$5.00 USD Equivalent": "13.50 EC$",
+        "$10.00 USD Equivalent": "27.00 EC$"
+      },
+      {
+        "Country": "Suriname",
+        "Currency Name": "Surinamese Dollar",
+        "Code": "SRD",
+        "$5.00 USD Equivalent": "178.50 SRD$",
+        "$10.00 USD Equivalent": "357.00 SRD$"
+      },
+      {
+        "Country": "Trinidad & Tobago",
+        "Currency Name": "Trinidad & Tobago Dollar",
+        "Code": "TTD",
+        "$5.00 USD Equivalent": "33.90 TT$",
+        "$10.00 USD Equivalent": "67.80 TT$"
+      },
+      {
+        "Country": "United States",
+        "Currency Name": "United States Dollar",
+        "Code": "USD",
+        "$5.00 USD Equivalent": "$5.00",
+        "$10.00 USD Equivalent": "$10.00"
+      },
+      {
+        "Country": "Uruguay",
+        "Currency Name": "Uruguayan Peso",
+        "Code": "UYU",
+        "$5.00 USD Equivalent": "201.00 $U",
+        "$10.00 USD Equivalent": "402.00 $U"
+      },
+      {
+        "Country": "Venezuela",
+        "Currency Name": "Bolívar Soberano",
+        "Code": "VES",
+        "$5.00 USD Equivalent": "182.50 Bs.S.",
+        "$10.00 USD Equivalent": "365.00 Bs.S."
+      }
+    ],
+    "Asia": [
+      {
+        "Country": "Afghanistan",
+        "Currency Name": "Afghan Afghani",
+        "Code": "AFN",
+        "$5.00 USD Equivalent": "342.50 ؋",
+        "$10.00 USD Equivalent": "685.00 ؋"
+      },
+      {
+        "Country": "Armenia",
+        "Currency Name": "Armenian Dram",
+        "Code": "AMD",
+        "$5.00 USD Equivalent": "1,935.00 ֏",
+        "$10.00 USD Equivalent": "3,870.00 ֏"
+      },
+      {
+        "Country": "Azerbaijan",
+        "Currency Name": "Azerbaijani Manat",
+        "Code": "AZN",
+        "$5.00 USD Equivalent": "8.50 ₼",
+        "$10.00 USD Equivalent": "17.00 ₼"
+      },
+      {
+        "Country": "Bahrain",
+        "Currency Name": "Bahraini Dinar",
+        "Code": "BHD",
+        "$5.00 USD Equivalent": "1.88 BD",
+        "$10.00 USD Equivalent": "3.76 BD"
+      },
+      {
+        "Country": "Bangladesh",
+        "Currency Name": "Bangladeshi Taka",
+        "Code": "BDT",
+        "$5.00 USD Equivalent": "598.00 ৳",
+        "$10.00 USD Equivalent": "1,196.00 ৳"
+      },
+      {
+        "Country": "Bhutan",
+        "Currency Name": "Bhutanese Ngultrum",
+        "Code": "BTN",
+        "$5.00 USD Equivalent": "478.00 Nu.",
+        "$10.00 USD Equivalent": "956.00 Nu."
+      },
+      {
+        "Country": "Brunei",
+        "Currency Name": "Brunei Dollar",
+        "Code": "BND",
+        "$5.00 USD Equivalent": "B$6.45",
+        "$10.00 USD Equivalent": "B$12.90"
+      },
+      {
+        "Country": "Cambodia",
+        "Currency Name": "Cambodian Riel",
+        "Code": "KHR",
+        "$5.00 USD Equivalent": "20,250.00 ៛",
+        "$10.00 USD Equivalent": "40,500.00 ៛"
+      },
+      {
+        "Country": "China",
+        "Currency Name": "Chinese Yuan (Renminbi)",
+        "Code": "CNY",
+        "$5.00 USD Equivalent": "33.50 ¥",
+        "$10.00 USD Equivalent": "67.00 ¥"
+      },
+      {
+        "Country": "Cyprus",
+        "Currency Name": "Euro",
+        "Code": "EUR",
+        "$5.00 USD Equivalent": "€4.33",
+        "$10.00 USD Equivalent": "€8.67"
+      },
+      {
+        "Country": "Georgia",
+        "Currency Name": "Georgian Lari",
+        "Code": "GEL",
+        "$5.00 USD Equivalent": "13.40 ₾",
+        "$10.00 USD Equivalent": "26.80 ₾"
+      },
+      {
+        "Country": "India",
+        "Currency Name": "Indian Rupee",
+        "Code": "INR",
+        "$5.00 USD Equivalent": "478.00 ₹",
+        "$10.00 USD Equivalent": "956.00 ₹"
+      },
+      {
+        "Country": "Indonesia",
+        "Currency Name": "Indonesian Rupiah",
+        "Code": "IDR",
+        "$5.00 USD Equivalent": "79,250.00 Rp",
+        "$10.00 USD Equivalent": "158,500.00 Rp"
+      },
+      {
+        "Country": "Iran",
+        "Currency Name": "Iranian Rial",
+        "Code": "IRR",
+        "$5.00 USD Equivalent": "210,000.00 ﷼",
+        "$10.00 USD Equivalent": "420,000.00 ﷼"
+      },
+      {
+        "Country": "Iraq",
+        "Currency Name": "Iraqi Dinar",
+        "Code": "IQD",
+        "$5.00 USD Equivalent": "6,550.00 IQD",
+        "$10.00 USD Equivalent": "13,100.00 IQD"
+      },
+      {
+        "Country": "Israel",
+        "Currency Name": "Israeli New Shekel",
+        "Code": "ILS",
+        "$5.00 USD Equivalent": "18.25 ₪",
+        "$10.00 USD Equivalent": "36.50 ₪"
+      },
+      {
+        "Country": "Japan",
+        "Currency Name": "Japanese Yen",
+        "Code": "JPY",
+        "$5.00 USD Equivalent": "775.00 ¥",
+        "$10.00 USD Equivalent": "1,550.00 ¥"
+      },
+      {
+        "Country": "Jordan",
+        "Currency Name": "Jordanian Dinar",
+        "Code": "JOD",
+        "$5.00 USD Equivalent": "3.55 JD",
+        "$10.00 USD Equivalent": "7.10 JD"
+      },
+      {
+        "Country": "Kazakhstan",
+        "Currency Name": "Kazakhstani Tenge",
+        "Code": "KZT",
+        "$5.00 USD Equivalent": "2,390.00 ₸",
+        "$10.00 USD Equivalent": "4,780.00 ₸"
+      },
+      {
+        "Country": "Kuwait",
+        "Currency Name": "Kuwaiti Dinar",
+        "Code": "KWD",
+        "$5.00 USD Equivalent": "1.53 KD",
+        "$10.00 USD Equivalent": "3.06 KD"
+      },
+      {
+        "Country": "Kyrgyzstan",
+        "Currency Name": "Kyrgyzstani Som",
+        "Code": "KGS",
+        "$5.00 USD Equivalent": "437.50 с",
+        "$10.00 USD Equivalent": "875.00 с"
+      },
+      {
+        "Country": "Laos",
+        "Currency Name": "Lao Kip",
+        "Code": "LAK",
+        "$5.00 USD Equivalent": "108,500.00 ⭏",
+        "$10.00 USD Equivalent": "217,000.00 ⭏"
+      },
+      {
+        "Country": "Lebanon",
+        "Currency Name": "Lebanese Pound",
+        "Code": "LBP",
+        "$5.00 USD Equivalent": "447,500.00 L£",
+        "$10.00 USD Equivalent": "895,000.00 L£"
+      },
+      {
+        "Country": "Malaysia",
+        "Currency Name": "Malaysian Ringgit",
+        "Code": "MYR",
+        "$5.00 USD Equivalent": "21.25 RM",
+        "$10.00 USD Equivalent": "42.50 RM"
+      },
+      {
+        "Country": "Maldives",
+        "Currency Name": "Maldivian Rufiyaa",
+        "Code": "MVR",
+        "$5.00 USD Equivalent": "77.00 Rf",
+        "$10.00 USD Equivalent": "154.00 Rf"
+      },
+      {
+        "Country": "Mongolia",
+        "Currency Name": "Mongolian Tögrög",
+        "Code": "MNT",
+        "$5.00 USD Equivalent": "17,200.00 ₮",
+        "$10.00 USD Equivalent": "34,400.00 ₮"
+      },
+      {
+        "Country": "Myanmar (Burma)",
+        "Currency Name": "Myanmar Kyat",
+        "Code": "MMK",
+        "$5.00 USD Equivalent": "10,500.00 Ks",
+        "$10.00 USD Equivalent": "21,000.00 Ks"
+      },
+      {
+        "Country": "Nepal",
+        "Currency Name": "Nepalese Rupee",
+        "Code": "NPR",
+        "$5.00 USD Equivalent": "765.00 ₨",
+        "$10.00 USD Equivalent": "1,530.00 ₨"
+      },
+      {
+        "Country": "North Korea",
+        "Currency Name": "North Korean Won",
+        "Code": "KPW",
+        "$5.00 USD Equivalent": "4,500.00 ₩",
+        "$10.00 USD Equivalent": "9,000.00 ₩"
+      },
+      {
+        "Country": "Oman",
+        "Currency Name": "Omani Rial",
+        "Code": "OMR",
+        "$5.00 USD Equivalent": "1.925 RO",
+        "$10.00 USD Equivalent": "3.85 RO"
+      },
+      {
+        "Country": "Pakistan",
+        "Currency Name": "Pakistani Rupee",
+        "Code": "PKR",
+        "$5.00 USD Equivalent": "1,390.00 ₨",
+        "$10.00 USD Equivalent": "2,780.00 ₨"
+      },
+      {
+        "Country": "Palestine",
+        "Currency Name": "Israeli Shekel / JOD",
+        "Code": "ILS / JOD",
+        "$5.00 USD Equivalent": "18.25 ₪",
+        "$10.00 USD Equivalent": "36.50 ₪"
+      },
+      {
+        "Country": "Philippines",
+        "Currency Name": "Philippine Peso",
+        "Code": "PHP",
+        "$5.00 USD Equivalent": "284.50 ₱",
+        "$10.00 USD Equivalent": "569.00 ₱"
+      },
+      {
+        "Country": "Qatar",
+        "Currency Name": "Qatari Riyal",
+        "Code": "QAR",
+        "$5.00 USD Equivalent": "18.20 QR",
+        "$10.00 USD Equivalent": "36.40 QR"
+      },
+      {
+        "Country": "Saudi Arabia",
+        "Currency Name": "Saudi Riyal",
+        "Code": "SAR",
+        "$5.00 USD Equivalent": "18.75 SR",
+        "$10.00 USD Equivalent": "37.50 SR"
+      },
+      {
+        "Country": "Singapore",
+        "Currency Name": "Singapore Dollar",
+        "Code": "SGD",
+        "$5.00 USD Equivalent": "S$6.45",
+        "$10.00 USD Equivalent": "S$12.90"
+      },
+      {
+        "Country": "South Korea",
+        "Currency Name": "South Korean Won",
+        "Code": "KRW",
+        "$5.00 USD Equivalent": "6,825.00 ₩",
+        "$10.00 USD Equivalent": "13,650.00 ₩"
+      },
+      {
+        "Country": "Sri Lanka",
+        "Currency Name": "Sri Lankan Rupee",
+        "Code": "LKR",
+        "$5.00 USD Equivalent": "1,515.00 ₨",
+        "$10.00 USD Equivalent": "3,030.00 ₨"
+      }
+    ],
+    "Europe": [
+      {
+        "Country": "Albania",
+        "Currency Name": "Albanian Lek",
+        "Code": "ALL",
+        "$5.00 USD Equivalent": "452.50 L",
+        "$10.00 USD Equivalent": "905.00 L"
+      },
+      {
+        "Country": "Andorra",
+        "Currency Name": "Euro",
+        "Code": "EUR",
+        "$5.00 USD Equivalent": "€4.33",
+        "$10.00 USD Equivalent": "€8.67"
+      },
+      {
+        "Country": "Austria",
+        "Currency Name": "Euro",
+        "Code": "EUR",
+        "$5.00 USD Equivalent": "€4.33",
+        "$10.00 USD Equivalent": "€8.67"
+      },
+      {
+        "Country": "Belarus",
+        "Currency Name": "Belarusian Ruble",
+        "Code": "BYN",
+        "$5.00 USD Equivalent": "16.30 Br",
+        "$10.00 USD Equivalent": "32.60 Br"
+      },
+      {
+        "Country": "Belgium",
+        "Currency Name": "Euro",
+        "Code": "EUR",
+        "$5.00 USD Equivalent": "€4.33",
+        "$10.00 USD Equivalent": "€8.67"
+      },
+      {
+        "Country": "Bosnia & Herzegovina",
+        "Currency Name": "Convertible Mark",
+        "Code": "BAM",
+        "$5.00 USD Equivalent": "8.48 KM",
+        "$10.00 USD Equivalent": "16.96 KM"
+      },
+      {
+        "Country": "Bulgaria",
+        "Currency Name": "Bulgarian Lev",
+        "Code": "BGN",
+        "$5.00 USD Equivalent": "8.48 лв",
+        "$10.00 USD Equivalent": "16.96 лв"
+      },
+      {
+        "Country": "Croatia",
+        "Currency Name": "Euro",
+        "Code": "EUR",
+        "$5.00 USD Equivalent": "€4.33",
+        "$10.00 USD Equivalent": "€8.67"
+      },
+      {
+        "Country": "Czech Republic",
+        "Currency Name": "Czech Koruna",
+        "Code": "CZK",
+        "$5.00 USD Equivalent": "108.50 Kč",
+        "$10.00 USD Equivalent": "217.00 Kč"
+      },
+      {
+        "Country": "Denmark",
+        "Currency Name": "Danish Krone",
+        "Code": "DKK",
+        "$5.00 USD Equivalent": "32.30 kr.",
+        "$10.00 USD Equivalent": "64.60 kr."
+      },
+      {
+        "Country": "Estonia",
+        "Currency Name": "Euro",
+        "Code": "EUR",
+        "$5.00 USD Equivalent": "€4.33",
+        "$10.00 USD Equivalent": "€8.67"
+      },
+      {
+        "Country": "Finland",
+        "Currency Name": "Euro",
+        "Code": "EUR",
+        "$5.00 USD Equivalent": "€4.33",
+        "$10.00 USD Equivalent": "€8.67"
+      },
+      {
+        "Country": "France",
+        "Currency Name": "Euro",
+        "Code": "EUR",
+        "$5.00 USD Equivalent": "€4.33",
+        "$10.00 USD Equivalent": "€8.67"
+      },
+      {
+        "Country": "Germany",
+        "Currency Name": "Euro",
+        "Code": "EUR",
+        "$5.00 USD Equivalent": "€4.33",
+        "$10.00 USD Equivalent": "€8.67"
+      },
+      {
+        "Country": "Greece",
+        "Currency Name": "Euro",
+        "Code": "EUR",
+        "$5.00 USD Equivalent": "€4.33",
+        "$10.00 USD Equivalent": "€8.67"
+      },
+      {
+        "Country": "Hungary",
+        "Currency Name": "Hungarian Forint",
+        "Code": "HUF",
+        "$5.00 USD Equivalent": "1,735.00 Ft",
+        "$10.00 USD Equivalent": "3,470.00 Ft"
+      },
+      {
+        "Country": "Iceland",
+        "Currency Name": "Icelandic Króna",
+        "Code": "ISK",
+        "$5.00 USD Equivalent": "650.00 kr",
+        "$10.00 USD Equivalent": "1,300.00 kr"
+      },
+      {
+        "Country": "Ireland",
+        "Currency Name": "Euro",
+        "Code": "EUR",
+        "$5.00 USD Equivalent": "€4.33",
+        "$10.00 USD Equivalent": "€8.67"
+      },
+      {
+        "Country": "Italy",
+        "Currency Name": "Euro",
+        "Code": "EUR",
+        "$5.00 USD Equivalent": "€4.33",
+        "$10.00 USD Equivalent": "€8.67"
+      },
+      {
+        "Country": "Latvia",
+        "Currency Name": "Euro",
+        "Code": "EUR",
+        "$5.00 USD Equivalent": "€4.33",
+        "$10.00 USD Equivalent": "€8.67"
+      },
+      {
+        "Country": "Lithuania",
+        "Currency Name": "Euro",
+        "Code": "EUR",
+        "$5.00 USD Equivalent": "€4.33",
+        "$10.00 USD Equivalent": "€8.67"
+      },
+      {
+        "Country": "Luxembourg",
+        "Currency Name": "Euro",
+        "Code": "EUR",
+        "$5.00 USD Equivalent": "€4.33",
+        "$10.00 USD Equivalent": "€8.67"
+      },
+      {
+        "Country": "Malta",
+        "Currency Name": "Euro",
+        "Code": "EUR",
+        "$5.00 USD Equivalent": "€4.33",
+        "$10.00 USD Equivalent": "€8.67"
+      },
+      {
+        "Country": "Moldova",
+        "Currency Name": "Moldovan Leu",
+        "Code": "MDL",
+        "$5.00 USD Equivalent": "87.50 L",
+        "$10.00 USD Equivalent": "175.00 L"
+      },
+      {
+        "Country": "Monaco",
+        "Currency Name": "Euro",
+        "Code": "EUR",
+        "$5.00 USD Equivalent": "€4.33",
+        "$10.00 USD Equivalent": "€8.67"
+      },
+      {
+        "Country": "Montenegro",
+        "Currency Name": "Euro",
+        "Code": "EUR",
+        "$5.00 USD Equivalent": "€4.33",
+        "$10.00 USD Equivalent": "€8.67"
+      },
+      {
+        "Country": "Netherlands",
+        "Currency Name": "Euro",
+        "Code": "EUR",
+        "$5.00 USD Equivalent": "€4.33",
+        "$10.00 USD Equivalent": "€8.67"
+      },
+      {
+        "Country": "North Macedonia",
+        "Currency Name": "Macedonian Denar",
+        "Code": "MKD",
+        "$5.00 USD Equivalent": "266.50 den",
+        "$10.00 USD Equivalent": "533.00 den"
+      },
+      {
+        "Country": "Norway",
+        "Currency Name": "Norwegian Krone",
+        "Code": "NOK",
+        "$5.00 USD Equivalent": "51.50 kr",
+        "$10.00 USD Equivalent": "103.00 kr"
+      },
+      {
+        "Country": "Poland",
+        "Currency Name": "Polish Złoty",
+        "Code": "PLN",
+        "$5.00 USD Equivalent": "18.60 zł",
+        "$10.00 USD Equivalent": "37.20 zł"
+      },
+      {
+        "Country": "Portugal",
+        "Currency Name": "Euro",
+        "Code": "EUR",
+        "$5.00 USD Equivalent": "€4.33",
+        "$10.00 USD Equivalent": "€8.67"
+      },
+      {
+        "Country": "Romania",
+        "Currency Name": "Romanian Leu",
+        "Code": "RON",
+        "$5.00 USD Equivalent": "21.55 lei",
+        "$10.00 USD Equivalent": "43.10 lei"
+      },
+      {
+        "Country": "Russia",
+        "Currency Name": "Russian Ruble",
+        "Code": "RUB",
+        "$5.00 USD Equivalent": "445.00 ₽",
+        "$10.00 USD Equivalent": "890.00 ₽"
+      },
+      {
+        "Country": "San Marino",
+        "Currency Name": "Euro",
+        "Code": "EUR",
+        "$5.00 USD Equivalent": "€4.33",
+        "$10.00 USD Equivalent": "€8.67"
+      },
+      {
+        "Country": "Serbia",
+        "Currency Name": "Serbian Dinar",
+        "Code": "RSD",
+        "$5.00 USD Equivalent": "507.50 RSD",
+        "$10.00 USD Equivalent": "1,015.00 RSD"
+      },
+      {
+        "Country": "Slovakia",
+        "Currency Name": "Euro",
+        "Code": "EUR",
+        "$5.00 USD Equivalent": "€4.33",
+        "$10.00 USD Equivalent": "€8.67"
+      },
+      {
+        "Country": "Slovenia",
+        "Currency Name": "Euro",
+        "Code": "EUR",
+        "$5.00 USD Equivalent": "€4.33",
+        "$10.00 USD Equivalent": "€8.67"
+      },
+      {
+        "Country": "Spain",
+        "Currency Name": "Euro",
+        "Code": "EUR",
+        "$5.00 USD Equivalent": "€4.33",
+        "$10.00 USD Equivalent": "€8.67"
+      },
+      {
+        "Country": "Sweden",
+        "Currency Name": "Swedish Krona",
+        "Code": "SEK",
+        "$5.00 USD Equivalent": "50.25 kr",
+        "$10.00 USD Equivalent": "100.50 kr"
+      },
+      {
+        "Country": "Switzerland",
+        "Currency Name": "Swiss Franc",
+        "Code": "CHF",
+        "$5.00 USD Equivalent": "4.10 CHF",
+        "$10.00 USD Equivalent": "8.20 CHF"
+      },
+      {
+        "Country": "Ukraine",
+        "Currency Name": "Ukrainian Hryvnia",
+        "Code": "UAH",
+        "$5.00 USD Equivalent": "206.50 ₴",
+        "$10.00 USD Equivalent": "413.00 ₴"
+      },
+      {
+        "Country": "United Kingdom",
+        "Currency Name": "British Pound",
+        "Code": "GBP",
+        "$5.00 USD Equivalent": "£3.71",
+        "$10.00 USD Equivalent": "£7.42"
+      },
+      {
+        "Country": "Vatican City",
+        "Currency Name": "Euro",
+        "Code": "EUR",
+        "$5.00 USD Equivalent": "€4.33",
+        "$10.00 USD Equivalent": "€8.67"
+      }
+    ],
+    "Oceania": [
+      {
+        "Country": "Australia",
+        "Currency Name": "Australian Dollar",
+        "Code": "AUD",
+        "$5.00 USD Equivalent": "A$7.45",
+        "$10.00 USD Equivalent": "A$14.90"
+      },
+      {
+        "Country": "Fiji",
+        "Currency Name": "Fijian Dollar",
+        "Code": "FJD",
+        "$5.00 USD Equivalent": "FJ$11.20",
+        "$10.00 USD Equivalent": "FJ$22.40"
+      },
+      {
+        "Country": "Kiribati",
+        "Currency Name": "Australian Dollar",
+        "Code": "AUD",
+        "$5.00 USD Equivalent": "A$7.45",
+        "$10.00 USD Equivalent": "A$14.90"
+      },
+      {
+        "Country": "Marshall Islands",
+        "Currency Name": "United States Dollar",
+        "Code": "USD",
+        "$5.00 USD Equivalent": "$5.00",
+        "$10.00 USD Equivalent": "$10.00"
+      },
+      {
+        "Country": "Micronesia",
+        "Currency Name": "United States Dollar",
+        "Code": "USD",
+        "$5.00 USD Equivalent": "$5.00",
+        "$10.00 USD Equivalent": "$10.00"
+      },
+      {
+        "Country": "Nauru",
+        "Currency Name": "Australian Dollar",
+        "Code": "AUD",
+        "$5.00 USD Equivalent": "A$7.45",
+        "$10.00 USD Equivalent": "A$14.90"
+      },
+      {
+        "Country": "New Zealand",
+        "Currency Name": "New Zealand Dollar",
+        "Code": "NZD",
+        "$5.00 USD Equivalent": "NZ$8.15",
+        "$10.00 USD Equivalent": "NZ$16.30"
+      },
+      {
+        "Country": "Palau",
+        "Currency Name": "United States Dollar",
+        "Code": "USD",
+        "$5.00 USD Equivalent": "$5.00",
+        "$10.00 USD Equivalent": "$10.00"
+      },
+      {
+        "Country": "Papua New Guinea",
+        "Currency Name": "Papua New Guinean Kina",
+        "Code": "PGK",
+        "$5.00 USD Equivalent": "19.85 K",
+        "$10.00 USD Equivalent": "39.70 K"
+      },
+      {
+        "Country": "Samoa",
+        "Currency Name": "Samoan Tālā",
+        "Code": "WST",
+        "$5.00 USD Equivalent": "13.60 WS$",
+        "$10.00 USD Equivalent": "27.20 WS$"
+      },
+      {
+        "Country": "Solomon Islands",
+        "Currency Name": "Solomon Islands Dollar",
+        "Code": "SBD",
+        "$5.00 USD Equivalent": "42.50 SI$",
+        "$10.00 USD Equivalent": "85.00 SI$"
+      },
+      {
+        "Country": "Tonga",
+        "Currency Name": "Tongan Paʻanga",
+        "Code": "TOP",
+        "$5.00 USD Equivalent": "11.75 T$",
+        "$10.00 USD Equivalent": "23.50 T$"
+      },
+      {
+        "Country": "Tuvalu",
+        "Currency Name": "Australian Dollar",
+        "Code": "AUD",
+        "$5.00 USD Equivalent": "A$7.45",
+        "$10.00 USD Equivalent": "A$14.90"
+      },
+      {
+        "Country": "Vanuatu",
+        "Currency Name": "Vanuatu Vatu",
+        "Code": "VUV",
+        "$5.00 USD Equivalent": "595.00 VT",
+        "$10.00 USD Equivalent": "1,190.00 VT"
+      }
+    ]
+  }
+}
