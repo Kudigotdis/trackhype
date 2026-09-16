@@ -1161,6 +1161,7 @@
         <button class="th-btn primary block" type="button" onclick="resendConfirmation(this)">Resend confirmation email</button>
         <button class="th-btn block" type="button" onclick="closeEmailConfirm()">Done — I'll check my email</button>
         <button class="th-link-btn" type="button" onclick="jumpToLogin()">Just verified? Log in →</button>
+        <button class="th-link-btn" type="button" onclick="window.location.href='index.html'" style="margin-top:8px">Return home</button>
       </div>
     </div>
   </div>
@@ -1944,13 +1945,13 @@
       if(!file) return;
 
       if(["image/jpeg","image/png","image/webp"].indexOf(file.type)===-1){
-        alert("Please choose a JPEG, PNG or WebP image.");
+        TrackHypeToast("Please choose a JPEG, PNG or WebP image.");
         return;
       }
 
       maxBytes=maxBytes||5*1024*1024;
       if(file.size>maxBytes){
-        alert("Image must be "+Math.round(maxBytes/1024/1024)+" MB or smaller.");
+        TrackHypeToast("Image must be "+Math.round(maxBytes/1024/1024)+" MB or smaller.");
         return;
       }
 
@@ -1976,7 +1977,7 @@
 
       img.onerror=function(){
         URL.revokeObjectURL(url);
-        alert("Could not read that image.");
+        TrackHypeToast("Could not read that image.");
       };
 
       img.src=url;
@@ -2351,7 +2352,7 @@
         var first=missing[0];
         applyOpen(first);
         scrollToAcc(first);
-        alert(NEED_MSG[first]||"Please complete this section.");
+        TrackHypeToast(NEED_MSG[first]||"Please complete this section.");
         return;
       }
 
@@ -2471,13 +2472,13 @@
         up=await API.signUp(account.email,val("password"),meta);
       }catch(e){
         restoreBtn();
-        alert("Could not reach the server. Check your connection and try again.");
+        TrackHypeToast("Could not reach the server. Check your connection and try again.");
         return;
       }
 
       if(up && up.error){
         restoreBtn();
-        alert("Sign-up failed: "+(up.error.message||"unknown error"));
+        TrackHypeToast("Sign-up failed: "+(up.error.message||"unknown error"));
         return;
       }
 
@@ -2521,7 +2522,7 @@
         var saved=await API.saveProfile(profile,genreIds);
         if(saved && saved.error){
           restoreBtn();
-          alert("Your account was created but saving your profile failed: "+(saved.error.message||"unknown error"));
+          TrackHypeToast("Your account was created but saving your profile failed: "+(saved.error.message||"unknown error"));
         }
       }
 
@@ -2561,13 +2562,13 @@
       if(!emailOk(email)){
         applyOpen(1);
         scrollToAcc(1);
-        alert("Enter the email you signed up with (step 1) first.");
+        TrackHypeToast("Enter the email you signed up with (step 1) first.");
         return;
       }
       if(!password){
         applyOpen(6);
         scrollToAcc(6);
-        alert("Enter your password.");
+        TrackHypeToast("Enter your password.");
         return;
       }
 
@@ -2575,12 +2576,12 @@
       try{
         res=await API.signIn(email,password);
       }catch(e){
-        alert("Could not reach the server. Check your connection and try again.");
+        TrackHypeToast("Could not reach the server. Check your connection and try again.");
         return;
       }
 
       if(res && res.error){
-        alert("Login failed: "+(res.error.message||"unknown error"));
+        TrackHypeToast("Login failed: "+(res.error.message||"unknown error"));
         return;
       }
 
