@@ -109,7 +109,7 @@
         <div class="acc-body"><div class="acc-body-inner">
           <div class="hy-strip" id="radioShows"></div>
         </div></div>
-        <div class="th-advert th-advert--full acc-advert"><img src="Assets/Demo Media/DemoMedia - Paid Promo.webp" alt="DemoMedia - Paid Promo"></div>
+        <div class="th-advert th-advert--full acc-advert" data-ad-slot="home-radio"><img src="Assets/Demo Media/DemoMedia - Paid Promo.webp" alt="DemoMedia - Paid Promo"></div>
       </section>
 
       <div class="filter-row" id="filterRow" data-active="culture">
@@ -127,7 +127,7 @@
         <div class="acc-body"><div class="acc-body-inner">
           <div class="rc-scroll" id="recentCharts"></div>
         </div></div>
-        <div class="th-advert th-advert--full acc-advert"><img src="Assets/Demo Media/DemoMedia - Paid Promo.webp" alt="DemoMedia - Paid Promo"></div>
+        <div class="th-advert th-advert--full acc-advert" data-ad-slot="home-recent"><img src="Assets/Demo Media/DemoMedia - Paid Promo.webp" alt="DemoMedia - Paid Promo"></div>
       </section>
 
       <section class="th-section acc open" id="acc-national">
@@ -140,7 +140,7 @@
         <div class="acc-body"><div class="acc-body-inner">
           <div class="rc-scroll" id="nationalTop"></div>
         </div></div>
-        <div class="th-advert th-advert--full acc-advert"><img src="Assets/Demo Media/DemoMedia - Paid Promo.webp" alt="DemoMedia - Paid Promo"></div>
+        <div class="th-advert th-advert--full acc-advert" data-ad-slot="home-national"><img src="Assets/Demo Media/DemoMedia - Paid Promo.webp" alt="DemoMedia - Paid Promo"></div>
       </section>
 
       <div id="genreSections"></div>
@@ -372,7 +372,7 @@ renderAllContent();
         const heroHref = hero ? "song.html?title=" + encodeURIComponent(hero.title) + "&artist=" + encodeURIComponent(hero.artist) + "&genre=" + encodeURIComponent(hero.genre) + "&art=" + encodeURIComponent(heroArt) : randDemoSong();
         const stripSongs = Array.from({length:9}, randDemoSong);
         return `
-          ${i > 0 ? `<div class="th-advert th-advert--full"><img src="Assets/Demo Media/DemoMedia - Paid Promo.webp" alt="DemoMedia - Paid Promo"></div>` : ""}
+          ${i > 0 ? `<div class="th-advert th-advert--full" data-ad-slot="home-feed"><img src="Assets/Demo Media/DemoMedia - Paid Promo.webp" alt="DemoMedia - Paid Promo"></div>` : ""}
           <section class="Hyped-Featured-Genre-Preview">
             <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">
               <span style="font-size:17px;font-weight:900">${g}</span>

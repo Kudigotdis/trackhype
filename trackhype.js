@@ -4795,6 +4795,85 @@ setState,
     defaultChartConfig,
     closeMsForWeek,
 
+    /* ---- ad engine (banner placements) --------------------------------
+       Renders active adverts (API.adverts) into [data-ad-slot] containers.
+       Each container keeps its existing markup (e.g. demo promo) until a
+       DB advert is available for that placement; adverts cycle across
+       containers of the same placement. Impressions are recorded via
+       TRACK.impression("campaign", ...) and clicks via
+       TRACK.campaignClick(...) so admin analytics sees campaign_click
+       events. Never throws. */
+    renderAdSlots: async function () {
+      try {
+        if (!window.API || typeof window.API.adverts !== "function") return;
+        var slots = Array.prototype.slice.call(document.querySelectorAll("[data-ad-slot]"));
+        if (!slots.length) return;
+
+        var groups = {};
+        slots.forEach(function (s) {
+          var p = s.getAttribute("data-ad-slot") || "";
+          (groups[p] = groups[p] || []).push(s);
+        });
+
+        var placements = Object.keys(groups);
+        if (!placements.length) return;
+
+        var idx = {};
+        for (var i = 0; i < placements.length; i++) idx[placements[i]] = 0;
+
+        for (var k = 0; k < placements.length; k++) {
+          var placement = placements[k];
+          var res = await window.API.adverts(placement);
+          var list = (res && res.data) || [];
+          if (!list.length) continue;
+          groups[placement].forEach(function (slot) {
+            var ad = list[idx[placement]++ % list.length];
+            if (!ad) return;
+            var title = ad.title || "";
+            var a = document.createElement("a");
+            a.href = ad.link || "#";
+            a.rel = "noopener";
+            if (ad.link && ad.link.indexOf("#") !== 0) a.target = "_blank";
+            a.setAttribute("aria-label", "Advert: " + title);
+            a.style.display = "block";
+            var img = document.createElement("img");
+            img.src = ad.image || "";
+            img.alt = title;
+            img.loading = "lazy";
+            img.style.display = "block";
+            img.style.width = "100%";
+            img.style.height = "auto";
+            a.appendChild(img);
+            slot.innerHTML = "";
+            slot.appendChild(a);
+
+            var adId = ad.id;
+            var slotPlacement = placement;
+            a.addEventListener("click", function () {
+              try {
+                if (window.TRACK && window.TRACK.campaignClick) {
+                  window.TRACK.campaignClick(adId, { placement: slotPlacement, title: title });
+                }
+              } catch (e) {}
+            });
+            (function (adId2, slotPlacement2, title2) {
+              try {
+                if (!window.TRACK || !window.TRACK.impression) return;
+                var io = new IntersectionObserver(function (entries) {
+                  entries.forEach(function (en) {
+                    if (!en.isIntersecting) return;
+                    io.disconnect();
+                    window.TRACK.impression("campaign", adId2, { placement: slotPlacement2, title: title2 });
+                  });
+                }, { threshold: 0.3 });
+                io.observe(a);
+              } catch (e) {}
+            })(ad.id, slotPlacement, title);
+          });
+        }
+      } catch (e) {}
+    },
+
 init: function({
       activeNav
     } = {}){
@@ -4828,6 +4907,7 @@ init: function({
     () => {
 
       window.TrackHype?.init();
+      window.TrackHype?.renderAdSlots();
 
       var savedRegion = null;
       try { savedRegion = JSON.parse(localStorage.getItem("trackhype.region") || "null"); } catch(e){ savedRegion = null; }

@@ -307,6 +307,17 @@
       return q.order("rank");
     },
 
+    /* ---- adverts -------------------------------------------------------
+       Pubilc read of active ads for a placement (ad engine slice).
+       The adverts table + public-read RLS ship in migration 0001;
+       admin create/pause via AdminUI.listAdverts/updateAdvert. */
+    async adverts(placement) {
+      if (!client) return { data: [], error: null };
+      var q = client.from("adverts").select("*").eq("is_active", true);
+      if (placement) q = q.eq("placement", placement);
+      return q.order("created_at", { ascending: true });
+    },
+
     /* ---- submissions ---------------------------------------------------
        Saves a submission record to public.submissions with the full
        form payload in the metadata JSONB column. The admin_pending_submissions
