@@ -386,7 +386,7 @@ function goToPreview(){
       return p;
     };
 
-    function confirmAndPay(){
+async function confirmAndPay(){
       const tracks = [...document.querySelectorAll('.track-box')];
       const artist = document.getElementById('global-artist').value.trim();
       const submission = {
@@ -396,6 +396,7 @@ function goToPreview(){
         phone: document.getElementById('global-phone').value.trim(),
         network: document.getElementById('global-network').value,
         amountUSD: tracks.length * PRICE_PER_TRACK,
+        territory: territory ? { code: territory.code, name: territory.name } : null,
         socials: window.packSocials ? packSocials() : null,
         tracks: tracks.map(t=>({
           title: t.querySelector('.track-title').value.trim(),
@@ -414,6 +415,19 @@ function goToPreview(){
           API.saveProfile({ socials: packSocials() });
         }catch(err){ /* silent — socials already safe in the pending payload above */ }
       }
+      let syncStatus = 'Saved on this device only. Sign in to sync with your account.';
+      if(window.API && API.saveSubmission && API.hasSession && API.hasSession()){
+        try{
+          const res = await API.saveSubmission(submission);
+          if(res && !res.error){
+            syncStatus = 'Received by TrackHype.';
+          }else if(res && res.error){
+            syncStatus = 'Sign in to sync this submission with your account (kept on this device).';
+          }
+        }catch(e){
+          syncStatus = 'Sign in to sync this submission with your account (kept on this device).';
+        }
+      }
       TrackHype.openSheet({
         title: 'Submission Received',
         html: `
@@ -421,6 +435,7 @@ function goToPreview(){
           <div class="th-table-list" style="margin-top:10px">
             <div class="th-table-row"><strong>Amount due</strong><span><strong>$ ${submission.amountUSD.toFixed(2)} USD</strong></span><span>${territory.currency && territory.currency.ten ? '\u2248 ' + TrackHype.esc(moneyEquivalent(tracks.length)) + ' (' + TrackHype.esc(territory.name) + ')' : ''}</span></div>
             <div class="th-table-row"><strong>Status</strong><span class="th-status">Payment Required</span><span></span></div>
+            <div class="th-table-row"><strong>Server</strong><span>${TrackHype.esc(syncStatus)}</span><span></span></div>
           </div>
           <p style="margin-top:12px">Payment creates a payment/submission record. It does not guarantee official chart placement.</p>`,
         actions:[{id:'dismiss',label:'Close',primary:true}]

@@ -307,6 +307,23 @@
       return q.order("rank");
     },
 
+    /* ---- submissions ---------------------------------------------------
+       Saves a submission record to public.submissions with the full
+       form payload in the metadata JSONB column. The admin_pending_submissions
+       view (migration 0010) COALESCES metadata fields so they are visible
+       before artist/song records are created during moderation. */
+    async saveSubmission(submission) {
+      if (!client) return { data: null, error: { message: "Supabase not configured" } };
+      var user = await API.currentUser();
+      if (!user) return { data: null, error: { message: "Sign in required" } };
+      return client.from("submissions").insert({
+        user_id: user.id,
+        status: "Submission Received",
+        payment_status: "not_paid",
+        metadata: submission || {}
+      });
+    },
+
     /* ---- localStorage fallbacks mirroring trackhype.js state ------ */
     localAccount: localAccount,
     pushLocalAccount: pushLocalAccount,
