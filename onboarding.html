@@ -1044,6 +1044,18 @@
                 </button>
                 <div class="ob-photo-meta" id="artistPhotoMeta">Optional.<br>JPEG, PNG or WebP up to 5 MB.<br>Stored as compressed WebP.</div>
                 <input type="file" id="artistPhotoInput" accept="image/jpeg,image/png,image/webp" hidden onchange="handleArtistPhoto(this.files[0])">
+                <div style="margin:14px 0 0;border-top:1px solid var(--th-border, #e3e3e3);padding-top:14px;width:100%;max-width:100%">
+                  <div style="font-weight:700;margin-bottom:6px">Social media links</div>
+                  <div class="ob-grid-2">
+                    <div class="ob-form-group"><label>YouTube</label><input class="ob-input" id="artistSocialYoutube" type="text" placeholder="youtube.com/your-channel" oninput="onSocialInput(this,'youtube')"></div>
+                    <div class="ob-form-group"><label>Spotify</label><input class="ob-input" id="artistSocialSpotify" type="text" placeholder="open.spotify.com/artist/..." oninput="onSocialInput(this,'spotify')"></div>
+                    <div class="ob-form-group"><label>iTunes</label><input class="ob-input" id="artistSocialItunes" type="text" placeholder="music.apple.com/artist/..." oninput="onSocialInput(this,'itunes')"></div>
+                    <div class="ob-form-group"><label>Amazon Music</label><input class="ob-input" id="artistSocialAmazon" type="text" placeholder="music.amazon.com/artists/..." oninput="onSocialInput(this,'amazonMusic')"></div>
+                    <div class="ob-form-group"><label>Twitter / X</label><input class="ob-input" id="artistSocialTwitter" type="text" placeholder="x.com/your-handle" oninput="onSocialInput(this,'twitter')"></div>
+                    <div class="ob-form-group"><label>Facebook</label><input class="ob-input" id="artistSocialFacebook" type="text" placeholder="facebook.com/your-profile" oninput="onSocialInput(this,'facebook')"></div>
+                    <div class="ob-form-group"><label>Instagram</label><input class="ob-input" id="artistSocialInstagram" type="text" placeholder="instagram.com/your-handle" oninput="onSocialInput(this,'instagram')"></div>
+                  </div>
+                </div>
               </div>
 
               <div class="ob-note"><b>Artist status:</b> Listener account created → KYC Pending → Verified Listener → Artist Profile Pending Review → Verified Artist.</div>
@@ -1196,6 +1208,7 @@
       artistMoney:null,
       artistBio:"",
       artistImage:"",
+      socials:{youtube:"",spotify:"",itunes:"",amazonMusic:"",twitter:"",facebook:"",instagram:""},
       artistMode:false,
       kycStatus:"pending"
     };
@@ -1956,6 +1969,52 @@
       },2*1024*1024);
     };
 
+    /* 7 social-link inputs (artist step). Every key writes straight
+       into S.socials; on finish, packSocials() ships only the keys
+       the artist actually filled, so the row never gets a wall of
+       empty strings. */
+    window.onSocialInput=function(input,key){
+      S.socials=S.socials||{};
+      S.socials[key]=input.value.trim();
+      if(S.socials[key]==="") delete S.socials[key];
+    };
+    window.packSocials=function(){
+      var p=null,k,i;
+      var keys=Object.keys(S.socials||{});
+      for(i=0;i<keys.length;i++){
+        k=keys[i];
+        if(typeof S.socials[k]==="string" && S.socials[k].trim()){
+          p=p||{};
+          p[k]=S.socials[k].trim();
+        }
+      }
+      return p; /* null when the artist left them blank */
+    };
+
+    /* Server row arrived (or mirror refreshed) -> write the 7 inputs
+       back from S.socials so a returning artist sees their links. */
+    window.prefillSocialsInputs=function(){
+      var i,id,val;
+      if(!S.socials) return;
+      var map=[
+        ["artistSocialYoutube","youtube"],
+        ["artistSocialSpotify","spotify"],
+        ["artistSocialItunes","itunes"],
+        ["artistSocialAmazon","amazonMusic"],
+        ["artistSocialTwitter","twitter"],
+        ["artistSocialFacebook","facebook"],
+        ["artistSocialInstagram","instagram"]
+      ];
+      for(i=0;i<map.length;i++){
+        id=map[i][0];
+        val=S.socials[map[i][1]];
+        if(typeof val==="string"){
+          var input=document.getElementById(id);
+          if(input) input.value=val;
+        }
+      }
+    };
+
     window.handleArtistPhoto=function(file){
       processImage(file,1024,function(data){
         S.artistImage=data;
@@ -2211,7 +2270,8 @@
           mobileMoneyProvider:S.artistMoney,
           bio:val("artistBio").trim(),
           image:S.artistImage
-        } : null
+        } : null,
+        socials:packSocials()||null
       };
 
       /* Password deliberately not stored in localStorage. */
@@ -2698,6 +2758,7 @@
           S.whatsapp=p.whatsapp_number||S.whatsapp;
           if(p.socials) S.socials=p.socials;
           if(p.photo_url) S.socials=S.socials||{};
+          if(window.prefillSocialsInputs) prefillSocialsInputs();
         }
         function applyGenres(rows){
           rows.forEach(function(row){

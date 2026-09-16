@@ -128,3 +128,26 @@ Music discovery/voting web app. Static frontend (HTML/CSS/JS, no build step), ho
 - [ ] Follows saved per profile, reflected on song/artist/chart pages.
 - [ ] Artist self-declares → appears in admin dashboard → approve → artist dashboard unlocks.
 - [ ] Notifications reflect real events for the signed-in user.
+
+---
+
+## SESSION END — 2025-09-16 (handoff for next session)
+
+**PRESENT STATE (verified truth, be honest with yourself — nothing below is a guess):**
+1. `git status` shows **`M onboarding.html`** → the **7-social-input slice is COMPLETE but NOT YET COMMITTED/PUSHED**. (Last commit `12db17f` carries migration 0008 + api.js + onboarding rehydrate/photo-upload; the socials slice landed on top as an uncommitted working-tree delta.)
+2. **submit-music.html socials slice: NOT STARTED.** User explicitly confirmed on 2025-09-16 the art collection = **7 discrete social links (YouTube, Spotify, iTunes, Amazon Music, Twitter/X, Facebook, Instagram)** and chose **"Persist to Supabase too (Recommended)"** for BOTH surfaces. That slice is the entire next session.
+
+**What the uncommitted onboarding slice contains (verified in file via read tool):**
+- `S.socials` state seed with 7 keys (youtube/spotify/itunes/amazonMusic/twitter/facebook/instagram) — onboarding.html L1211.
+- 7 social inputs paired into the artist step DOM grid (L1047-1058), each `oninput="onSocialInput(this,'<key>')"`.
+- `window.packSocials()` (L1981) → folds only filled strings as `{key:url}` jsonb, `null` when blank.
+- `window.prefillSocialsInputs()` (L1996) + seed-ride: `account.socials=packSocials()||null` and payload `socials:account.socials||null` (L2274/2340/2327).
+- Rehydrate: `if(p.socials) S.socials=p.socials;` → `if(window.prefillSocialsInputs) prefillSocialsInputs();` (L2734-2735 + 2761).
+
+**NEXT SESSION — exact to-do list (in order):**
+1. Take stock (setup check): create PUBLIC Storage bucket `trackhype-media` in Dashboard → and run migration 0008 in SQL Editor if not already — the migration includes the storage RLS policies but **NOT the bucket itself**; bucket must exist before policy inserts/object writes work. Verify at least once in the SQL helper's "session-ready" card.
+2. `commit` + `push` the onboarding 7-social slice (message: `feat: artist 7 social links - onboarding collect + rehydrate`).
+3. **Build submit-music.html slice** (per user confirmation): replace the single-combined `#artist-social` (L74) with the same 7 discrete social inputs; add `onSocialInput` mirror + `packSocials()`; fold into the `submission` payload in `confirmAndPay` (L303-324); persist via the same guarded `API.saveProfile` path. (submit-music.html is the offline-first $10-submission surface — it currently has NO api.js include and NO session layer; keep the persistence **optional/guarded** exactly like onboarding, and store only URLs, never base64 blobs.)
+4. Update this REPORT + CHECKLIST, run `node --check` on extracted inline scripts, commit + push, verify on hosted origin (GitHub Pages hard-refresh).
+
+**Gotcha already learned this session (record, save yourself 40 minutes):** onboarding/submit-music inline JS lives inside an IIFE but handlers are exposed as `window.*` for inline `oninput=` attributes; the 7 socials write straight into `S.socials` state and are packed/upserted via `account.socials` — do NOT create a second persistence path; ride the existing `API.saveProfile` upsert (profiles.socials jsonb).
