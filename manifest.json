@@ -1,0 +1,25 @@
+{
+  "name": "TrackHype",
+  "short_name": "TrackHype",
+  "description": "TrackHype - SADC music discovery, official charts and voting.",
+  "start_url": "index.html",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#01db8b",
+  "icons": [
+    {
+      "src": "Assets/logos/TrackHype Logo Design Badge.webp",
+      "sizes": "any",
+      "type": "image/webp",
+      "purpose": "any"
+    },
+    {
+      "src": "Assets/logos/TrackHype Logo Design.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

@@ -4,6 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#ffffff">
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="TrackHype">
+  <script>
+    if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
+  </script>
   <link rel="icon" type="image/webp" href="Assets/logos/TrackHype Logo Design Badge.webp">
   <title>Voting &amp; Chart Rules — TrackHype</title>
   <link rel="stylesheet" href="trackhype.css">
