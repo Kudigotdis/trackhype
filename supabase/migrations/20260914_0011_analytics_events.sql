@@ -42,6 +42,7 @@ create index if not exists idx_ae_week_key  on public.analytics_events ((metadat
 alter table public.analytics_events enable row level security;
 
 -- Authenticated users insert their own events (anonymous impressions allowed)
+drop policy if exists "analytics insert auth or anon" on public.analytics_events;
 create policy "analytics insert auth or anon"
   on public.analytics_events for insert to authenticated
   with check (user_id = auth.uid() or user_id is null);
@@ -55,6 +56,7 @@ returns boolean language sql stable security definer set search_path = public as
   );
 $$;
 
+drop policy if exists "analytics admin select all" on public.analytics_events;
 create policy "analytics admin select all"
   on public.analytics_events for select
   using (public.admin_analytics_visible());
