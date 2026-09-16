@@ -1,0 +1,64 @@
+================================================================================
+TRACKHYPE PRIVACY POLICY
+================================================================================
+Effective Date: September 16, 2026
+Last Updated: September 16, 2026
+Contact: support@trackhype.com
+Operating Regions: Botswana, Zimbabwe, International
+
+1. OVERVIEW
+TrackHype ("we", "us", or "our") operates a mobile-first music discovery and voting platform[cite: 2]. This Privacy Policy details how personal information is collected, processed, and safeguarded when using our application, site, and related services across Botswana, Zimbabwe, and international territories[cite: 2].
+
+2. INFORMATION WE COLLECT
+
+A. Account & Profile Data
+- Authentication & Contact: Email address, mobile phone number, WhatsApp contact number.
+- Demographics: Date of birth (DOB), gender, residential neighbourhood/district (used strictly for aggregate regional analytics and localized chart calculations)[cite: 2].
+- Public Profile Data: Public username, profile photo/avatar, short bio.
+
+NOTE ON PRIVATE FIELDS:
+Your email address, mobile/WhatsApp number, exact date of birth, gender, legal name, residential neighbourhood, and payment transaction logs are strictly classified as Private Fields. Private Fields are never displayed on public profile cards or shared with other platform users.
+
+B. Ballots, Voting & Playback Activity
+- Ballots & Voting History: Weekly submitted song selections, point allocations, and chart ballots[cite: 2].
+- Saved Items: Followed artists, liked tracks, and custom saved playlists.
+- Embedded Playback Metrics: Interaction events recorded via the embedded YouTube player (including playback duration, 30-second hook retention, completion rates, and volume adjustments).
+- Outbound Engagement: Click-through events when tapping external artist links (Spotify, Apple Music, YouTube Music, Amazon Music, TikTok, Instagram, X/Twitter)[cite: 2].
+
+C. Artist Submission Information
+- Creative Metadata: Artist name, stage name, legal full name, artist bio, portrait images, and genre tags[cite: 2].
+- Content Links: Official YouTube audio/video URLs and external social media handle links[cite: 2].
+- Financial References: Payment confirmation records and reference numbers for submission fees[cite: 2].
+
+D. Device & System Data
+- Device identifiers, IP address, browser type, operating system, localized time zone settings, and language preferences.
+
+3. PURPOSE AND LEGAL BASIS FOR PROCESSING
+We process user data under the following legal bases:
+- Contractual Necessity: To deliver core chart calculations, process weekly voting ballots, and manage artist submissions[cite: 2].
+- Legitimate Interests: To compute aggregated A&R market trends, prevent automated bot voting, optimize playback analytics, and verify local chart integrity[cite: 2].
+- User Consent: For opt-in marketing notifications and product updates.
+
+4. DATA STORAGE AND INFRASTRUCTURE
+In our current application phase, core account profiles, local preference state, offline ballots, and saved playlists are stored directly within your local client browser storage (such as IndexedDB and LocalStorage)[cite: 2]. As the application migrates to full cloud orchestration (e.g., Supabase / enterprise database infrastructure), data will be transmitted via encrypted HTTPS/TLS protocols and stored securely in cloud server instances.
+
+5. THIRD-PARTY PAYMENT PROCESSING
+Artist submission fees ($10 USD or local currency equivalent per track) are handled entirely through licensed third-party payment gateways, bank transfers, or regional mobile money providers (such as Orange Money, EcoCash, or regional card processors)[cite: 2]. TrackHype does not collect, process, or store credit/debit card details or sensitive banking credentials on its servers.
+
+6. DATA SHARING AND DISCLOSURE
+We do not sell, rent, or trade personal information. Data disclosures are restricted to:
+- Service Providers: Infrastructure hosts, data analytics tools, and moderation utilities under strict non-disclosure obligations.
+- Aggregated Industry Analytics: De-identified, anonymized demographic and geographic metrics provided to record labels, radio programmers, and A&R scouts[cite: 2].
+- Legal Compliance: Law enforcement or regulatory authorities when required by applicable law, court orders, or safety investigations.
+
+7. USER RIGHTS & RETENTION
+We retain account data for as long as your account is active or as necessary to maintain immutable historical chart records[cite: 2]. Depending on your jurisdiction (including the Botswana Data Protection Act, Zimbabwe Cyber & Data Protection Act, and applicable international privacy framework laws), you have the right to:
+- Request access to and export your personal data held by TrackHype.
+- Request correction of inaccurate account details.
+- Request deletion of your personal profile and associated personal records.
+
+8. CHILDREN'S PRIVACY
+TrackHype is intended for individuals aged 13 and older (or aged 18 and older for legal submission fee payments)[cite: 2]. We do not knowingly collect personal data from children under 13 years of age.
+
+9. CONTACT REGISTRAR
+For privacy inquiries or data rights requests, email: support@trackhype.com.

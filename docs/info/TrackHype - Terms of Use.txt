@@ -1,0 +1,46 @@
+================================================================================
+TRACKHYPE TERMS OF USE
+================================================================================
+Effective Date: September 16, 2026
+Last Updated: September 16, 2026
+Contact: support@trackhype.com
+Operating Regions: Botswana, Zimbabwe, International
+
+1. ACCEPTANCE AND ELIGIBILITY
+By registering for or using the TrackHype application, website, or services ("Service"), you agree to these Terms of Use ("Terms"). You must be at least 13 years old to use the Service. Users registering an artist account or completing financial transactions must be at least 18 years old or possess explicit parental/guardian consent[cite: 2].
+
+2. SERVICE SCOPE AND DESCRIPTION
+TrackHype provides a mobile-first music discovery and voter-driven chart platform operating in Botswana, Zimbabwe, and international markets[cite: 2]. The platform hosts weekly ranked listener ballots, a 1-month "New Music" discovery lane, "Contenders" bridge lanes, and published official charts ("On Top")[cite: 2]. TrackHype does not host or directly stream audio files; all music listening and viewing occurs via embedded native YouTube video players.
+
+3. VOTING RULES AND CHART MECHANICS
+All user voting and chart generation is governed by standard platform rules[cite: 2]:
+- Ballot Schedule: Weekly voting windows close strictly every Monday at 00:00 (Africa/Harare time)[cite: 2].
+- Ranked Scoring: Listeners rank up to 10 choices per ballot (1st choice = 10 points down to 10th choice = 1 point)[cite: 2].
+- Ballot Revisions: Users may edit their active ballot throughout the chart week; only the final saved ballot at closing time is counted[cite: 2].
+- Anti-Fraud: Automated voting, scripts, bot accounts, or artificial engagement manipulation are prohibited and result in immediate ballot voiding and account suspension.
+
+4. ARTIST SUBMISSION TERMS
+- Submission Fee: Artists pay a fee of $10.00 USD (or local currency equivalent via approved payment channels) per song submission per regional market[cite: 2].
+- Non-Refundable Policy: Fees cover moderation review, system ingestion, and platform operations[cite: 2]. All payments are strictly non-refundable once moderation review begins[cite: 2].
+- No Guaranteed Placement: Payment guarantees a 48–72 hour moderation review and placement into the "New Music" lane if approved[cite: 2]. Payment DOES NOT guarantee placement on official charts ("On Top"), which are determined solely by listener ballot votes[cite: 2].
+- Moderation Rights: TrackHype reserves the right to decline submissions that infringe third-party copyrights, contain corrupted audio/video embeds, or violate community safety standards[cite: 2].
+
+5. INTELLECTUAL PROPERTY
+- User Content Ownership: Artists retain 100% ownership of their copyright, master recordings, art, and trademarks. By submitting content, artists grant TrackHype a non-exclusive, worldwide, royalty-free license to display, promote, link, and stream the submitted YouTube embed across TrackHype screens and official promotional media[cite: 2].
+- TrackHype Property: All rights to the TrackHype name, brand assets, interface design, codebase, scoring algorithms, and chart datasets belong exclusively to TrackHype. Unauthorized data scraping or reverse engineering is prohibited.
+
+6. ACCEPTABLE USE
+Users agree not to:
+- Use automated tools, bots, or fake accounts to manipulate chart standings or playback metrics.
+- Upload fraudulent, abusive, infringing, or illegal material.
+- Interfere with local browser databases, server security, or network infrastructure.
+
+7. DISCLAIMERS AND LIMITATION OF LIABILITY
+- Prototype Data Storage: In prototype phases, certain profile and preference data is stored locally in client browser storage (IndexedDB/LocalStorage)[cite: 2]. Clearing browser caches may reset local app state.
+- As-Is Service: The Service and published charts are provided "AS IS" without warranties of any kind. TrackHype is not liable for third-party YouTube embed downtime or third-party payment gateway interruptions.
+
+8. TERMINATION AND GOVERNING LAW
+TrackHype reserves the right to suspend or terminate accounts that violate these Terms. These Terms are governed by and construed under the laws of the operating territory in which the user accesses the service (including the laws of Botswana and Zimbabwe for local chart operations)[cite: 2].
+
+9. SUPPORT & LEGAL CONTACT
+For questions, support, or legal notices, contact: support@trackhype.com.
