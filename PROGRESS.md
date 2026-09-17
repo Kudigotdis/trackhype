@@ -1,6 +1,57 @@
 
 ---
 
+## SESSION END — 2026-09-17 (Beta Demo Mode: demo-first launch + region gating)
+
+**Scope: ship the Beta as a demo-first experience — signed-out visitors see a fully populated Demo showcase; real country regions stay empty ("coming soon") until artists submit and admin publishes. No banners/badges (the content is the demo). Freeze voting until real content exists.**
+
+### Commits (pushed to origin/main; `ab41fc8..59234b2`, tree clean, ahead/behind 0)
+| Commit | Slice |
+|--------|-------|
+| `6fae77d` | feat: beta demo mode core — persona/view model, vote freeze, real-content bridge |
+| `583b077` | feat: region selector — browser/demo mode entry |
+| `0b11c00` | feat: view-aware content switching + empty states |
+| `d211632` | chore: PWA install polish — apple-touch-icon + icon links |
+| `59234b2` | docs: beta demo mode progress log + roadmap §10 (timeline → §11) |
+
+### Model (the load-bearing decision)
+- **Identity region** = `localStorage["trackhype.region"]` (onboarding only; the region an account may vote in).
+- **View** = `sessionStorage["trackhype.view"]` = `{mode:"demo"}` or `{mode:"region", region:{...}}` (session-only; never persists for browser visitors).
+- **Persona** = derived from `trackhype_onboarding_complete === "true"` (account) else browser.
+- Exports from `trackhype.js`: `currentView()/currentMode()/persona()/canVote()/votingLocked()/setView()/clearView()/identityRegion()/anyRealContent()/loadPublishedChart()/dbChartKeyFor()`.
+- **Gate rule:** pages gate on **view mode**, not persona — fresh browser = demo view (showcase); browser-tapped country = region view (empty); account default = own-region view.
+- **Demo-leak fix:** index/playlists/new-music/artists/search gate on demo-only data (never fall through to demo in a populated region). charts/history gate on `anyRealContent()` so they light up from the DB via the bridge.
+
+### Real-content bridge (Phase 5)
+- `js/api.js chartEntries()` embeds `song_artists(artist:artists(name))`.
+- `trackhype.js loadPublishedChart(chartKey, weekKey, dbKey)` fetches `API.chartEntries`, writes a **non-seed** local snapshot + tier2/tier3 submissions, fires `trackhype:chart-update` (dispatch wrapped in try/catch so a missing CustomEvent can't discard a successful load). Wired at boot on `charts.html` (when `!DEMO_MODE && regionEmpty()`) and `history.html`.
+- `dbChartKeyFor()` maps local chart ids → DB keys; **audited against `20260914_0003_seed_charts.sql` — all 7 keys match** (national-100, hiphop-20, dancehall-20, gospel-20, sungura-20, house-20, rnb-20), by-id and by-name.
+- Demo seeds are created **only** in Demo mode (`ensureSeed` early-returns otherwise).
+
+### Verification (byte-truth)
+- Harness `verify-mode-core.js`: **36/36** (23 mode/gate + dbChartKeyFor map + bridge no-API graceful + bridge ingest with mocked `API.chartEntries`).
+- 44 inline scripts across all root pages + `trackhype.js` + `js/api.js` + `js/territories.js` + `js/tracker.js` all pass `node --check`.
+- High-byte sweep on the working-tree diff: only the pre-existing `headerFlag` aria-label em-dash (markdown em-dashes/`**` expected).
+- Live `https://kudigotdis.github.io/trackhype/` confirmed serving the new build (`loadPublishedChart`, `dbChartKeyFor`, `REGION_SUFFIX`, `apple-touch-icon`) after the Pages rebuild.
+
+### SQL Editor ledger: **OPEN — apply 0011 → 0015 in order**
+```
+0011 analytics_events (+ admin views)   -- PROGRESS previously recorded OPEN
+0012 advert_campaign_fields
+0013 chart_content_manager              -- needs 0011
+0014 promote_submission                 -- needs 0013 (catalog RPC)
+0015 analytics_anon_insert              -- NEW: widens 0011's insert policy to anon
+```
+- **Why 0015 exists:** 0011's "analytics insert auth or anon" policy was `TO authenticated` only + grant to authenticated only, so signed-out (Browser/Demo) impressions/clicks/searches never persisted. 0015 recreates it `TO anon, authenticated` (check `user_id is null or user_id = auth.uid()`) + `grant insert to anon`.
+
+### Still open (prioritised)
+- **P0:** apply migrations 0011–0015; then exercise the real-content bridge end-to-end (promote a submission → publish a week → charts/history hydrate non-seed, `canVote()` unlocks).
+- **P1:** interactive browser E2E (roadmap §10 `[ ]`); chart-key audit DONE above.
+- **P2 (red flags):** payment gateway (§9, `submit-music` charges $10 with no processor); custom domain + SSL (§7 `[ ]`); ballots have no DB 1-per-24h/device constraint (client-only).
+- **P3:** real-content rendering for home/new-music/artists/playlists/search (demo-only/empty in region view); DRC + world territories; `UTILISE INFORMATION/` enterprise dashboard (user-held, untracked).
+
+---
+
 ## SESSION END — 2025-09-16 (parallel work committed + ad engine + tracker coverage)
 
 **Scope: land the user's parallel admin/analytics/legal work, ship migration 0011, ad engine (API.adverts + placements + impression/click tracking), full tracker coverage, fix submit-music submission write-path gap.**

@@ -83,3 +83,38 @@ Fresh browser profile:
 3. Reload / new session → back to Browser / Demo.
 4. Sign in with an account → lands in own region (empty). Vote → blocked with reason.
 5. (After admin publishes) charts/history hydrate from the DB via the bridge; voting unlocks.
+
+## P0 DB runbook (SQL Editor — apply in order)
+
+The bridge, ad campaigns and chart manager all read tables that require migrations
+**0011–0015**. Apply them in this order (all idempotent / safe to re-run):
+
+| # | File | Why |
+|---|---|---|
+| 0011 | `20260914_0011_analytics_events.sql` | event log + admin views |
+| 0012 | `20260916_0012_advert_campaign_fields.sql` | advert start/end windows |
+| 0013 | `20260916_0013_chart_content_manager.sql` | chart entry update/delete RLS + uniqueness guard (needs 0011) |
+| 0014 | `20260916_0014_promote_submission.sql` | approve → catalog RPC (needs 0013) |
+| 0015 | `20260917_0015_analytics_anon_insert.sql` | widen analytics insert policy to `anon` so signed-out events persist |
+
+Verify after each:
+```sql
+select polname from pg_policy where polrelid = 'public.analytics_events'::regclass;
+select * from public.admin_platform_summary;
+select * from public.chart_entries limit 5;
+```
+
+### Exercise the bridge end-to-end
+1. Sign in to `admin.html` with an admin profile.
+2. Submissions tab → **Approve** a test submission (creates artist/song via 0014 RPC).
+3. Chart Manager → pick a chart/week → add the promoted song → **Publish as new week**.
+4. Open `charts.html` as an account user in that region → chart shows the **non-seed** entry
+   (no demo seeds mixed) → voting unlocks (`canVote().ok === true`).
+
+## Open work
+
+- **P0** — apply 0011–0015, then run the bridge exercise above.
+- **P1** — interactive browser E2E pass on the live site.
+- **P2** — payment gateway (§9 red flag), custom domain + SSL (§7), ballots 1-per-24h/device DB constraint.
+- **P3** — real-content rendering for home / new-music / artists / playlists / search; DRC + world territories.
+
